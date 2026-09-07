@@ -1,8 +1,8 @@
 !! Main program for metalquicha quantum chemistry calculations
 !!
-!! Input format: .mqc (section-based format)
+!! Input format: JSON
 !!
-!! Usage: metalquicha input_file.mqc
+!! Usage: metalquicha input_file.json
 program main
    !! Orchestrates MPI initialization, input parsing, geometry loading,
    !! and dispatches to appropriate calculation routines (fragmented or unfragmented).
@@ -11,21 +11,27 @@ program main
    use pic_mpi_lib, only: pic_mpi_init, comm_world, abort_comm, pic_mpi_finalize
    use mqc_resources, only: resources_t
    use mqc_driver, only: run_calculation, run_multi_molecule_calculations
+   use mqc_geometry_optimizer, only: run_geometry_optimization
+   use mqc_calc_types, only: CALC_TYPE_OPTIMIZE, CALC_TYPE_CONFORMERS
+   use mqc_crest_driver, only: run_conformer_search
    use mqc_physical_fragment, only: system_geometry_t
-   use mqc_config_parser, only: mqc_config_t, read_mqc_file
+   use mqc_config_types, only: mqc_config_t
+   use mqc_json_config_reader, only: read_json_config_file
    use mqc_config_adapter, only: driver_config_t, config_to_driver, config_to_system_geometry, get_logger_level
    use mqc_io_helpers, only: set_output_json_filename, ends_with
    use mqc_logo, only: print_logo
+   use mqc_acknowledgements, only: print_acknowledgement
    use mqc_version, only: print_version
    use pic_timer, only: timer_type
    use mqc_error, only: error_t
    use pic_knowledge, only: get_knowledge
+   use, intrinsic :: iso_fortran_env, only: output_unit
    implicit none
 
    type(timer_type) :: my_timer      !! Execution timing
    type(resources_t) :: resources    !! Resources container (MPI comms, etc.)
    type(driver_config_t) :: config   !! Driver configuration
-   type(mqc_config_t) :: mqc_config  !! Parsed .mqc file
+   type(mqc_config_t) :: mqc_config  !! Parsed input deck
    type(system_geometry_t) :: sys_geom  !! Loaded molecular system
    type(error_t) :: error            !! Error handling
    integer :: stat                   !! Status code for file I/O
@@ -48,7 +54,7 @@ program main
    ! Parse command line arguments
    if (command_argument_count() == 0) then
       if (resources%mpi_comms%world_comm%rank() == 0) then
-         call logger%error("No input file specified. Usage: mqc input_file.mqc")
+         call logger%error("No input file specified. Usage: mqc input_file.json")
       end if
       call abort_comm(resources%mpi_comms%world_comm, 1)
    else if (command_argument_count() == 1) then
@@ -73,28 +79,28 @@ program main
 
       call set_output_json_filename(input_file)
       ! Validate file extension
-      if (.not. ends_with(input_file, '.mqc')) then
+      if (.not. ends_with(input_file, ".json")) then
          if (resources%mpi_comms%world_comm%rank() == 0) then
-            call logger%error("Invalid input file extension. Expected .mqc")
+            call logger%error("Invalid input file extension. Expected .json")
          end if
          call abort_comm(resources%mpi_comms%world_comm, 1)
       end if
    else
       if (resources%mpi_comms%world_comm%rank() == 0) then
-         call logger%error("Too many arguments. Usage: metalquicha [input_file.mqc]")
+         call logger%error("Too many arguments. Usage: metalquicha [input_file.json]")
       end if
       call abort_comm(resources%mpi_comms%world_comm, 1)
    end if
 
-   ! Parse .mqc input file
+   ! Parse the input file
    if (resources%mpi_comms%world_comm%rank() == 0) then
       call logger%info("Reading input file: "//trim(input_file))
    end if
 
-   call read_mqc_file(input_file, mqc_config, error)
+   call read_json_config_file(input_file, mqc_config, error)
    if (error%has_error()) then
       if (resources%mpi_comms%world_comm%rank() == 0) then
-         call logger%error("Error reading .mqc file: "//error%get_message())
+         call logger%error("Error reading input file: "//error%get_message())
       end if
       call abort_comm(resources%mpi_comms%world_comm, 1)
    end if
@@ -107,10 +113,25 @@ program main
       end if
    end if
 
+   ! Name the library that is about to do the work, before it does any of it.
+   ! Here rather than beside the calculation because a fragmented run makes
+   ! thousands of them and the credit is owed once, to one rank's output.
+   if (resources%mpi_comms%world_comm%rank() == 0) then
+      call print_acknowledgement(mqc_config%method, mqc_config%backend)
+   end if
+
    ! Handle single vs multiple molecules
    if (mqc_config%nmol == 0) then
       ! Single molecule mode (backward compatible)
-      call config_to_driver(mqc_config, config)
+      call config_to_driver(mqc_config, config, &
+                            node_rank=resources%mpi_comms%node_comm%rank(), &
+                            error=error)
+      if (error%has_error()) then
+         if (resources%mpi_comms%world_comm%rank() == 0) then
+            call logger%error("Error reading settings: "//error%get_message())
+         end if
+         call abort_comm(resources%mpi_comms%world_comm, 1)
+      end if
       call config_to_system_geometry(mqc_config, sys_geom, error)
       if (error%has_error()) then
          if (resources%mpi_comms%world_comm%rank() == 0) then
@@ -119,7 +140,39 @@ program main
          call abort_comm(resources%mpi_comms%world_comm, 1)
       end if
 
-      call run_calculation(resources, config, sys_geom, mqc_config%bonds)
+      ! An optimization is a loop over calculations rather than one of them, so
+      ! it dispatches here rather than inside `run_calculation` -- which it
+      ! calls, and which therefore cannot call it.
+      if (config%calc_type == CALC_TYPE_OPTIMIZE) then
+         call run_geometry_optimization(resources, config, sys_geom, mqc_config%bonds, error)
+         if (error%has_error()) then
+            if (resources%mpi_comms%world_comm%rank() == 0) then
+               call logger%error("Geometry optimization failed: "//error%get_message())
+            end if
+            ! Before the abort, not after. `abort_comm` reaches MPI_ABORT,
+            ! which kills the process without unwinding -- whatever is sitting
+            ! in the stdout buffer is discarded with it. An optimization that
+            ! ran out of steps was exiting 1 having printed its diagnosis into
+            ! a buffer nobody ever read, which from the outside is an exit code
+            ! and silence.
+            flush (output_unit)
+            call abort_comm(resources%mpi_comms%world_comm, 1)
+         end if
+      else if (config%calc_type == CALC_TYPE_CONFORMERS) then
+         ! A conformer search is a sampling run wrapped around tens of
+         ! thousands of calculations, so like an optimization it dispatches
+         ! here rather than inside `run_calculation`.
+         call run_conformer_search(resources, config, sys_geom, error)
+         if (error%has_error()) then
+            if (resources%mpi_comms%world_comm%rank() == 0) then
+               call logger%error("Conformer sampling failed: "//error%get_message())
+            end if
+            flush (output_unit)
+            call abort_comm(resources%mpi_comms%world_comm, 1)
+         end if
+      else
+         call run_calculation(resources, config, sys_geom, mqc_config%bonds)
+      end if
       call sys_geom%destroy()
    else
       ! Multi-molecule mode: loop over all molecules

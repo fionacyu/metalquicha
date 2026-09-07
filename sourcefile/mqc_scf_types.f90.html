@@ -1,0 +1,1313 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="A demonstration of PIC as a framework for scientific applications targetting quantum chemistry">
+    <meta name="author" content="Jorge Luis Galvez Vallejo" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>mqc_scf_types.f90 &ndash; metalquicha</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">metalquicha </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../program/main.html">Program</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>mqc_scf_types.f90
+      <small>Source File</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 0.2% of total for source files.">59 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/mqc_scf_types.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+            <li class="breadcrumb-item active" aria-current="page">mqc_scf_types.f90</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+        <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#mods-0"
+         aria-expanded="false" aria-controls="mods-0">
+         <h4 class="card-header bg-primary text-white">Modules</h4>
+      </a>
+      <div id="mods-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/mqc_scf_types.html">mqc_scf_types</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../sourcefile/mqc_scf_types.f90.html#src">mqc_scf_types.f90</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    <div class="col-md-9" id='text'>
+      <p>The types that say how a self-consistent field is set up and driven</p>
+      <br>
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Files dependent on this one</h3>
+          </div>
+          <div class="card-body">
+            <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: sourcefile~~mqc_scf_types.f90~~AfferentGraph Pages: 1 -->
+<svg id="sourcefilemqc_scf_typesf90AfferentGraph" width="641pt" height="294pt"
+ viewBox="0.00 0.00 641.00 293.52" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph" class="graph" transform="scale(0.24 0.24) rotate(0) translate(4 1239.23)">
+<title>sourcefile~~mqc_scf_types.f90~~AfferentGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-1239.23 2711,-1239.23 2711,4 -4,4"/>
+<!-- sourcefile~mqc_scf_types.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_node1" class="node">
+<title>sourcefile~mqc_scf_types.f90</title>
+<polygon fill="none" stroke="black" points="110,-324 0,-324 0,-300 110,-300 110,-324"/>
+<text text-anchor="middle" x="55" y="-309.6" font-family="Helvetica,sans-Serif" font-size="10.50">mqc_scf_types.f90</text>
+</g>
+<!-- sourcefile~mqc_config_types.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_node2" class="node">
+<title>sourcefile~mqc_config_types.f90</title>
+<g id="a_sourcefile~~mqc_scf_types.f90~~AfferentGraph_node2"><a xlink:href="../sourcefile/mqc_config_types.f90.html" xlink:title="mqc_config_types.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="451,-690 323,-690 323,-666 451,-666 451,-690"/>
+<text text-anchor="middle" x="387" y="-675.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_config_types.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_config_types.f90&#45;&gt;sourcefile~mqc_scf_types.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge1" class="edge">
+<title>sourcefile~mqc_config_types.f90&#45;&gt;sourcefile~mqc_scf_types.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M343.61,-690.02C307.17,-697.73 254.75,-702.28 217.5,-678"/>
+</g>
+<!-- sourcefile~mqc_cuest_iface.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_node3" class="node">
+<title>sourcefile~mqc_cuest_iface.f90</title>
+<g id="a_sourcefile~~mqc_scf_types.f90~~AfferentGraph_node3"><a xlink:href="../sourcefile/mqc_cuest_iface.f90.html" xlink:title="mqc_cuest_iface.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="447.5,-256 326.5,-256 326.5,-232 447.5,-232 447.5,-256"/>
+<text text-anchor="middle" x="387" y="-241.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_cuest_iface.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_cuest_iface.f90&#45;&gt;sourcefile~mqc_scf_types.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge2" class="edge">
+<title>sourcefile~mqc_cuest_iface.f90&#45;&gt;sourcefile~mqc_scf_types.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M326.21,-247.56C293.76,-250.29 253.12,-255 217.5,-263"/>
+</g>
+<!-- sourcefile~mqc_method_config.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_node7" class="node">
+<title>sourcefile~mqc_method_config.f90</title>
+<g id="a_sourcefile~~mqc_scf_types.f90~~AfferentGraph_node7"><a xlink:href="../sourcefile/mqc_method_config.f90.html" xlink:title="mqc_method_config.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="287,-324 146,-324 146,-300 287,-300 287,-324"/>
+<text text-anchor="middle" x="216.5" y="-309.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_method_config.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_cuest_iface.f90&#45;&gt;sourcefile~mqc_method_config.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge40" class="edge">
+<title>sourcefile~mqc_cuest_iface.f90&#45;&gt;sourcefile~mqc_method_config.f90</title>
+<path fill="none" stroke="#003fff" stroke-dasharray="5,2" d="M356.26,-256C328.64,-267.15 287.32,-283.82 256.95,-296.08"/>
+<polygon fill="#003fff" stroke="#003fff" points="255.47,-292.9 247.51,-299.89 258.09,-299.39 255.47,-292.9"/>
+</g>
+<!-- sourcefile~mqc_czt_bridge_stub.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_node4" class="node">
+<title>sourcefile~mqc_czt_bridge_stub.f90</title>
+<g id="a_sourcefile~~mqc_scf_types.f90~~AfferentGraph_node4"><a xlink:href="../sourcefile/mqc_czt_bridge_stub.f90.html" xlink:title="mqc_czt_bridge_stub.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="637.5,-336 493.5,-336 493.5,-312 637.5,-312 637.5,-336"/>
+<text text-anchor="middle" x="565.5" y="-321.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_czt_bridge_stub.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_czt_bridge_stub.f90&#45;&gt;sourcefile~mqc_scf_types.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge3" class="edge">
+<title>sourcefile~mqc_czt_bridge_stub.f90&#45;&gt;sourcefile~mqc_scf_types.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M522.85,-311.94C487.36,-302.29 434.81,-289.5 388,-284"/>
+</g>
+<!-- sourcefile~mqc_czt_bridge_stub.f90&#45;&gt;sourcefile~mqc_cuest_iface.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge20" class="edge">
+<title>sourcefile~mqc_czt_bridge_stub.f90&#45;&gt;sourcefile~mqc_cuest_iface.f90</title>
+<path fill="none" stroke="#ffbf00" stroke-dasharray="5,2" d="M519.97,-311.92C508.89,-308.15 497.26,-303.5 487,-298 469.14,-288.42 468.53,-280.18 451,-270 444.74,-266.36 437.87,-262.98 431.05,-259.94"/>
+<polygon fill="#ffbf00" stroke="#ffbf00" points="432.4,-256.71 421.83,-256 429.65,-263.15 432.4,-256.71"/>
+</g>
+<!-- sourcefile~mqc_driver.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_node5" class="node">
+<title>sourcefile~mqc_driver.f90</title>
+<g id="a_sourcefile~~mqc_scf_types.f90~~AfferentGraph_node5"><a xlink:href="../sourcefile/mqc_driver.f90.html" xlink:title="mqc_driver.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="2096.5,-744 2005.5,-744 2005.5,-720 2096.5,-720 2096.5,-744"/>
+<text text-anchor="middle" x="2051" y="-729.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_driver.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_driver.f90&#45;&gt;sourcefile~mqc_scf_types.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge4" class="edge">
+<title>sourcefile~mqc_driver.f90&#45;&gt;sourcefile~mqc_scf_types.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M1505.5,-868C1418.82,-895.29 1405.13,-922.19 1320,-954 971.44,-1084.23 819.74,-1204.56 487,-1038 308.27,-948.54 383.54,-789.25 217.5,-678"/>
+</g>
+<!-- sourcefile~mqc_driver.f90&#45;&gt;sourcefile~mqc_config_types.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge13" class="edge">
+<title>sourcefile~mqc_driver.f90&#45;&gt;sourcefile~mqc_config_types.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M1783,-792C1720.68,-804.21 1568.02,-848.76 1507.5,-868"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M1505.5,-868C1425.32,-893.49 848.24,-1015.81 764.5,-1024"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M762.5,-1024C675.48,-1027.95 641.08,-1069.01 566.5,-1024"/>
+</g>
+<!-- sourcefile~mqc_driver.f90&#45;&gt;sourcefile~mqc_czt_bridge_stub.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge27" class="edge">
+<title>sourcefile~mqc_driver.f90&#45;&gt;sourcefile~mqc_czt_bridge_stub.f90</title>
+<path fill="none" stroke="#7fff00" stroke-dasharray="5,2" d="M2045.94,-719.69C2022.44,-650.95 1896.54,-314.62 1657,-232 1494.4,-175.92 1039.27,-157.13 883,-229 860.66,-239.27 868.03,-258.27 847,-271 814.81,-290.48 800.69,-279.69 764.5,-290"/>
+</g>
+<!-- sourcefile~mqc_many_body_expansion.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_node6" class="node">
+<title>sourcefile~mqc_many_body_expansion.f90</title>
+<g id="a_sourcefile~~mqc_scf_types.f90~~AfferentGraph_node6"><a xlink:href="../sourcefile/mqc_many_body_expansion.f90.html" xlink:title="mqc_many_body_expansion.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="1875,-434 1693,-434 1693,-410 1875,-410 1875,-434"/>
+<text text-anchor="middle" x="1784" y="-419.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_many_body_expansion.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_driver.f90&#45;&gt;sourcefile~mqc_many_body_expansion.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge37" class="edge">
+<title>sourcefile~mqc_driver.f90&#45;&gt;sourcefile~mqc_many_body_expansion.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M2039.61,-719.85C1999.21,-672.58 1852.28,-500.71 1802.01,-441.9"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="1804.47,-439.4 1795.32,-434.07 1799.15,-443.94 1804.47,-439.4"/>
+</g>
+<!-- sourcefile~mqc_driver.f90&#45;&gt;sourcefile~mqc_method_config.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge41" class="edge">
+<title>sourcefile~mqc_driver.f90&#45;&gt;sourcefile~mqc_method_config.f90</title>
+<path fill="none" stroke="#003fff" stroke-dasharray="5,2" d="M2005.5,-726.37C1765.67,-695.98 635.5,-551.74 566.5,-524"/>
+</g>
+<!-- sourcefile~mqc_config_adapter.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_node15" class="node">
+<title>sourcefile~mqc_config_adapter.f90</title>
+<g id="a_sourcefile~~mqc_scf_types.f90~~AfferentGraph_node15"><a xlink:href="../sourcefile/mqc_config_adapter.f90.html" xlink:title="mqc_config_adapter.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="635.5,-690 495.5,-690 495.5,-666 635.5,-666 635.5,-690"/>
+<text text-anchor="middle" x="565.5" y="-675.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_config_adapter.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_driver.f90&#45;&gt;sourcefile~mqc_config_adapter.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge56" class="edge">
+<title>sourcefile~mqc_driver.f90&#45;&gt;sourcefile~mqc_config_adapter.f90</title>
+<path fill="none" stroke="#6bff00" stroke-dasharray="5,2" d="M2005.23,-743.41C1952.74,-756.48 1862.99,-777.92 1785,-792"/>
+<path fill="none" stroke="#6bff00" stroke-dasharray="5,2" d="M1783,-792C1525.17,-838.54 1455.31,-801.95 1193.5,-792"/>
+<path fill="none" stroke="#6bff00" stroke-dasharray="5,2" d="M1191.5,-792C1086.14,-785.14 1061.67,-767.84 957,-754"/>
+<path fill="none" stroke="#6bff00" stroke-dasharray="5,2" d="M955,-754C869.23,-742.66 850.92,-717.97 764.5,-714"/>
+</g>
+<!-- sourcefile~mqc_fingerprint.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_node17" class="node">
+<title>sourcefile~mqc_fingerprint.f90</title>
+<g id="a_sourcefile~~mqc_scf_types.f90~~AfferentGraph_node17"><a xlink:href="../sourcefile/mqc_fingerprint.f90.html" xlink:title="mqc_fingerprint.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="1843,-764 1725,-764 1725,-740 1843,-740 1843,-764"/>
+<text text-anchor="middle" x="1784" y="-749.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_fingerprint.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_driver.f90&#45;&gt;sourcefile~mqc_fingerprint.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge67" class="edge">
+<title>sourcefile~mqc_driver.f90&#45;&gt;sourcefile~mqc_fingerprint.f90</title>
+<path fill="none" stroke="#00ff35" stroke-dasharray="5,2" d="M2005.35,-735.37C1963.76,-738.51 1901.15,-743.23 1853.29,-746.85"/>
+<polygon fill="#00ff35" stroke="#00ff35" points="1853.02,-743.36 1843.32,-747.6 1853.55,-750.34 1853.02,-743.36"/>
+</g>
+<!-- sourcefile~mqc_mbe.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_node21" class="node">
+<title>sourcefile~mqc_mbe.f90</title>
+<g id="a_sourcefile~~mqc_scf_types.f90~~AfferentGraph_node21"><a xlink:href="../sourcefile/mqc_mbe.f90.html" xlink:title="mqc_mbe.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="998.5,-806 913.5,-806 913.5,-782 998.5,-782 998.5,-806"/>
+<text text-anchor="middle" x="956" y="-791.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_mbe.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_driver.f90&#45;&gt;sourcefile~mqc_mbe.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge72" class="edge">
+<title>sourcefile~mqc_driver.f90&#45;&gt;sourcefile~mqc_mbe.f90</title>
+<path fill="none" stroke="#0086ff" stroke-dasharray="5,2" d="M1191.5,-792C1128.58,-789.61 1056.1,-790.84 1008.57,-792.18"/>
+<polygon fill="#0086ff" stroke="#0086ff" points="1008.42,-788.69 998.53,-792.48 1008.63,-795.68 1008.42,-788.69"/>
+</g>
+<!-- sourcefile~mqc_mbe_fragment_distribution_scheme.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_node22" class="node">
+<title>sourcefile~mqc_mbe_fragment_distribution_scheme.f90</title>
+<g id="a_sourcefile~~mqc_scf_types.f90~~AfferentGraph_node22"><a xlink:href="../sourcefile/mqc_mbe_fragment_distribution_scheme.f90.html" xlink:title="mqc_mbe_fragment_distribution_scheme.F90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="1320,-474 1065,-474 1065,-450 1320,-450 1320,-474"/>
+<text text-anchor="middle" x="1192.5" y="-459.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_mbe_fragment_distribution_scheme.F90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_driver.f90&#45;&gt;sourcefile~mqc_mbe_fragment_distribution_scheme.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge74" class="edge">
+<title>sourcefile~mqc_driver.f90&#45;&gt;sourcefile~mqc_mbe_fragment_distribution_scheme.f90</title>
+<path fill="none" stroke="#0035ff" stroke-dasharray="5,2" d="M2005.13,-723.31C1893.2,-700.92 1593.54,-636.51 1356,-545 1307.57,-526.34 1254.58,-497.57 1222.69,-479.28"/>
+<polygon fill="#0035ff" stroke="#0035ff" points="1224.3,-476.16 1213.89,-474.18 1220.79,-482.22 1224.3,-476.16"/>
+</g>
+<!-- sourcefile~mqc_frag_utils.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_node31" class="node">
+<title>sourcefile~mqc_frag_utils.f90</title>
+<g id="a_sourcefile~~mqc_scf_types.f90~~AfferentGraph_node31"><a xlink:href="../sourcefile/mqc_frag_utils.f90.html" xlink:title="mqc_frag_utils.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="818.5,-766 708.5,-766 708.5,-742 818.5,-742 818.5,-766"/>
+<text text-anchor="middle" x="763.5" y="-751.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_frag_utils.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_driver.f90&#45;&gt;sourcefile~mqc_frag_utils.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge94" class="edge">
+<title>sourcefile~mqc_driver.f90&#45;&gt;sourcefile~mqc_frag_utils.f90</title>
+<path fill="none" stroke="#00ff00" stroke-dasharray="5,2" d="M955,-754C913.19,-748.47 865.77,-748.45 828.7,-749.82"/>
+<polygon fill="#00ff00" stroke="#00ff00" points="828.38,-746.33 818.53,-750.24 828.67,-753.33 828.38,-746.33"/>
+</g>
+<!-- sourcefile~mqc_many_body_expansion.f90&#45;&gt;sourcefile~mqc_scf_types.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge5" class="edge">
+<title>sourcefile~mqc_many_body_expansion.f90&#45;&gt;sourcefile~mqc_scf_types.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M1778.5,-434.1C1765.52,-467.08 1724.58,-558.72 1657,-598 1526.81,-673.67 1470.28,-623.4 1320,-633 877.66,-661.25 763.55,-608.22 323,-657 275.48,-662.26 257.55,-704.11 217.5,-678"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M215.5,-678C93.84,-596.49 64.35,-400.23 57.76,-334.14"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="61.23,-333.67 56.84,-324.03 54.26,-334.31 61.23,-333.67"/>
+</g>
+<!-- sourcefile~mqc_many_body_expansion.f90&#45;&gt;sourcefile~mqc_czt_bridge_stub.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge28" class="edge">
+<title>sourcefile~mqc_many_body_expansion.f90&#45;&gt;sourcefile~mqc_czt_bridge_stub.f90</title>
+<path fill="none" stroke="#7fff00" stroke-dasharray="5,2" d="M1777.93,-409.79C1764.1,-378.29 1722.32,-294.58 1657,-263 1536.56,-204.77 1489.74,-259.95 1356,-263 1290.23,-264.5 827.99,-272.74 764.5,-290"/>
+</g>
+<!-- sourcefile~mqc_many_body_expansion.f90&#45;&gt;sourcefile~mqc_method_config.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge44" class="edge">
+<title>sourcefile~mqc_many_body_expansion.f90&#45;&gt;sourcefile~mqc_method_config.f90</title>
+<path fill="none" stroke="#003fff" stroke-dasharray="5,2" d="M1754.61,-409.91C1729.48,-399.9 1691.53,-386.48 1657,-381 1453.33,-348.7 1394.17,-354.5 1193.5,-402"/>
+<path fill="none" stroke="#003fff" stroke-dasharray="5,2" d="M1191.5,-402C1001.79,-439.69 944.84,-416.1 764.5,-486"/>
+</g>
+<!-- sourcefile~mqc_many_body_expansion.f90&#45;&gt;sourcefile~mqc_config_adapter.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge59" class="edge">
+<title>sourcefile~mqc_many_body_expansion.f90&#45;&gt;sourcefile~mqc_config_adapter.f90</title>
+<path fill="none" stroke="#6bff00" stroke-dasharray="5,2" d="M1774.97,-434.12C1757.2,-459.77 1711.79,-519.28 1657,-545 1343.89,-691.95 1225.8,-579.94 883,-626 800.62,-637.07 706.71,-652.91 642.72,-664.19"/>
+<polygon fill="#6bff00" stroke="#6bff00" points="641.95,-660.77 632.71,-665.96 643.17,-667.67 641.95,-660.77"/>
+</g>
+<!-- sourcefile~mqc_gmbe_fragment_distribution_scheme.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_node19" class="node">
+<title>sourcefile~mqc_gmbe_fragment_distribution_scheme.f90</title>
+<g id="a_sourcefile~~mqc_scf_types.f90~~AfferentGraph_node19"><a xlink:href="../sourcefile/mqc_gmbe_fragment_distribution_scheme.f90.html" xlink:title="mqc_gmbe_fragment_distribution_scheme.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="1636,-414 1377,-414 1377,-390 1636,-390 1636,-414"/>
+<text text-anchor="middle" x="1506.5" y="-399.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_gmbe_fragment_distribution_scheme.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_many_body_expansion.f90&#45;&gt;sourcefile~mqc_gmbe_fragment_distribution_scheme.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge69" class="edge">
+<title>sourcefile~mqc_many_body_expansion.f90&#45;&gt;sourcefile~mqc_gmbe_fragment_distribution_scheme.f90</title>
+<path fill="none" stroke="#00ffd6" stroke-dasharray="5,2" d="M1692.79,-415.45C1677.99,-414.38 1662.35,-413.24 1646.68,-412.1"/>
+<polygon fill="#00ffd6" stroke="#00ffd6" points="1646.62,-408.59 1636.4,-411.36 1646.12,-415.57 1646.62,-408.59"/>
+</g>
+<!-- sourcefile~mqc_many_body_expansion.f90&#45;&gt;sourcefile~mqc_mbe_fragment_distribution_scheme.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge76" class="edge">
+<title>sourcefile~mqc_many_body_expansion.f90&#45;&gt;sourcefile~mqc_mbe_fragment_distribution_scheme.f90</title>
+<path fill="none" stroke="#0035ff" stroke-dasharray="5,2" d="M1692.83,-428.12C1596.16,-434.68 1441.57,-445.17 1329.99,-452.74"/>
+<polygon fill="#0035ff" stroke="#0035ff" points="1329.75,-449.25 1320.01,-453.42 1330.22,-456.23 1329.75,-449.25"/>
+</g>
+<!-- sourcefile~mqc_method_config.f90&#45;&gt;sourcefile~mqc_scf_types.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge6" class="edge">
+<title>sourcefile~mqc_method_config.f90&#45;&gt;sourcefile~mqc_scf_types.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M145.54,-312C137.09,-312 128.49,-312 120.13,-312"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="120.08,-308.5 110.08,-312 120.08,-315.5 120.08,-308.5"/>
+</g>
+<!-- sourcefile~mqc_method_dft.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_node8" class="node">
+<title>sourcefile~mqc_method_dft.f90</title>
+<g id="a_sourcefile~~mqc_scf_types.f90~~AfferentGraph_node8"><a xlink:href="../sourcefile/mqc_method_dft.f90.html" xlink:title="mqc_method_dft.F90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="825.5,-220 701.5,-220 701.5,-196 825.5,-196 825.5,-220"/>
+<text text-anchor="middle" x="763.5" y="-205.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_method_dft.F90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_method_dft.f90&#45;&gt;sourcefile~mqc_scf_types.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge7" class="edge">
+<title>sourcefile~mqc_method_dft.f90&#45;&gt;sourcefile~mqc_scf_types.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M564.5,-284C487.34,-298.15 465.91,-293.16 388,-284"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M386,-284C311.05,-275.19 291.13,-246.45 217.5,-263"/>
+</g>
+<!-- sourcefile~mqc_method_dft.f90&#45;&gt;sourcefile~mqc_cuest_iface.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge22" class="edge">
+<title>sourcefile~mqc_method_dft.f90&#45;&gt;sourcefile~mqc_cuest_iface.f90</title>
+<path fill="none" stroke="#ffbf00" stroke-dasharray="5,2" d="M701.38,-220.13C693.98,-222.59 686.69,-225.52 680,-229 661.27,-238.75 662.47,-249.77 644,-260 612.45,-277.46 601.97,-277.5 566.5,-284"/>
+<path fill="none" stroke="#ffbf00" stroke-dasharray="5,2" d="M564.5,-284C540.06,-288.48 478.44,-272.15 434.91,-259.02"/>
+<polygon fill="#ffbf00" stroke="#ffbf00" points="435.68,-255.6 425.1,-256.02 433.64,-262.29 435.68,-255.6"/>
+</g>
+<!-- sourcefile~mqc_method_dft.f90&#45;&gt;sourcefile~mqc_czt_bridge_stub.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge29" class="edge">
+<title>sourcefile~mqc_method_dft.f90&#45;&gt;sourcefile~mqc_czt_bridge_stub.f90</title>
+<path fill="none" stroke="#7fff00" stroke-dasharray="5,2" d="M701.15,-217.34C693.55,-220.25 686.26,-224.05 680,-229 652.88,-250.47 670.3,-275.54 644,-298 639.75,-301.63 634.97,-304.76 629.94,-307.45"/>
+<polygon fill="#7fff00" stroke="#7fff00" points="628.18,-304.41 620.64,-311.85 631.17,-310.74 628.18,-304.41"/>
+</g>
+<!-- sourcefile~mqc_method_dft.f90&#45;&gt;sourcefile~mqc_method_config.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge46" class="edge">
+<title>sourcefile~mqc_method_dft.f90&#45;&gt;sourcefile~mqc_method_config.f90</title>
+<path fill="none" stroke="#003fff" stroke-dasharray="5,2" d="M564.5,-284C554.63,-285.81 397.56,-325.04 388,-322"/>
+</g>
+<!-- sourcefile~mqc_cuest_bridge_stub.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_node16" class="node">
+<title>sourcefile~mqc_cuest_bridge_stub.f90</title>
+<g id="a_sourcefile~~mqc_scf_types.f90~~AfferentGraph_node16"><a xlink:href="../sourcefile/mqc_cuest_bridge_stub.f90.html" xlink:title="mqc_cuest_bridge_stub.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="644,-138 487,-138 487,-114 644,-114 644,-138"/>
+<text text-anchor="middle" x="565.5" y="-123.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_cuest_bridge_stub.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_method_dft.f90&#45;&gt;sourcefile~mqc_cuest_bridge_stub.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge64" class="edge">
+<title>sourcefile~mqc_method_dft.f90&#45;&gt;sourcefile~mqc_cuest_bridge_stub.f90</title>
+<path fill="none" stroke="#1aff00" stroke-dasharray="5,2" d="M707.33,-195.95C698.08,-193.36 688.68,-190.38 680,-187 649.4,-175.09 616.58,-156.78 594.14,-143.33"/>
+<polygon fill="#1aff00" stroke="#1aff00" points="595.86,-140.28 585.49,-138.08 592.22,-146.26 595.86,-140.28"/>
+</g>
+<!-- sourcefile~mqc_terco_bridge_stub.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_node27" class="node">
+<title>sourcefile~mqc_terco_bridge_stub.f90</title>
+<g id="a_sourcefile~~mqc_scf_types.f90~~AfferentGraph_node27"><a xlink:href="../sourcefile/mqc_terco_bridge_stub.f90.html" xlink:title="mqc_terco_bridge_stub.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="643.5,-218 487.5,-218 487.5,-194 643.5,-194 643.5,-218"/>
+<text text-anchor="middle" x="565.5" y="-203.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_terco_bridge_stub.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_method_dft.f90&#45;&gt;sourcefile~mqc_terco_bridge_stub.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge89" class="edge">
+<title>sourcefile~mqc_method_dft.f90&#45;&gt;sourcefile~mqc_terco_bridge_stub.f90</title>
+<path fill="none" stroke="#ff00a1" stroke-dasharray="5,2" d="M701.29,-207.38C686.36,-207.22 670.11,-207.06 654.21,-206.9"/>
+<polygon fill="#ff00a1" stroke="#ff00a1" points="653.87,-203.39 643.84,-206.79 653.8,-210.39 653.87,-203.39"/>
+</g>
+<!-- sourcefile~mqc_method_hf.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_node9" class="node">
+<title>sourcefile~mqc_method_hf.f90</title>
+<g id="a_sourcefile~~mqc_scf_types.f90~~AfferentGraph_node9"><a xlink:href="../sourcefile/mqc_method_hf.f90.html" xlink:title="mqc_method_hf.F90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="823.5,-178 703.5,-178 703.5,-154 823.5,-154 823.5,-178"/>
+<text text-anchor="middle" x="763.5" y="-163.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_method_hf.F90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_method_hf.f90&#45;&gt;sourcefile~mqc_scf_types.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge8" class="edge">
+<title>sourcefile~mqc_method_hf.f90&#45;&gt;sourcefile~mqc_scf_types.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M703.36,-167.37C647.37,-169.3 561.09,-173.93 487,-185 413,-196.05 394.59,-201.24 323,-223 275.02,-237.58 266.43,-252.01 217.5,-263"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M215.5,-263C175.03,-271.24 130.17,-285.5 98.36,-296.52"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="96.79,-293.36 88.51,-299.97 99.1,-299.96 96.79,-293.36"/>
+</g>
+<!-- sourcefile~mqc_method_hf.f90&#45;&gt;sourcefile~mqc_cuest_iface.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge23" class="edge">
+<title>sourcefile~mqc_method_hf.f90&#45;&gt;sourcefile~mqc_cuest_iface.f90</title>
+<path fill="none" stroke="#ffbf00" stroke-dasharray="5,2" d="M703.09,-176.59C695.02,-179.31 687.08,-182.72 680,-187 659.53,-199.37 664.52,-214.72 644,-227 613.57,-245.21 600.44,-235.72 566.5,-246"/>
+<path fill="none" stroke="#ffbf00" stroke-dasharray="5,2" d="M564.5,-246C530.35,-256.35 490.74,-256.87 457.71,-254.36"/>
+<polygon fill="#ffbf00" stroke="#ffbf00" points="457.95,-250.87 447.69,-253.49 457.35,-257.84 457.95,-250.87"/>
+</g>
+<!-- sourcefile~mqc_method_hf.f90&#45;&gt;sourcefile~mqc_czt_bridge_stub.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge30" class="edge">
+<title>sourcefile~mqc_method_hf.f90&#45;&gt;sourcefile~mqc_czt_bridge_stub.f90</title>
+<path fill="none" stroke="#7fff00" stroke-dasharray="5,2" d="M703.27,-173.26C694.7,-176.41 686.58,-180.83 680,-187 642.17,-222.47 680.49,-261.14 644,-298 640.56,-301.47 636.65,-304.48 632.44,-307.09"/>
+<polygon fill="#7fff00" stroke="#7fff00" points="630.64,-304.09 623.48,-311.9 633.94,-310.26 630.64,-304.09"/>
+</g>
+<!-- sourcefile~mqc_method_hf.f90&#45;&gt;sourcefile~mqc_method_config.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge48" class="edge">
+<title>sourcefile~mqc_method_hf.f90&#45;&gt;sourcefile~mqc_method_config.f90</title>
+<path fill="none" stroke="#003fff" stroke-dasharray="5,2" d="M564.5,-246C529.99,-256.46 518.97,-253.33 487,-270 442.93,-292.98 435.37,-337.04 388,-322"/>
+<path fill="none" stroke="#003fff" stroke-dasharray="5,2" d="M386,-322C358.01,-313.11 326.12,-309.65 297.67,-308.73"/>
+<polygon fill="#003fff" stroke="#003fff" points="297.43,-305.22 287.36,-308.5 297.28,-312.22 297.43,-305.22"/>
+</g>
+<!-- sourcefile~mqc_method_hf.f90&#45;&gt;sourcefile~mqc_cuest_bridge_stub.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge65" class="edge">
+<title>sourcefile~mqc_method_hf.f90&#45;&gt;sourcefile~mqc_cuest_bridge_stub.f90</title>
+<path fill="none" stroke="#1aff00" stroke-dasharray="5,2" d="M703.69,-154C682.28,-149.63 657.87,-144.65 635.65,-140.11"/>
+<polygon fill="#1aff00" stroke="#1aff00" points="636.1,-136.63 625.6,-138.06 634.7,-143.49 636.1,-136.63"/>
+</g>
+<!-- sourcefile~mqc_method_hf.f90&#45;&gt;sourcefile~mqc_terco_bridge_stub.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge90" class="edge">
+<title>sourcefile~mqc_method_hf.f90&#45;&gt;sourcefile~mqc_terco_bridge_stub.f90</title>
+<path fill="none" stroke="#ff00a1" stroke-dasharray="5,2" d="M703.69,-178C682.28,-182.37 657.87,-187.35 635.65,-191.89"/>
+<polygon fill="#ff00a1" stroke="#ff00a1" points="634.7,-188.51 625.6,-193.94 636.1,-195.37 634.7,-188.51"/>
+</g>
+<!-- sourcefile~main.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_node10" class="node">
+<title>sourcefile~main.f90</title>
+<g id="a_sourcefile~~mqc_scf_types.f90~~AfferentGraph_node10"><a xlink:href="../sourcefile/main.f90.html" xlink:title="main.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="2530,-813 2470,-813 2470,-789 2530,-789 2530,-813"/>
+<text text-anchor="middle" x="2500" y="-798.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">main.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~main.f90&#45;&gt;sourcefile~mqc_config_types.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge9" class="edge">
+<title>sourcefile~main.f90&#45;&gt;sourcefile~mqc_config_types.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M2312.5,-1016C2253.12,-1052.41 2254.89,-1087.25 2191,-1115 2133.81,-1139.84 2113.97,-1127.12 2052,-1134"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M2050,-1134C1392.89,-1206.94 1132.53,-1365.64 566.5,-1024"/>
+</g>
+<!-- sourcefile~main.f90&#45;&gt;sourcefile~mqc_driver.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge33" class="edge">
+<title>sourcefile~main.f90&#45;&gt;sourcefile~mqc_driver.f90</title>
+<path fill="none" stroke="#00ff3f" stroke-dasharray="5,2" d="M2469.67,-796.47C2396.02,-785.1 2202.38,-755.21 2106.87,-740.47"/>
+<polygon fill="#00ff3f" stroke="#00ff3f" points="2107.25,-736.99 2096.83,-738.92 2106.18,-743.9 2107.25,-736.99"/>
+</g>
+<!-- sourcefile~mqc_acknowledgements.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_node11" class="node">
+<title>sourcefile~mqc_acknowledgements.f90</title>
+<g id="a_sourcefile~~mqc_scf_types.f90~~AfferentGraph_node11"><a xlink:href="../sourcefile/mqc_acknowledgements.f90.html" xlink:title="mqc_acknowledgements.F90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="847,-24 680,-24 680,0 847,0 847,-24"/>
+<text text-anchor="middle" x="763.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_acknowledgements.F90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~main.f90&#45;&gt;sourcefile~mqc_acknowledgements.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge52" class="edge">
+<title>sourcefile~main.f90&#45;&gt;sourcefile~mqc_acknowledgements.f90</title>
+<path fill="none" stroke="#ff5000" stroke-dasharray="5,2" d="M2486.48,-788.95C2472.01,-774.28 2448.59,-748.1 2436,-721 2323.02,-477.8 2512.98,-310.32 2314.5,-130"/>
+<path fill="none" stroke="#ff5000" stroke-dasharray="5,2" d="M2312.5,-130C2193.29,-21.69 1854.05,-54 1785,-54 1785,-54 1785,-54 1505.5,-54 1261.72,-54 1200.42,-67.24 957,-54"/>
+<path fill="none" stroke="#ff5000" stroke-dasharray="5,2" d="M955,-54C929.41,-52.39 867.47,-38 821.11,-26.5"/>
+<polygon fill="#ff5000" stroke="#ff5000" points="821.73,-23.05 811.18,-24.02 820.04,-29.84 821.73,-23.05"/>
+</g>
+<!-- sourcefile~main.f90&#45;&gt;sourcefile~mqc_config_adapter.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge53" class="edge">
+<title>sourcefile~main.f90&#45;&gt;sourcefile~mqc_config_adapter.f90</title>
+<path fill="none" stroke="#6bff00" stroke-dasharray="5,2" d="M2492.4,-813.04C2471.58,-849.82 2403.39,-961.49 2314.5,-1016"/>
+<path fill="none" stroke="#6bff00" stroke-dasharray="5,2" d="M2312.5,-1016C2213.8,-1076.53 2167.43,-1007 2052,-1016"/>
+</g>
+<!-- sourcefile~mqc_geometry_optimizer.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_node18" class="node">
+<title>sourcefile~mqc_geometry_optimizer.f90</title>
+<g id="a_sourcefile~~mqc_scf_types.f90~~AfferentGraph_node18"><a xlink:href="../sourcefile/mqc_geometry_optimizer.f90.html" xlink:title="mqc_geometry_optimizer.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="2397,-882 2230,-882 2230,-858 2397,-858 2397,-882"/>
+<text text-anchor="middle" x="2313.5" y="-867.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_geometry_optimizer.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~main.f90&#45;&gt;sourcefile~mqc_geometry_optimizer.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge68" class="edge">
+<title>sourcefile~main.f90&#45;&gt;sourcefile~mqc_geometry_optimizer.f90</title>
+<path fill="none" stroke="#00ff86" stroke-dasharray="5,2" d="M2477.55,-813.03C2457.88,-823.68 2427.67,-839.02 2400,-849 2393.96,-851.18 2387.6,-853.21 2381.19,-855.08"/>
+<polygon fill="#00ff86" stroke="#00ff86" points="2379.81,-851.83 2371.11,-857.88 2381.68,-858.57 2379.81,-851.83"/>
+</g>
+<!-- sourcefile~mqc_json_config_reader.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_node20" class="node">
+<title>sourcefile~mqc_json_config_reader.f90</title>
+<g id="a_sourcefile~~mqc_scf_types.f90~~AfferentGraph_node20"><a xlink:href="../sourcefile/mqc_json_config_reader.f90.html" xlink:title="mqc_json_config_reader.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="843.5,-66 683.5,-66 683.5,-42 843.5,-42 843.5,-66"/>
+<text text-anchor="middle" x="763.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_json_config_reader.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~main.f90&#45;&gt;sourcefile~mqc_json_config_reader.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge70" class="edge">
+<title>sourcefile~main.f90&#45;&gt;sourcefile~mqc_json_config_reader.f90</title>
+<path fill="none" stroke="#00d6ff" stroke-dasharray="5,2" d="M955,-54C922.07,-52.21 885.9,-51.81 854,-52"/>
+<polygon fill="#00d6ff" stroke="#00d6ff" points="853.77,-48.5 843.8,-52.08 853.82,-55.5 853.77,-48.5"/>
+</g>
+<!-- sourcefile~mqc_version.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_node28" class="node">
+<title>sourcefile~mqc_version.f90</title>
+<g id="a_sourcefile~~mqc_scf_types.f90~~AfferentGraph_node28"><a xlink:href="../sourcefile/mqc_version.f90.html" xlink:title="mqc_version.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="1242.5,-144 1142.5,-144 1142.5,-120 1242.5,-120 1242.5,-144"/>
+<text text-anchor="middle" x="1192.5" y="-129.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_version.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~main.f90&#45;&gt;sourcefile~mqc_version.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge91" class="edge">
+<title>sourcefile~main.f90&#45;&gt;sourcefile~mqc_version.f90</title>
+<path fill="none" stroke="#ff0050" stroke-dasharray="5,2" d="M2312.5,-130C2272.49,-94.78 1478.42,-121.43 1252.81,-129.74"/>
+<polygon fill="#ff0050" stroke="#ff0050" points="1252.68,-126.24 1242.82,-130.11 1252.94,-133.24 1252.68,-126.24"/>
+</g>
+<!-- sourcefile~mqc_crest_driver_stub.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_node30" class="node">
+<title>sourcefile~mqc_crest_driver_stub.f90</title>
+<g id="a_sourcefile~~mqc_scf_types.f90~~AfferentGraph_node30"><a xlink:href="../sourcefile/mqc_crest_driver_stub.f90.html" xlink:title="mqc_crest_driver_stub.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="2126.5,-1106 1975.5,-1106 1975.5,-1082 2126.5,-1082 2126.5,-1106"/>
+<text text-anchor="middle" x="2051" y="-1091.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_crest_driver_stub.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~main.f90&#45;&gt;sourcefile~mqc_crest_driver_stub.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge93" class="edge">
+<title>sourcefile~main.f90&#45;&gt;sourcefile~mqc_crest_driver_stub.f90</title>
+<path fill="none" stroke="#ffff00" stroke-dasharray="5,2" d="M2312.5,-1016C2262.43,-1046.71 2247.21,-1050.94 2191,-1068 2173.66,-1073.26 2154.76,-1077.65 2136.64,-1081.24"/>
+<polygon fill="#ffff00" stroke="#ffff00" points="2135.83,-1077.83 2126.67,-1083.14 2137.15,-1084.7 2135.83,-1077.83"/>
+</g>
+<!-- sourcefile~mqc_acknowledgements.f90&#45;&gt;sourcefile~mqc_cuest_iface.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge18" class="edge">
+<title>sourcefile~mqc_acknowledgements.f90&#45;&gt;sourcefile~mqc_cuest_iface.f90</title>
+<path fill="none" stroke="#ffbf00" stroke-dasharray="5,2" d="M679.84,-20.37C643.66,-26.36 601.56,-36.58 566.5,-54"/>
+<path fill="none" stroke="#ffbf00" stroke-dasharray="5,2" d="M564.5,-54C527.57,-72.35 516.69,-76.39 487,-105 449.24,-141.39 416.37,-193.9 399.68,-222.85"/>
+<polygon fill="#ffbf00" stroke="#ffbf00" points="396.55,-221.28 394.66,-231.71 402.63,-224.74 396.55,-221.28"/>
+</g>
+<!-- sourcefile~mqc_acknowledgements.f90&#45;&gt;sourcefile~mqc_cuest_bridge_stub.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge62" class="edge">
+<title>sourcefile~mqc_acknowledgements.f90&#45;&gt;sourcefile~mqc_cuest_bridge_stub.f90</title>
+<path fill="none" stroke="#1aff00" stroke-dasharray="5,2" d="M700.31,-24.05C693.24,-26.51 686.32,-29.46 680,-33 660.53,-43.9 660.97,-53.51 644,-68 627.44,-82.14 607.79,-96.83 592.42,-107.88"/>
+<polygon fill="#1aff00" stroke="#1aff00" points="590.03,-105.29 583.92,-113.94 594.1,-110.99 590.03,-105.29"/>
+</g>
+<!-- sourcefile~mqc_calculation_interface.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_node12" class="node">
+<title>sourcefile~mqc_calculation_interface.f90</title>
+<g id="a_sourcefile~~mqc_scf_types.f90~~AfferentGraph_node12"><a xlink:href="../sourcefile/mqc_calculation_interface.f90.html" xlink:title="mqc_calculation_interface.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="2400,-840 2227,-840 2227,-816 2400,-816 2400,-840"/>
+<text text-anchor="middle" x="2313.5" y="-825.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_calculation_interface.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_calculation_interface.f90&#45;&gt;sourcefile~mqc_config_types.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge10" class="edge">
+<title>sourcefile~mqc_calculation_interface.f90&#45;&gt;sourcefile~mqc_config_types.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M2262.74,-840.09C2251.01,-842.98 2238.56,-846.07 2227,-849 2070.26,-888.73 2033.99,-911.51 1875,-941 1713.41,-970.97 1671.1,-966.34 1507.5,-982"/>
+</g>
+<!-- sourcefile~mqc_calculation_interface.f90&#45;&gt;sourcefile~mqc_driver.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge34" class="edge">
+<title>sourcefile~mqc_calculation_interface.f90&#45;&gt;sourcefile~mqc_driver.f90</title>
+<path fill="none" stroke="#00ff3f" stroke-dasharray="5,2" d="M2279.77,-815.94C2232.79,-798.62 2146.18,-766.71 2094.37,-747.61"/>
+<polygon fill="#00ff3f" stroke="#00ff3f" points="2095.39,-744.26 2084.8,-744.09 2092.97,-750.83 2095.39,-744.26"/>
+</g>
+<!-- sourcefile~mqc_calculation_interface.f90&#45;&gt;sourcefile~mqc_config_adapter.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge54" class="edge">
+<title>sourcefile~mqc_calculation_interface.f90&#45;&gt;sourcefile~mqc_config_adapter.f90</title>
+<path fill="none" stroke="#6bff00" stroke-dasharray="5,2" d="M2226.62,-828.53C2122.22,-829.12 1940.69,-830 1785,-830 1785,-830 1785,-830 1505.5,-830 1228.75,-830 1158.09,-845.19 883,-815 791.59,-804.97 762.77,-815.07 680,-775 640.73,-755.99 604.03,-720.04 583.5,-697.65"/>
+<polygon fill="#6bff00" stroke="#6bff00" points="585.98,-695.17 576.69,-690.07 580.77,-699.85 585.98,-695.17"/>
+</g>
+<!-- sourcefile~mqc_capi_charges.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_node13" class="node">
+<title>sourcefile~mqc_capi_charges.f90</title>
+<g id="a_sourcefile~~mqc_scf_types.f90~~AfferentGraph_node13"><a xlink:href="../sourcefile/mqc_capi_charges.f90.html" xlink:title="mqc_capi_charges.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="829.5,-262 697.5,-262 697.5,-238 829.5,-238 829.5,-262"/>
+<text text-anchor="middle" x="763.5" y="-247.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_capi_charges.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_capi_charges.f90&#45;&gt;sourcefile~mqc_czt_bridge_stub.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge26" class="edge">
+<title>sourcefile~mqc_capi_charges.f90&#45;&gt;sourcefile~mqc_czt_bridge_stub.f90</title>
+<path fill="none" stroke="#7fff00" stroke-dasharray="5,2" d="M717.23,-262.09C704.92,-265.96 691.76,-270.65 680,-276 662.93,-283.76 661,-290.08 644,-298 635.69,-301.87 626.63,-305.45 617.74,-308.63"/>
+<polygon fill="#7fff00" stroke="#7fff00" points="616.51,-305.35 608.2,-311.92 618.79,-311.97 616.51,-305.35"/>
+</g>
+<!-- sourcefile~mqc_capi_run.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_node14" class="node">
+<title>sourcefile~mqc_capi_run.f90</title>
+<g id="a_sourcefile~~mqc_scf_types.f90~~AfferentGraph_node14"><a xlink:href="../sourcefile/mqc_capi_run.f90.html" xlink:title="mqc_capi_run.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="2707,-752 2600,-752 2600,-728 2707,-728 2707,-752"/>
+<text text-anchor="middle" x="2653.5" y="-737.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_capi_run.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_capi_run.f90&#45;&gt;sourcefile~mqc_config_types.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge11" class="edge">
+<title>sourcefile~mqc_capi_run.f90&#45;&gt;sourcefile~mqc_config_types.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M2644.91,-752.28C2617.34,-795.97 2517.87,-945.79 2400,-1030 2318.41,-1088.29 2287.88,-1089.12 2191,-1115 2130.76,-1131.09 2113.37,-1122.99 2052,-1134"/>
+</g>
+<!-- sourcefile~mqc_session.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_node26" class="node">
+<title>sourcefile~mqc_session.f90</title>
+<g id="a_sourcefile~~mqc_scf_types.f90~~AfferentGraph_node26"><a xlink:href="../sourcefile/mqc_session.f90.html" xlink:title="mqc_session.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="2363.5,-712 2263.5,-712 2263.5,-688 2363.5,-688 2363.5,-712"/>
+<text text-anchor="middle" x="2313.5" y="-697.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_session.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_capi_run.f90&#45;&gt;sourcefile~mqc_session.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge86" class="edge">
+<title>sourcefile~mqc_capi_run.f90&#45;&gt;sourcefile~mqc_session.f90</title>
+<path fill="none" stroke="#ff00f1" stroke-dasharray="5,2" d="M2599.87,-736.62C2555.95,-733.5 2491.75,-728.25 2436,-721 2415.66,-718.35 2393.53,-714.75 2373.8,-711.27"/>
+<polygon fill="#ff00f1" stroke="#ff00f1" points="2374.18,-707.78 2363.72,-709.47 2372.95,-714.67 2374.18,-707.78"/>
+</g>
+<!-- sourcefile~mqc_capi_session.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_node29" class="node">
+<title>sourcefile~mqc_capi_session.f90</title>
+<g id="a_sourcefile~~mqc_scf_types.f90~~AfferentGraph_node29"><a xlink:href="../sourcefile/mqc_capi_session.f90.html" xlink:title="mqc_capi_session.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="2564,-712 2436,-712 2436,-688 2564,-688 2564,-712"/>
+<text text-anchor="middle" x="2500" y="-697.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_capi_session.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_capi_run.f90&#45;&gt;sourcefile~mqc_capi_session.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge92" class="edge">
+<title>sourcefile~mqc_capi_run.f90&#45;&gt;sourcefile~mqc_capi_session.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M2607.05,-728C2591.24,-723.83 2573.32,-719.1 2556.78,-714.73"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="2557.25,-711.23 2546.68,-712.06 2555.46,-718 2557.25,-711.23"/>
+</g>
+<!-- sourcefile~mqc_config_adapter.f90&#45;&gt;sourcefile~mqc_config_types.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge12" class="edge">
+<title>sourcefile~mqc_config_adapter.f90&#45;&gt;sourcefile~mqc_config_types.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M495.25,-678C484.08,-678 472.49,-678 461.24,-678"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="461.02,-674.5 451.02,-678 461.02,-681.5 461.02,-674.5"/>
+</g>
+<!-- sourcefile~mqc_config_adapter.f90&#45;&gt;sourcefile~mqc_method_config.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge39" class="edge">
+<title>sourcefile~mqc_config_adapter.f90&#45;&gt;sourcefile~mqc_method_config.f90</title>
+<path fill="none" stroke="#003fff" stroke-dasharray="5,2" d="M557.34,-665.81C543.28,-641.7 511.3,-586.11 487,-538 439.39,-443.74 488.65,-353.96 388,-322"/>
+</g>
+<!-- sourcefile~mqc_cuest_bridge_stub.f90&#45;&gt;sourcefile~mqc_cuest_iface.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge19" class="edge">
+<title>sourcefile~mqc_cuest_bridge_stub.f90&#45;&gt;sourcefile~mqc_cuest_iface.f90</title>
+<path fill="none" stroke="#ffbf00" stroke-dasharray="5,2" d="M546.28,-138.18C515.02,-159.08 451.04,-201.86 414.72,-226.13"/>
+<polygon fill="#ffbf00" stroke="#ffbf00" points="412.49,-223.42 406.12,-231.88 416.38,-229.23 412.49,-223.42"/>
+</g>
+<!-- sourcefile~mqc_fingerprint.f90&#45;&gt;sourcefile~mqc_method_config.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge42" class="edge">
+<title>sourcefile~mqc_fingerprint.f90&#45;&gt;sourcefile~mqc_method_config.f90</title>
+<path fill="none" stroke="#003fff" stroke-dasharray="5,2" d="M1724.96,-756.99C1601.79,-766.11 1305.81,-780.21 1065,-730 830.32,-681.07 786.27,-619.76 566.5,-524"/>
+</g>
+<!-- sourcefile~mqc_geometry_optimizer.f90&#45;&gt;sourcefile~mqc_config_types.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge14" class="edge">
+<title>sourcefile~mqc_geometry_optimizer.f90&#45;&gt;sourcefile~mqc_config_types.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M2305.31,-882.05C2284.52,-916.44 2223.74,-1013.59 2191,-1030 2017.96,-1116.74 1513.56,-1036.22 1320,-1037 1206.67,-1037.46 1178.13,-1043.78 1065,-1037 1016.74,-1034.11 1005.25,-1027 957,-1024"/>
+</g>
+<!-- sourcefile~mqc_geometry_optimizer.f90&#45;&gt;sourcefile~mqc_driver.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge35" class="edge">
+<title>sourcefile~mqc_geometry_optimizer.f90&#45;&gt;sourcefile~mqc_driver.f90</title>
+<path fill="none" stroke="#00ff3f" stroke-dasharray="5,2" d="M2251.83,-857.9C2243.33,-855.4 2234.83,-852.45 2227,-849 2167.44,-822.75 2106.06,-776.4 2074.21,-750.62"/>
+<polygon fill="#00ff3f" stroke="#00ff3f" points="2076.36,-747.86 2066.41,-744.23 2071.93,-753.27 2076.36,-747.86"/>
+</g>
+<!-- sourcefile~mqc_geometry_optimizer.f90&#45;&gt;sourcefile~mqc_config_adapter.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge58" class="edge">
+<title>sourcefile~mqc_geometry_optimizer.f90&#45;&gt;sourcefile~mqc_config_adapter.f90</title>
+<path fill="none" stroke="#6bff00" stroke-dasharray="5,2" d="M2304.44,-882.13C2287.04,-907.24 2243.25,-964.85 2191,-992 2135.37,-1020.91 2114.69,-1015.75 2052,-1016"/>
+<path fill="none" stroke="#6bff00" stroke-dasharray="5,2" d="M2050,-1016C1874.04,-1016.69 1832.64,-978.69 1657,-968 1394.37,-952.02 1327.99,-960.13 1065,-968 998.13,-970 825.48,-1013.5 764.5,-986"/>
+<path fill="none" stroke="#6bff00" stroke-dasharray="5,2" d="M762.5,-986C648.02,-921.16 590.33,-758.97 572.6,-699.93"/>
+<polygon fill="#6bff00" stroke="#6bff00" points="575.91,-698.77 569.75,-690.15 569.19,-700.73 575.91,-698.77"/>
+</g>
+<!-- sourcefile~mqc_geometry_optimizer.f90&#45;&gt;sourcefile~mqc_frag_utils.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge95" class="edge">
+<title>sourcefile~mqc_geometry_optimizer.f90&#45;&gt;sourcefile~mqc_frag_utils.f90</title>
+<path fill="none" stroke="#00ff00" stroke-dasharray="5,2" d="M2229.84,-875.64C2063.94,-885.93 1678.63,-904.74 1356,-882 1144.2,-867.07 1085.33,-879.38 883,-815 850.1,-804.53 815.3,-785.55 791.99,-771.53"/>
+<polygon fill="#00ff00" stroke="#00ff00" points="793.7,-768.47 783.34,-766.24 790.05,-774.44 793.7,-768.47"/>
+</g>
+<!-- sourcefile~mqc_gmbe_fragment_distribution_scheme.f90&#45;&gt;sourcefile~mqc_method_config.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge43" class="edge">
+<title>sourcefile~mqc_gmbe_fragment_distribution_scheme.f90&#45;&gt;sourcefile~mqc_method_config.f90</title>
+<path fill="none" stroke="#003fff" stroke-dasharray="5,2" d="M1399.74,-390C1338.66,-386.03 1260.84,-386.06 1193.5,-402"/>
+</g>
+<!-- sourcefile~mqc_gmbe_fragment_distribution_scheme.f90&#45;&gt;sourcefile~mqc_mbe_fragment_distribution_scheme.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge75" class="edge">
+<title>sourcefile~mqc_gmbe_fragment_distribution_scheme.f90&#45;&gt;sourcefile~mqc_mbe_fragment_distribution_scheme.f90</title>
+<path fill="none" stroke="#0035ff" stroke-dasharray="5,2" d="M1433.55,-414C1408.92,-418.25 1381.23,-423.17 1356,-428 1323.83,-434.16 1288.19,-441.55 1258.51,-447.87"/>
+<polygon fill="#0035ff" stroke="#0035ff" points="1257.74,-444.46 1248.69,-449.97 1259.2,-451.3 1257.74,-444.46"/>
+</g>
+<!-- sourcefile~mqc_json_config_reader.f90&#45;&gt;sourcefile~mqc_config_types.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge15" class="edge">
+<title>sourcefile~mqc_json_config_reader.f90&#45;&gt;sourcefile~mqc_config_types.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M747.24,-66.06C728.24,-81.98 696.29,-111.9 680,-145 640.12,-226.04 680.56,-262.41 644,-345 583.9,-480.77 457.46,-611.22 408.23,-658.93"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="405.8,-656.41 401.01,-665.86 410.65,-661.46 405.8,-656.41"/>
+</g>
+<!-- sourcefile~mqc_json_config_reader.f90&#45;&gt;sourcefile~mqc_cuest_iface.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge21" class="edge">
+<title>sourcefile~mqc_json_config_reader.f90&#45;&gt;sourcefile~mqc_cuest_iface.f90</title>
+<path fill="none" stroke="#ffbf00" stroke-dasharray="5,2" d="M710.94,-41.96C669.67,-35.07 611.45,-31.67 566.5,-54"/>
+</g>
+<!-- sourcefile~mqc_json_config_reader.f90&#45;&gt;sourcefile~mqc_cuest_bridge_stub.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge63" class="edge">
+<title>sourcefile~mqc_json_config_reader.f90&#45;&gt;sourcefile~mqc_cuest_bridge_stub.f90</title>
+<path fill="none" stroke="#1aff00" stroke-dasharray="5,2" d="M729.69,-66.05C696.62,-78.2 645.42,-97.01 609.2,-110.31"/>
+<polygon fill="#1aff00" stroke="#1aff00" points="607.59,-107.18 599.41,-113.91 610.01,-113.75 607.59,-107.18"/>
+</g>
+<!-- sourcefile~mqc_json_config_reader.f90&#45;&gt;sourcefile~mqc_terco_bridge_stub.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge88" class="edge">
+<title>sourcefile~mqc_json_config_reader.f90&#45;&gt;sourcefile~mqc_terco_bridge_stub.f90</title>
+<path fill="none" stroke="#ff00a1" stroke-dasharray="5,2" d="M747.22,-66.11C724.7,-83.93 681.24,-118.21 644,-147 626.33,-160.66 606.26,-175.93 590.98,-187.51"/>
+<polygon fill="#ff00a1" stroke="#ff00a1" points="588.44,-185.04 582.58,-193.86 592.67,-190.62 588.44,-185.04"/>
+</g>
+<!-- sourcefile~mqc_mbe.f90&#45;&gt;sourcefile~mqc_config_types.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge16" class="edge">
+<title>sourcefile~mqc_mbe.f90&#45;&gt;sourcefile~mqc_config_types.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M941.82,-806.02C882.69,-859.33 641.47,-1069.68 566.5,-1024"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M564.5,-1024C435.31,-946.02 554.97,-813.37 451,-704 447.8,-700.63 444.09,-697.68 440.11,-695.1"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="441.49,-691.87 431.06,-690.04 438.07,-697.97 441.49,-691.87"/>
+</g>
+<!-- sourcefile~mqc_mbe.f90&#45;&gt;sourcefile~mqc_frag_utils.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge96" class="edge">
+<title>sourcefile~mqc_mbe.f90&#45;&gt;sourcefile~mqc_frag_utils.f90</title>
+<path fill="none" stroke="#00ff00" stroke-dasharray="5,2" d="M913.19,-785.22C888.42,-780.02 856.51,-773.32 828.6,-767.46"/>
+<polygon fill="#00ff00" stroke="#00ff00" points="829.03,-763.97 818.53,-765.34 827.59,-770.82 829.03,-763.97"/>
+</g>
+<!-- sourcefile~mqc_mbe_fragment_distribution_scheme.f90&#45;&gt;sourcefile~mqc_method_config.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge45" class="edge">
+<title>sourcefile~mqc_mbe_fragment_distribution_scheme.f90&#45;&gt;sourcefile~mqc_method_config.f90</title>
+<path fill="none" stroke="#003fff" stroke-dasharray="5,2" d="M1147.35,-474.08C1114.85,-482.54 1069.47,-493.46 1029,-500 912.47,-518.82 880.51,-502.24 764.5,-524"/>
+<path fill="none" stroke="#003fff" stroke-dasharray="5,2" d="M762.5,-524C677.78,-544.25 646.36,-558.8 566.5,-524"/>
+</g>
+<!-- sourcefile~mqc_mbe_fragment_distribution_scheme.f90&#45;&gt;sourcefile~mqc_config_adapter.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge60" class="edge">
+<title>sourcefile~mqc_mbe_fragment_distribution_scheme.f90&#45;&gt;sourcefile~mqc_config_adapter.f90</title>
+<path fill="none" stroke="#6bff00" stroke-dasharray="5,2" d="M762.5,-524C680.6,-539.36 611.01,-618.75 581.55,-657.15"/>
+<polygon fill="#6bff00" stroke="#6bff00" points="578.46,-655.44 575.26,-665.54 584.06,-659.64 578.46,-655.44"/>
+</g>
+<!-- sourcefile~mqc_mbe_fragment_distribution_scheme.f90&#45;&gt;sourcefile~mqc_mbe.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge73" class="edge">
+<title>sourcefile~mqc_mbe_fragment_distribution_scheme.f90&#45;&gt;sourcefile~mqc_mbe.f90</title>
+<path fill="none" stroke="#0086ff" stroke-dasharray="5,2" d="M1188.45,-474.23C1176.46,-519.85 1128.28,-681.87 1029,-768 1022.93,-773.27 1015.71,-777.5 1008.22,-780.88"/>
+<polygon fill="#0086ff" stroke="#0086ff" points="1006.63,-777.75 998.66,-784.74 1009.24,-784.24 1006.63,-777.75"/>
+</g>
+<!-- sourcefile~mqc_method_factory.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_node24" class="node">
+<title>sourcefile~mqc_method_factory.f90</title>
+<g id="a_sourcefile~~mqc_scf_types.f90~~AfferentGraph_node24"><a xlink:href="../sourcefile/mqc_method_factory.f90.html" xlink:title="mqc_method_factory.F90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="1029,-262 883,-262 883,-238 1029,-238 1029,-262"/>
+<text text-anchor="middle" x="956" y="-247.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_method_factory.F90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_mbe_fragment_distribution_scheme.f90&#45;&gt;sourcefile~mqc_method_factory.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge81" class="edge">
+<title>sourcefile~mqc_mbe_fragment_distribution_scheme.f90&#45;&gt;sourcefile~mqc_method_factory.f90</title>
+<path fill="none" stroke="#6b00ff" stroke-dasharray="5,2" d="M1178.22,-449.99C1139.29,-414.8 1025.25,-311.7 977.94,-268.93"/>
+<polygon fill="#6b00ff" stroke="#6b00ff" points="980.19,-266.25 970.42,-262.14 975.5,-271.44 980.19,-266.25"/>
+</g>
+<!-- sourcefile~mqc_mbe_mpi_fragment_distribution_scheme.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_node23" class="node">
+<title>sourcefile~mqc_mbe_mpi_fragment_distribution_scheme.f90</title>
+<g id="a_sourcefile~~mqc_scf_types.f90~~AfferentGraph_node23"><a xlink:href="../sourcefile/mqc_mbe_mpi_fragment_distribution_scheme.f90.html" xlink:title="mqc_mbe_mpi_fragment_distribution_scheme.F90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="2191,-404 1911,-404 1911,-380 2191,-380 2191,-404"/>
+<text text-anchor="middle" x="2051" y="-389.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_mbe_mpi_fragment_distribution_scheme.F90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_mbe_mpi_fragment_distribution_scheme.f90&#45;&gt;sourcefile~mqc_many_body_expansion.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge38" class="edge">
+<title>sourcefile~mqc_mbe_mpi_fragment_distribution_scheme.f90&#45;&gt;sourcefile~mqc_many_body_expansion.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M1943.74,-404.03C1924.46,-406.21 1904.4,-408.48 1885.29,-410.65"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="1884.64,-407.2 1875.09,-411.8 1885.42,-414.15 1884.64,-407.2"/>
+</g>
+<!-- sourcefile~mqc_mbe_mpi_fragment_distribution_scheme.f90&#45;&gt;sourcefile~mqc_mbe_fragment_distribution_scheme.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge78" class="edge">
+<title>sourcefile~mqc_mbe_mpi_fragment_distribution_scheme.f90&#45;&gt;sourcefile~mqc_mbe_fragment_distribution_scheme.f90</title>
+<path fill="none" stroke="#0035ff" stroke-dasharray="5,2" d="M2006.01,-379.91C1892.97,-351.18 1585.16,-287.96 1356,-381 1335.32,-389.39 1338.91,-404.15 1320,-416 1298.87,-429.25 1273.38,-439.44 1250.83,-446.83"/>
+<polygon fill="#0035ff" stroke="#0035ff" points="1249.52,-443.57 1241.04,-449.93 1251.63,-450.25 1249.52,-443.57"/>
+</g>
+<!-- sourcefile~mqc_method_factory.f90&#45;&gt;sourcefile~mqc_method_config.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge47" class="edge">
+<title>sourcefile~mqc_method_factory.f90&#45;&gt;sourcefile~mqc_method_config.f90</title>
+<path fill="none" stroke="#003fff" stroke-dasharray="5,2" d="M950.39,-262.18C933.55,-304.5 870.79,-444.8 764.5,-486"/>
+<path fill="none" stroke="#003fff" stroke-dasharray="5,2" d="M762.5,-486C741.82,-494.02 586.84,-532.86 566.5,-524"/>
+</g>
+<!-- sourcefile~mqc_method_factory.f90&#45;&gt;sourcefile~mqc_method_dft.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge50" class="edge">
+<title>sourcefile~mqc_method_factory.f90&#45;&gt;sourcefile~mqc_method_dft.f90</title>
+<path fill="none" stroke="#7f00ff" stroke-dasharray="5,2" d="M900.41,-237.96C878.09,-233.04 852.11,-227.31 828.87,-222.19"/>
+<polygon fill="#7f00ff" stroke="#7f00ff" points="829.62,-218.77 819.1,-220.04 828.11,-225.61 829.62,-218.77"/>
+</g>
+<!-- sourcefile~mqc_method_factory.f90&#45;&gt;sourcefile~mqc_method_hf.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge51" class="edge">
+<title>sourcefile~mqc_method_factory.f90&#45;&gt;sourcefile~mqc_method_hf.f90</title>
+<path fill="none" stroke="#ff00bf" stroke-dasharray="5,2" d="M937.82,-237.93C917.14,-223.9 880.95,-200.9 847,-187 841.66,-184.81 836.02,-182.8 830.31,-180.97"/>
+<polygon fill="#ff00bf" stroke="#ff00bf" points="831.24,-177.59 820.66,-178.04 829.21,-184.29 831.24,-177.59"/>
+</g>
+<!-- sourcefile~mqc_method_mcscf.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_node25" class="node">
+<title>sourcefile~mqc_method_mcscf.f90</title>
+<g id="a_sourcefile~~mqc_scf_types.f90~~AfferentGraph_node25"><a xlink:href="../sourcefile/mqc_method_mcscf.f90.html" xlink:title="mqc_method_mcscf.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="833,-359 694,-359 694,-335 833,-335 833,-359"/>
+<text text-anchor="middle" x="763.5" y="-344.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_method_mcscf.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_method_factory.f90&#45;&gt;sourcefile~mqc_method_mcscf.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge85" class="edge">
+<title>sourcefile~mqc_method_factory.f90&#45;&gt;sourcefile~mqc_method_mcscf.f90</title>
+<path fill="none" stroke="#bb00ff" stroke-dasharray="5,2" d="M931.26,-262.09C897.51,-279.27 835.55,-310.82 797.4,-330.25"/>
+<polygon fill="#bb00ff" stroke="#bb00ff" points="795.56,-327.25 788.24,-334.91 798.74,-333.49 795.56,-327.25"/>
+</g>
+<!-- sourcefile~mqc_method_mcscf.f90&#45;&gt;sourcefile~mqc_cuest_iface.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge24" class="edge">
+<title>sourcefile~mqc_method_mcscf.f90&#45;&gt;sourcefile~mqc_cuest_iface.f90</title>
+<path fill="none" stroke="#ffbf00" stroke-dasharray="5,2" d="M722.34,-359.01C665.19,-373.57 559.3,-390.86 487,-345 455.78,-325.19 477.87,-295.4 451,-270 447.28,-266.48 443.02,-263.41 438.5,-260.74"/>
+<polygon fill="#ffbf00" stroke="#ffbf00" points="440.07,-257.61 429.59,-256.07 436.82,-263.81 440.07,-257.61"/>
+</g>
+<!-- sourcefile~mqc_method_mcscf.f90&#45;&gt;sourcefile~mqc_czt_bridge_stub.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge31" class="edge">
+<title>sourcefile~mqc_method_mcscf.f90&#45;&gt;sourcefile~mqc_czt_bridge_stub.f90</title>
+<path fill="none" stroke="#7fff00" stroke-dasharray="5,2" d="M693.95,-338.96C679.01,-337.2 663.06,-335.33 647.68,-333.53"/>
+<polygon fill="#7fff00" stroke="#7fff00" points="648.01,-330.04 637.67,-332.35 647.2,-336.99 648.01,-330.04"/>
+</g>
+<!-- sourcefile~mqc_method_mcscf.f90&#45;&gt;sourcefile~mqc_method_config.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge49" class="edge">
+<title>sourcefile~mqc_method_mcscf.f90&#45;&gt;sourcefile~mqc_method_config.f90</title>
+<path fill="none" stroke="#003fff" stroke-dasharray="5,2" d="M753.64,-359.16C721.73,-402.23 612.21,-543.92 566.5,-524"/>
+<path fill="none" stroke="#003fff" stroke-dasharray="5,2" d="M564.5,-524C455.2,-476.38 501.63,-358.08 388,-322"/>
+</g>
+<!-- sourcefile~mqc_session.f90&#45;&gt;sourcefile~mqc_config_types.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge17" class="edge">
+<title>sourcefile~mqc_session.f90&#45;&gt;sourcefile~mqc_config_types.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M2291.64,-712.07C2201.63,-763.11 1836.22,-959.6 1507.5,-982"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M1505.5,-982C1261.31,-994.07 1201.37,-1031.74 957,-1024"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M955,-1024C870.5,-1018.75 849.08,-1020.16 764.5,-1024"/>
+</g>
+<!-- sourcefile~mqc_session.f90&#45;&gt;sourcefile~mqc_driver.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge36" class="edge">
+<title>sourcefile~mqc_session.f90&#45;&gt;sourcefile~mqc_driver.f90</title>
+<path fill="none" stroke="#00ff3f" stroke-dasharray="5,2" d="M2263.2,-706.06C2218.63,-711.53 2153.11,-719.58 2106.89,-725.26"/>
+<polygon fill="#00ff3f" stroke="#00ff3f" points="2106.25,-721.81 2096.75,-726.5 2107.11,-728.76 2106.25,-721.81"/>
+</g>
+<!-- sourcefile~mqc_session.f90&#45;&gt;sourcefile~mqc_config_adapter.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge61" class="edge">
+<title>sourcefile~mqc_session.f90&#45;&gt;sourcefile~mqc_config_adapter.f90</title>
+<path fill="none" stroke="#6bff00" stroke-dasharray="5,2" d="M2263.26,-690.62C2170.2,-673.75 1961.97,-640 1785,-640 1785,-640 1785,-640 1191.5,-640 998.89,-640 956.9,-722.83 764.5,-714"/>
+<path fill="none" stroke="#6bff00" stroke-dasharray="5,2" d="M762.5,-714C717.64,-709.37 667.65,-700.12 629.38,-692.16"/>
+<polygon fill="#6bff00" stroke="#6bff00" points="629.92,-688.69 619.41,-690.06 628.48,-695.54 629.92,-688.69"/>
+</g>
+<!-- sourcefile~mqc_session.f90&#45;&gt;sourcefile~mqc_json_config_reader.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge71" class="edge">
+<title>sourcefile~mqc_session.f90&#45;&gt;sourcefile~mqc_json_config_reader.f90</title>
+<path fill="none" stroke="#00d6ff" stroke-dasharray="5,2" d="M2311.24,-687.77C2303.79,-617.97 2263.46,-270.64 2191,-197 2060.27,-64.15 1971.38,-92 1785,-92 1785,-92 1785,-92 1191.5,-92 1074.45,-92 940.06,-77.66 853.81,-66.6"/>
+<polygon fill="#00d6ff" stroke="#00d6ff" points="854.16,-63.11 843.8,-65.3 853.26,-70.05 854.16,-63.11"/>
+</g>
+<!-- sourcefile~mqc_session.f90&#45;&gt;sourcefile~mqc_method_factory.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge83" class="edge">
+<title>sourcefile~mqc_session.f90&#45;&gt;sourcefile~mqc_method_factory.f90</title>
+<path fill="none" stroke="#6b00ff" stroke-dasharray="5,2" d="M2311.03,-687.74C2304.88,-641.14 2277.37,-472.59 2191,-371 2086.45,-248.02 2031.08,-233.14 1875,-192 1554.93,-107.64 1151.35,-197.91 1009.32,-235.33"/>
+<polygon fill="#6b00ff" stroke="#6b00ff" points="1008.32,-231.97 999.55,-237.93 1010.12,-238.74 1008.32,-231.97"/>
+</g>
+<!-- sourcefile~mqc_terco_bridge_stub.f90&#45;&gt;sourcefile~mqc_cuest_iface.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge25" class="edge">
+<title>sourcefile~mqc_terco_bridge_stub.f90&#45;&gt;sourcefile~mqc_cuest_iface.f90</title>
+<path fill="none" stroke="#ffbf00" stroke-dasharray="5,2" d="M508.65,-218.02C491.19,-221.78 471.75,-225.97 453.67,-229.86"/>
+<polygon fill="#ffbf00" stroke="#ffbf00" points="452.82,-226.46 443.79,-231.99 454.3,-233.31 452.82,-226.46"/>
+</g>
+<!-- sourcefile~mqc_version.f90&#45;&gt;sourcefile~mqc_czt_bridge_stub.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge32" class="edge">
+<title>sourcefile~mqc_version.f90&#45;&gt;sourcefile~mqc_czt_bridge_stub.f90</title>
+<path fill="none" stroke="#7fff00" stroke-dasharray="5,2" d="M955,-152C918.24,-159.42 908.15,-168.18 883,-196 858.21,-223.43 875.87,-247.9 847,-271 817.62,-294.51 800.81,-280.13 764.5,-290"/>
+<path fill="none" stroke="#7fff00" stroke-dasharray="5,2" d="M762.5,-290C725.34,-300.1 683.37,-307.86 647.83,-313.39"/>
+<polygon fill="#7fff00" stroke="#7fff00" points="646.87,-310 637.51,-314.96 647.92,-316.92 646.87,-310"/>
+</g>
+<!-- sourcefile~mqc_version.f90&#45;&gt;sourcefile~mqc_cuest_bridge_stub.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge66" class="edge">
+<title>sourcefile~mqc_version.f90&#45;&gt;sourcefile~mqc_cuest_bridge_stub.f90</title>
+<path fill="none" stroke="#1aff00" stroke-dasharray="5,2" d="M1142.17,-133.38C1094.45,-135.38 1020.27,-140.24 957,-152"/>
+<path fill="none" stroke="#1aff00" stroke-dasharray="5,2" d="M955,-152C954.08,-152.17 768.9,-139.69 654.57,-131.96"/>
+<polygon fill="#1aff00" stroke="#1aff00" points="654.63,-128.46 644.42,-131.27 654.16,-135.44 654.63,-128.46"/>
+</g>
+<!-- sourcefile~mqc_version.f90&#45;&gt;sourcefile~mqc_method_factory.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge84" class="edge">
+<title>sourcefile~mqc_version.f90&#45;&gt;sourcefile~mqc_method_factory.f90</title>
+<path fill="none" stroke="#6b00ff" stroke-dasharray="5,2" d="M1142.49,-136.27C1118.24,-139.8 1089.08,-146.25 1065,-158 1028.3,-175.92 993.83,-209.22 974.1,-230.46"/>
+<polygon fill="#6b00ff" stroke="#6b00ff" points="971.43,-228.2 967.29,-237.96 976.6,-232.91 971.43,-228.2"/>
+</g>
+<!-- sourcefile~mqc_capi_session.f90&#45;&gt;sourcefile~mqc_session.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge87" class="edge">
+<title>sourcefile~mqc_capi_session.f90&#45;&gt;sourcefile~mqc_session.f90</title>
+<path fill="none" stroke="#ff00f1" stroke-dasharray="5,2" d="M2435.76,-700C2415.69,-700 2393.57,-700 2373.78,-700"/>
+<polygon fill="#ff00f1" stroke="#ff00f1" points="2373.67,-696.5 2363.67,-700 2373.67,-703.5 2373.67,-696.5"/>
+</g>
+<!-- sourcefile~mqc_crest_driver_stub.f90&#45;&gt;sourcefile~mqc_config_adapter.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge55" class="edge">
+<title>sourcefile~mqc_crest_driver_stub.f90&#45;&gt;sourcefile~mqc_config_adapter.f90</title>
+<path fill="none" stroke="#6bff00" stroke-dasharray="5,2" d="M1975.31,-1087.88C1701.97,-1065.47 771.53,-988.99 764.5,-986"/>
+</g>
+<!-- sourcefile~mqc_frag_utils.f90&#45;&gt;sourcefile~mqc_config_adapter.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge57" class="edge">
+<title>sourcefile~mqc_frag_utils.f90&#45;&gt;sourcefile~mqc_config_adapter.f90</title>
+<path fill="none" stroke="#6bff00" stroke-dasharray="5,2" d="M721.07,-741.92C707.84,-737.8 693.21,-732.97 680,-728 653.14,-717.89 623.49,-704.75 601.23,-694.48"/>
+<polygon fill="#6bff00" stroke="#6bff00" points="602.41,-691.17 591.86,-690.13 599.46,-697.52 602.41,-691.17"/>
+</g>
+<!-- sourcefile~mqc_mbe_fragment_distribution_scheme_hessian.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_node32" class="node">
+<title>sourcefile~mqc_mbe_fragment_distribution_scheme_hessian.f90</title>
+<g id="a_sourcefile~~mqc_scf_types.f90~~AfferentGraph_node32"><a xlink:href="../sourcefile/mqc_mbe_fragment_distribution_scheme_hessian.f90.html" xlink:title="mqc_mbe_fragment_distribution_scheme_hessian.F90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="1657,-296 1356,-296 1356,-272 1657,-272 1657,-296"/>
+<text text-anchor="middle" x="1506.5" y="-281.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_mbe_fragment_distribution_scheme_hessian.F90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_mbe_fragment_distribution_scheme_hessian.f90&#45;&gt;sourcefile~mqc_mbe_fragment_distribution_scheme.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge77" class="edge">
+<title>sourcefile~mqc_mbe_fragment_distribution_scheme_hessian.f90&#45;&gt;sourcefile~mqc_mbe_fragment_distribution_scheme.f90</title>
+<path fill="none" stroke="#0035ff" stroke-dasharray="5,2" d="M1455.67,-296.07C1424.08,-305.8 1384.04,-322.18 1356,-348 1330.84,-371.16 1345.79,-393.55 1320,-416 1303.87,-430.04 1283.1,-439.93 1263.08,-446.83"/>
+<polygon fill="#0035ff" stroke="#0035ff" points="1261.77,-443.57 1253.33,-449.98 1263.92,-450.23 1261.77,-443.57"/>
+</g>
+<!-- sourcefile~mqc_mbe_fragment_distribution_scheme_hessian.f90&#45;&gt;sourcefile~mqc_method_factory.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge82" class="edge">
+<title>sourcefile~mqc_mbe_fragment_distribution_scheme_hessian.f90&#45;&gt;sourcefile~mqc_method_factory.f90</title>
+<path fill="none" stroke="#6b00ff" stroke-dasharray="5,2" d="M1355.98,-274.73C1254.12,-268.42 1123.1,-260.3 1039.55,-255.12"/>
+<polygon fill="#6b00ff" stroke="#6b00ff" points="1039.55,-251.61 1029.35,-254.48 1039.12,-258.6 1039.55,-251.61"/>
+</g>
+<!-- sourcefile~mqc_serial_fragment_processor.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_node33" class="node">
+<title>sourcefile~mqc_serial_fragment_processor.f90</title>
+<g id="a_sourcefile~~mqc_scf_types.f90~~AfferentGraph_node33"><a xlink:href="../sourcefile/mqc_serial_fragment_processor.f90.html" xlink:title="mqc_serial_fragment_processor.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="1607,-536 1406,-536 1406,-512 1607,-512 1607,-536"/>
+<text text-anchor="middle" x="1506.5" y="-521.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_serial_fragment_processor.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_serial_fragment_processor.f90&#45;&gt;sourcefile~mqc_mbe_fragment_distribution_scheme.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge79" class="edge">
+<title>sourcefile~mqc_serial_fragment_processor.f90&#45;&gt;sourcefile~mqc_mbe_fragment_distribution_scheme.f90</title>
+<path fill="none" stroke="#0035ff" stroke-dasharray="5,2" d="M1408.74,-511.96C1391.14,-509.33 1372.98,-506.32 1356,-503 1318.9,-495.74 1277.6,-485.28 1245.91,-476.75"/>
+<polygon fill="#0035ff" stroke="#0035ff" points="1246.55,-473.3 1235.98,-474.05 1244.72,-480.05 1246.55,-473.3"/>
+</g>
+<!-- sourcefile~mqc_unfragmented_workflow.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_node34" class="node">
+<title>sourcefile~mqc_unfragmented_workflow.f90</title>
+<g id="a_sourcefile~~mqc_scf_types.f90~~AfferentGraph_node34"><a xlink:href="../sourcefile/mqc_unfragmented_workflow.f90.html" xlink:title="mqc_unfragmented_workflow.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="1601.5,-494 1411.5,-494 1411.5,-470 1601.5,-470 1601.5,-494"/>
+<text text-anchor="middle" x="1506.5" y="-479.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_unfragmented_workflow.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_unfragmented_workflow.f90&#45;&gt;sourcefile~mqc_mbe_fragment_distribution_scheme.f90 -->
+<g id="sourcefile~~mqc_scf_types.f90~~AfferentGraph_edge80" class="edge">
+<title>sourcefile~mqc_unfragmented_workflow.f90&#45;&gt;sourcefile~mqc_mbe_fragment_distribution_scheme.f90</title>
+<path fill="none" stroke="#0035ff" stroke-dasharray="5,2" d="M1411.47,-475.97C1385.9,-474.33 1357.68,-472.52 1330.26,-470.77"/>
+<polygon fill="#0035ff" stroke="#0035ff" points="1330.41,-467.27 1320.21,-470.12 1329.96,-474.25 1330.41,-467.27"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var pansourcefilemqc_scf_typesf90AfferentGraph = svgPanZoom('#sourcefilemqc_scf_typesf90AfferentGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#AfferentGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="AfferentGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="202pt" height="32pt"
+ viewBox="0.00 0.00 201.50 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 197.5,-28 197.5,4 -4,4"/>
+<!-- Source File -->
+<g id="node1" class="node">
+<title>Source File</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Source File</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node2" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="193.5,-24 88.5,-24 88.5,0 193.5,0 193.5,-24"/>
+<text text-anchor="middle" x="141" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a file to a file which it depends on. A file
+is dependent upon another if the latter must be compiled before the former
+can be.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+          </div>
+        </div>
+<br>
+      <section>
+        <h2><span class="anchor" id="src"></span>Source Code</h2>
+        <div class="hl codehilite"><pre><span></span><a id="ln-1" name="ln-1" href="#ln-1"></a><span class="c">!! The types that say how a self-consistent field is set up and driven</span>
+<a id="ln-2" name="ln-2" href="#ln-2"></a><span class="k">module </span><span class="n">mqc_scf_types</span>
+<a id="ln-3" name="ln-3" href="#ln-3"></a><span class="w">   </span><span class="c">!! Every SCF in the program -- the supermolecular one, the deltaSCF ions</span>
+<a id="ln-4" name="ln-4" href="#ln-4"></a><span class="w">   </span><span class="c">!! behind a Fukui analysis, each rung of a basis-projection ladder, each</span>
+<a id="ln-5" name="ln-5" href="#ln-5"></a><span class="w">   </span><span class="c">!! fragment of an FMO run -- is configured by the types here.</span>
+<a id="ln-6" name="ln-6" href="#ln-6"></a><span class="w">   </span><span class="c">!!</span>
+<a id="ln-7" name="ln-7" href="#ln-7"></a><span class="w">   </span><span class="c">!! They live in `src/scf` rather than beside the deck types they are read</span>
+<a id="ln-8" name="ln-8" href="#ln-8"></a><span class="w">   </span><span class="c">!! from: `src/scf` depends on nothing but `mqc_error`, so `mqc_config_types`</span>
+<a id="ln-9" name="ln-9" href="#ln-9"></a><span class="w">   </span><span class="c">!! can name them without a cycle.</span>
+<a id="ln-10" name="ln-10" href="#ln-10"></a><span class="w">   </span><span class="k">use </span><span class="n">pic_types</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="p">:</span><span class="w"> </span><span class="n">dp</span>
+<a id="ln-11" name="ln-11" href="#ln-11"></a><span class="w">   </span><span class="k">implicit none</span>
+<a id="ln-12" name="ln-12" href="#ln-12"></a><span class="k">   private</span>
+<a id="ln-13" name="ln-13" href="#ln-13"></a>
+<a id="ln-14" name="ln-14" href="#ln-14"></a><span class="k">   public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">guess_step_t</span><span class="w">       </span><span class="c">!! One rung of a basis-set-projection ladder</span>
+<a id="ln-15" name="ln-15" href="#ln-15"></a><span class="w">   </span><span class="k">public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">scf_numerics_t</span><span class="w">     </span><span class="c">!! How an SCF is driven, shared by every SCF in a run</span>
+<a id="ln-16" name="ln-16" href="#ln-16"></a><span class="w">   </span><span class="k">public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">deltascf_options_t</span><span class="w">  </span><span class="c">!! Convergence settings for a second SCF beside the first</span>
+<a id="ln-17" name="ln-17" href="#ln-17"></a><span class="w">   </span><span class="k">public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">print_scf_config</span><span class="w">    </span><span class="c">!! Echo a resolved SCF configuration</span>
+<a id="ln-18" name="ln-18" href="#ln-18"></a>
+<a id="ln-19" name="ln-19" href="#ln-19"></a><span class="w">   </span><span class="k">type</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">guess_step_t</span>
+<a id="ln-20" name="ln-20" href="#ln-20"></a><span class="w">      </span><span class="c">!! One rung of a basis-set-projection ladder</span>
+<a id="ln-21" name="ln-21" href="#ln-21"></a><span class="w">      </span><span class="c">!!</span>
+<a id="ln-22" name="ln-22" href="#ln-22"></a><span class="w">      </span><span class="c">!! Each rung converges an SCF in its own basis and hands the result to</span>
+<a id="ln-23" name="ln-23" href="#ln-23"></a><span class="w">      </span><span class="c">!! the next as a starting density. Convergence settings are per rung: an</span>
+<a id="ln-24" name="ln-24" href="#ln-24"></a><span class="w">      </span><span class="c">!! early one only has to land in the right basin.</span>
+<a id="ln-25" name="ln-25" href="#ln-25"></a><span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">basis</span>
+<a id="ln-26" name="ln-26" href="#ln-26"></a><span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">maxiter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">50</span>
+<a id="ln-27" name="ln-27" href="#ln-27"></a><span class="w">      </span><span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">tolerance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0e-5_dp</span>
+<a id="ln-28" name="ln-28" href="#ln-28"></a><span class="w">   </span><span class="k">end type </span><span class="n">guess_step_t</span>
+<a id="ln-29" name="ln-29" href="#ln-29"></a>
+<a id="ln-30" name="ln-30" href="#ln-30"></a><span class="w">   </span><span class="k">type</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">scf_numerics_t</span>
+<a id="ln-31" name="ln-31" href="#ln-31"></a><span class="w">      </span><span class="c">!! How a self-consistent field is driven to convergence, defined once</span>
+<a id="ln-32" name="ln-32" href="#ln-32"></a><span class="w">      </span><span class="c">!!</span>
+<a id="ln-33" name="ln-33" href="#ln-33"></a><span class="w">      </span><span class="c">!! The boundary is "how the iteration is driven". Anything selecting</span>
+<a id="ln-34" name="ln-34" href="#ln-34"></a><span class="w">      </span><span class="c">!! *which* wave function is being converged -- `unrestricted`,</span>
+<a id="ln-35" name="ln-35" href="#ln-35"></a><span class="w">      </span><span class="c">!! `density_fitting`, the basis, the frozen core -- stays in</span>
+<a id="ln-36" name="ln-36" href="#ln-36"></a><span class="w">      </span><span class="c">!! `scf_options_t`, because a second SCF over the same molecule has no</span>
+<a id="ln-37" name="ln-37" href="#ln-37"></a><span class="w">      </span><span class="c">!! business disagreeing about those.</span>
+<a id="ln-38" name="ln-38" href="#ln-38"></a><span class="w">      </span><span class="c">! Split out of `scf_options_t`, and not extended from it, because</span>
+<a id="ln-39" name="ln-39" href="#ln-39"></a><span class="w">      </span><span class="c">! `scf_options_t` carries a `properties_config_t` and that is where the</span>
+<a id="ln-40" name="ln-40" href="#ln-40"></a><span class="w">      </span><span class="c">! ion settings live: a `deltascf_options_t` extending the full options</span>
+<a id="ln-41" name="ln-41" href="#ln-41"></a><span class="w">      </span><span class="c">! type would contain itself.</span>
+<a id="ln-42" name="ln-42" href="#ln-42"></a><span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">max_iter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span>
+<a id="ln-43" name="ln-43" href="#ln-43"></a><span class="w">         </span><span class="c">!! Maximum SCF iterations</span>
+<a id="ln-44" name="ln-44" href="#ln-44"></a><span class="w">      </span><span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">energy_tol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0e-8_dp</span>
+<a id="ln-45" name="ln-45" href="#ln-45"></a><span class="w">         </span><span class="c">!! Energy convergence threshold</span>
+<a id="ln-46" name="ln-46" href="#ln-46"></a><span class="w">      </span><span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">density_tol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0e-6_dp</span>
+<a id="ln-47" name="ln-47" href="#ln-47"></a><span class="w">         </span><span class="c">!! Density matrix convergence threshold</span>
+<a id="ln-48" name="ln-48" href="#ln-48"></a><span class="w">      </span><span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">grad_tol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0_dp</span>
+<a id="ln-49" name="ln-49" href="#ln-49"></a><span class="w">         </span><span class="c">!! Commutator threshold; zero derives `sqrt(energy_tol)`.</span>
+<a id="ln-50" name="ln-50" href="#ln-50"></a><span class="w">      </span><span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">linear_dependence</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0_dp</span>
+<a id="ln-51" name="ln-51" href="#ln-51"></a><span class="w">         </span><span class="c">!! Zero means the orthogonaliser's own cutoff.</span>
+<a id="ln-52" name="ln-52" href="#ln-52"></a><span class="w">      </span><span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">level_shift</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0_dp</span>
+<a id="ln-53" name="ln-53" href="#ln-53"></a><span class="w">         </span><span class="c">!! Hartree added to the virtual block before each diagonalisation.</span>
+<a id="ln-54" name="ln-54" href="#ln-54"></a><span class="w">         </span><span class="c">!! Zero is off.</span>
+<a id="ln-55" name="ln-55" href="#ln-55"></a><span class="w">      </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">use_diis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<a id="ln-56" name="ln-56" href="#ln-56"></a><span class="w">         </span><span class="c">!! Use DIIS acceleration</span>
+<a id="ln-57" name="ln-57" href="#ln-57"></a><span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">diis_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span>
+<a id="ln-58" name="ln-58" href="#ln-58"></a><span class="w">         </span><span class="c">!! Number of Fock matrices for DIIS</span>
+<a id="ln-59" name="ln-59" href="#ln-59"></a><span class="w">      </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">incremental_fock</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<a id="ln-60" name="ln-60" href="#ln-60"></a><span class="w">         </span><span class="c">!! Build each Fock matrix from the density *change* since the last</span>
+<a id="ln-61" name="ln-61" href="#ln-61"></a><span class="w">         </span><span class="c">!! full build. Exact to the convergence threshold and several times</span>
+<a id="ln-62" name="ln-62" href="#ln-62"></a><span class="w">         </span><span class="c">!! cheaper late in an SCF; false forces a full build every iteration,</span>
+<a id="ln-63" name="ln-63" href="#ln-63"></a><span class="w">         </span><span class="c">!! which is the first thing to rule out when a run stalls.</span>
+<a id="ln-64" name="ln-64" href="#ln-64"></a><span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">accelerator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"diis"</span>
+<a id="ln-65" name="ln-65" href="#ln-65"></a><span class="w">         </span><span class="c">!! 'diis' (the default), 'adiis' or 'ediis'. The energy-based pair</span>
+<a id="ln-66" name="ln-66" href="#ln-66"></a><span class="w">         </span><span class="c">!! runs only while the error is large and hands over to DIIS, so</span>
+<a id="ln-67" name="ln-67" href="#ln-67"></a><span class="w">         </span><span class="c">!! naming one asks for a different opening, not a different endgame.</span>
+<a id="ln-68" name="ln-68" href="#ln-68"></a><span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">convergence_metric</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"standard"</span>
+<a id="ln-69" name="ln-69" href="#ln-69"></a><span class="w">         </span><span class="c">!! Which measure decides this SCF has stopped. See</span>
+<a id="ln-70" name="ln-70" href="#ln-70"></a><span class="w">         </span><span class="c">!! `mqc_scf_convergence`; the default is the energy-and-commutator</span>
+<a id="ln-71" name="ln-71" href="#ln-71"></a><span class="w">         </span><span class="c">!! pair.</span>
+<a id="ln-72" name="ln-72" href="#ln-72"></a><span class="w">      </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">allow_crap_scf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<a id="ln-73" name="ln-73" href="#ln-73"></a><span class="w">         </span><span class="c">!! Keep a non-converged SCF instead of failing</span>
+<a id="ln-74" name="ln-74" href="#ln-74"></a><span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">guess</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"auto"</span>
+<a id="ln-75" name="ln-75" href="#ln-75"></a><span class="w">         </span><span class="c">!! Initial guess: 'core', 'gwh', 'sac', 'sad', 'basis_set_projection'</span>
+<a id="ln-76" name="ln-76" href="#ln-76"></a><span class="w">         </span><span class="c">!! or 'auto', where the backend picks.</span>
+<a id="ln-77" name="ln-77" href="#ln-77"></a><span class="w">         </span><span class="c">!!</span>
+<a id="ln-78" name="ln-78" href="#ln-78"></a><span class="w">         </span><span class="c">!! **Not the same key as `mqc_config_t%fukui_guess`**, which takes</span>
+<a id="ln-79" name="ln-79" href="#ln-79"></a><span class="w">         </span><span class="c">!! 'neutral' or 'independent' and says whether the ion starts from the</span>
+<a id="ln-80" name="ln-80" href="#ln-80"></a><span class="w">         </span><span class="c">!! neutral's converged density at all. This one says how a density is</span>
+<a id="ln-81" name="ln-81" href="#ln-81"></a><span class="w">         </span><span class="c">!! built when it starts from nothing. The two are one level apart in</span>
+<a id="ln-82" name="ln-82" href="#ln-82"></a><span class="w">         </span><span class="c">!! the deck and spelled the same.</span>
+<a id="ln-83" name="ln-83" href="#ln-83"></a><span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">guess_step_t</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">guess_steps</span><span class="p">(:)</span>
+<a id="ln-84" name="ln-84" href="#ln-84"></a><span class="w">         </span><span class="c">!! The basis ladder for 'basis_set_projection', one entry per</span>
+<a id="ln-85" name="ln-85" href="#ln-85"></a><span class="w">         </span><span class="c">!! preliminary SCF in order.</span>
+<a id="ln-86" name="ln-86" href="#ln-86"></a><span class="w">   </span><span class="k">end type </span><span class="n">scf_numerics_t</span>
+<a id="ln-87" name="ln-87" href="#ln-87"></a>
+<a id="ln-88" name="ln-88" href="#ln-88"></a><span class="w">   </span><span class="k">type</span><span class="p">,</span><span class="w"> </span><span class="k">extends</span><span class="p">(</span><span class="n">scf_numerics_t</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">deltascf_options_t</span>
+<a id="ln-89" name="ln-89" href="#ln-89"></a><span class="w">      </span><span class="c">!! Convergence settings for a second SCF run beside the first</span>
+<a id="ln-90" name="ln-90" href="#ln-90"></a><span class="w">      </span><span class="c">!!</span>
+<a id="ln-91" name="ln-91" href="#ln-91"></a><span class="w">      </span><span class="c">!! The ions behind a Fukui analysis are their own SCF problem: a charged</span>
+<a id="ln-92" name="ln-92" href="#ln-92"></a><span class="w">      </span><span class="c">!! species in a basis chosen for a neutral one, so whatever converged the</span>
+<a id="ln-93" name="ln-93" href="#ln-93"></a><span class="w">      </span><span class="c">!! neutral is a default rather than a rule.</span>
+<a id="ln-94" name="ln-94" href="#ln-94"></a><span class="w">      </span><span class="c">!!</span>
+<a id="ln-95" name="ln-95" href="#ln-95"></a><span class="w">      </span><span class="c">!! **Inheritance happens at read time, not here.** The reader seeds every</span>
+<a id="ln-96" name="ln-96" href="#ln-96"></a><span class="w">      </span><span class="c">!! inherited field from the resolved `keywords.scf` before it looks at</span>
+<a id="ln-97" name="ln-97" href="#ln-97"></a><span class="w">      </span><span class="c">!! the deck, so a key the deck does not name keeps the neutral's value</span>
+<a id="ln-98" name="ln-98" href="#ln-98"></a><span class="w">      </span><span class="c">!! and a key it does name wins. Nothing here carries an "unset" sentinel</span>
+<a id="ln-99" name="ln-99" href="#ln-99"></a><span class="w">      </span><span class="c">!! because unset is spelled by the field holding the inherited value.</span>
+<a id="ln-100" name="ln-100" href="#ln-100"></a><span class="w">      </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">inherit_scf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<a id="ln-101" name="ln-101" href="#ln-101"></a><span class="w">         </span><span class="c">!! Seed from `keywords.scf` (the default) or from the defaults above.</span>
+<a id="ln-102" name="ln-102" href="#ln-102"></a><span class="w">         </span><span class="c">!! Only changes what the keys the deck does not name fall back to;</span>
+<a id="ln-103" name="ln-103" href="#ln-103"></a><span class="w">         </span><span class="c">!! keys it does name win either way.</span>
+<a id="ln-104" name="ln-104" href="#ln-104"></a><span class="w">   </span><span class="k">end type </span><span class="n">deltascf_options_t</span>
+<a id="ln-105" name="ln-105" href="#ln-105"></a>
+<a id="ln-106" name="ln-106" href="#ln-106"></a><span class="k">contains</span>
+<a id="ln-107" name="ln-107" href="#ln-107"></a>
+<a id="ln-108" name="ln-108" href="#ln-108"></a><span class="k">   subroutine </span><span class="n">print_scf_config</span><span class="p">(</span><span class="n">scf</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="p">)</span>
+<a id="ln-109" name="ln-109" href="#ln-109"></a><span class="w">      </span><span class="c">!! Echo what an SCF was actually told to do</span>
+<a id="ln-110" name="ln-110" href="#ln-110"></a><span class="w">      </span><span class="c">!!</span>
+<a id="ln-111" name="ln-111" href="#ln-111"></a><span class="w">      </span><span class="c">!! Printed from the resolved configuration rather than from the deck, so</span>
+<a id="ln-112" name="ln-112" href="#ln-112"></a><span class="w">      </span><span class="c">!! it shows what the SCF will use and not what was asked for. Those</span>
+<a id="ln-113" name="ln-113" href="#ln-113"></a><span class="w">      </span><span class="c">!! differ wherever a default, an inheritance or a backend override sits</span>
+<a id="ln-114" name="ln-114" href="#ln-114"></a><span class="w">      </span><span class="c">!! between the two. A setting missing from this block did not arrive.</span>
+<a id="ln-115" name="ln-115" href="#ln-115"></a><span class="w">      </span><span class="k">use </span><span class="n">pic_logger</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="p">:</span><span class="w"> </span><span class="n">logger</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">global_logger</span>
+<a id="ln-116" name="ln-116" href="#ln-116"></a><span class="w">      </span><span class="k">class</span><span class="p">(</span><span class="n">scf_numerics_t</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">scf</span>
+<a id="ln-117" name="ln-117" href="#ln-117"></a><span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">label</span>
+<a id="ln-118" name="ln-118" href="#ln-118"></a><span class="w">         </span><span class="c">!! Which SCF this is -- a Fukui or MakeFP run has more than one</span>
+<a id="ln-119" name="ln-119" href="#ln-119"></a>
+<a id="ln-120" name="ln-120" href="#ln-120"></a><span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">160</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">line</span>
+<a id="ln-121" name="ln-121" href="#ln-121"></a>
+<a id="ln-122" name="ln-122" href="#ln-122"></a><span class="w">      </span><span class="k">call </span><span class="n">logger</span><span class="p">%</span><span class="n">info</span><span class="p">(</span><span class="s2">"  "</span><span class="o">//</span><span class="n">label</span><span class="o">//</span><span class="s2">" configuration"</span><span class="p">)</span>
+<a id="ln-123" name="ln-123" href="#ln-123"></a><span class="w">      </span><span class="k">write</span><span class="w"> </span><span class="p">(</span><span class="n">line</span><span class="p">,</span><span class="w"> </span><span class="s2">"(a,i0,a,es9.2,a,es9.2)"</span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span>
+<a id="ln-124" name="ln-124" href="#ln-124"></a><span class="w">         </span><span class="s2">"    maxiter "</span><span class="p">,</span><span class="w"> </span><span class="n">scf</span><span class="p">%</span><span class="n">max_iter</span><span class="p">,</span><span class="w"> </span><span class="s2">"   energy_tol "</span><span class="p">,</span><span class="w"> </span><span class="n">scf</span><span class="p">%</span><span class="n">energy_tol</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
+<a id="ln-125" name="ln-125" href="#ln-125"></a><span class="w">         </span><span class="s2">"   density_tol "</span><span class="p">,</span><span class="w"> </span><span class="n">scf</span><span class="p">%</span><span class="n">density_tol</span>
+<a id="ln-126" name="ln-126" href="#ln-126"></a><span class="w">      </span><span class="k">call </span><span class="n">logger</span><span class="p">%</span><span class="n">info</span><span class="p">(</span><span class="nb">trim</span><span class="p">(</span><span class="n">line</span><span class="p">))</span>
+<a id="ln-127" name="ln-127" href="#ln-127"></a><span class="w">      </span><span class="c">! The resolved threshold, not the field it came from: zero means the SCF</span>
+<a id="ln-128" name="ln-128" href="#ln-128"></a><span class="w">      </span><span class="c">! derives it as `sqrt(energy_tol)`, so that is what is printed.</span>
+<a id="ln-129" name="ln-129" href="#ln-129"></a><span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">scf</span><span class="p">%</span><span class="n">grad_tol</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">0.0_dp</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<a id="ln-130" name="ln-130" href="#ln-130"></a><span class="k">         write</span><span class="w"> </span><span class="p">(</span><span class="n">line</span><span class="p">,</span><span class="w"> </span><span class="s2">"(a,es9.2,a)"</span><span class="p">)</span><span class="w"> </span><span class="s2">"    commutator_tol "</span><span class="p">,</span><span class="w"> </span><span class="n">scf</span><span class="p">%</span><span class="n">grad_tol</span><span class="p">,</span><span class="w"> </span><span class="s2">"  (stated)"</span>
+<a id="ln-131" name="ln-131" href="#ln-131"></a><span class="w">      </span><span class="k">else</span>
+<a id="ln-132" name="ln-132" href="#ln-132"></a><span class="k">         write</span><span class="w"> </span><span class="p">(</span><span class="n">line</span><span class="p">,</span><span class="w"> </span><span class="s2">"(a,es9.2,a)"</span><span class="p">)</span><span class="w"> </span><span class="s2">"    commutator_tol "</span><span class="p">,</span><span class="w"> </span><span class="nb">sqrt</span><span class="p">(</span><span class="n">scf</span><span class="p">%</span><span class="n">energy_tol</span><span class="p">),</span><span class="w"> </span><span class="p">&amp;</span>
+<a id="ln-133" name="ln-133" href="#ln-133"></a><span class="w">            </span><span class="s2">"  (derived, sqrt of energy_tol)"</span>
+<a id="ln-134" name="ln-134" href="#ln-134"></a><span class="w">      </span><span class="k">end if</span>
+<a id="ln-135" name="ln-135" href="#ln-135"></a><span class="k">      call </span><span class="n">logger</span><span class="p">%</span><span class="n">info</span><span class="p">(</span><span class="nb">trim</span><span class="p">(</span><span class="n">line</span><span class="p">))</span>
+<a id="ln-136" name="ln-136" href="#ln-136"></a><span class="w">      </span><span class="k">write</span><span class="w"> </span><span class="p">(</span><span class="n">line</span><span class="p">,</span><span class="w"> </span><span class="s2">"(a,a,a,i0,a,l1)"</span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span>
+<a id="ln-137" name="ln-137" href="#ln-137"></a><span class="w">         </span><span class="s2">"    accelerator "</span><span class="p">,</span><span class="w"> </span><span class="nb">trim</span><span class="p">(</span><span class="n">scf</span><span class="p">%</span><span class="n">accelerator</span><span class="p">),</span><span class="w"> </span><span class="s2">"   diis_size "</span><span class="p">,</span><span class="w"> </span><span class="n">scf</span><span class="p">%</span><span class="n">diis_size</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
+<a id="ln-138" name="ln-138" href="#ln-138"></a><span class="w">         </span><span class="s2">"   diis "</span><span class="p">,</span><span class="w"> </span><span class="n">scf</span><span class="p">%</span><span class="n">use_diis</span>
+<a id="ln-139" name="ln-139" href="#ln-139"></a><span class="w">      </span><span class="k">call </span><span class="n">logger</span><span class="p">%</span><span class="n">info</span><span class="p">(</span><span class="nb">trim</span><span class="p">(</span><span class="n">line</span><span class="p">))</span>
+<a id="ln-140" name="ln-140" href="#ln-140"></a><span class="w">      </span><span class="c">! Same again: zero is a sentinel the orthogonaliser turns into its own</span>
+<a id="ln-141" name="ln-141" href="#ln-141"></a><span class="w">      </span><span class="c">! cutoff, so printing 0.00E+00 would report a threshold nobody uses.</span>
+<a id="ln-142" name="ln-142" href="#ln-142"></a><span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">scf</span><span class="p">%</span><span class="n">linear_dependence</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">0.0_dp</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<a id="ln-143" name="ln-143" href="#ln-143"></a><span class="k">         write</span><span class="w"> </span><span class="p">(</span><span class="n">line</span><span class="p">,</span><span class="w"> </span><span class="s2">"(a,es9.2,a,es9.2)"</span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span>
+<a id="ln-144" name="ln-144" href="#ln-144"></a><span class="w">            </span><span class="s2">"    level_shift "</span><span class="p">,</span><span class="w"> </span><span class="n">scf</span><span class="p">%</span><span class="n">level_shift</span><span class="p">,</span><span class="w"> </span><span class="s2">"   linear_dependence "</span><span class="p">,</span><span class="w"> </span><span class="n">scf</span><span class="p">%</span><span class="n">linear_dependence</span>
+<a id="ln-145" name="ln-145" href="#ln-145"></a><span class="w">      </span><span class="k">else</span>
+<a id="ln-146" name="ln-146" href="#ln-146"></a><span class="k">         write</span><span class="w"> </span><span class="p">(</span><span class="n">line</span><span class="p">,</span><span class="w"> </span><span class="s2">"(a,es9.2,a)"</span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span>
+<a id="ln-147" name="ln-147" href="#ln-147"></a><span class="w">            </span><span class="s2">"    level_shift "</span><span class="p">,</span><span class="w"> </span><span class="n">scf</span><span class="p">%</span><span class="n">level_shift</span><span class="p">,</span><span class="w"> </span><span class="s2">"   linear_dependence  backend default"</span>
+<a id="ln-148" name="ln-148" href="#ln-148"></a><span class="w">      </span><span class="k">end if</span>
+<a id="ln-149" name="ln-149" href="#ln-149"></a><span class="k">      call </span><span class="n">logger</span><span class="p">%</span><span class="n">info</span><span class="p">(</span><span class="nb">trim</span><span class="p">(</span><span class="n">line</span><span class="p">))</span>
+<a id="ln-150" name="ln-150" href="#ln-150"></a><span class="w">      </span><span class="k">write</span><span class="w"> </span><span class="p">(</span><span class="n">line</span><span class="p">,</span><span class="w"> </span><span class="s2">"(a,a,a,l1,a,l1)"</span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span>
+<a id="ln-151" name="ln-151" href="#ln-151"></a><span class="w">         </span><span class="s2">"    guess "</span><span class="p">,</span><span class="w"> </span><span class="nb">trim</span><span class="p">(</span><span class="n">scf</span><span class="p">%</span><span class="n">guess</span><span class="p">),</span><span class="w"> </span><span class="s2">"   incremental_fock "</span><span class="p">,</span><span class="w"> </span><span class="n">scf</span><span class="p">%</span><span class="n">incremental_fock</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
+<a id="ln-152" name="ln-152" href="#ln-152"></a><span class="w">         </span><span class="s2">"   allow_crap_scf "</span><span class="p">,</span><span class="w"> </span><span class="n">scf</span><span class="p">%</span><span class="n">allow_crap_scf</span>
+<a id="ln-153" name="ln-153" href="#ln-153"></a><span class="w">      </span><span class="k">call </span><span class="n">logger</span><span class="p">%</span><span class="n">info</span><span class="p">(</span><span class="nb">trim</span><span class="p">(</span><span class="n">line</span><span class="p">))</span>
+<a id="ln-154" name="ln-154" href="#ln-154"></a><span class="w">   </span><span class="k">end subroutine </span><span class="n">print_scf_config</span>
+<a id="ln-155" name="ln-155" href="#ln-155"></a>
+<a id="ln-156" name="ln-156" href="#ln-156"></a><span class="k">end module </span><span class="n">mqc_scf_types</span>
+</pre></div>
+
+      </section>
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              metalquicha
+ was developed by Jorge Luis Galvez Vallejo<br>              &copy; 2026 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+ on 2026-09-07 09:10 +0000             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

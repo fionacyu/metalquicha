@@ -1,5 +1,7 @@
 submodule(mqc_mbe_fragment_distribution_scheme) mpi_fragment_work_smod
    use mqc_error, only: ERROR_VALIDATION, ERROR_GENERIC
+   use mqc_verbosity, only: per_item_requested
+   use mqc_combinatorics, only: fragment_size_of
    use mqc_work_queue, only: queue_t, queue_init_from_list, queue_pop, queue_is_empty, queue_destroy
    use mqc_group_batching, only: flush_group_results, handle_local_worker_results_to_batch, &
                                  handle_node_results_to_batch, handle_group_results
@@ -8,101 +10,150 @@ submodule(mqc_mbe_fragment_distribution_scheme) mpi_fragment_work_smod
 
 contains
 
-   subroutine build_fragment_payload(fragment_idx, polymers, fragment_type, fragment_size, fragment_indices)
-      !! Build fragment payload arrays for a given fragment index.
-      !! Caller owns the returned fragment_indices and must deallocate it.
-      integer(int64), intent(in) :: fragment_idx
+   subroutine build_hessian_task_table(polymers, total_fragments, sys_geom, expand, &
+                                       task_rows, task_offset, frag_natoms, total_tasks, world_comm)
+      !! Expand the screened fragment list into the flat list of independent evaluations
+      !!
+      !! A Hessian needs 6*n_atoms + 1 gradient evaluations per fragment, none of
+      !! them dependent on any other, and each becomes its own schedulable task.
+      !!
+      !! A task row is the fragment's polymer row plus one trailing column holding the
+      !! displacement code:
+      !!    0   -> undisplaced reference (supplies the fragment's energy and gradient)
+      !!   +k   -> atom (k-1)/3+1 displaced by +h along coordinate mod(k-1,3)+1
+      !!   -k   -> the same coordinate displaced by -h
+      !!
+      !! Tasks are emitted fragment-major so the digest walks one contiguous block per
+      !! fragment and can release it as soon as that Hessian is assembled.
+      use mqc_error, only: error_t
       integer, intent(in) :: polymers(:, :)
+      integer(int64), intent(in) :: total_fragments
+      type(system_geometry_t), intent(in) :: sys_geom
+      logical, intent(in) :: expand  !! .false. -> one task per fragment (energy/gradient runs)
+      integer, allocatable, intent(out) :: task_rows(:, :)      !! (total_tasks, n_cols+1)
+      integer(int64), allocatable, intent(out) :: task_offset(:)    !! first task index of each fragment
+      integer, allocatable, intent(out) :: frag_natoms(:)       !! capped atom count of each fragment
+      integer(int64), intent(out) :: total_tasks
+      type(comm_t), intent(in) :: world_comm
+
+      type(physical_fragment_t) :: frag
+      type(error_t) :: error
+      integer(int64) :: f, base
+      integer :: fragment_size, k, n_disp, n_cols
+
+      n_cols = size(polymers, 2)
+      allocate (frag_natoms(total_fragments))
+      allocate (task_offset(total_fragments))
+      frag_natoms = 0
+
+      total_tasks = 0_int64
+      do f = 1_int64, total_fragments
+         task_offset(f) = total_tasks + 1_int64
+         if (expand) then
+            ! Atom count must include hydrogen caps, so the fragment has to be built
+            fragment_size = fragment_size_of(polymers(f, :))
+            call build_fragment_from_indices(sys_geom, polymers(f, 1:fragment_size), frag, error, sys_geom%bonds)
+            if (error%has_error()) then
+               call logger%error("build_hessian_task_table: "//error%get_full_trace())
+               call abort_comm(world_comm, 1)
+            end if
+            frag_natoms(f) = frag%n_atoms
+            call frag%destroy()
+            total_tasks = total_tasks + 1_int64 + 2_int64*3_int64*int(frag_natoms(f), int64)
+         else
+            total_tasks = total_tasks + 1_int64
+         end if
+      end do
+
+      allocate (task_rows(total_tasks, n_cols + 1))
+      task_rows = 0
+
+      do f = 1_int64, total_fragments
+         base = task_offset(f)
+
+         ! Reference point first
+         task_rows(base, 1:n_cols) = polymers(f, 1:n_cols)
+         task_rows(base, n_cols + 1) = 0
+         if (.not. expand) then
+            ! Energy/gradient runs keep one task per fragment
+            task_rows(base, n_cols + 1) = DISP_WHOLE_FRAGMENT
+            cycle
+         end if
+
+         ! Then the forward/backward pair for each Cartesian coordinate
+         n_disp = 3*frag_natoms(f)
+         do k = 1, n_disp
+            task_rows(base + 2*k - 1, 1:n_cols) = polymers(f, 1:n_cols)
+            task_rows(base + 2*k - 1, n_cols + 1) = k
+
+            task_rows(base + 2*k, 1:n_cols) = polymers(f, 1:n_cols)
+            task_rows(base + 2*k, n_cols + 1) = -k
+         end do
+      end do
+
+   end subroutine build_hessian_task_table
+
+   subroutine build_task_payload_from_row(task_row, fragment_type, fragment_size, fragment_indices, disp_code)
+      !! Split a task row into its fragment payload and displacement code.
+      !! Caller owns the returned fragment_indices and must deallocate it.
+      integer, intent(in) :: task_row(:)
       integer(int32), intent(out) :: fragment_type
       integer(int32), intent(out) :: fragment_size
       integer, allocatable, intent(out) :: fragment_indices(:)
+      integer(int32), intent(out) :: disp_code
 
-      fragment_size = count(polymers(fragment_idx, :) > 0)
+      integer :: n_cols
+
+      n_cols = size(task_row) - 1
+      disp_code = int(task_row(n_cols + 1), int32)
+
+      fragment_size = fragment_size_of(task_row(1:n_cols))
       allocate (fragment_indices(fragment_size))
-      fragment_indices = polymers(fragment_idx, 1:fragment_size)
+      fragment_indices = task_row(1:fragment_size)
 
       ! Standard MBE always uses monomer indices
       fragment_type = FRAGMENT_TYPE_MONOMERS
-   end subroutine build_fragment_payload
+   end subroutine build_task_payload_from_row
 
-   subroutine build_fragment_payload_from_row(polymer_row, fragment_type, fragment_size, fragment_indices)
-      !! Build fragment payload arrays for a given polymer row.
-      !! Caller owns the returned fragment_indices and must deallocate it.
-      integer, intent(in) :: polymer_row(:)
-      integer(int32), intent(out) :: fragment_type
-      integer(int32), intent(out) :: fragment_size
-      integer, allocatable, intent(out) :: fragment_indices(:)
-
-      fragment_size = count(polymer_row > 0)
-      allocate (fragment_indices(fragment_size))
-      fragment_indices = polymer_row(1:fragment_size)
-
-      fragment_type = FRAGMENT_TYPE_MONOMERS
-   end subroutine build_fragment_payload_from_row
-
-   subroutine send_fragment_payload(comm, tag, fragment_idx, polymers, dest_rank)
-      !! Send fragment payload over the specified communicator/tag.
-      !! Uses int64 for fragment_idx to handle large fragment indices.
+   subroutine send_task_payload_from_row(comm, tag, task_idx, task_row, dest_rank)
+      !! Send a task payload over the specified communicator/tag.
+      !! task_idx indexes the flat task list, not the fragment list.
       type(comm_t), intent(in) :: comm
       integer, intent(in) :: tag
-      integer(int64), intent(in) :: fragment_idx
+      integer(int64), intent(in) :: task_idx
       integer, intent(in) :: dest_rank
-      integer, intent(in) :: polymers(:, :)
-      integer(int32) :: fragment_size, fragment_type
+      integer, intent(in) :: task_row(:)
+      !! task index, fragment type, fragment size, monomer indices, displacement code
+      integer, parameter :: N_TASK_PAYLOAD_MSGS = 5
+      integer(int32) :: fragment_size, fragment_type, disp_code
       integer, allocatable :: fragment_indices(:)
-      type(request_t) :: req(4)
-      integer(int64) :: fragment_idx_int64
+      type(request_t) :: req(N_TASK_PAYLOAD_MSGS)
+      integer(int64) :: task_idx_int64
 
-      call build_fragment_payload(fragment_idx, polymers, fragment_type, fragment_size, fragment_indices)
+      call build_task_payload_from_row(task_row, fragment_type, fragment_size, fragment_indices, disp_code)
 
-      fragment_idx_int64 = int(fragment_idx, kind=int64)
-      call isend(comm, fragment_idx_int64, dest_rank, tag, req(1))
+      task_idx_int64 = int(task_idx, kind=int64)
+      call isend(comm, task_idx_int64, dest_rank, tag, req(1))
       call isend(comm, fragment_type, dest_rank, tag, req(2))
       call isend(comm, fragment_size, dest_rank, tag, req(3))
       call isend(comm, fragment_indices, dest_rank, tag, req(4))
+      call isend(comm, disp_code, dest_rank, tag, req(5))
 
       call wait(req(1))
       call wait(req(2))
       call wait(req(3))
       call wait(req(4))
+      call wait(req(5))
 
       deallocate (fragment_indices)
-   end subroutine send_fragment_payload
+   end subroutine send_task_payload_from_row
 
-   subroutine send_fragment_payload_from_row(comm, tag, fragment_idx, polymer_row, dest_rank)
-      !! Send fragment payload over the specified communicator/tag using a polymer row.
-      type(comm_t), intent(in) :: comm
-      integer, intent(in) :: tag
-      integer(int64), intent(in) :: fragment_idx
-      integer, intent(in) :: dest_rank
-      integer, intent(in) :: polymer_row(:)
-      integer(int32) :: fragment_size, fragment_type
-      integer, allocatable :: fragment_indices(:)
-      type(request_t) :: req(4)
-      integer(int64) :: fragment_idx_int64
-
-      call build_fragment_payload_from_row(polymer_row, fragment_type, fragment_size, fragment_indices)
-
-      fragment_idx_int64 = int(fragment_idx, kind=int64)
-      call isend(comm, fragment_idx_int64, dest_rank, tag, req(1))
-      call isend(comm, fragment_type, dest_rank, tag, req(2))
-      call isend(comm, fragment_size, dest_rank, tag, req(3))
-      call isend(comm, fragment_indices, dest_rank, tag, req(4))
-
-      call wait(req(1))
-      call wait(req(2))
-      call wait(req(3))
-      call wait(req(4))
-
-      deallocate (fragment_indices)
-   end subroutine send_fragment_payload_from_row
-
-   module subroutine do_fragment_work(fragment_idx, result, method_config, phys_frag, calc_type, world_comm)
+   module subroutine do_fragment_work(fragment_idx, result, method_config, phys_frag, calc_type, world_comm, &
+                                      print_geometry, sole_calculation)
       !! Process a single fragment for quantum chemistry calculation
       !!
-      !! Performs energy and gradient calculation on a molecular fragment using
-      !! the factory pattern to create a calculator from the provided method_config.
-      !! Verbosity is controlled by the global logger level.
+      !! The calculator comes from `method_config`; verbosity follows the global
+      !! logger level.
 
       use pic_logger, only: verbose_level
 
@@ -112,31 +163,62 @@ contains
       type(physical_fragment_t), intent(in), optional :: phys_frag  !! Fragment geometry
       integer(int32), intent(in) :: calc_type  !! Calculation type
       type(comm_t), intent(in), optional :: world_comm  !! MPI communicator for abort
+      logical, intent(in), optional :: print_geometry  !! Dump the geometry when verbose (default .true.)
+      logical, intent(in), optional :: sole_calculation
+         !! True when this is the ONLY calculation of the run rather than one
+         !! of many. Default false.
+         !!
+         !! This routine is shared by the unfragmented workflow, which calls it
+         !! once, and the fragment loops, which call it per fragment -- and from
+         !! the inside those are indistinguishable. The difference decides
+         !! whether the method may print: the user's single calculation may,
+         !! two hundred dimers may not, and only the caller knows which this is.
 
-      integer :: current_log_level  !! Current logger verbosity level
-      logical :: is_verbose  !! Whether verbose output is enabled
+      logical :: is_verbose   !! Print something once per fragment
+      logical :: is_sole      !! This is the run's only calculation
+      logical :: show_geometry  !! Whether this task should dump its geometry
       integer(int32) :: calc_type_local  !! Local copy of calc_type
       type(method_config_t) :: local_config  !! Local copy for verbose override
       class(qc_method_t), allocatable :: calculator  !! Polymorphic calculator instance
 
       calc_type_local = calc_type
+      show_geometry = .true.
+      if (present(print_geometry)) show_geometry = print_geometry
+      is_sole = .false.
+      if (present(sole_calculation)) is_sole = sole_calculation
 
-      ! Query logger to determine verbosity
-      call logger%configuration(level=current_log_level)
-      is_verbose = (current_log_level >= verbose_level)
+      ! Two questions, not one. A geometry dump is one per FRAGMENT, so it
+      ! belongs at `verbose`; a method's detail block is one per calculation
+      ! and belongs a notch lower, at `large_info`. Deriving both from
+      ! `verbose_level` meant the detail could only be had by also accepting
+      ! two hundred geometry dumps on a 20-mer.
+      is_verbose = per_item_requested()
 
-      ! Print fragment geometry if provided and verbose mode is enabled
+      ! Print fragment geometry if provided and verbose mode is enabled.
+      ! Suppressed for displaced tasks: 6N+1 near-identical geometries per
+      ! fragment bury the log and add nothing the reference does not show.
       if (present(phys_frag)) then
-         if (is_verbose) then
+         if (is_verbose .and. show_geometry) then
             call print_fragment_xyz(fragment_idx, phys_frag)
          end if
 
          ! Copy config and override verbose based on logger level
          local_config = method_config
-         local_config%verbose = is_verbose
+         ! Per-fragment: one SCF's worth of output times the fragment count,
+         ! so this is the per-item question and not the detail one.
+         ! The sole calculation of a run speaks unless the caller silenced it;
+         ! one of many speaks only when the user asked for per-item output.
+         if (is_sole) then
+            local_config%verbose = method_config%verbose
+         else
+            local_config%verbose = is_verbose
+         end if
 
          ! Create calculator using factory
-         calculator = create_method(local_config)
+         ! allocate(..., source=) rather than plain assignment: see the note in
+         ! mqc_method_factory -- gfortran 13.2.0 segfaults on intrinsic
+         ! assignment from a polymorphic allocatable function result.
+         allocate (calculator, source=create_method(local_config))
 
          ! Run the calculation using polymorphic dispatch
          select case (calc_type_local)
@@ -170,6 +252,144 @@ contains
       end if
    end subroutine do_fragment_work
 
+   subroutine assemble_one_fragment_hessian(f, polymers, sys_geom, task_results, &
+                                            task_offset, frag_natoms, frag_result, world_comm)
+      !! Fold one fragment's displacement results into its Hessian, then release them
+      !!
+      !! The fragment owns a contiguous block of task results laid out by
+      !! `build_hessian_task_table` as [reference, +1, -1, +2, -2, ...], which is
+      !! exactly the forward/backward gradient arrays the serial path builds.
+      use mqc_error, only: error_t
+      use mqc_finite_differences, only: finite_diff_hessian_from_gradients, &
+                                        finite_diff_dipole_derivatives, DEFAULT_DISPLACEMENT
+      integer(int64), intent(in) :: f
+      integer, intent(in) :: polymers(:, :)
+      type(system_geometry_t), intent(in) :: sys_geom
+      type(calculation_result_t), intent(inout) :: task_results(:)
+      integer(int64), intent(in) :: task_offset(:)
+      integer, intent(in) :: frag_natoms(:)
+      type(calculation_result_t), intent(inout) :: frag_result
+      type(comm_t), intent(in) :: world_comm
+
+      type(physical_fragment_t) :: frag
+      type(error_t) :: error
+      real(dp), allocatable :: fwd_grad(:, :, :), bwd_grad(:, :, :)
+      real(dp), allocatable :: fwd_dip(:, :), bwd_dip(:, :)
+      integer(int64) :: base
+      integer :: fragment_size, k, n_disp, n_atoms
+      logical :: have_dipoles
+
+      n_atoms = frag_natoms(f)
+      n_disp = 3*n_atoms
+      base = task_offset(f)
+
+      fragment_size = fragment_size_of(polymers(f, :))
+      call build_fragment_from_indices(sys_geom, polymers(f, 1:fragment_size), frag, error, sys_geom%bonds)
+      if (error%has_error()) then
+         call logger%error("assemble_one_fragment_hessian: "//error%get_full_trace())
+         call abort_comm(world_comm, 1)
+      end if
+
+      allocate (fwd_grad(n_disp, 3, n_atoms), bwd_grad(n_disp, 3, n_atoms))
+      allocate (fwd_dip(n_disp, 3), bwd_dip(n_disp, 3))
+      fwd_dip = 0.0_dp
+      bwd_dip = 0.0_dp
+      have_dipoles = .true.
+
+      do k = 1, n_disp
+         if (.not. task_results(base + 2*k - 1)%has_gradient .or. &
+             .not. task_results(base + 2*k)%has_gradient) then
+            call logger%error("Missing gradient for displacement "//to_char(k)// &
+                              " of fragment "//to_char(f))
+            call abort_comm(world_comm, 1)
+         end if
+         fwd_grad(k, :, :) = task_results(base + 2*k - 1)%gradient
+         bwd_grad(k, :, :) = task_results(base + 2*k)%gradient
+
+         if (task_results(base + 2*k - 1)%has_dipole .and. task_results(base + 2*k)%has_dipole) then
+            fwd_dip(k, :) = task_results(base + 2*k - 1)%dipole
+            bwd_dip(k, :) = task_results(base + 2*k)%dipole
+         else
+            have_dipoles = .false.
+         end if
+      end do
+
+      call finite_diff_hessian_from_gradients(frag, fwd_grad, bwd_grad, DEFAULT_DISPLACEMENT, &
+                                              frag_result%hessian)
+      frag_result%has_hessian = .true.
+
+      ! The undisplaced point carries the energy, gradient and dipole that belong
+      ! beside this fragment's Hessian.
+      frag_result%energy = task_results(base)%energy
+      frag_result%has_energy = task_results(base)%has_energy
+      frag_result%distance = task_results(base)%distance
+      if (task_results(base)%has_gradient) then
+         frag_result%gradient = task_results(base)%gradient
+         frag_result%has_gradient = .true.
+      end if
+      if (task_results(base)%has_dipole) then
+         frag_result%dipole = task_results(base)%dipole
+         frag_result%has_dipole = .true.
+      end if
+
+      if (have_dipoles) then
+         call finite_diff_dipole_derivatives(n_atoms, fwd_dip, bwd_dip, DEFAULT_DISPLACEMENT, &
+                                             frag_result%dipole_derivatives)
+         frag_result%has_dipole_derivatives = .true.
+      end if
+
+      deallocate (fwd_grad, bwd_grad, fwd_dip, bwd_dip)
+      call frag%destroy()
+
+      ! Release this fragment's task results now that they are folded in
+      do k = 0, 2*n_disp
+         call task_results(base + k)%destroy()
+      end do
+
+   end subroutine assemble_one_fragment_hessian
+
+   subroutine fold_completed_fragments(polymers, total_fragments, sys_geom, task_results, &
+                                       task_offset, frag_natoms, frag_results, &
+                                       next_frag, scan_pos, world_comm)
+      !! Fold every fragment whose displacement results have all landed
+      !!
+      !! Called from the coordinator loop, so a fragment's Hessian is assembled
+      !! and its gradients released while the rest of the queue is still running.
+      !! Memory then tracks the fragments in flight rather than the task count.
+      !!
+      !! Completion is detected by a monotone scan from the oldest unfolded
+      !! fragment, `O(1)` amortised per task. A straggler at the head stalls the
+      !! scan, which degrades to folding everything at the end.
+      integer, intent(in) :: polymers(:, :)
+      integer(int64), intent(in) :: total_fragments
+      type(system_geometry_t), intent(in) :: sys_geom
+      type(calculation_result_t), intent(inout) :: task_results(:)
+      integer(int64), intent(in) :: task_offset(:)
+      integer, intent(in) :: frag_natoms(:)
+      type(calculation_result_t), intent(inout) :: frag_results(:)
+      integer(int64), intent(inout) :: next_frag  !! Oldest fragment not yet folded
+      integer(int64), intent(inout) :: scan_pos   !! Next task of next_frag to verify
+      type(comm_t), intent(in) :: world_comm
+
+      integer(int64) :: last_task
+
+      do while (next_frag <= total_fragments)
+         last_task = task_offset(next_frag) + 2_int64*3_int64*int(frag_natoms(next_frag), int64)
+
+         do while (scan_pos <= last_task)
+            if (.not. task_results(scan_pos)%has_gradient) return
+            scan_pos = scan_pos + 1_int64
+         end do
+
+         call assemble_one_fragment_hessian(next_frag, polymers, sys_geom, task_results, &
+                                            task_offset, frag_natoms, frag_results(next_frag), &
+                                            world_comm)
+         next_frag = next_frag + 1_int64
+         if (next_frag <= total_fragments) scan_pos = task_offset(next_frag)
+      end do
+
+   end subroutine fold_completed_fragments
+
    module subroutine global_coordinator(ctx, json_data)
       !! Global coordinator for distributing fragments to node coordinators
       !! will act as a node coordinator for a single node calculation
@@ -177,7 +397,7 @@ contains
       !! Bond connectivity is accessed via ctx%sys_geom%bonds
       use mqc_json_output_types, only: json_output_data_t
       use mqc_many_body_expansion, only: mbe_context_t
-      class(*), intent(in) :: ctx
+      class(*), intent(inout) :: ctx
       type(json_output_data_t), intent(out), optional :: json_data  !! JSON output data
 
       ! Cast to mbe_context_t via select type
@@ -194,7 +414,9 @@ contains
       !! Internal implementation of global_coordinator with typed context
       use mqc_json_output_types, only: json_output_data_t
       use mqc_many_body_expansion, only: mbe_context_t
-      type(mbe_context_t), intent(in) :: ctx
+      type(mbe_context_t), intent(inout) :: ctx
+         !! `inout` for the checkpoint alone: recording advances its record
+         !! count, so it is state rather than a side effect on a file.
       type(json_output_data_t), intent(out), optional :: json_data  !! JSON output data
 
       type :: group_shard_t
@@ -214,24 +436,44 @@ contains
       integer :: local_node_done
       integer(int32) :: calc_type_local
 
-      ! Storage for results
+      ! Storage for results, indexed by flat task index
       type(calculation_result_t), allocatable :: results(:)
+      type(calculation_result_t), allocatable :: frag_results(:)
+
+      ! Flat task list: one schedulable evaluation per entry
+      integer, allocatable :: task_rows(:, :)
+      integer(int64), allocatable :: task_offset(:)
+      integer, allocatable :: frag_natoms(:)
+      integer(int64) :: total_tasks
+      integer(int64) :: next_frag, scan_pos
+      logical :: expand_displacements
       integer(int64) :: worker_fragment_map(ctx%resources%mpi_comms%node_comm%size())
       type(queue_t) :: group0_queue
       integer(int64), allocatable :: group0_fragment_ids(:)
       integer, allocatable :: group0_polymers(:, :)
 
-      integer(int64) :: fragment_idx
+      integer(int64) :: task_idx
       integer(int64) :: chunk_id, chunk_size
       integer(int64), allocatable :: group_counts(:)
       integer(int64), allocatable :: group_fill(:)
       integer, allocatable :: group_leader_by_group(:)
       integer, allocatable :: group_node_counts(:)
       integer :: n_cols
+      logical, allocatable :: task_done(:)
+      integer(int64) :: n_reused
+      logical :: reuse_found
+      real(dp) :: reuse_energy
+      integer :: reuse_status
+      integer :: reuse_atoms
+      real(dp), allocatable :: reuse_gradient(:, :), reuse_hessian(:, :)
+      real(dp) :: reuse_homo, reuse_lumo
+      logical :: reuse_orbitals
       type(group_shard_t), allocatable :: group_shards(:)
 
       ! MPI request handles for non-blocking operations
       type(request_t) :: req
+      ! TODO(mqc): `req` is declared here and never used; every non-blocking
+      ! call in this routine happens inside a helper with its own handle.
 
       calc_type_local = ctx%calc_type
 
@@ -242,12 +484,33 @@ contains
       group0_done = 0
       local_node_done = 0
 
+      ! A Hessian fans each fragment out into its 6N+1 independent gradient
+      ! evaluations; energy and gradient runs stay one task per fragment.
+      expand_displacements = (calc_type_local == CALC_TYPE_HESSIAN)
+      call build_hessian_task_table(ctx%polymers, ctx%total_fragments, ctx%sys_geom, expand_displacements, &
+                                    task_rows, task_offset, frag_natoms, total_tasks, &
+                                    ctx%resources%mpi_comms%world_comm)
+
       ! Allocate storage for results
-      allocate (results(ctx%total_fragments))
+      allocate (results(total_tasks))
       worker_fragment_map = 0
 
-      call logger%verbose("Super-global coordinator starting with "//to_char(ctx%total_fragments)// &
-                          " fragments for "//to_char(ctx%num_nodes)//" nodes and "// &
+      ! Fragment Hessians are folded in as their displacements land, so the targets
+      ! have to exist before the coordinator loop starts.
+      next_frag = 1_int64
+      scan_pos = 1_int64
+      if (expand_displacements) allocate (frag_results(ctx%total_fragments))
+
+      if (expand_displacements) then
+         call logger%info("Hessian displacements flattened into the fragment queue:")
+         call logger%info("  Fragments:            "//to_char(ctx%total_fragments))
+         call logger%info("  Schedulable tasks:    "//to_char(total_tasks))
+         call logger%info("  Max useful ranks:     "//to_char(total_tasks)//" (was "// &
+                          to_char(ctx%total_fragments)//")")
+      end if
+
+      call logger%verbose("Super-global coordinator starting with "//to_char(total_tasks)// &
+                          " tasks for "//to_char(ctx%num_nodes)//" nodes and "// &
                           to_char(ctx%global_groups)//" groups")
 
       ! Build group leader map and node counts
@@ -264,13 +527,53 @@ contains
       end do
       group0_node_count = group_node_counts(1)
 
-      ! Partition fragments into group shards (chunked round-robin)
+      ! Fragments an earlier run finished are reclaimed here, before anything is
+      ! scheduled, so a reused term is never enqueued at all. `results_received`
+      ! starts at the number reclaimed, because the loop below counts up to
+      ! `total_tasks`.
+      allocate (task_done(max(total_tasks, 1_int64)))
+      task_done = .false.
+      n_reused = 0_int64
+      if (ctx%checkpoint%active .and. total_tasks > 0) then
+         do task_idx = 1_int64, total_tasks
+            call ctx%checkpoint%lookup(task_rows(task_idx, :), &
+                                       reuse_found, reuse_energy, reuse_status, &
+                                       n_atoms=reuse_atoms, gradient=reuse_gradient, &
+                                       hessian=reuse_hessian, homo=reuse_homo, &
+                                       lumo=reuse_lumo, has_orbitals=reuse_orbitals)
+            if (.not. reuse_found) cycle
+            results(task_idx)%energy%scf = reuse_energy
+            results(task_idx)%has_energy = .true.
+            results(task_idx)%scf_status = reuse_status
+            results(task_idx)%homo = reuse_homo
+            results(task_idx)%lumo = reuse_lumo
+            results(task_idx)%has_orbitals = reuse_orbitals
+            if (allocated(reuse_gradient)) then
+               call move_alloc(reuse_gradient, results(task_idx)%gradient)
+               results(task_idx)%has_gradient = .true.
+            end if
+            if (allocated(reuse_hessian)) then
+               call move_alloc(reuse_hessian, results(task_idx)%hessian)
+               results(task_idx)%has_hessian = .true.
+            end if
+            task_done(task_idx) = .true.
+            n_reused = n_reused + 1_int64
+         end do
+         results_received = n_reused
+         if (n_reused > 0_int64) then
+            call logger%info("Reused "//to_char(n_reused)//" fragment(s) from the "// &
+                             "checkpoint; computing "//to_char(total_tasks - n_reused))
+         end if
+      end if
+
+      ! Partition tasks into group shards (chunked round-robin)
       allocate (group_counts(ctx%global_groups))
       group_counts = 0_int64
-      if (ctx%total_fragments > 0) then
-         chunk_size = max(1_int64, ctx%total_fragments/int(ctx%global_groups, int64))
-         do fragment_idx = 1_int64, ctx%total_fragments
-            chunk_id = (fragment_idx - 1_int64)/chunk_size + 1_int64
+      if (total_tasks > 0) then
+         chunk_size = max(1_int64, total_tasks/int(ctx%global_groups, int64))
+         do task_idx = 1_int64, total_tasks
+            if (task_done(task_idx)) cycle
+            chunk_id = (task_idx - 1_int64)/chunk_size + 1_int64
             group_id = int(mod(chunk_id - 1_int64, int(ctx%global_groups, int64)) + 1_int64)
             group_counts(group_id) = group_counts(group_id) + 1_int64
          end do
@@ -279,7 +582,7 @@ contains
       allocate (group_shards(ctx%global_groups))
       allocate (group_fill(ctx%global_groups))
       group_fill = 0_int64
-      n_cols = size(ctx%polymers, 2)
+      n_cols = size(task_rows, 2)
       do i = 1, ctx%global_groups
          if (group_counts(i) > 0_int64) then
             allocate (group_shards(i)%fragment_ids(group_counts(i)))
@@ -287,13 +590,14 @@ contains
          end if
       end do
 
-      if (ctx%total_fragments > 0) then
-         do fragment_idx = 1_int64, ctx%total_fragments
-            chunk_id = (fragment_idx - 1_int64)/chunk_size + 1_int64
+      if (total_tasks > 0) then
+         do task_idx = 1_int64, total_tasks
+            if (task_done(task_idx)) cycle
+            chunk_id = (task_idx - 1_int64)/chunk_size + 1_int64
             group_id = int(mod(chunk_id - 1_int64, int(ctx%global_groups, int64)) + 1_int64)
             group_fill(group_id) = group_fill(group_id) + 1_int64
-            group_shards(group_id)%fragment_ids(group_fill(group_id)) = fragment_idx
-            group_shards(group_id)%polymers(group_fill(group_id), :) = ctx%polymers(fragment_idx, :)
+            group_shards(group_id)%fragment_ids(group_fill(group_id)) = task_idx
+            group_shards(group_id)%polymers(group_fill(group_id), :) = task_rows(task_idx, :)
          end do
       end if
 
@@ -342,19 +646,28 @@ contains
       end block
 
       call coord_timer%start()
-      do while (group_done_count < ctx%global_groups .or. results_received < ctx%total_fragments)
+      do while (group_done_count < ctx%global_groups .or. results_received < total_tasks)
 
          ! PRIORITY 1: Receive batched results from group globals
          call handle_group_results(ctx%resources%mpi_comms%world_comm, results, results_received, &
-                                   ctx%total_fragments, coord_timer, group_done_count, "fragment")
+                                   total_tasks, coord_timer, group_done_count, "task")
 
          ! PRIORITY 2: Check for incoming results from local workers
          if (ctx%resources%mpi_comms%node_comm%size() > 1) then
-            call handle_local_worker_results(ctx, worker_fragment_map, results, results_received, coord_timer)
+            call handle_local_worker_results(ctx, task_rows, worker_fragment_map, results, results_received, &
+                                             total_tasks, coord_timer)
          end if
 
          ! PRIORITY 3: Check for incoming results from node coordinators (group 0 only)
-         call handle_node_results(ctx, results, results_received, coord_timer)
+         call handle_node_results(ctx, task_rows, results, results_received, total_tasks, coord_timer)
+
+         ! Fold any fragment whose displacements have all landed, releasing its
+         ! task gradients while the rest of the queue is still running.
+         if (expand_displacements) then
+            call fold_completed_fragments(ctx%polymers, ctx%total_fragments, ctx%sys_geom, results, &
+                                          task_offset, frag_natoms, frag_results, next_frag, scan_pos, &
+                                          ctx%resources%mpi_comms%world_comm)
+         end if
 
          ! PRIORITY 4: Remote node coordinator requests for group 0
          call handle_group_node_requests(ctx, group0_queue, group0_fragment_ids, group0_polymers, group0_finished_nodes)
@@ -384,12 +697,33 @@ contains
          end if
       end do
 
-      call logger%verbose("Super-global coordinator finished all fragments")
+      call logger%verbose("Super-global coordinator finished all tasks")
       call coord_timer%stop()
-      call logger%info("Time to evaluate all fragments "//to_char(coord_timer%get_elapsed_time())//" s")
+      call logger%info("Time to evaluate all tasks "//to_char(coord_timer%get_elapsed_time())//" s")
       block
          use mqc_result_types, only: mbe_result_t
          type(mbe_result_t) :: mbe_result
+
+         ! Most fragments were folded as their displacements landed; this only
+         ! mops up whatever a straggler at the head of the scan held back.
+         if (expand_displacements) then
+            call coord_timer%start()
+            if (next_frag <= ctx%total_fragments) then
+               call logger%info("Assembling remaining fragment Hessians ("// &
+                                to_char(ctx%total_fragments - next_frag + 1_int64)//" of "// &
+                                to_char(ctx%total_fragments)//" deferred)...")
+               call fold_completed_fragments(ctx%polymers, ctx%total_fragments, ctx%sys_geom, results, &
+                                             task_offset, frag_natoms, frag_results, next_frag, scan_pos, &
+                                             ctx%resources%mpi_comms%world_comm)
+            end if
+            if (next_frag <= ctx%total_fragments) then
+               call logger%error("Fragment "//to_char(next_frag)//" never received all its displacements")
+               call abort_comm(ctx%resources%mpi_comms%world_comm, 1)
+            end if
+            call move_alloc(frag_results, results)
+            call coord_timer%stop()
+            call logger%info("Fragment Hessians finalised in "//to_char(coord_timer%get_elapsed_time())//" s")
+         end if
 
          ! Compute the many-body expansion
          call logger%info(" ")
@@ -428,38 +762,11 @@ contains
       if (allocated(group0_polymers)) deallocate (group0_polymers)
       if (allocated(group_leader_by_group)) deallocate (group_leader_by_group)
       if (allocated(group_node_counts)) deallocate (group_node_counts)
+      if (allocated(task_rows)) deallocate (task_rows)
+      if (allocated(task_offset)) deallocate (task_offset)
+      if (allocated(frag_natoms)) deallocate (frag_natoms)
       deallocate (results)
    end subroutine global_coordinator_impl
-
-   subroutine handle_node_requests(ctx, fragment_queue, finished_nodes)
-      !! Handle a single pending node coordinator request, if any.
-      use mqc_many_body_expansion, only: mbe_context_t
-      type(mbe_context_t), intent(in) :: ctx
-      type(queue_t), intent(inout) :: fragment_queue
-      integer, intent(inout) :: finished_nodes
-
-      integer :: request_source, dummy_msg
-      integer(int64) :: fragment_idx
-      type(MPI_Status) :: status
-      logical :: has_pending, has_fragment
-      type(request_t) :: req
-
-      call iprobe(ctx%resources%mpi_comms%world_comm, MPI_ANY_SOURCE, TAG_NODE_REQUEST, has_pending, status)
-      if (.not. has_pending) return
-
-      call irecv(ctx%resources%mpi_comms%world_comm, dummy_msg, status%MPI_SOURCE, TAG_NODE_REQUEST, req)
-      call wait(req)
-      request_source = status%MPI_SOURCE
-
-      call queue_pop(fragment_queue, fragment_idx, has_fragment)
-      if (has_fragment) then
-         call send_fragment_to_node(ctx%resources%mpi_comms%world_comm, fragment_idx, ctx%polymers, request_source)
-      else
-         call isend(ctx%resources%mpi_comms%world_comm, -1, request_source, TAG_NODE_FINISH, req)
-         call wait(req)
-         finished_nodes = finished_nodes + 1
-      end if
-   end subroutine handle_node_requests
 
    subroutine handle_group_node_requests(ctx, fragment_queue, group_fragment_ids, group_polymers, finished_nodes)
       !! Handle a single pending node coordinator request for a group shard, if any.
@@ -486,8 +793,8 @@ contains
       call queue_pop(fragment_queue, local_idx, has_fragment)
       if (has_fragment) then
          fragment_idx = group_fragment_ids(local_idx)
-         call send_fragment_payload_from_row(ctx%resources%mpi_comms%world_comm, TAG_NODE_FRAGMENT, fragment_idx, &
-                                             group_polymers(local_idx, :), request_source)
+         call send_task_payload_from_row(ctx%resources%mpi_comms%world_comm, TAG_NODE_FRAGMENT, fragment_idx, &
+                                         group_polymers(local_idx, :), request_source)
       else
          call isend(ctx%resources%mpi_comms%world_comm, -1, request_source, TAG_NODE_FINISH, req)
          call wait(req)
@@ -523,8 +830,8 @@ contains
       call queue_pop(fragment_queue, local_idx, has_fragment)
       if (has_fragment) then
          fragment_idx = group_fragment_ids(local_idx)
-         call send_fragment_payload_from_row(ctx%resources%mpi_comms%node_comm, TAG_WORKER_FRAGMENT, fragment_idx, &
-                                             group_polymers(local_idx, :), local_status%MPI_SOURCE)
+         call send_task_payload_from_row(ctx%resources%mpi_comms%node_comm, TAG_WORKER_FRAGMENT, fragment_idx, &
+                                         group_polymers(local_idx, :), local_status%MPI_SOURCE)
          worker_fragment_map(local_status%MPI_SOURCE) = fragment_idx
       else
          call isend(ctx%resources%mpi_comms%node_comm, -1, local_status%MPI_SOURCE, TAG_WORKER_FINISH, req)
@@ -533,46 +840,56 @@ contains
       end if
    end subroutine handle_local_worker_requests_group
 
-   subroutine handle_local_worker_requests(ctx, fragment_queue, worker_fragment_map, local_finished_workers)
-      !! Handle a single pending local worker request, if any.
+   subroutine record_task(ctx, task_rows, task_idx, result)
+      !! Append one finished task to the checkpoint, if there is one
+      !!
+      !! **Keyed on the task row, not on the fragment.** A Hessian run expands
+      !! each fragment into 1 + 6N tasks, so `task_idx` is not a fragment index
+      !! and `polymers(task_idx, :)` is somebody else's monomers.
+      !!
+      !! The row holds what tells them apart: the monomers, plus the
+      !! displacement code in the last column (`DISP_WHOLE_FRAGMENT` when
+      !! nothing is displaced). Keying on the whole row makes each displaced
+      !! gradient its own resumable unit, so a killed job keeps the
+      !! displacements it finished instead of losing the fragment.
       use mqc_many_body_expansion, only: mbe_context_t
-      type(mbe_context_t), intent(in) :: ctx
-      type(queue_t), intent(inout) :: fragment_queue
-      integer(int64), intent(inout) :: worker_fragment_map(:)
-      integer, intent(inout) :: local_finished_workers
+      type(mbe_context_t), intent(inout) :: ctx
+      integer, intent(in) :: task_rows(:, :)
+      integer(int64), intent(in) :: task_idx
+      type(calculation_result_t), intent(in) :: result
 
-      integer(int64) :: fragment_idx
-      integer(int32) :: local_dummy
-      type(MPI_Status) :: local_status
-      logical :: has_pending, has_fragment
-      type(request_t) :: req
-
-      call iprobe(ctx%resources%mpi_comms%node_comm, MPI_ANY_SOURCE, TAG_WORKER_REQUEST, has_pending, local_status)
-      if (.not. has_pending) return
-
-      if (worker_fragment_map(local_status%MPI_SOURCE) /= 0) return
-
-      call irecv(ctx%resources%mpi_comms%node_comm, local_dummy, local_status%MPI_SOURCE, TAG_WORKER_REQUEST, req)
-      call wait(req)
-
-      call queue_pop(fragment_queue, fragment_idx, has_fragment)
-      if (has_fragment) then
-      call send_fragment_to_worker(ctx%resources%mpi_comms%node_comm, fragment_idx, ctx%polymers, local_status%MPI_SOURCE)
-         worker_fragment_map(local_status%MPI_SOURCE) = fragment_idx
+      if (.not. ctx%checkpoint%active) return
+      if (task_idx < 1_int64 .or. task_idx > size(task_rows, 1, kind=int64)) return
+      if (result%has_gradient .and. result%has_hessian) then
+         call ctx%checkpoint%record(task_rows(task_idx, :), result%energy%total(), &
+                                    result%scf_status, size(result%gradient, 2), &
+                                    result%gradient, result%hessian, &
+                                    homo=result%homo, lumo=result%lumo, &
+                                    has_orbitals=result%has_orbitals)
+      else if (result%has_gradient) then
+         call ctx%checkpoint%record(task_rows(task_idx, :), result%energy%total(), &
+                                    result%scf_status, size(result%gradient, 2), &
+                                    gradient=result%gradient, &
+                                    homo=result%homo, lumo=result%lumo, &
+                                    has_orbitals=result%has_orbitals)
       else
-         call isend(ctx%resources%mpi_comms%node_comm, -1, local_status%MPI_SOURCE, TAG_WORKER_FINISH, req)
-         call wait(req)
-         local_finished_workers = local_finished_workers + 1
+         call ctx%checkpoint%record(task_rows(task_idx, :), result%energy%total(), &
+                                    result%scf_status, &
+                                    homo=result%homo, lumo=result%lumo, &
+                                    has_orbitals=result%has_orbitals)
       end if
-   end subroutine handle_local_worker_requests
+   end subroutine record_task
 
-   subroutine handle_local_worker_results(ctx, worker_fragment_map, results, results_received, coord_timer)
+   subroutine handle_local_worker_results(ctx, task_rows, worker_fragment_map, results, &
+                                          results_received, total_items, coord_timer)
       !! Drain results from local workers and update tracking state.
       use mqc_many_body_expansion, only: mbe_context_t
-      type(mbe_context_t), intent(in) :: ctx
+      type(mbe_context_t), intent(inout) :: ctx
+      integer, intent(in) :: task_rows(:, :)
       integer(int64), intent(inout) :: worker_fragment_map(:)
       type(calculation_result_t), intent(inout) :: results(:)
       integer(int64), intent(inout) :: results_received
+      integer(int64), intent(in) :: total_items
       type(timer_type), intent(in) :: coord_timer
 
       type(MPI_Status) :: local_status
@@ -596,6 +913,11 @@ contains
                            TAG_WORKER_SCALAR_RESULT, req)
          call wait(req)
 
+         ! TODO(mqc): recorded before `has_error` is checked below, so a failed
+         ! task is written to the checkpoint and reused by the next run.
+         call record_task(ctx, task_rows, worker_fragment_map(worker_source), &
+                          results(worker_fragment_map(worker_source)))
+
          if (results(worker_fragment_map(worker_source))%has_error) then
             call logger%error("Fragment "//to_char(worker_fragment_map(worker_source))// &
                               " calculation failed: "// &
@@ -605,21 +927,23 @@ contains
 
          worker_fragment_map(worker_source) = 0
          results_received = results_received + 1
-         if (mod(results_received, max(1_int64, ctx%total_fragments/10)) == 0 .or. &
-             results_received == ctx%total_fragments) then
+         if (mod(results_received, max(1_int64, total_items/10)) == 0 .or. &
+             results_received == total_items) then
             call logger%info("  Processed "//to_char(results_received)//"/"// &
-                             to_char(ctx%total_fragments)//" fragments ["// &
+                             to_char(total_items)//" tasks ["// &
                              to_char(coord_timer%get_elapsed_time())//" s]")
          end if
       end do
    end subroutine handle_local_worker_results
 
-   subroutine handle_node_results(ctx, results, results_received, coord_timer)
+   subroutine handle_node_results(ctx, task_rows, results, results_received, total_items, coord_timer)
       !! Drain results from remote node coordinators and update tracking state.
       use mqc_many_body_expansion, only: mbe_context_t
-      type(mbe_context_t), intent(in) :: ctx
+      type(mbe_context_t), intent(inout) :: ctx
+      integer, intent(in) :: task_rows(:, :)
       type(calculation_result_t), intent(inout) :: results(:)
       integer(int64), intent(inout) :: results_received
+      integer(int64), intent(in) :: total_items
       type(timer_type), intent(in) :: coord_timer
 
       integer(int64) :: fragment_idx
@@ -637,6 +961,12 @@ contains
                            TAG_NODE_SCALAR_RESULT, req)
          call wait(req)
 
+         ! Recorded the moment rank 0 owns it: the only rank that sees every
+         ! result, its own workers' and the forwarded ones alike.
+         ! TODO(mqc): recorded before `has_error` is checked below, so a failed
+         ! task is written to the checkpoint and reused by the next run.
+         call record_task(ctx, task_rows, fragment_idx, results(fragment_idx))
+
          if (results(fragment_idx)%has_error) then
             call logger%error("Fragment "//to_char(fragment_idx)//" calculation failed: "// &
                               results(fragment_idx)%error%get_message())
@@ -644,10 +974,10 @@ contains
          end if
 
          results_received = results_received + 1
-         if (mod(results_received, max(1_int64, ctx%total_fragments/10)) == 0 .or. &
-             results_received == ctx%total_fragments) then
+         if (mod(results_received, max(1_int64, total_items/10)) == 0 .or. &
+             results_received == total_items) then
             call logger%info("  Processed "//to_char(results_received)//"/"// &
-                             to_char(ctx%total_fragments)//" fragments ["// &
+                             to_char(total_items)//" tasks ["// &
                              to_char(coord_timer%get_elapsed_time())//" s]")
          end if
       end do
@@ -752,26 +1082,6 @@ contains
       deallocate (batch_results)
    end subroutine group_global_coordinator_impl
 
-   subroutine send_fragment_to_node(world_comm, fragment_idx, polymers, dest_rank)
-      !! Send fragment data to remote node coordinator
-      !! Uses int64 for fragment_idx to handle large fragment indices that overflow int32.
-      type(comm_t), intent(in) :: world_comm
-      integer(int64), intent(in) :: fragment_idx
-      integer, intent(in) :: dest_rank
-      integer, intent(in) :: polymers(:, :)
-      call send_fragment_payload(world_comm, TAG_NODE_FRAGMENT, fragment_idx, polymers, dest_rank)
-   end subroutine send_fragment_to_node
-
-   subroutine send_fragment_to_worker(node_comm, fragment_idx, polymers, dest_rank)
-      !! Send fragment data to local worker
-      !! Uses int64 for fragment_idx to handle large fragment indices that overflow int32.
-      type(comm_t), intent(in) :: node_comm
-      integer(int64), intent(in) :: fragment_idx
-      integer, intent(in) :: dest_rank
-      integer, intent(in) :: polymers(:, :)
-      call send_fragment_payload(node_comm, TAG_WORKER_FRAGMENT, fragment_idx, polymers, dest_rank)
-   end subroutine send_fragment_to_worker
-
    subroutine get_group_leader_rank(ctx, node_rank, group_leader_rank, group_id)
       !! Resolve group leader rank and group id for the given node leader rank.
       use mqc_many_body_expansion, only: many_body_expansion_t
@@ -820,7 +1130,7 @@ contains
 
       integer :: group_leader_rank, group_id
       integer(int64) :: fragment_idx
-      integer(int32) :: fragment_size, fragment_type, dummy_msg
+      integer(int32) :: fragment_size, fragment_type, dummy_msg, disp_code
       integer(int32) :: finished_workers
       integer(int32), allocatable :: fragment_indices(:)
       type(MPI_Status) :: status, global_status
@@ -879,6 +1189,13 @@ contains
 call result_isend(worker_result, ctx%resources%mpi_comms%world_comm, group_leader_rank, TAG_NODE_SCALAR_RESULT, req)  ! result
             call wait(req)
 
+            ! Release before the next receive. pic-mpi's array recv allocates
+            ! only when the target is unallocated -- it does not resize a buffer
+            ! that is already there, but still receives the sender's full count
+            ! into it, so reusing one across fragments of different sizes writes
+            ! past the end of the smaller allocation and corrupts the heap.
+            call worker_result%destroy()
+
             ! Clear the mapping
             worker_fragment_map(worker_source) = 0
          end if
@@ -908,6 +1225,8 @@ call result_isend(worker_result, ctx%resources%mpi_comms%world_comm, group_leade
                      allocate (fragment_indices(fragment_size))
                      call recv(ctx%resources%mpi_comms%world_comm, fragment_indices, group_leader_rank, &
                                TAG_NODE_FRAGMENT, global_status)
+                     call irecv(ctx%resources%mpi_comms%world_comm, disp_code, group_leader_rank, TAG_NODE_FRAGMENT, req)
+                     call wait(req)
 
                      ! Forward to worker
                   call isend(ctx%resources%mpi_comms%node_comm, fragment_idx, status%MPI_SOURCE, TAG_WORKER_FRAGMENT, req)
@@ -917,6 +1236,8 @@ call result_isend(worker_result, ctx%resources%mpi_comms%world_comm, group_leade
                  call isend(ctx%resources%mpi_comms%node_comm, fragment_size, status%MPI_SOURCE, TAG_WORKER_FRAGMENT, req)
                      call wait(req)
               call isend(ctx%resources%mpi_comms%node_comm, fragment_indices, status%MPI_SOURCE, TAG_WORKER_FRAGMENT, req)
+                     call wait(req)
+                     call isend(ctx%resources%mpi_comms%node_comm, disp_code, status%MPI_SOURCE, TAG_WORKER_FRAGMENT, req)
                      call wait(req)
 
                      ! Track which fragment was sent to this worker
@@ -959,16 +1280,20 @@ call result_isend(worker_result, ctx%resources%mpi_comms%world_comm, group_leade
       !! Internal implementation of node_worker with typed context
       use mqc_error, only: error_t
       use mqc_many_body_expansion, only: many_body_expansion_t
+      use mqc_finite_differences, only: copy_and_displace_geometry, DEFAULT_DISPLACEMENT
       class(many_body_expansion_t), intent(in) :: ctx
 
       integer(int64) :: fragment_idx
       integer(int32) :: fragment_size, dummy_msg
       integer(int32) :: fragment_type  !! 0 = monomer (indices), 1 = intersection (atom list)
+      integer(int32) :: disp_code      !! 0 = reference point, +/-k = displaced coordinate k
       integer(int32), allocatable :: fragment_indices(:)
       type(calculation_result_t) :: result
       type(MPI_Status) :: status
-      type(physical_fragment_t) :: phys_frag
+      type(physical_fragment_t) :: phys_frag, disp_frag
       type(error_t) :: error
+      integer :: atom_idx, coord_idx
+      real(dp) :: step
 
       ! MPI request handles for non-blocking operations
       type(request_t) :: req
@@ -991,6 +1316,8 @@ call result_isend(worker_result, ctx%resources%mpi_comms%world_comm, group_leade
             ! Note: must use blocking recv for allocatable arrays since size is unknown
             allocate (fragment_indices(fragment_size))
             call recv(ctx%resources%mpi_comms%node_comm, fragment_indices, 0, TAG_WORKER_FRAGMENT, status)
+            call irecv(ctx%resources%mpi_comms%node_comm, disp_code, 0, TAG_WORKER_FRAGMENT, req)
+            call wait(req)
 
             ! Build physical fragment based on type
             if (ctx%has_geometry()) then
@@ -1008,9 +1335,28 @@ call result_isend(worker_result, ctx%resources%mpi_comms%world_comm, group_leade
                   call abort_comm(ctx%resources%mpi_comms%world_comm, 1)
                end if
 
-               ! Process the chemistry fragment with physical geometry
-               call do_fragment_work(fragment_idx, result, ctx%method_config, phys_frag, ctx%calc_type, &
-                                     ctx%resources%mpi_comms%world_comm)
+               if (disp_code == DISP_WHOLE_FRAGMENT) then
+                  ! One task per fragment: run the requested calculation as it stands.
+                  ! This covers every energy/gradient run and the whole GMBE path.
+                  call do_fragment_work(fragment_idx, result, ctx%method_config, phys_frag, ctx%calc_type, &
+                                        ctx%resources%mpi_comms%world_comm)
+               else if (disp_code == 0) then
+                  ! Flattened Hessian, undisplaced reference point: supplies the
+                  ! fragment's energy and gradient alongside its assembled Hessian.
+                  call do_fragment_work(fragment_idx, result, ctx%method_config, phys_frag, &
+                                        CALC_TYPE_GRADIENT, ctx%resources%mpi_comms%world_comm)
+               else
+                  ! Flattened Hessian, one displaced coordinate. The Hessian itself is
+                  ! assembled by the coordinator once all of a fragment's tasks land.
+                  atom_idx = (abs(disp_code) - 1)/3 + 1
+                  coord_idx = mod(abs(disp_code) - 1, 3) + 1
+                  step = sign(DEFAULT_DISPLACEMENT, real(disp_code, dp))
+                  call copy_and_displace_geometry(phys_frag, atom_idx, coord_idx, step, disp_frag)
+                  call do_fragment_work(fragment_idx, result, ctx%method_config, disp_frag, &
+                                        CALC_TYPE_GRADIENT, ctx%resources%mpi_comms%world_comm, &
+                                        print_geometry=.false.)
+                  call disp_frag%destroy()
+               end if
 
                call phys_frag%destroy()
             else

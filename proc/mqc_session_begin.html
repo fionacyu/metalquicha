@@ -1,0 +1,1282 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="A demonstration of PIC as a framework for scientific applications targetting quantum chemistry">
+    <meta name="author" content="Jorge Luis Galvez Vallejo" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>mqc_session_begin &ndash; metalquicha</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">metalquicha </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../program/main.html">Program</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>mqc_session_begin
+      <small>Function</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 0.0% of total for procedures.">11 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/mqc_capi_session.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/mqc_capi_session.f90.html'>mqc_capi_session.f90</a></li>
+                <li class="breadcrumb-item"><a href='../module/mqc_capi_session.html'>mqc_capi_session</a></li>
+            <li class="breadcrumb-item active" aria-current="page">mqc_session_begin</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#vars-0"
+         aria-expanded="false" aria-controls="vars-0">
+         <h4 class="card-header bg-primary text-white">Variables</h4>
+      </a>
+      <div id="vars-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../proc/mqc_session_begin.html#variable-error~58">error</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/mqc_session_begin.html#src">mqc_session_begin</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>public  function mqc_session_begin() result(status) bind(C, name="mqc_session_begin")  
+</h2>
+    
+
+    <p>Start MPI. Returns on rank 0 only; workers never come back.</p>
+
+
+    <h3>Arguments</h3>
+    <em>None</em>
+    <br>
+      <h3>Return Value
+        <small>
+          <span class="anchor" id="variable-status~6"></span>
+          integer(kind=c_int)
+        </small>
+      </h3>
+      
+    <br>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Calls</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~mqc_session_begin~~CallsGraph Pages: 1 -->
+<svg id="procmqc_session_beginCallsGraph" width="641pt" height="1171pt"
+ viewBox="0.00 0.00 641.00 1171.10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~mqc_session_begin~~CallsGraph" class="graph" transform="scale(0.61 0.61) rotate(0) translate(4 1918)">
+<title>proc~~mqc_session_begin~~CallsGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-1918 1048,-1918 1048,4 -4,4"/>
+<!-- proc~mqc_session_begin -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node1" class="node">
+<title>proc~mqc_session_begin</title>
+<polygon fill="none" stroke="black" points="115,-948 0,-948 0,-924 115,-924 115,-948"/>
+<text text-anchor="middle" x="57.5" y="-933.6" font-family="Helvetica,sans-Serif" font-size="10.50">mqc_session_begin</text>
+</g>
+<!-- proc~error_get_message -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node2" class="node">
+<title>proc~error_get_message</title>
+<g id="a_proc~~mqc_session_begin~~CallsGraph_node2"><a xlink:href="../proc/error_get_message.html" xlink:title="error_t%error_get_message">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="995.5,-1914 835.5,-1914 835.5,-1890 995.5,-1890 995.5,-1914"/>
+<text text-anchor="middle" x="915.5" y="-1899.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">error_t%error_get_message</text>
+</a>
+</g>
+</g>
+<!-- proc~mqc_session_begin&#45;&gt;proc~error_get_message -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge1" class="edge">
+<title>proc~mqc_session_begin&#45;&gt;proc~error_get_message</title>
+<path fill="none" stroke="#ff0000" d="M58.35,-948.13C57.85,-1043.56 67.19,-1670 399.5,-1670 399.5,-1670 399.5,-1670 526.5,-1670 675.49,-1670 651.08,-1819.97 787,-1881 798.99,-1886.38 812.16,-1890.4 825.36,-1893.4"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="824.93,-1896.88 835.43,-1895.5 826.35,-1890.03 824.93,-1896.88"/>
+</g>
+<!-- proc~error_has_error -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node3" class="node">
+<title>proc~error_has_error</title>
+<g id="a_proc~~mqc_session_begin~~CallsGraph_node3"><a xlink:href="../proc/error_has_error.html" xlink:title="error_t%error_has_error">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="985,-948 846,-948 846,-924 985,-924 985,-948"/>
+<text text-anchor="middle" x="915.5" y="-933.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">error_t%error_has_error</text>
+</a>
+</g>
+</g>
+<!-- proc~mqc_session_begin&#45;&gt;proc~error_has_error -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge2" class="edge">
+<title>proc~mqc_session_begin&#45;&gt;proc~error_has_error</title>
+<path fill="none" stroke="#ff0000" d="M115.22,-936C182.89,-936 299.45,-936 399.5,-936 399.5,-936 399.5,-936 526.5,-936 633.51,-936 757.13,-936 835.53,-936"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="835.81,-939.5 845.81,-936 835.81,-932.5 835.81,-939.5"/>
+</g>
+<!-- proc~session_begin -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node4" class="node">
+<title>proc~session_begin</title>
+<g id="a_proc~~mqc_session_begin~~CallsGraph_node4"><a xlink:href="../proc/session_begin.html" xlink:title="mqc_session_t%session_begin">
+<polygon fill="#d9534f" stroke="#d9534f" points="324,-528 151,-528 151,-504 324,-504 324,-528"/>
+<text text-anchor="middle" x="237.5" y="-513.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_session_t%session_begin</text>
+</a>
+</g>
+</g>
+<!-- proc~mqc_session_begin&#45;&gt;proc~session_begin -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge3" class="edge">
+<title>proc~mqc_session_begin&#45;&gt;proc~session_begin</title>
+<path fill="none" stroke="#ff0000" d="M63.64,-923.88C88.35,-865.56 195.19,-613.48 227.32,-537.66"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="230.66,-538.74 231.34,-528.17 224.22,-536.01 230.66,-538.74"/>
+</g>
+<!-- comm_world -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node5" class="node">
+<title>comm_world</title>
+<polygon fill="#777777" stroke="#777777" points="441,-424 360,-424 360,-400 441,-400 441,-424"/>
+<text text-anchor="middle" x="400.5" y="-409.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">comm_world</text>
+</g>
+<!-- proc~session_begin&#45;&gt;comm_world -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge4" class="edge">
+<title>proc~session_begin&#45;&gt;comm_world</title>
+<path fill="none" stroke="#0000ff" d="M255.02,-503.85C278.04,-487.12 321.31,-456.4 360,-433 362.29,-431.62 364.68,-430.22 367.09,-428.85"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="368.8,-431.91 375.87,-424.02 365.42,-425.78 368.8,-431.91"/>
+</g>
+<!-- pic_mpi_init -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node6" class="node">
+<title>pic_mpi_init</title>
+<polygon fill="#777777" stroke="#777777" points="438.5,-588 362.5,-588 362.5,-564 438.5,-564 438.5,-588"/>
+<text text-anchor="middle" x="400.5" y="-573.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">pic_mpi_init</text>
+</g>
+<!-- proc~session_begin&#45;&gt;pic_mpi_init -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge5" class="edge">
+<title>proc~session_begin&#45;&gt;pic_mpi_init</title>
+<path fill="none" stroke="#0000ff" d="M271.08,-528.14C296.04,-537.44 330.66,-550.35 357.67,-560.41"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="356.65,-563.77 367.24,-563.98 359.09,-557.21 356.65,-563.77"/>
+</g>
+<!-- proc~error_set -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node7" class="node">
+<title>proc~error_set</title>
+<g id="a_proc~~mqc_session_begin~~CallsGraph_node7"><a xlink:href="../proc/error_set.html" xlink:title="error_t%error_set">
+<polygon fill="#d9534f" stroke="#d9534f" points="968,-570 863,-570 863,-546 968,-546 968,-570"/>
+<text text-anchor="middle" x="915.5" y="-555.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">error_t%error_set</text>
+</a>
+</g>
+</g>
+<!-- proc~session_begin&#45;&gt;proc~error_set -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge6" class="edge">
+<title>proc~session_begin&#45;&gt;proc~error_set</title>
+<path fill="none" stroke="#0000ff" d="M324.12,-521.32C462.37,-529.91 731.53,-546.63 852.73,-554.16"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="852.74,-557.67 862.94,-554.8 853.18,-550.68 852.74,-557.67"/>
+</g>
+<!-- proc~worker_loop -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node8" class="node">
+<title>proc~worker_loop</title>
+<g id="a_proc~~mqc_session_begin~~CallsGraph_node8"><a xlink:href="../proc/worker_loop.html" xlink:title="worker_loop">
+<polygon fill="#d9534f" stroke="#d9534f" points="439.5,-508 361.5,-508 361.5,-484 439.5,-484 439.5,-508"/>
+<text text-anchor="middle" x="400.5" y="-493.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">worker_loop</text>
+</a>
+</g>
+</g>
+<!-- proc~session_begin&#45;&gt;proc~worker_loop -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge7" class="edge">
+<title>proc~session_begin&#45;&gt;proc~worker_loop</title>
+<path fill="none" stroke="#0000ff" d="M324.19,-505.36C333.47,-504.2 342.67,-503.06 351.28,-501.99"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="351.96,-505.43 361.45,-500.73 351.1,-498.49 351.96,-505.43"/>
+</g>
+<!-- split -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node9" class="node">
+<title>split</title>
+<polygon fill="#777777" stroke="#777777" points="427.5,-466 373.5,-466 373.5,-442 427.5,-442 427.5,-466"/>
+<text text-anchor="middle" x="400.5" y="-451.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">split</text>
+</g>
+<!-- proc~session_begin&#45;&gt;split -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge8" class="edge">
+<title>proc~session_begin&#45;&gt;split</title>
+<path fill="none" stroke="#0000ff" d="M269.92,-503.9C296.94,-493.5 335.88,-478.5 364.01,-467.67"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="365.39,-470.88 373.47,-464.02 362.88,-464.35 365.39,-470.88"/>
+</g>
+<!-- bcast -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node10" class="node">
+<title>bcast</title>
+<polygon fill="#777777" stroke="#777777" points="942.5,-24 888.5,-24 888.5,0 942.5,0 942.5,-24"/>
+<text text-anchor="middle" x="915.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">bcast</text>
+</g>
+<!-- proc~worker_loop&#45;&gt;bcast -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge9" class="edge">
+<title>proc~worker_loop&#45;&gt;bcast</title>
+<path fill="none" stroke="#0066ff" d="M429.3,-483.96C433.52,-481.39 437.59,-478.4 441,-475 553.76,-362.52 504.79,-278.57 610,-159 673.79,-86.51 697.72,-69.8 787,-33 816.17,-20.98 851.76,-15.83 877.92,-13.63"/>
+<polygon fill="#0066ff" stroke="#0066ff" points="878.44,-17.1 888.16,-12.87 877.93,-10.12 878.44,-17.1"/>
+</g>
+<!-- finalize -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node11" class="node">
+<title>finalize</title>
+<polygon fill="#777777" stroke="#777777" points="552.5,-112 498.5,-112 498.5,-88 552.5,-88 552.5,-112"/>
+<text text-anchor="middle" x="525.5" y="-97.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">finalize</text>
+</g>
+<!-- proc~worker_loop&#45;&gt;finalize -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge10" class="edge">
+<title>proc~worker_loop&#45;&gt;finalize</title>
+<path fill="none" stroke="#0066ff" d="M432.09,-483.91C435.55,-481.42 438.66,-478.48 441,-475 528.08,-345.64 390.71,-255.89 477,-126 480.19,-121.2 484.57,-117.21 489.39,-113.92"/>
+<polygon fill="#0066ff" stroke="#0066ff" points="491.48,-116.76 498.38,-108.72 487.97,-110.7 491.48,-116.76"/>
+</g>
+<!-- pic_mpi_finalize -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node12" class="node">
+<title>pic_mpi_finalize</title>
+<polygon fill="#777777" stroke="#777777" points="574,-70 477,-70 477,-46 574,-46 574,-70"/>
+<text text-anchor="middle" x="525.5" y="-55.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">pic_mpi_finalize</text>
+</g>
+<!-- proc~worker_loop&#45;&gt;pic_mpi_finalize -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge11" class="edge">
+<title>proc~worker_loop&#45;&gt;pic_mpi_finalize</title>
+<path fill="none" stroke="#0066ff" d="M432.13,-483.93C435.58,-481.45 438.68,-478.49 441,-475 538.8,-327.8 373.94,-222.57 477,-79 477.55,-78.23 478.14,-77.49 478.76,-76.78"/>
+<polygon fill="#0066ff" stroke="#0066ff" points="481.16,-79.32 486.38,-70.1 476.55,-74.05 481.16,-79.32"/>
+</g>
+<!-- proc~worker_run -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node13" class="node">
+<title>proc~worker_run</title>
+<g id="a_proc~~mqc_session_begin~~CallsGraph_node13"><a xlink:href="../proc/worker_run.html" xlink:title="worker_run">
+<polygon fill="#d9534f" stroke="#d9534f" points="562,-633 489,-633 489,-609 562,-609 562,-633"/>
+<text text-anchor="middle" x="525.5" y="-618.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">worker_run</text>
+</a>
+</g>
+</g>
+<!-- proc~worker_loop&#45;&gt;proc~worker_run -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge12" class="edge">
+<title>proc~worker_loop&#45;&gt;proc~worker_run</title>
+<path fill="none" stroke="#0066ff" d="M413.74,-508.44C435.22,-530.27 479.82,-575.6 505.39,-601.58"/>
+<polygon fill="#0066ff" stroke="#0066ff" points="503.16,-604.3 512.67,-608.98 508.15,-599.39 503.16,-604.3"/>
+</g>
+<!-- proc~worker_run&#45;&gt;proc~error_has_error -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge17" class="edge">
+<title>proc~worker_run&#45;&gt;proc~error_has_error</title>
+<path fill="none" stroke="#7f00ff" d="M528.16,-633.08C533.56,-668.09 553.65,-770.89 610,-831 668.87,-893.8 767.03,-919.04 835.95,-929.19"/>
+<polygon fill="#7f00ff" stroke="#7f00ff" points="835.51,-932.66 845.9,-930.57 836.48,-925.72 835.51,-932.66"/>
+</g>
+<!-- proc~apply_log_level -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node14" class="node">
+<title>proc~apply_log_level</title>
+<g id="a_proc~~mqc_session_begin~~CallsGraph_node14"><a xlink:href="../proc/apply_log_level.html" xlink:title="apply_log_level">
+<polygon fill="#d9534f" stroke="#d9534f" points="727.5,-654 633.5,-654 633.5,-630 727.5,-630 727.5,-654"/>
+<text text-anchor="middle" x="680.5" y="-639.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">apply_log_level</text>
+</a>
+</g>
+</g>
+<!-- proc~worker_run&#45;&gt;proc~apply_log_level -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge13" class="edge">
+<title>proc~worker_run&#45;&gt;proc~apply_log_level</title>
+<path fill="none" stroke="#7f00ff" d="M562.37,-625.92C580.51,-628.41 602.93,-631.49 623.29,-634.28"/>
+<polygon fill="#7f00ff" stroke="#7f00ff" points="623.02,-637.78 633.4,-635.67 623.97,-630.85 623.02,-637.78"/>
+</g>
+<!-- proc~bcast_string -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node15" class="node">
+<title>proc~bcast_string</title>
+<g id="a_proc~~mqc_session_begin~~CallsGraph_node15"><a xlink:href="../proc/bcast_string.html" xlink:title="bcast_string">
+<polygon fill="#d9534f" stroke="#d9534f" points="718.5,-612 642.5,-612 642.5,-588 718.5,-588 718.5,-612"/>
+<text text-anchor="middle" x="680.5" y="-597.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">bcast_string</text>
+</a>
+</g>
+</g>
+<!-- proc~worker_run&#45;&gt;proc~bcast_string -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge14" class="edge">
+<title>proc~worker_run&#45;&gt;proc~bcast_string</title>
+<path fill="none" stroke="#7f00ff" d="M562.37,-616.08C583.21,-613.22 609.7,-609.58 632.22,-606.49"/>
+<polygon fill="#7f00ff" stroke="#7f00ff" points="632.82,-609.94 642.26,-605.11 631.87,-603 632.82,-609.94"/>
+</g>
+<!-- proc~bcast_system_geometry -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node16" class="node">
+<title>proc~bcast_system_geometry</title>
+<g id="a_proc~~mqc_session_begin~~CallsGraph_node16"><a xlink:href="../proc/bcast_system_geometry.html" xlink:title="bcast_system_geometry">
+<polygon fill="#d9534f" stroke="#d9534f" points="751,-192 610,-192 610,-168 751,-168 751,-192"/>
+<text text-anchor="middle" x="680.5" y="-177.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">bcast_system_geometry</text>
+</a>
+</g>
+</g>
+<!-- proc~worker_run&#45;&gt;proc~bcast_system_geometry -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge15" class="edge">
+<title>proc~worker_run&#45;&gt;proc~bcast_system_geometry</title>
+<path fill="none" stroke="#7f00ff" d="M530.75,-608.74C551.72,-548.29 644.25,-281.6 671.76,-202.31"/>
+<polygon fill="#7f00ff" stroke="#7f00ff" points="675.23,-203 675.2,-192.4 668.61,-200.71 675.23,-203"/>
+</g>
+<!-- proc~config_to_driver -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node17" class="node">
+<title>proc~config_to_driver</title>
+<g id="a_proc~~mqc_session_begin~~CallsGraph_node17"><a xlink:href="../proc/config_to_driver.html" xlink:title="config_to_driver">
+<polygon fill="#d9534f" stroke="#d9534f" points="729.5,-822 631.5,-822 631.5,-798 729.5,-798 729.5,-822"/>
+<text text-anchor="middle" x="680.5" y="-807.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">config_to_driver</text>
+</a>
+</g>
+</g>
+<!-- proc~worker_run&#45;&gt;proc~config_to_driver -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge16" class="edge">
+<title>proc~worker_run&#45;&gt;proc~config_to_driver</title>
+<path fill="none" stroke="#7f00ff" d="M536.3,-633.11C561.93,-664.77 631.15,-750.27 663.02,-789.65"/>
+<polygon fill="#7f00ff" stroke="#7f00ff" points="660.57,-792.18 669.58,-797.75 666.01,-787.77 660.57,-792.18"/>
+</g>
+<!-- proc~read_json_config_text -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node18" class="node">
+<title>proc~read_json_config_text</title>
+<g id="a_proc~~mqc_session_begin~~CallsGraph_node18"><a xlink:href="../proc/read_json_config_text.html" xlink:title="read_json_config_text">
+<polygon fill="#d9534f" stroke="#d9534f" points="744,-465 617,-465 617,-441 744,-441 744,-465"/>
+<text text-anchor="middle" x="680.5" y="-450.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">read_json_config_text</text>
+</a>
+</g>
+</g>
+<!-- proc~worker_run&#45;&gt;proc~read_json_config_text -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge18" class="edge">
+<title>proc~worker_run&#45;&gt;proc~read_json_config_text</title>
+<path fill="none" stroke="#7f00ff" d="M537.5,-608.92C563.51,-580.36 629,-508.45 661.13,-473.17"/>
+<polygon fill="#7f00ff" stroke="#7f00ff" points="664.04,-475.18 668.18,-465.43 658.86,-470.46 664.04,-475.18"/>
+</g>
+<!-- proc~run_calculation -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node19" class="node">
+<title>proc~run_calculation</title>
+<g id="a_proc~~mqc_session_begin~~CallsGraph_node19"><a xlink:href="../proc/run_calculation.html" xlink:title="run_calculation">
+<polygon fill="#d9534f" stroke="#d9534f" points="727.5,-1410 633.5,-1410 633.5,-1386 727.5,-1386 727.5,-1410"/>
+<text text-anchor="middle" x="680.5" y="-1395.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">run_calculation</text>
+</a>
+</g>
+</g>
+<!-- proc~worker_run&#45;&gt;proc~run_calculation -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge19" class="edge">
+<title>proc~worker_run&#45;&gt;proc~run_calculation</title>
+<path fill="none" stroke="#7f00ff" d="M528.9,-633.2C546.25,-721.3 652.28,-1259.77 675.15,-1375.93"/>
+<polygon fill="#7f00ff" stroke="#7f00ff" points="671.74,-1376.69 677.1,-1385.82 678.6,-1375.33 671.74,-1376.69"/>
+</g>
+<!-- configure -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node21" class="node">
+<title>configure</title>
+<polygon fill="#777777" stroke="#777777" points="947,-654 884,-654 884,-630 947,-630 947,-654"/>
+<text text-anchor="middle" x="915.5" y="-639.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">configure</text>
+</g>
+<!-- proc~apply_log_level&#45;&gt;configure -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge20" class="edge">
+<title>proc~apply_log_level&#45;&gt;configure</title>
+<path fill="none" stroke="#ff0000" d="M727.53,-642C770.11,-642 832.81,-642 873.65,-642"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="873.79,-645.5 883.79,-642 873.79,-638.5 873.79,-645.5"/>
+</g>
+<!-- proc~get_logger_level -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node41" class="node">
+<title>proc~get_logger_level</title>
+<g id="a_proc~~mqc_session_begin~~CallsGraph_node41"><a xlink:href="../proc/get_logger_level.html" xlink:title="get_logger_level">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="965.5,-696 865.5,-696 865.5,-672 965.5,-672 965.5,-696"/>
+<text text-anchor="middle" x="915.5" y="-681.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">get_logger_level</text>
+</a>
+</g>
+</g>
+<!-- proc~apply_log_level&#45;&gt;proc~get_logger_level -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge21" class="edge">
+<title>proc~apply_log_level&#45;&gt;proc~get_logger_level</title>
+<path fill="none" stroke="#ff0000" d="M727.66,-651.53C746.09,-655.25 767.52,-659.46 787,-663 809.29,-667.05 833.84,-671.18 855.4,-674.69"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="854.96,-678.16 865.39,-676.3 856.08,-671.25 854.96,-678.16"/>
+</g>
+<!-- proc~bcast_integer_array -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node33" class="node">
+<title>proc~bcast_integer_array</title>
+<g id="a_proc~~mqc_session_begin~~CallsGraph_node33"><a xlink:href="../proc/bcast_integer_array.html" xlink:title="bcast_integer_array">
+<polygon fill="#d9534f" stroke="#d9534f" points="974.5,-612 856.5,-612 856.5,-588 974.5,-588 974.5,-612"/>
+<text text-anchor="middle" x="915.5" y="-597.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">bcast_integer_array</text>
+</a>
+</g>
+</g>
+<!-- proc~bcast_string&#45;&gt;proc~bcast_integer_array -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge22" class="edge">
+<title>proc~bcast_string&#45;&gt;proc~bcast_integer_array</title>
+<path fill="none" stroke="#ffff00" d="M718.68,-600C752.86,-600 804.4,-600 846.02,-600"/>
+<polygon fill="#ffff00" stroke="#ffff00" points="846.1,-603.5 856.1,-600 846.1,-596.5 846.1,-603.5"/>
+</g>
+<!-- proc~bcast_system_geometry&#45;&gt;bcast -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge23" class="edge">
+<title>proc~bcast_system_geometry&#45;&gt;bcast</title>
+<path fill="none" stroke="#00ff00" d="M731.36,-167.9C738.66,-164.37 745.55,-159.84 751,-154 789.29,-112.98 744.91,-70.1 787,-33 811.7,-11.23 849.98,-7.52 878.15,-8.32"/>
+<polygon fill="#00ff00" stroke="#00ff00" points="878.25,-11.82 888.41,-8.81 878.59,-4.83 878.25,-11.82"/>
+</g>
+<!-- proc~bcast_bonds -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node30" class="node">
+<title>proc~bcast_bonds</title>
+<g id="a_proc~~mqc_session_begin~~CallsGraph_node30"><a xlink:href="../proc/bcast_bonds.html" xlink:title="bcast_bonds">
+<polygon fill="#d9534f" stroke="#d9534f" points="955,-150 876,-150 876,-126 955,-126 955,-150"/>
+<text text-anchor="middle" x="915.5" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">bcast_bonds</text>
+</a>
+</g>
+</g>
+<!-- proc~bcast_system_geometry&#45;&gt;proc~bcast_bonds -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge24" class="edge">
+<title>proc~bcast_system_geometry&#45;&gt;proc~bcast_bonds</title>
+<path fill="none" stroke="#00ff00" d="M740.03,-167.99C755.3,-164.96 771.75,-161.77 787,-159 812.96,-154.28 841.97,-149.47 865.76,-145.64"/>
+<polygon fill="#00ff00" stroke="#00ff00" points="866.62,-149.04 875.94,-144.01 865.52,-142.13 866.62,-149.04"/>
+</g>
+<!-- proc~bcast_int_1d -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node31" class="node">
+<title>proc~bcast_int_1d</title>
+<g id="a_proc~~mqc_session_begin~~CallsGraph_node31"><a xlink:href="../proc/bcast_int_1d.html" xlink:title="bcast_int_1d">
+<polygon fill="#d9534f" stroke="#d9534f" points="955,-108 876,-108 876,-84 955,-84 955,-108"/>
+<text text-anchor="middle" x="915.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">bcast_int_1d</text>
+</a>
+</g>
+</g>
+<!-- proc~bcast_system_geometry&#45;&gt;proc~bcast_int_1d -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge25" class="edge">
+<title>proc~bcast_system_geometry&#45;&gt;proc~bcast_int_1d</title>
+<path fill="none" stroke="#00ff00" d="M723.01,-167.88C732.6,-164.17 742.48,-159.56 751,-154 770.21,-141.45 766.66,-127.62 787,-117 811.1,-104.42 840.95,-99.04 865.72,-96.87"/>
+<polygon fill="#00ff00" stroke="#00ff00" points="866.26,-100.34 875.98,-96.12 865.76,-93.36 866.26,-100.34"/>
+</g>
+<!-- proc~bcast_int_2d -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node32" class="node">
+<title>proc~bcast_int_2d</title>
+<g id="a_proc~~mqc_session_begin~~CallsGraph_node32"><a xlink:href="../proc/bcast_int_2d.html" xlink:title="bcast_int_2d">
+<polygon fill="#d9534f" stroke="#d9534f" points="955,-66 876,-66 876,-42 955,-42 955,-66"/>
+<text text-anchor="middle" x="915.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">bcast_int_2d</text>
+</a>
+</g>
+</g>
+<!-- proc~bcast_system_geometry&#45;&gt;proc~bcast_int_2d -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge26" class="edge">
+<title>proc~bcast_system_geometry&#45;&gt;proc~bcast_int_2d</title>
+<path fill="none" stroke="#00ff00" d="M729.25,-167.88C737.15,-164.34 744.78,-159.8 751,-154 779.22,-127.68 756.36,-98.45 787,-75 809.16,-58.04 839.88,-52.61 865.61,-51.5"/>
+<polygon fill="#00ff00" stroke="#00ff00" points="866.01,-54.99 875.93,-51.27 865.85,-47.99 866.01,-54.99"/>
+</g>
+<!-- proc~bcast_real_2d -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node34" class="node">
+<title>proc~bcast_real_2d</title>
+<g id="a_proc~~mqc_session_begin~~CallsGraph_node34"><a xlink:href="../proc/bcast_real_2d.html" xlink:title="bcast_real_2d">
+<polygon fill="#d9534f" stroke="#d9534f" points="958,-234 873,-234 873,-210 958,-210 958,-234"/>
+<text text-anchor="middle" x="915.5" y="-219.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">bcast_real_2d</text>
+</a>
+</g>
+</g>
+<!-- proc~bcast_system_geometry&#45;&gt;proc~bcast_real_2d -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge27" class="edge">
+<title>proc~bcast_system_geometry&#45;&gt;proc~bcast_real_2d</title>
+<path fill="none" stroke="#00ff00" d="M740.03,-192.01C755.3,-195.04 771.75,-198.23 787,-201 811.9,-205.53 839.61,-210.14 862.82,-213.89"/>
+<polygon fill="#00ff00" stroke="#00ff00" points="862.38,-217.36 872.81,-215.49 863.49,-210.45 862.38,-217.36"/>
+</g>
+<!-- proc~system_destroy -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node57" class="node">
+<title>proc~system_destroy</title>
+<g id="a_proc~~mqc_session_begin~~CallsGraph_node57"><a xlink:href="../proc/system_destroy.html" xlink:title="system_geometry_t%system_destroy">
+<polygon fill="#d9534f" stroke="#d9534f" points="1019.5,-192 811.5,-192 811.5,-168 1019.5,-168 1019.5,-192"/>
+<text text-anchor="middle" x="915.5" y="-177.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">system_geometry_t%system_destroy</text>
+</a>
+</g>
+</g>
+<!-- proc~bcast_system_geometry&#45;&gt;proc~system_destroy -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge28" class="edge">
+<title>proc~bcast_system_geometry&#45;&gt;proc~system_destroy</title>
+<path fill="none" stroke="#00ff00" d="M751.09,-180C766.9,-180 784.09,-180 801.18,-180"/>
+<polygon fill="#00ff00" stroke="#00ff00" points="801.23,-183.5 811.23,-180 801.23,-176.5 801.23,-183.5"/>
+</g>
+<!-- proc~config_to_driver&#45;&gt;proc~error_has_error -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge30" class="edge">
+<title>proc~config_to_driver&#45;&gt;proc~error_has_error</title>
+<path fill="none" stroke="#00ffff" d="M702.2,-822.04C716.9,-831.23 736.51,-844.86 751,-860 771.2,-881.11 762.52,-899.06 787,-915 801.46,-924.42 818.74,-930.07 835.83,-933.37"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="835.42,-936.85 845.86,-935.05 836.58,-929.95 835.42,-936.85"/>
+</g>
+<!-- proc~copy_fragment_potentials -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node38" class="node">
+<title>proc~copy_fragment_potentials</title>
+<g id="a_proc~~mqc_session_begin~~CallsGraph_node38"><a xlink:href="../proc/copy_fragment_potentials.html" xlink:title="copy_fragment_potentials">
+<polygon fill="#d9534f" stroke="#d9534f" points="991,-780 840,-780 840,-756 991,-756 991,-780"/>
+<text text-anchor="middle" x="915.5" y="-765.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">copy_fragment_potentials</text>
+</a>
+</g>
+</g>
+<!-- proc~config_to_driver&#45;&gt;proc~copy_fragment_potentials -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge29" class="edge">
+<title>proc~config_to_driver&#45;&gt;proc~copy_fragment_potentials</title>
+<path fill="none" stroke="#00ffff" d="M729.75,-800.04C747.7,-796.43 768.26,-792.41 787,-789 800.9,-786.47 815.67,-783.92 830.05,-781.5"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="830.64,-784.95 839.93,-779.86 829.49,-778.05 830.64,-784.95"/>
+</g>
+<!-- proc~resolve_fragmentation_method -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node48" class="node">
+<title>proc~resolve_fragmentation_method</title>
+<g id="a_proc~~mqc_session_begin~~CallsGraph_node48"><a xlink:href="../proc/resolve_fragmentation_method.html" xlink:title="resolve_fragmentation_method">
+<polygon fill="#d9534f" stroke="#d9534f" points="1005,-738 826,-738 826,-714 1005,-714 1005,-738"/>
+<text text-anchor="middle" x="915.5" y="-723.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">resolve_fragmentation_method</text>
+</a>
+</g>
+</g>
+<!-- proc~config_to_driver&#45;&gt;proc~resolve_fragmentation_method -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge31" class="edge">
+<title>proc~config_to_driver&#45;&gt;proc~resolve_fragmentation_method</title>
+<path fill="none" stroke="#00ffff" d="M697.34,-797.92C717.18,-783.43 752.74,-759.54 787,-747 796.24,-743.62 806.06,-740.78 815.99,-738.39"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="816.95,-741.77 825.94,-736.16 815.41,-734.94 816.95,-741.77"/>
+</g>
+<!-- proc~set_optimization_constraints -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node55" class="node">
+<title>proc~set_optimization_constraints</title>
+<g id="a_proc~~mqc_session_begin~~CallsGraph_node55"><a xlink:href="../proc/set_optimization_constraints.html" xlink:title="set_optimization_constraints">
+<polygon fill="#d9534f" stroke="#d9534f" points="997,-906 834,-906 834,-882 997,-882 997,-906"/>
+<text text-anchor="middle" x="915.5" y="-891.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">set_optimization_constraints</text>
+</a>
+</g>
+</g>
+<!-- proc~config_to_driver&#45;&gt;proc~set_optimization_constraints -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge32" class="edge">
+<title>proc~config_to_driver&#45;&gt;proc~set_optimization_constraints</title>
+<path fill="none" stroke="#00ffff" d="M697.34,-822.08C717.18,-836.57 752.74,-860.46 787,-873 798.64,-877.26 811.19,-880.66 823.72,-883.37"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="823.24,-886.84 833.74,-885.4 824.63,-879.98 823.24,-886.84"/>
+</g>
+<!-- proc~set_optimization_vocabulary -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node56" class="node">
+<title>proc~set_optimization_vocabulary</title>
+<g id="a_proc~~mqc_session_begin~~CallsGraph_node56"><a xlink:href="../proc/set_optimization_vocabulary.html" xlink:title="set_optimization_vocabulary">
+<polygon fill="#d9534f" stroke="#d9534f" points="997.5,-864 833.5,-864 833.5,-840 997.5,-840 997.5,-864"/>
+<text text-anchor="middle" x="915.5" y="-849.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">set_optimization_vocabulary</text>
+</a>
+</g>
+</g>
+<!-- proc~config_to_driver&#45;&gt;proc~set_optimization_vocabulary -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge33" class="edge">
+<title>proc~config_to_driver&#45;&gt;proc~set_optimization_vocabulary</title>
+<path fill="none" stroke="#00ffff" d="M729.75,-819.96C747.7,-823.57 768.26,-827.59 787,-831 800.5,-833.45 814.82,-835.93 828.81,-838.29"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="828.48,-841.78 838.92,-839.98 829.63,-834.88 828.48,-841.78"/>
+</g>
+<!-- proc~xtb_configure -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node59" class="node">
+<title>proc~xtb_configure</title>
+<g id="a_proc~~mqc_session_begin~~CallsGraph_node59"><a xlink:href="../proc/xtb_configure.html" xlink:title="xtb_config_t%xtb_configure">
+<polygon fill="#d9534f" stroke="#d9534f" points="994.5,-822 836.5,-822 836.5,-798 994.5,-798 994.5,-822"/>
+<text text-anchor="middle" x="915.5" y="-807.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">xtb_config_t%xtb_configure</text>
+</a>
+</g>
+</g>
+<!-- proc~config_to_driver&#45;&gt;proc~xtb_configure -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge34" class="edge">
+<title>proc~config_to_driver&#45;&gt;proc~xtb_configure</title>
+<path fill="none" stroke="#00ffff" d="M729.78,-810C757.68,-810 793.65,-810 826.42,-810"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="826.48,-813.5 836.48,-810 826.48,-806.5 826.48,-813.5"/>
+</g>
+<!-- proc~read_json_config_text&#45;&gt;proc~error_has_error -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge41" class="edge">
+<title>proc~read_json_config_text&#45;&gt;proc~error_has_error</title>
+<path fill="none" stroke="#0000ff" d="M690.37,-465.12C705.69,-486.75 736.8,-533.97 751,-579 773.58,-650.62 735.42,-860.42 787,-915 799.68,-928.41 817.37,-935.37 835.55,-938.65"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="835.28,-942.14 845.67,-940.1 836.27,-935.21 835.28,-942.14"/>
+</g>
+<!-- proc~read_json_config_text&#45;&gt;proc~error_set -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge42" class="edge">
+<title>proc~read_json_config_text&#45;&gt;proc~error_set</title>
+<path fill="none" stroke="#0000ff" d="M692.5,-465.05C710.35,-483.77 747.63,-519.52 787,-537 807.44,-546.08 831.3,-551.27 852.82,-554.22"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="852.49,-557.71 862.84,-555.47 853.35,-550.76 852.49,-557.71"/>
+</g>
+<!-- deserialize -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node22" class="node">
+<title>deserialize</title>
+<polygon fill="#777777" stroke="#777777" points="950.5,-402 880.5,-402 880.5,-378 950.5,-378 950.5,-402"/>
+<text text-anchor="middle" x="915.5" y="-387.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">deserialize</text>
+</g>
+<!-- proc~read_json_config_text&#45;&gt;deserialize -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge35" class="edge">
+<title>proc~read_json_config_text&#45;&gt;deserialize</title>
+<path fill="none" stroke="#0000ff" d="M707.41,-440.86C728.44,-431.46 759.08,-418.76 787,-411 814.14,-403.46 845.33,-398.26 870.07,-394.93"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="870.78,-398.36 880.24,-393.61 869.88,-391.42 870.78,-398.36"/>
+</g>
+<!-- destroy -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node23" class="node">
+<title>destroy</title>
+<polygon fill="#777777" stroke="#777777" points="942.5,-360 888.5,-360 888.5,-336 942.5,-336 942.5,-360"/>
+<text text-anchor="middle" x="915.5" y="-345.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">destroy</text>
+</g>
+<!-- proc~read_json_config_text&#45;&gt;destroy -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge36" class="edge">
+<title>proc~read_json_config_text&#45;&gt;destroy</title>
+<path fill="none" stroke="#0000ff" d="M692.5,-440.95C710.35,-422.23 747.63,-386.48 787,-369 816.01,-356.12 851.91,-351.06 878.21,-349.11"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="878.73,-352.59 888.49,-348.47 878.3,-345.6 878.73,-352.59"/>
+</g>
+<!-- failed -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node25" class="node">
+<title>failed</title>
+<polygon fill="#777777" stroke="#777777" points="942.5,-486 888.5,-486 888.5,-462 942.5,-462 942.5,-486"/>
+<text text-anchor="middle" x="915.5" y="-471.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">failed</text>
+</g>
+<!-- proc~read_json_config_text&#45;&gt;failed -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge37" class="edge">
+<title>proc~read_json_config_text&#45;&gt;failed</title>
+<path fill="none" stroke="#0000ff" d="M744.25,-458.66C787.18,-462.53 842.6,-467.52 878.34,-470.74"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="878.05,-474.23 888.32,-471.64 878.68,-467.26 878.05,-474.23"/>
+</g>
+<!-- initialize -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node27" class="node">
+<title>initialize</title>
+<polygon fill="#777777" stroke="#777777" points="944,-318 887,-318 887,-294 944,-294 944,-318"/>
+<text text-anchor="middle" x="915.5" y="-303.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">initialize</text>
+</g>
+<!-- proc~read_json_config_text&#45;&gt;initialize -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge38" class="edge">
+<title>proc~read_json_config_text&#45;&gt;initialize</title>
+<path fill="none" stroke="#0000ff" d="M687.74,-440.84C701.66,-415.06 737.93,-354.99 787,-327 814.35,-311.4 850.04,-306.59 876.7,-305.43"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="876.9,-308.93 886.8,-305.15 876.71,-301.93 876.9,-308.93"/>
+</g>
+<!-- proc~ensure_valid_json -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node39" class="node">
+<title>proc~ensure_valid_json</title>
+<g id="a_proc~~mqc_session_begin~~CallsGraph_node39"><a xlink:href="../proc/ensure_valid_json.html" xlink:title="ensure_valid_json">
+<polygon fill="#d9534f" stroke="#d9534f" points="968.5,-276 862.5,-276 862.5,-252 968.5,-252 968.5,-276"/>
+<text text-anchor="middle" x="915.5" y="-261.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">ensure_valid_json</text>
+</a>
+</g>
+</g>
+<!-- proc~read_json_config_text&#45;&gt;proc~ensure_valid_json -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge39" class="edge">
+<title>proc~read_json_config_text&#45;&gt;proc~ensure_valid_json</title>
+<path fill="none" stroke="#0000ff" d="M685.24,-440.77C695.61,-409.13 727.91,-324.28 787,-285 806.04,-272.35 830.12,-266.44 852.21,-263.91"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="852.57,-267.39 862.2,-262.98 851.92,-260.42 852.57,-267.39"/>
+</g>
+<!-- proc~error_add_context -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node40" class="node">
+<title>proc~error_add_context</title>
+<g id="a_proc~~mqc_session_begin~~CallsGraph_node40"><a xlink:href="../proc/error_add_context.html" xlink:title="error_t%error_add_context">
+<polygon fill="#d9534f" stroke="#d9534f" points="992.5,-528 838.5,-528 838.5,-504 992.5,-504 992.5,-528"/>
+<text text-anchor="middle" x="915.5" y="-513.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">error_t%error_add_context</text>
+</a>
+</g>
+</g>
+<!-- proc~read_json_config_text&#45;&gt;proc~error_add_context -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge40" class="edge">
+<title>proc~read_json_config_text&#45;&gt;proc~error_add_context</title>
+<path fill="none" stroke="#0000ff" d="M707.41,-465.14C728.44,-474.54 759.08,-487.24 787,-495 800.22,-498.67 814.4,-501.79 828.32,-504.41"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="827.94,-507.89 838.4,-506.22 829.18,-501 827.94,-507.89"/>
+</g>
+<!-- proc~populate_config -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node46" class="node">
+<title>proc~populate_config</title>
+<g id="a_proc~~mqc_session_begin~~CallsGraph_node46"><a xlink:href="../proc/populate_config.html" xlink:title="populate_config">
+<polygon fill="#d9534f" stroke="#d9534f" points="964.5,-444 866.5,-444 866.5,-420 964.5,-420 964.5,-444"/>
+<text text-anchor="middle" x="915.5" y="-429.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">populate_config</text>
+</a>
+</g>
+</g>
+<!-- proc~read_json_config_text&#45;&gt;proc~populate_config -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge43" class="edge">
+<title>proc~read_json_config_text&#45;&gt;proc~populate_config</title>
+<path fill="none" stroke="#0000ff" d="M744.25,-447.34C779.06,-444.21 822.07,-440.33 856.16,-437.26"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="856.78,-440.72 866.43,-436.33 856.16,-433.74 856.78,-440.72"/>
+</g>
+<!-- proc~run_calculation&#45;&gt;proc~error_get_message -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge52" class="edge">
+<title>proc~run_calculation&#45;&gt;proc~error_get_message</title>
+<path fill="none" stroke="#ff00ff" d="M685.29,-1410.24C696.58,-1447.08 730.51,-1560.29 751,-1656 761.6,-1705.51 751.28,-1845.11 787,-1881 797.42,-1891.46 810.9,-1897.94 825.19,-1901.78"/>
+<polygon fill="#ff00ff" stroke="#ff00ff" points="824.66,-1905.24 835.19,-1904.03 826.2,-1898.42 824.66,-1905.24"/>
+</g>
+<!-- proc~run_calculation&#45;&gt;proc~error_has_error -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge53" class="edge">
+<title>proc~run_calculation&#45;&gt;proc~error_has_error</title>
+<path fill="none" stroke="#ff00ff" d="M682.61,-1385.95C688.8,-1321.51 721.17,-1018.28 787,-957 800.3,-944.62 817.95,-937.97 835.86,-934.67"/>
+<polygon fill="#ff00ff" stroke="#ff00ff" points="836.45,-938.12 845.81,-933.16 835.4,-931.2 836.45,-938.12"/>
+</g>
+<!-- abort_comm -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node20" class="node">
+<title>abort_comm</title>
+<polygon fill="#777777" stroke="#777777" points="955.5,-1704 875.5,-1704 875.5,-1680 955.5,-1680 955.5,-1704"/>
+<text text-anchor="middle" x="915.5" y="-1689.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">abort_comm</text>
+</g>
+<!-- proc~run_calculation&#45;&gt;abort_comm -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge44" class="edge">
+<title>proc~run_calculation&#45;&gt;abort_comm</title>
+<path fill="none" stroke="#ff00ff" d="M682.14,-1410.23C685.13,-1453.65 701.45,-1601.44 787,-1671 808.67,-1688.62 839.41,-1694.07 865.28,-1695.02"/>
+<polygon fill="#ff00ff" stroke="#ff00ff" points="865.23,-1698.52 875.29,-1695.17 865.34,-1691.52 865.23,-1698.52"/>
+</g>
+<!-- error -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node24" class="node">
+<title>error</title>
+<polygon fill="#777777" stroke="#777777" points="942.5,-1662 888.5,-1662 888.5,-1638 942.5,-1638 942.5,-1662"/>
+<text text-anchor="middle" x="915.5" y="-1647.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">error</text>
+</g>
+<!-- proc~run_calculation&#45;&gt;error -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge45" class="edge">
+<title>proc~run_calculation&#45;&gt;error</title>
+<path fill="none" stroke="#ff00ff" d="M683.08,-1410.26C688.79,-1449.35 712.23,-1571.82 787,-1629 812.92,-1648.82 850.53,-1652.9 878.19,-1652.72"/>
+<polygon fill="#ff00ff" stroke="#ff00ff" points="878.35,-1656.22 888.26,-1652.47 878.18,-1649.22 878.35,-1656.22"/>
+</g>
+<!-- info -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node26" class="node">
+<title>info</title>
+<polygon fill="#777777" stroke="#777777" points="942.5,-1620 888.5,-1620 888.5,-1596 942.5,-1596 942.5,-1620"/>
+<text text-anchor="middle" x="915.5" y="-1605.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">info</text>
+</g>
+<!-- proc~run_calculation&#45;&gt;info -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge46" class="edge">
+<title>proc~run_calculation&#45;&gt;info</title>
+<path fill="none" stroke="#ff00ff" d="M684.36,-1410.21C693.09,-1444.45 722.74,-1541.85 787,-1587 813.5,-1605.62 850.65,-1609.91 878.01,-1610.12"/>
+<polygon fill="#ff00ff" stroke="#ff00ff" points="878.38,-1613.62 888.35,-1610.02 878.31,-1606.62 878.38,-1613.62"/>
+</g>
+<!-- large_info -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node28" class="node">
+<title>large_info</title>
+<polygon fill="#777777" stroke="#777777" points="948.5,-1578 882.5,-1578 882.5,-1554 948.5,-1554 948.5,-1578"/>
+<text text-anchor="middle" x="915.5" y="-1563.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">large_info</text>
+</g>
+<!-- proc~run_calculation&#45;&gt;large_info -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge47" class="edge">
+<title>proc~run_calculation&#45;&gt;large_info</title>
+<path fill="none" stroke="#ff00ff" d="M686.41,-1410.39C698.57,-1439.35 733.1,-1511.52 787,-1545 812.4,-1560.78 845.92,-1565.82 872.22,-1567.03"/>
+<polygon fill="#ff00ff" stroke="#ff00ff" points="872.17,-1570.53 882.27,-1567.32 872.38,-1563.53 872.17,-1570.53"/>
+</g>
+<!-- omp_set_num_threads -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node29" class="node">
+<title>omp_set_num_threads</title>
+<polygon fill="#777777" stroke="#777777" points="981.5,-1536 849.5,-1536 849.5,-1512 981.5,-1512 981.5,-1536"/>
+<text text-anchor="middle" x="915.5" y="-1521.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">omp_set_num_threads</text>
+</g>
+<!-- proc~run_calculation&#45;&gt;omp_set_num_threads -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge48" class="edge">
+<title>proc~run_calculation&#45;&gt;omp_set_num_threads</title>
+<path fill="none" stroke="#ff00ff" d="M689.7,-1410.17C705.57,-1432.63 742.84,-1480.39 787,-1503 802.94,-1511.16 821.34,-1516.27 839.11,-1519.45"/>
+<polygon fill="#ff00ff" stroke="#ff00ff" points="839.05,-1522.98 849.48,-1521.1 840.16,-1516.07 839.05,-1522.98"/>
+</g>
+<!-- proc~calculation_fingerprint -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node35" class="node">
+<title>proc~calculation_fingerprint</title>
+<g id="a_proc~~mqc_session_begin~~CallsGraph_node35"><a xlink:href="../proc/calculation_fingerprint.html" xlink:title="calculation_fingerprint">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="982,-1494 849,-1494 849,-1470 982,-1470 982,-1494"/>
+<text text-anchor="middle" x="915.5" y="-1479.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">calculation_fingerprint</text>
+</a>
+</g>
+</g>
+<!-- proc~run_calculation&#45;&gt;proc~calculation_fingerprint -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge49" class="edge">
+<title>proc~run_calculation&#45;&gt;proc~calculation_fingerprint</title>
+<path fill="none" stroke="#ff00ff" d="M697.34,-1410.08C717.18,-1424.57 752.74,-1448.46 787,-1461 803.29,-1466.96 821.37,-1471.24 838.68,-1474.3"/>
+<polygon fill="#ff00ff" stroke="#ff00ff" points="838.32,-1477.79 848.76,-1475.97 839.46,-1470.88 838.32,-1477.79"/>
+</g>
+<!-- proc~check_system_geometry -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node36" class="node">
+<title>proc~check_system_geometry</title>
+<g id="a_proc~~mqc_session_begin~~CallsGraph_node36"><a xlink:href="../proc/check_system_geometry.html" xlink:title="check_system_geometry">
+<polygon fill="#d9534f" stroke="#d9534f" points="987.5,-1452 843.5,-1452 843.5,-1428 987.5,-1428 987.5,-1452"/>
+<text text-anchor="middle" x="915.5" y="-1437.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">check_system_geometry</text>
+</a>
+</g>
+</g>
+<!-- proc~run_calculation&#45;&gt;proc~check_system_geometry -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge50" class="edge">
+<title>proc~run_calculation&#45;&gt;proc~check_system_geometry</title>
+<path fill="none" stroke="#ff00ff" d="M727.66,-1407.53C746.09,-1411.25 767.52,-1415.46 787,-1419 801.94,-1421.72 817.89,-1424.46 833.27,-1427.04"/>
+<polygon fill="#ff00ff" stroke="#ff00ff" points="832.84,-1430.51 843.28,-1428.7 833.99,-1423.61 832.84,-1430.51"/>
+</g>
+<!-- proc~config_log_settings -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node37" class="node">
+<title>proc~config_log_settings</title>
+<g id="a_proc~~mqc_session_begin~~CallsGraph_node37"><a xlink:href="../proc/config_log_settings.html" xlink:title="method_config_t%config_log_settings">
+<polygon fill="#d9534f" stroke="#d9534f" points="1021.5,-1410 809.5,-1410 809.5,-1386 1021.5,-1386 1021.5,-1410"/>
+<text text-anchor="middle" x="915.5" y="-1395.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">method_config_t%config_log_settings</text>
+</a>
+</g>
+</g>
+<!-- proc~run_calculation&#45;&gt;proc~config_log_settings -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge51" class="edge">
+<title>proc~run_calculation&#45;&gt;proc~config_log_settings</title>
+<path fill="none" stroke="#ff00ff" d="M727.53,-1398C748.26,-1398 773.75,-1398 799.16,-1398"/>
+<polygon fill="#ff00ff" stroke="#ff00ff" points="799.27,-1401.5 809.27,-1398 799.27,-1394.5 799.27,-1401.5"/>
+</g>
+<!-- proc~json_output_data_destroy -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node42" class="node">
+<title>proc~json_output_data_destroy</title>
+<g id="a_proc~~mqc_session_begin~~CallsGraph_node42"><a xlink:href="../proc/json_output_data_destroy.html" xlink:title="json_output_data_t%json_output_data_destroy">
+<polygon fill="#d9534f" stroke="#d9534f" points="1044,-1368 787,-1368 787,-1344 1044,-1344 1044,-1368"/>
+<text text-anchor="middle" x="915.5" y="-1353.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">json_output_data_t%json_output_data_destroy</text>
+</a>
+</g>
+</g>
+<!-- proc~run_calculation&#45;&gt;proc~json_output_data_destroy -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge54" class="edge">
+<title>proc~run_calculation&#45;&gt;proc~json_output_data_destroy</title>
+<path fill="none" stroke="#ff00ff" d="M727.66,-1388.47C746.09,-1384.75 767.52,-1380.54 787,-1377 800.5,-1374.55 814.82,-1372.07 828.81,-1369.71"/>
+<polygon fill="#ff00ff" stroke="#ff00ff" points="829.63,-1373.12 838.92,-1368.02 828.48,-1366.22 829.63,-1373.12"/>
+</g>
+<!-- proc~lindep_collect_begin -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node43" class="node">
+<title>proc~lindep_collect_begin</title>
+<g id="a_proc~~mqc_session_begin~~CallsGraph_node43"><a xlink:href="../proc/lindep_collect_begin.html" xlink:title="lindep_collect_begin">
+<polygon fill="#d9534f" stroke="#d9534f" points="976,-1326 855,-1326 855,-1302 976,-1302 976,-1326"/>
+<text text-anchor="middle" x="915.5" y="-1311.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">lindep_collect_begin</text>
+</a>
+</g>
+</g>
+<!-- proc~run_calculation&#45;&gt;proc~lindep_collect_begin -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge55" class="edge">
+<title>proc~run_calculation&#45;&gt;proc~lindep_collect_begin</title>
+<path fill="none" stroke="#ff00ff" d="M697.34,-1385.92C717.18,-1371.43 752.74,-1347.54 787,-1335 805.22,-1328.33 825.67,-1323.78 844.77,-1320.66"/>
+<polygon fill="#ff00ff" stroke="#ff00ff" points="845.56,-1324.08 854.92,-1319.12 844.51,-1317.16 845.56,-1324.08"/>
+</g>
+<!-- proc~lindep_collect_end -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node44" class="node">
+<title>proc~lindep_collect_end</title>
+<g id="a_proc~~mqc_session_begin~~CallsGraph_node44"><a xlink:href="../proc/lindep_collect_end.html" xlink:title="lindep_collect_end">
+<polygon fill="#d9534f" stroke="#d9534f" points="971.5,-1284 859.5,-1284 859.5,-1260 971.5,-1260 971.5,-1284"/>
+<text text-anchor="middle" x="915.5" y="-1269.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">lindep_collect_end</text>
+</a>
+</g>
+</g>
+<!-- proc~run_calculation&#45;&gt;proc~lindep_collect_end -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge56" class="edge">
+<title>proc~run_calculation&#45;&gt;proc~lindep_collect_end</title>
+<path fill="none" stroke="#ff00ff" d="M689.7,-1385.83C705.57,-1363.37 742.84,-1315.61 787,-1293 806.05,-1283.25 828.6,-1277.85 849.41,-1274.91"/>
+<polygon fill="#ff00ff" stroke="#ff00ff" points="849.97,-1278.37 859.46,-1273.66 849.1,-1271.42 849.97,-1278.37"/>
+</g>
+<!-- proc~needs_serial_execution -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node45" class="node">
+<title>proc~needs_serial_execution</title>
+<g id="a_proc~~mqc_session_begin~~CallsGraph_node45"><a xlink:href="../proc/needs_serial_execution.html" xlink:title="needs_serial_execution">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="983.5,-1242 847.5,-1242 847.5,-1218 983.5,-1218 983.5,-1242"/>
+<text text-anchor="middle" x="915.5" y="-1227.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">needs_serial_execution</text>
+</a>
+</g>
+</g>
+<!-- proc~run_calculation&#45;&gt;proc~needs_serial_execution -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge57" class="edge">
+<title>proc~run_calculation&#45;&gt;proc~needs_serial_execution</title>
+<path fill="none" stroke="#ff00ff" d="M686.41,-1385.61C698.57,-1356.65 733.1,-1284.48 787,-1251 801.97,-1241.7 819.77,-1236.13 837.24,-1232.88"/>
+<polygon fill="#ff00ff" stroke="#ff00ff" points="838.16,-1236.27 847.47,-1231.22 837.04,-1229.36 838.16,-1236.27"/>
+</g>
+<!-- proc~report_linear_dependence_tally -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node47" class="node">
+<title>proc~report_linear_dependence_tally</title>
+<g id="a_proc~~mqc_session_begin~~CallsGraph_node47"><a xlink:href="../proc/report_linear_dependence_tally.html" xlink:title="report_linear_dependence_tally">
+<polygon fill="#d9534f" stroke="#d9534f" points="1006,-1200 825,-1200 825,-1176 1006,-1176 1006,-1200"/>
+<text text-anchor="middle" x="915.5" y="-1185.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">report_linear_dependence_tally</text>
+</a>
+</g>
+</g>
+<!-- proc~run_calculation&#45;&gt;proc~report_linear_dependence_tally -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge58" class="edge">
+<title>proc~run_calculation&#45;&gt;proc~report_linear_dependence_tally</title>
+<path fill="none" stroke="#ff00ff" d="M684.36,-1385.79C693.09,-1351.55 722.74,-1254.15 787,-1209 795.49,-1203.04 805.06,-1198.54 815.06,-1195.18"/>
+<polygon fill="#ff00ff" stroke="#ff00ff" points="816.17,-1198.51 824.76,-1192.3 814.17,-1191.8 816.17,-1198.51"/>
+</g>
+<!-- proc~result_from_json -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node49" class="node">
+<title>proc~result_from_json</title>
+<g id="a_proc~~mqc_session_begin~~CallsGraph_node49"><a xlink:href="../proc/result_from_json.html" xlink:title="result_from_json">
+<polygon fill="#d9534f" stroke="#d9534f" points="965,-1158 866,-1158 866,-1134 965,-1134 965,-1158"/>
+<text text-anchor="middle" x="915.5" y="-1143.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">result_from_json</text>
+</a>
+</g>
+</g>
+<!-- proc~run_calculation&#45;&gt;proc~result_from_json -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge59" class="edge">
+<title>proc~run_calculation&#45;&gt;proc~result_from_json</title>
+<path fill="none" stroke="#ff00ff" d="M683.08,-1385.74C688.79,-1346.65 712.23,-1224.18 787,-1167 806.33,-1152.22 832.16,-1146.2 855.52,-1144.16"/>
+<polygon fill="#ff00ff" stroke="#ff00ff" points="855.95,-1147.64 865.7,-1143.5 855.49,-1140.65 855.95,-1147.64"/>
+</g>
+<!-- proc~run_efp -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node50" class="node">
+<title>proc~run_efp</title>
+<g id="a_proc~~mqc_session_begin~~CallsGraph_node50"><a xlink:href="../proc/run_efp.html" xlink:title="run_efp">
+<polygon fill="#d9534f" stroke="#d9534f" points="942.5,-1116 888.5,-1116 888.5,-1092 942.5,-1092 942.5,-1116"/>
+<text text-anchor="middle" x="915.5" y="-1101.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">run_efp</text>
+</a>
+</g>
+</g>
+<!-- proc~run_calculation&#45;&gt;proc~run_efp -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge60" class="edge">
+<title>proc~run_calculation&#45;&gt;proc~run_efp</title>
+<path fill="none" stroke="#ff00ff" d="M682.14,-1385.77C685.13,-1342.35 701.45,-1194.56 787,-1125 812.39,-1104.36 850.24,-1100.42 878.11,-1100.85"/>
+<polygon fill="#ff00ff" stroke="#ff00ff" points="878.14,-1104.36 888.25,-1101.21 878.38,-1097.36 878.14,-1104.36"/>
+</g>
+<!-- proc~run_fragmented_calculation -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node51" class="node">
+<title>proc~run_fragmented_calculation</title>
+<g id="a_proc~~mqc_session_begin~~CallsGraph_node51"><a xlink:href="../proc/run_fragmented_calculation.html" xlink:title="run_fragmented_calculation">
+<polygon fill="#d9534f" stroke="#d9534f" points="997,-1074 834,-1074 834,-1050 997,-1050 997,-1074"/>
+<text text-anchor="middle" x="915.5" y="-1059.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">run_fragmented_calculation</text>
+</a>
+</g>
+</g>
+<!-- proc~run_calculation&#45;&gt;proc~run_fragmented_calculation -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge61" class="edge">
+<title>proc~run_calculation&#45;&gt;proc~run_fragmented_calculation</title>
+<path fill="none" stroke="#ff00ff" d="M681.44,-1385.94C681.92,-1338.77 690.4,-1165.26 787,-1083 797.58,-1073.99 810.51,-1068.11 824.03,-1064.37"/>
+<polygon fill="#ff00ff" stroke="#ff00ff" points="825.03,-1067.73 833.95,-1062.02 823.42,-1060.92 825.03,-1067.73"/>
+</g>
+<!-- proc~run_makefp -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node52" class="node">
+<title>proc~run_makefp</title>
+<g id="a_proc~~mqc_session_begin~~CallsGraph_node52"><a xlink:href="../proc/run_makefp.html" xlink:title="run_makefp">
+<polygon fill="#d9534f" stroke="#d9534f" points="953.5,-1032 877.5,-1032 877.5,-1008 953.5,-1008 953.5,-1032"/>
+<text text-anchor="middle" x="915.5" y="-1017.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">run_makefp</text>
+</a>
+</g>
+</g>
+<!-- proc~run_calculation&#45;&gt;proc~run_makefp -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge62" class="edge">
+<title>proc~run_calculation&#45;&gt;proc~run_makefp</title>
+<path fill="none" stroke="#ff00ff" d="M680.9,-1385.81C679.09,-1334.69 679.45,-1135.97 787,-1041 808.6,-1021.93 840.62,-1016.71 867.17,-1016.24"/>
+<polygon fill="#ff00ff" stroke="#ff00ff" points="867.4,-1019.74 877.42,-1016.28 867.43,-1012.74 867.4,-1019.74"/>
+</g>
+<!-- proc~run_sapt -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node53" class="node">
+<title>proc~run_sapt</title>
+<g id="a_proc~~mqc_session_begin~~CallsGraph_node53"><a xlink:href="../proc/run_sapt.html" xlink:title="run_sapt">
+<polygon fill="#d9534f" stroke="#d9534f" points="944.5,-990 886.5,-990 886.5,-966 944.5,-966 944.5,-990"/>
+<text text-anchor="middle" x="915.5" y="-975.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">run_sapt</text>
+</a>
+</g>
+</g>
+<!-- proc~run_calculation&#45;&gt;proc~run_sapt -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge63" class="edge">
+<title>proc~run_calculation&#45;&gt;proc~run_sapt</title>
+<path fill="none" stroke="#ff00ff" d="M682.94,-1385.91C690.41,-1325.12 726.82,-1053.7 787,-999 810.85,-977.32 848.08,-973.36 876.16,-974.06"/>
+<polygon fill="#ff00ff" stroke="#ff00ff" points="876.28,-977.57 886.43,-974.53 876.6,-970.58 876.28,-977.57"/>
+</g>
+<!-- proc~run_unfragmented_calculation -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node54" class="node">
+<title>proc~run_unfragmented_calculation</title>
+<g id="a_proc~~mqc_session_begin~~CallsGraph_node54"><a xlink:href="../proc/run_unfragmented_calculation.html" xlink:title="run_unfragmented_calculation">
+<polygon fill="#d9534f" stroke="#d9534f" points="1003.5,-1872 827.5,-1872 827.5,-1848 1003.5,-1848 1003.5,-1872"/>
+<text text-anchor="middle" x="915.5" y="-1857.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">run_unfragmented_calculation</text>
+</a>
+</g>
+</g>
+<!-- proc~run_calculation&#45;&gt;proc~run_unfragmented_calculation -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge64" class="edge">
+<title>proc~run_calculation&#45;&gt;proc~run_unfragmented_calculation</title>
+<path fill="none" stroke="#ff00ff" d="M685.05,-1410.01C695.83,-1446.68 728.76,-1560.44 751,-1656 769.79,-1736.73 727.48,-1781.3 787,-1839 795.62,-1847.36 806.21,-1853.14 817.56,-1857.05"/>
+<polygon fill="#ff00ff" stroke="#ff00ff" points="816.68,-1860.44 827.26,-1859.92 818.66,-1853.73 816.68,-1860.44"/>
+</g>
+<!-- proc~write_json_output -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node58" class="node">
+<title>proc~write_json_output</title>
+<g id="a_proc~~mqc_session_begin~~CallsGraph_node58"><a xlink:href="../proc/write_json_output.html" xlink:title="write_json_output">
+<polygon fill="#d9534f" stroke="#d9534f" points="968.5,-1830 862.5,-1830 862.5,-1806 968.5,-1806 968.5,-1830"/>
+<text text-anchor="middle" x="915.5" y="-1815.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">write_json_output</text>
+</a>
+</g>
+</g>
+<!-- proc~run_calculation&#45;&gt;proc~write_json_output -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge65" class="edge">
+<title>proc~run_calculation&#45;&gt;proc~write_json_output</title>
+<path fill="none" stroke="#ff00ff" d="M684.81,-1410.07C694.91,-1446.91 726.1,-1561.1 751,-1656 767.41,-1718.56 739.33,-1753.29 787,-1797 804.43,-1812.98 829.12,-1819.36 852.14,-1821.34"/>
+<polygon fill="#ff00ff" stroke="#ff00ff" points="852.03,-1824.84 862.22,-1821.94 852.45,-1817.85 852.03,-1824.84"/>
+</g>
+<!-- to_char -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node60" class="node">
+<title>to_char</title>
+<polygon fill="#777777" stroke="#777777" points="942.5,-1788 888.5,-1788 888.5,-1764 942.5,-1764 942.5,-1788"/>
+<text text-anchor="middle" x="915.5" y="-1773.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">to_char</text>
+</g>
+<!-- proc~run_calculation&#45;&gt;to_char -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge66" class="edge">
+<title>proc~run_calculation&#45;&gt;to_char</title>
+<path fill="none" stroke="#ff00ff" d="M684.73,-1410.24C700.93,-1471.55 773.25,-1742.86 787,-1755 811.68,-1776.79 849.96,-1780.5 878.14,-1779.7"/>
+<polygon fill="#ff00ff" stroke="#ff00ff" points="878.58,-1783.18 888.4,-1779.2 878.24,-1776.19 878.58,-1783.18"/>
+</g>
+<!-- warning -->
+<g id="proc~~mqc_session_begin~~CallsGraph_node61" class="node">
+<title>warning</title>
+<polygon fill="#777777" stroke="#777777" points="943,-1746 888,-1746 888,-1722 943,-1722 943,-1746"/>
+<text text-anchor="middle" x="915.5" y="-1731.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">warning</text>
+</g>
+<!-- proc~run_calculation&#45;&gt;warning -->
+<g id="proc~~mqc_session_begin~~CallsGraph_edge67" class="edge">
+<title>proc~run_calculation&#45;&gt;warning</title>
+<path fill="none" stroke="#ff00ff" d="M683.87,-1410.28C694.32,-1463.23 738.04,-1671.31 787,-1713 811.84,-1734.15 849.6,-1738.05 877.59,-1737.47"/>
+<polygon fill="#ff00ff" stroke="#ff00ff" points="877.94,-1740.96 887.79,-1737.06 877.65,-1733.96 877.94,-1740.96"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panprocmqc_session_beginCallsGraph = svgPanZoom('#procmqc_session_beginCallsGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CallsGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CallsGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="374,-24 244,-24 244,0 374,0 374,-24"/>
+<text text-anchor="middle" x="309" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="537.5,-24 392.5,-24 392.5,0 537.5,0 537.5,-24"/>
+<text text-anchor="middle" x="465" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="614,-24 556,-24 556,0 614,0 614,-24"/>
+<text text-anchor="middle" x="585" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="737.5,-24 632.5,-24 632.5,0 737.5,0 737.5,-24"/>
+<text text-anchor="middle" x="685" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+
+    <section>    
+      <h2>Variables</h2>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+<th></th><th scope="col">Initial</th>        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-error~58"></span>
+              type(<a href='../type/error_t.html'>error_t</a>),
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>error</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    </section>
+    <br>
+    
+    
+
+    
+    
+
+
+
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="hl codehilite"><pre><span></span><span class="w">   </span><span class="k">function </span><span class="n">mqc_session_begin</span><span class="p">()</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">status</span><span class="p">)</span><span class="w"> </span><span class="k">bind</span><span class="p">(</span><span class="n">C</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="o">=</span><span class="s2">"mqc_session_begin"</span><span class="p">)</span>
+<span class="w">      </span><span class="c">!! Start MPI. Returns on rank 0 only; workers never come back.</span>
+<span class="w">      </span><span class="kt">integer</span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">status</span>
+
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">error_t</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">error</span>
+
+<span class="w">      </span><span class="k">call </span><span class="n">the_session</span><span class="p">%</span><span class="n">begin</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="p">%</span><span class="n">has_error</span><span class="p">())</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         </span><span class="n">last_message</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">error</span><span class="p">%</span><span class="n">get_message</span><span class="p">()</span>
+<span class="w">         </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MQC_FAIL</span>
+<span class="w">         </span><span class="k">return</span>
+<span class="k">      end if</span>
+<span class="k">      </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MQC_OK</span>
+<span class="w">   </span><span class="k">end function </span><span class="n">mqc_session_begin</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              metalquicha
+ was developed by Jorge Luis Galvez Vallejo<br>              &copy; 2026 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+ on 2026-09-07 09:10 +0000             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

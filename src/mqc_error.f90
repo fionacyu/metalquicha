@@ -1,6 +1,5 @@
 !! Error handling module for metalquicha
 !! Provides a unified error type to replace stat/errmsg pairs
-!! Enhanced with stack trace support for better debugging
 module mqc_error
    implicit none
    private
@@ -8,25 +7,36 @@ module mqc_error
    public :: error_t
    public :: SUCCESS, ERROR_GENERIC, ERROR_IO, ERROR_PARSE, ERROR_VALIDATION
 
-   !! Error codes
+   ! Error codes
    integer, parameter :: SUCCESS = 0
    integer, parameter :: ERROR_GENERIC = 1
    integer, parameter :: ERROR_IO = 2
    integer, parameter :: ERROR_PARSE = 3
    integer, parameter :: ERROR_VALIDATION = 4
 
-   !! Stack trace configuration
+   ! Stack trace configuration
    integer, parameter :: MAX_STACK_DEPTH = 20
    integer, parameter :: MAX_LOCATION_LEN = 128
 
-   !! Unified error type with stack trace support
    type :: error_t
+      !! Unified error type with stack trace support
+      !!
+      !! **Inside an OpenMP region, clear it explicitly.** Every routine in this
+      !! project opens with `if (error%has_error()) return`, which is a fine
+      !! convention serially and a trap in a parallel one. A `private` copy of an
+      !! `error_t` is reused across the iterations one thread runs, so a single
+      !! failure disables every later iteration on that thread; and a copy whose
+      !! default initialisation the compiler has not applied disables all of them
+      !! from the start. Neither crashes. Both look like work that quietly did not
+      !! happen. Call `err%clear()` at the top of the loop body, not once before
+      !! the region.
       integer :: code = SUCCESS  !! Error code (0 = no error)
       character(len=:), allocatable :: message  !! Error message
-
-      !! Stack trace support
+      ! `call_stack` is allocated on the first `add_context` rather than held
+      ! inline: an `error_t` is embedded by value in every
+      ! `calculation_result_t`, of which there is one per fragment.
       integer :: stack_depth = 0  !! Current stack depth
-      character(len=MAX_LOCATION_LEN) :: call_stack(MAX_STACK_DEPTH)  !! Call locations
+      character(len=MAX_LOCATION_LEN), allocatable :: call_stack(:)  !! Call locations
    contains
       procedure :: has_error => error_has_error
       procedure :: set => error_set
@@ -56,7 +66,9 @@ contains
 
       this%code = code
       this%message = trim(message)
-      this%stack_depth = 0  ! Reset stack when setting new error
+      ! A new error starts a new stack; release the old one rather than keep it live
+      this%stack_depth = 0
+      if (allocated(this%call_stack)) deallocate (this%call_stack)
    end subroutine error_set
 
    pure subroutine error_clear(this)
@@ -65,6 +77,7 @@ contains
       this%code = SUCCESS
       this%stack_depth = 0
       if (allocated(this%message)) deallocate (this%message)
+      if (allocated(this%call_stack)) deallocate (this%call_stack)
    end subroutine error_clear
 
    pure function error_get_code(this) result(code)
@@ -87,27 +100,30 @@ contains
 
    pure subroutine error_add_context(this, location)
       !! Add a call location to the stack trace
-      !! Typically called when propagating errors upward
       !!
-      !! Example:
-      !!   call some_routine(..., error)
-      !!   if (error%has_error()) then
-      !!      call error%add_context("mqc_mbe:compute_energy")
-      !!      return
-      !!   end if
+      !! Typically called when propagating errors upward. Locations past
+      !! `MAX_STACK_DEPTH` are dropped.
       class(error_t), intent(inout) :: this
       character(len=*), intent(in) :: location
+
+      if (.not. allocated(this%call_stack)) then
+         allocate (this%call_stack(MAX_STACK_DEPTH))
+         this%call_stack = ""
+      end if
 
       if (this%stack_depth < MAX_STACK_DEPTH) then
          this%stack_depth = this%stack_depth + 1
          this%call_stack(this%stack_depth) = location
       end if
-      ! If stack is full, silently ignore (could print warning in non-pure version)
    end subroutine error_add_context
 
    function error_get_full_trace(this) result(trace)
       !! Get complete error message with stack trace
-      !! Returns a multi-line string with error and call stack
+      !!
+      !! Multi-line: the error, then the call stack, most recent first.
+      ! TODO(mqc): `buffer` is 2048 characters where a full stack is
+      ! `MAX_STACK_DEPTH*MAX_LOCATION_LEN` = 2560 plus the message, so a deep
+      ! trace runs `pos` past the end of the buffer.
       class(error_t), intent(in) :: this
       character(len=:), allocatable :: trace
       character(len=2048) :: buffer
@@ -119,7 +135,7 @@ contains
       end if
 
       ! Build error message
-      write (buffer, '(A,I0,A)') "Error ", this%code, ": "
+      write (buffer, "(A,I0,A)") "Error ", this%code, ": "
       pos = len_trim(buffer) + 1
 
       if (allocated(this%message)) then
@@ -128,12 +144,12 @@ contains
       end if
 
       ! Add stack trace if available
-      if (this%stack_depth > 0) then
-         buffer(pos:) = new_line('a')//"Call stack (most recent first):"
+      if (this%stack_depth > 0 .and. allocated(this%call_stack)) then
+         buffer(pos:) = new_line("a")//"Call stack (most recent first):"
          pos = len_trim(buffer) + 1
 
          do i = this%stack_depth, 1, -1
-            write (buffer(pos:), '(A,I0,A)') new_line('a')//"  [", i, "] "
+            write (buffer(pos:), "(A,I0,A)") new_line("a")//"  [", i, "] "
             pos = len_trim(buffer) + 1
             buffer(pos:) = trim(this%call_stack(i))
             pos = len_trim(buffer) + 1
@@ -156,19 +172,19 @@ contains
       if (.not. this%has_error()) return
 
       ! Print error message
-      write (out_unit, '(A,I0,A)', advance='no') "Error ", this%code, ": "
+      write (out_unit, "(A,I0,A)", advance="no") "Error ", this%code, ": "
       if (allocated(this%message)) then
-         write (out_unit, '(A)') trim(this%message)
+         write (out_unit, "(A)") trim(this%message)
       else
-         write (out_unit, '(A)') "(no message)"
+         write (out_unit, "(A)") "(no message)"
       end if
 
       ! Print stack trace if available
-      if (this%stack_depth > 0) then
-         write (out_unit, '(A)') "Call stack (most recent first):"
+      if (this%stack_depth > 0 .and. allocated(this%call_stack)) then
+         write (out_unit, "(A)") "Call stack (most recent first):"
          do i = this%stack_depth, 1, -1
-            write (out_unit, '(A,I0,A)', advance='no') "  [", i, "] "
-            write (out_unit, '(A)') trim(this%call_stack(i))
+            write (out_unit, "(A,I0,A)", advance="no") "  [", i, "] "
+            write (out_unit, "(A)") trim(this%call_stack(i))
          end do
       end if
    end subroutine error_print_trace

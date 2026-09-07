@@ -11,7 +11,6 @@ module mqc_mbe_fragment_distribution_scheme
    use pic_logger, only: logger => global_logger, verbose_level, info_level
    use pic_io, only: to_char
    use mqc_mbe_io, only: print_fragment_xyz
-   use omp_lib, only: omp_set_num_threads, omp_get_max_threads
    use mqc_mbe, only: compute_mbe
    use mqc_mpi_tags, only: TAG_WORKER_REQUEST, TAG_WORKER_FRAGMENT, TAG_WORKER_FINISH, &
                            TAG_WORKER_SCALAR_RESULT, &
@@ -23,7 +22,7 @@ module mqc_mbe_fragment_distribution_scheme
    use mqc_method_types, only: method_type_to_string
    use mqc_calc_types, only: calc_type_to_string, CALC_TYPE_ENERGY, CALC_TYPE_GRADIENT, CALC_TYPE_HESSIAN
    use mqc_config_adapter, only: driver_config_t
-   use mqc_calculation_defaults, only: FRAGMENT_TYPE_MONOMERS, FRAGMENT_TYPE_ATOMS
+   use mqc_calculation_defaults, only: FRAGMENT_TYPE_MONOMERS, FRAGMENT_TYPE_ATOMS, DISP_WHOLE_FRAGMENT
    use mqc_work_queue, only: queue_t
    use mqc_program_limits, only: GROUP_RESULT_BATCH_SIZE
 
@@ -42,7 +41,8 @@ module mqc_mbe_fragment_distribution_scheme
    public :: node_worker, unfragmented_calculation, distributed_unfragmented_hessian
 
    interface
-      module subroutine do_fragment_work(fragment_idx, result, method_config, phys_frag, calc_type, world_comm)
+      module subroutine do_fragment_work(fragment_idx, result, method_config, phys_frag, calc_type, world_comm, &
+                                         print_geometry, sole_calculation)
          implicit none
          integer(int64), intent(in) :: fragment_idx
          type(calculation_result_t), intent(out) :: result
@@ -50,11 +50,13 @@ module mqc_mbe_fragment_distribution_scheme
          type(physical_fragment_t), intent(in), optional :: phys_frag
          integer(int32), intent(in) :: calc_type
          type(comm_t), intent(in), optional :: world_comm
+         logical, intent(in), optional :: print_geometry
+         logical, intent(in), optional :: sole_calculation
       end subroutine do_fragment_work
 
       module subroutine global_coordinator(ctx, json_data)
          implicit none
-         class(*), intent(in) :: ctx
+         class(*), intent(inout) :: ctx
          type(json_output_data_t), intent(out), optional :: json_data  !! JSON output data
       end subroutine global_coordinator
 
@@ -64,14 +66,17 @@ module mqc_mbe_fragment_distribution_scheme
       end subroutine node_coordinator
 
       module subroutine serial_fragment_processor(total_fragments, polymers, max_level, sys_geom, &
-                                                  method_config, calc_type, json_data)
+                                                  method_config, calc_type, json_data, checkpoint)
+         use mqc_checkpoint, only: checkpoint_t
          implicit none
          integer(int64), intent(in) :: total_fragments
-         integer, intent(in) :: polymers(:, :), max_level
+         integer, intent(in) ::  max_level
+         integer, intent(in) :: polymers(:, :)
          type(system_geometry_t), intent(in) :: sys_geom
          type(method_config_t), intent(in) :: method_config  !! Method configuration
          integer(int32), intent(in) :: calc_type
          type(json_output_data_t), intent(out), optional :: json_data  !! JSON output data
+         type(checkpoint_t), intent(inout), optional :: checkpoint
       end subroutine serial_fragment_processor
 
       module subroutine node_worker(ctx)

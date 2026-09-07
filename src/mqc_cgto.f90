@@ -6,6 +6,18 @@ module mqc_cgto
    private
 
    public :: cgto_type, atomic_basis_type, molecular_basis_type
+   public :: ANGULAR_FORM_UNSET, ANGULAR_FORM_SPHERICAL, ANGULAR_FORM_CARTESIAN
+
+   ! Which angular form the basis is written in. Cartesian and spherical are
+   ! the same thing for s and p -- one function and three, either way -- so a
+   ! set that never goes above p says nothing about the convention, and that is
+   ! a third state rather than a default.
+   integer, parameter :: ANGULAR_FORM_UNSET = 0
+      !! No shell above p, so the file says nothing either way
+   integer, parameter :: ANGULAR_FORM_SPHERICAL = 1
+      !! 5d, 7f: `gto_spherical` in Basis Set Exchange JSON
+   integer, parameter :: ANGULAR_FORM_CARTESIAN = 2
+      !! 6d, 10f: `gto_cartesian` in Basis Set Exchange JSON
 
    type :: cgto_type
       !! Contracted Gaussian type orbital (CGTO) data structure
@@ -13,6 +25,8 @@ module mqc_cgto
         !! Angular momentum quantum number (0=s, 1=p, 2=d, etc.)
       integer :: nfunc
         !! Number of primitive Gaussians in the contraction
+      ! TODO(mqc): neither has a default initialiser, unlike every other
+      ! component in this module, so an unfilled `cgto_type` reads undefined.
       real(dp), allocatable :: exponents(:)
         !! Exponents (alpha values)
       real(dp), allocatable :: coefficients(:)
@@ -29,8 +43,10 @@ module mqc_cgto
       !! element symbol
       type(cgto_type), allocatable :: shells(:)
       !! array of contracted shells
-      integer :: nshells
-      !! number of shells in type
+      integer :: nshells = 0
+      !! number of shells in type; zero until `allocate_shells` runs
+      integer :: angular_form = ANGULAR_FORM_UNSET
+      !! Cartesian or spherical, from this element's `function_type` entries
    contains
       procedure :: allocate_shells => allocate_basis_shells
       procedure :: destroy => atomic_basis_destroy
@@ -41,18 +57,26 @@ module mqc_cgto
       !! Molecular basis set data structure (assembled basis)
       type(atomic_basis_type), allocatable :: elements(:)
       !! array of atomic basis types
-      integer :: nelements
+      integer :: nelements = 0
       !! total number of atoms/elements in a molecule
+      integer :: angular_form = ANGULAR_FORM_UNSET
+      !! Cartesian or spherical, agreed across every atom in the molecule. The
+      !! reader refuses a basis whose atoms disagree rather than choosing for
+      !! them.
    contains
       procedure :: allocate_elements => basis_set_allocate_elements
       procedure :: destroy => basis_set_destroy
       procedure :: num_basis_functions => molecular_basis_num_basis_functions
+      procedure :: is_cartesian => molecular_basis_is_cartesian
    end type molecular_basis_type
 
 contains
 
    pure subroutine cgto_allocate_arrays(self, nfunc)
       !! Allocate arrays for exponents and coefficients in a CGTO
+      ! TODO(mqc): allocates unconditionally, where the sibling
+      ! `ecp_shell_allocate` destroys first, so a second call on the same shell
+      ! aborts on an already-allocated array.
       class(cgto_type), intent(inout) :: self
       integer, intent(in) :: nfunc
 
@@ -93,6 +117,7 @@ contains
       end if
       if (allocated(self%element)) deallocate (self%element)
       self%nshells = 0
+      self%angular_form = ANGULAR_FORM_UNSET
    end subroutine atomic_basis_destroy
 
    pure subroutine basis_set_allocate_elements(self, nelements)
@@ -118,7 +143,19 @@ contains
       end if
 
       self%nelements = 0
+      self%angular_form = ANGULAR_FORM_UNSET
    end subroutine basis_set_destroy
+
+   pure function molecular_basis_is_cartesian(self) result(cartesian)
+      !! Whether the integrals over this basis must be built in the Cartesian form
+      !!
+      !! `ANGULAR_FORM_UNSET` answers false: with no shell above p the
+      !! integrals are the same either way.
+      class(molecular_basis_type), intent(in) :: self
+      logical :: cartesian
+
+      cartesian = self%angular_form == ANGULAR_FORM_CARTESIAN
+   end function molecular_basis_is_cartesian
 
    pure function cgto_num_basis_functions(self) result(nbf)
       !! Get number of basis functions in a shell (Cartesian)

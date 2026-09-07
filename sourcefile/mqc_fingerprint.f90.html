@@ -1,0 +1,1011 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="A demonstration of PIC as a framework for scientific applications targetting quantum chemistry">
+    <meta name="author" content="Jorge Luis Galvez Vallejo" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>mqc_fingerprint.f90 &ndash; metalquicha</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">metalquicha </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../program/main.html">Program</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>mqc_fingerprint.f90
+      <small>Source File</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 0.7% of total for source files.">193 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/mqc_fingerprint.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+            <li class="breadcrumb-item active" aria-current="page">mqc_fingerprint.f90</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+        <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#mods-0"
+         aria-expanded="false" aria-controls="mods-0">
+         <h4 class="card-header bg-primary text-white">Modules</h4>
+      </a>
+      <div id="mods-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/mqc_fingerprint.html">mqc_fingerprint</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../sourcefile/mqc_fingerprint.f90.html#src">mqc_fingerprint.f90</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    <div class="col-md-9" id='text'>
+      <p>Identifies the calculation that produced a number</p>
+      <br>
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">This file depends on</h3>
+          </div>
+          <div class="card-body">
+            <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: sourcefile~~mqc_fingerprint.f90~~EfferentGraph Pages: 1 -->
+<svg id="sourcefilemqc_fingerprintf90EfferentGraph" width="641pt" height="374pt"
+ viewBox="0.00 0.00 641.00 373.99" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="sourcefile~~mqc_fingerprint.f90~~EfferentGraph" class="graph" transform="scale(0.93 0.93) rotate(0) translate(4 398)">
+<title>sourcefile~~mqc_fingerprint.f90~~EfferentGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-398 685,-398 685,4 -4,4"/>
+<!-- sourcefile~mqc_fingerprint.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~EfferentGraph_node1" class="node">
+<title>sourcefile~mqc_fingerprint.f90</title>
+<polygon fill="none" stroke="black" points="681,-331 563,-331 563,-307 681,-307 681,-331"/>
+<text text-anchor="middle" x="622" y="-316.6" font-family="Helvetica,sans-Serif" font-size="10.50">mqc_fingerprint.f90</text>
+</g>
+<!-- sourcefile~mqc_method_config.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~EfferentGraph_node2" class="node">
+<title>sourcefile~mqc_method_config.f90</title>
+<g id="a_sourcefile~~mqc_fingerprint.f90~~EfferentGraph_node2"><a xlink:href="../sourcefile/mqc_method_config.f90.html" xlink:title="mqc_method_config.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="517.5,-331 376.5,-331 376.5,-307 517.5,-307 517.5,-331"/>
+<text text-anchor="middle" x="447" y="-316.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_method_config.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_fingerprint.f90&#45;&gt;sourcefile~mqc_method_config.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~EfferentGraph_edge1" class="edge">
+<title>sourcefile~mqc_fingerprint.f90&#45;&gt;sourcefile~mqc_method_config.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M562.91,-319C551.68,-319 539.72,-319 527.93,-319"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="527.63,-315.5 517.63,-319 527.63,-322.5 527.63,-315.5"/>
+</g>
+<!-- sourcefile~mqc_method_types.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~EfferentGraph_node3" class="node">
+<title>sourcefile~mqc_method_types.f90</title>
+<g id="a_sourcefile~~mqc_fingerprint.f90~~EfferentGraph_node3"><a xlink:href="../sourcefile/mqc_method_types.f90.html" xlink:title="mqc_method_types.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="315,-394 179,-394 179,-370 315,-370 315,-394"/>
+<text text-anchor="middle" x="247" y="-379.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_method_types.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_fingerprint.f90&#45;&gt;sourcefile~mqc_method_types.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~EfferentGraph_edge2" class="edge">
+<title>sourcefile~mqc_fingerprint.f90&#45;&gt;sourcefile~mqc_method_types.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M569.91,-331.1C556.03,-334.2 540.97,-337.39 527,-340 459.12,-352.68 381.39,-364.13 325.25,-371.86"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="324.46,-368.43 315.02,-373.26 325.41,-375.37 324.46,-368.43"/>
+</g>
+<!-- sourcefile~mqc_physical_fragment.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~EfferentGraph_node4" class="node">
+<title>sourcefile~mqc_physical_fragment.f90</title>
+<g id="a_sourcefile~~mqc_fingerprint.f90~~EfferentGraph_node4"><a xlink:href="../sourcefile/mqc_physical_fragment.f90.html" xlink:title="mqc_physical_fragment.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="527,-164 367,-164 367,-140 527,-140 527,-164"/>
+<text text-anchor="middle" x="447" y="-149.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_physical_fragment.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_fingerprint.f90&#45;&gt;sourcefile~mqc_physical_fragment.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~EfferentGraph_edge3" class="edge">
+<title>sourcefile~mqc_fingerprint.f90&#45;&gt;sourcefile~mqc_physical_fragment.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M608.56,-306.99C579.03,-278.48 504.48,-206.52 468.31,-171.6"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="470.42,-168.78 460.8,-164.35 465.56,-173.82 470.42,-168.78"/>
+</g>
+<!-- sourcefile~mqc_method_config.f90&#45;&gt;sourcefile~mqc_method_types.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~EfferentGraph_edge5" class="edge">
+<title>sourcefile~mqc_method_config.f90&#45;&gt;sourcefile~mqc_method_types.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M415.54,-331.09C392.53,-339.99 360.05,-352.05 331,-361 323.89,-363.19 316.39,-365.33 308.91,-367.35"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="307.92,-363.99 299.15,-369.93 309.71,-370.76 307.92,-363.99"/>
+</g>
+<!-- sourcefile~mqc_calculation_defaults.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~EfferentGraph_node5" class="node">
+<title>sourcefile~mqc_calculation_defaults.f90</title>
+<g id="a_sourcefile~~mqc_fingerprint.f90~~EfferentGraph_node5"><a xlink:href="../sourcefile/mqc_calculation_defaults.f90.html" xlink:title="mqc_calculation_defaults.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="331,-352 163,-352 163,-328 331,-328 331,-352"/>
+<text text-anchor="middle" x="247" y="-337.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_calculation_defaults.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_method_config.f90&#45;&gt;sourcefile~mqc_calculation_defaults.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~EfferentGraph_edge4" class="edge">
+<title>sourcefile~mqc_method_config.f90&#45;&gt;sourcefile~mqc_calculation_defaults.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M376.47,-326.37C365.18,-327.57 353.33,-328.83 341.58,-330.08"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="340.87,-326.63 331.29,-331.17 341.61,-333.59 340.87,-326.63"/>
+</g>
+<!-- sourcefile~mqc_program_limits.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~EfferentGraph_node11" class="node">
+<title>sourcefile~mqc_program_limits.f90</title>
+<g id="a_sourcefile~~mqc_fingerprint.f90~~EfferentGraph_node11"><a xlink:href="../sourcefile/mqc_program_limits.f90.html" xlink:title="mqc_program_limits.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="317.5,-268 176.5,-268 176.5,-244 317.5,-244 317.5,-268"/>
+<text text-anchor="middle" x="247" y="-253.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_program_limits.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_method_config.f90&#45;&gt;sourcefile~mqc_program_limits.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~EfferentGraph_edge6" class="edge">
+<title>sourcefile~mqc_method_config.f90&#45;&gt;sourcefile~mqc_program_limits.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M415.54,-306.91C392.53,-298.01 360.05,-285.95 331,-277 323.89,-274.81 316.39,-272.67 308.91,-270.65"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="309.71,-267.24 299.15,-268.07 307.92,-274.01 309.71,-267.24"/>
+</g>
+<!-- sourcefile~mqc_scf_types.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~EfferentGraph_node12" class="node">
+<title>sourcefile~mqc_scf_types.f90</title>
+<g id="a_sourcefile~~mqc_fingerprint.f90~~EfferentGraph_node12"><a xlink:href="../sourcefile/mqc_scf_types.f90.html" xlink:title="mqc_scf_types.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="302,-310 192,-310 192,-286 302,-286 302,-310"/>
+<text text-anchor="middle" x="247" y="-295.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_scf_types.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_method_config.f90&#45;&gt;sourcefile~mqc_scf_types.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~EfferentGraph_edge7" class="edge">
+<title>sourcefile~mqc_method_config.f90&#45;&gt;sourcefile~mqc_scf_types.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M376.47,-311.63C355.6,-309.41 332.8,-306.99 312.27,-304.82"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="312.4,-301.31 302.09,-303.74 311.66,-308.27 312.4,-301.31"/>
+</g>
+<!-- sourcefile~mqc_cgto.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~EfferentGraph_node6" class="node">
+<title>sourcefile~mqc_cgto.f90</title>
+<g id="a_sourcefile~~mqc_fingerprint.f90~~EfferentGraph_node6"><a xlink:href="../sourcefile/mqc_cgto.f90.html" xlink:title="mqc_cgto.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="289,-226 205,-226 205,-202 289,-202 289,-226"/>
+<text text-anchor="middle" x="247" y="-211.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_cgto.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_physical_fragment.f90&#45;&gt;sourcefile~mqc_cgto.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~EfferentGraph_edge8" class="edge">
+<title>sourcefile~mqc_physical_fragment.f90&#45;&gt;sourcefile~mqc_cgto.f90</title>
+<path fill="none" stroke="#0000ff" stroke-dasharray="5,2" d="M414.54,-164.12C391.58,-172.75 359.59,-184.31 331,-193 320.76,-196.11 309.72,-199.14 299.13,-201.87"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="297.99,-198.55 289.16,-204.4 299.72,-205.34 297.99,-198.55"/>
+</g>
+<!-- sourcefile~mqc_elements.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~EfferentGraph_node7" class="node">
+<title>sourcefile~mqc_elements.f90</title>
+<g id="a_sourcefile~~mqc_fingerprint.f90~~EfferentGraph_node7"><a xlink:href="../sourcefile/mqc_elements.f90.html" xlink:title="mqc_elements.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="302.5,-184 191.5,-184 191.5,-160 302.5,-160 302.5,-184"/>
+<text text-anchor="middle" x="247" y="-169.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_elements.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_physical_fragment.f90&#45;&gt;sourcefile~mqc_elements.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~EfferentGraph_edge9" class="edge">
+<title>sourcefile~mqc_physical_fragment.f90&#45;&gt;sourcefile~mqc_elements.f90</title>
+<path fill="none" stroke="#0000ff" stroke-dasharray="5,2" d="M366.89,-159.99C348.88,-161.81 329.96,-163.72 312.64,-165.47"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="312.24,-161.99 302.64,-166.48 312.94,-168.96 312.24,-161.99"/>
+</g>
+<!-- sourcefile~mqc_error.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~EfferentGraph_node8" class="node">
+<title>sourcefile~mqc_error.f90</title>
+<g id="a_sourcefile~~mqc_fingerprint.f90~~EfferentGraph_node8"><a xlink:href="../sourcefile/mqc_error.f90.html" xlink:title="mqc_error.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="106.5,-145 20.5,-145 20.5,-121 106.5,-121 106.5,-145"/>
+<text text-anchor="middle" x="63.5" y="-130.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_error.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_physical_fragment.f90&#45;&gt;sourcefile~mqc_error.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~EfferentGraph_edge10" class="edge">
+<title>sourcefile~mqc_physical_fragment.f90&#45;&gt;sourcefile~mqc_error.f90</title>
+<path fill="none" stroke="#0000ff" stroke-dasharray="5,2" d="M366.95,-148.06C292.01,-144.33 181.55,-138.83 116.92,-135.61"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="116.73,-132.1 106.57,-135.1 116.38,-139.09 116.73,-132.1"/>
+</g>
+<!-- sourcefile~mqc_geometry.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~EfferentGraph_node9" class="node">
+<title>sourcefile~mqc_geometry.f90</title>
+<g id="a_sourcefile~~mqc_fingerprint.f90~~EfferentGraph_node9"><a xlink:href="../sourcefile/mqc_geometry.f90.html" xlink:title="mqc_geometry.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="119.5,-61 7.5,-61 7.5,-37 119.5,-37 119.5,-61"/>
+<text text-anchor="middle" x="63.5" y="-46.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_geometry.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_physical_fragment.f90&#45;&gt;sourcefile~mqc_geometry.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~EfferentGraph_edge11" class="edge">
+<title>sourcefile~mqc_physical_fragment.f90&#45;&gt;sourcefile~mqc_geometry.f90</title>
+<path fill="none" stroke="#0000ff" stroke-dasharray="5,2" d="M433.53,-139.71C413.72,-121.08 373.01,-86.24 331,-71 265.37,-47.19 184.88,-43.76 129.63,-44.99"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="129.52,-41.49 119.62,-45.27 129.72,-48.49 129.52,-41.49"/>
+</g>
+<!-- sourcefile~mqc_physical_constants.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~EfferentGraph_node10" class="node">
+<title>sourcefile~mqc_physical_constants.f90</title>
+<g id="a_sourcefile~~mqc_fingerprint.f90~~EfferentGraph_node10"><a xlink:href="../sourcefile/mqc_physical_constants.f90.html" xlink:title="mqc_physical_constants.F90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="328.5,-24 165.5,-24 165.5,0 328.5,0 328.5,-24"/>
+<text text-anchor="middle" x="247" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_physical_constants.F90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_physical_fragment.f90&#45;&gt;sourcefile~mqc_physical_constants.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~EfferentGraph_edge12" class="edge">
+<title>sourcefile~mqc_physical_fragment.f90&#45;&gt;sourcefile~mqc_physical_constants.f90</title>
+<path fill="none" stroke="#0000ff" stroke-dasharray="5,2" d="M436.98,-139.77C419.24,-116.58 377.47,-66 331,-38 324.36,-34 317.05,-30.56 309.6,-27.61"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="310.72,-24.3 300.13,-24.14 308.31,-30.87 310.72,-24.3"/>
+</g>
+<!-- sourcefile~mqc_physical_fragment.f90&#45;&gt;sourcefile~mqc_program_limits.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~EfferentGraph_edge13" class="edge">
+<title>sourcefile~mqc_physical_fragment.f90&#45;&gt;sourcefile~mqc_program_limits.f90</title>
+<path fill="none" stroke="#0000ff" stroke-dasharray="5,2" d="M432.91,-164.05C412.6,-182.1 371.61,-216.06 331,-235 326.6,-237.05 321.97,-238.92 317.25,-240.62"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="315.84,-237.41 307.45,-243.88 318.04,-244.05 315.84,-237.41"/>
+</g>
+<!-- sourcefile~mqc_xyz_reader.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~EfferentGraph_node13" class="node">
+<title>sourcefile~mqc_xyz_reader.f90</title>
+<g id="a_sourcefile~~mqc_fingerprint.f90~~EfferentGraph_node13"><a xlink:href="../sourcefile/mqc_xyz_reader.f90.html" xlink:title="mqc_xyz_reader.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="306,-104 188,-104 188,-80 306,-80 306,-104"/>
+<text text-anchor="middle" x="247" y="-89.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_xyz_reader.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_physical_fragment.f90&#45;&gt;sourcefile~mqc_xyz_reader.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~EfferentGraph_edge14" class="edge">
+<title>sourcefile~mqc_physical_fragment.f90&#45;&gt;sourcefile~mqc_xyz_reader.f90</title>
+<path fill="none" stroke="#0000ff" stroke-dasharray="5,2" d="M405.93,-139.86C374.56,-130.35 330.78,-117.09 297.27,-106.93"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="298.26,-103.57 287.67,-104.02 296.23,-110.27 298.26,-103.57"/>
+</g>
+<!-- sourcefile~mqc_atomic_radii.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~EfferentGraph_node14" class="node">
+<title>sourcefile~mqc_atomic_radii.f90</title>
+<g id="a_sourcefile~~mqc_fingerprint.f90~~EfferentGraph_node14"><a xlink:href="../sourcefile/mqc_atomic_radii.f90.html" xlink:title="mqc_atomic_radii.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="127,-187 0,-187 0,-163 127,-163 127,-187"/>
+<text text-anchor="middle" x="63.5" y="-172.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_atomic_radii.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_elements.f90&#45;&gt;sourcefile~mqc_atomic_radii.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~EfferentGraph_edge15" class="edge">
+<title>sourcefile~mqc_elements.f90&#45;&gt;sourcefile~mqc_atomic_radii.f90</title>
+<path fill="none" stroke="#aaff00" stroke-dasharray="5,2" d="M191.05,-172.91C174.14,-173.19 155.25,-173.5 137.34,-173.8"/>
+<polygon fill="#aaff00" stroke="#aaff00" points="137.15,-170.3 127.21,-173.96 137.27,-177.3 137.15,-170.3"/>
+</g>
+<!-- sourcefile~mqc_xyz_reader.f90&#45;&gt;sourcefile~mqc_error.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~EfferentGraph_edge16" class="edge">
+<title>sourcefile~mqc_xyz_reader.f90&#45;&gt;sourcefile~mqc_error.f90</title>
+<path fill="none" stroke="#ff00aa" stroke-dasharray="5,2" d="M192.53,-104.08C168.55,-109.49 140.38,-115.86 116.58,-121.24"/>
+<polygon fill="#ff00aa" stroke="#ff00aa" points="115.65,-117.86 106.67,-123.47 117.19,-124.69 115.65,-117.86"/>
+</g>
+<!-- sourcefile~mqc_xyz_reader.f90&#45;&gt;sourcefile~mqc_geometry.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~EfferentGraph_edge17" class="edge">
+<title>sourcefile~mqc_xyz_reader.f90&#45;&gt;sourcefile~mqc_geometry.f90</title>
+<path fill="none" stroke="#ff00aa" stroke-dasharray="5,2" d="M194.96,-79.91C173.22,-74.76 147.7,-68.71 125.02,-63.34"/>
+<polygon fill="#ff00aa" stroke="#ff00aa" points="125.7,-59.9 115.16,-61 124.08,-66.71 125.7,-59.9"/>
+</g>
+<!-- sourcefile~mqc_string_utils.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~EfferentGraph_node15" class="node">
+<title>sourcefile~mqc_string_utils.f90</title>
+<g id="a_sourcefile~~mqc_fingerprint.f90~~EfferentGraph_node15"><a xlink:href="../sourcefile/mqc_string_utils.f90.html" xlink:title="mqc_string_utils.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="122.5,-103 4.5,-103 4.5,-79 122.5,-79 122.5,-103"/>
+<text text-anchor="middle" x="63.5" y="-88.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_string_utils.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_xyz_reader.f90&#45;&gt;sourcefile~mqc_string_utils.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~EfferentGraph_edge18" class="edge">
+<title>sourcefile~mqc_xyz_reader.f90&#45;&gt;sourcefile~mqc_string_utils.f90</title>
+<path fill="none" stroke="#ff00aa" stroke-dasharray="5,2" d="M187.82,-91.68C170.32,-91.58 150.95,-91.48 132.85,-91.38"/>
+<polygon fill="#ff00aa" stroke="#ff00aa" points="132.68,-87.88 122.66,-91.32 132.64,-94.88 132.68,-87.88"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var pansourcefilemqc_fingerprintf90EfferentGraph = svgPanZoom('#sourcefilemqc_fingerprintf90EfferentGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#EfferentGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="EfferentGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="202pt" height="32pt"
+ viewBox="0.00 0.00 201.50 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 197.5,-28 197.5,4 -4,4"/>
+<!-- Source File -->
+<g id="node1" class="node">
+<title>Source File</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Source File</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node2" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="193.5,-24 88.5,-24 88.5,0 193.5,0 193.5,-24"/>
+<text text-anchor="middle" x="141" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a file to a file which it depends on. A file
+is dependent upon another if the latter must be compiled before the former
+can be.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Files dependent on this one</h3>
+          </div>
+          <div class="card-body">
+            <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: sourcefile~~mqc_fingerprint.f90~~AfferentGraph Pages: 1 -->
+<svg id="sourcefilemqc_fingerprintf90AfferentGraph" width="641pt" height="132pt"
+ viewBox="0.00 0.00 641.00 131.55" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="sourcefile~~mqc_fingerprint.f90~~AfferentGraph" class="graph" transform="scale(0.83 0.83) rotate(0) translate(4 153.82)">
+<title>sourcefile~~mqc_fingerprint.f90~~AfferentGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-153.82 765,-153.82 765,4 -4,4"/>
+<!-- sourcefile~mqc_fingerprint.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~AfferentGraph_node1" class="node">
+<title>sourcefile~mqc_fingerprint.f90</title>
+<polygon fill="none" stroke="black" points="118,-107 0,-107 0,-83 118,-83 118,-107"/>
+<text text-anchor="middle" x="59" y="-92.6" font-family="Helvetica,sans-Serif" font-size="10.50">mqc_fingerprint.f90</text>
+</g>
+<!-- sourcefile~mqc_driver.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~AfferentGraph_node2" class="node">
+<title>sourcefile~mqc_driver.f90</title>
+<g id="a_sourcefile~~mqc_fingerprint.f90~~AfferentGraph_node2"><a xlink:href="../sourcefile/mqc_driver.f90.html" xlink:title="mqc_driver.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="245,-107 154,-107 154,-83 245,-83 245,-107"/>
+<text text-anchor="middle" x="199.5" y="-92.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_driver.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_driver.f90&#45;&gt;sourcefile~mqc_fingerprint.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~AfferentGraph_edge1" class="edge">
+<title>sourcefile~mqc_driver.f90&#45;&gt;sourcefile~mqc_fingerprint.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M153.92,-95C145.73,-95 137.02,-95 128.32,-95"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="128.16,-91.5 118.16,-95 128.16,-98.5 128.16,-91.5"/>
+</g>
+<!-- sourcefile~main.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~AfferentGraph_node3" class="node">
+<title>sourcefile~main.f90</title>
+<g id="a_sourcefile~~mqc_fingerprint.f90~~AfferentGraph_node3"><a xlink:href="../sourcefile/main.f90.html" xlink:title="main.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="584,-148 524,-148 524,-124 584,-124 584,-148"/>
+<text text-anchor="middle" x="554" y="-133.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">main.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~main.f90&#45;&gt;sourcefile~mqc_driver.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~AfferentGraph_edge2" class="edge">
+<title>sourcefile~main.f90&#45;&gt;sourcefile~mqc_driver.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M523.87,-140.65C473.5,-147.69 367.22,-158.14 281,-137 261.6,-132.24 241.69,-121.91 226.52,-112.68"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="228.06,-109.51 217.73,-107.14 224.32,-115.43 228.06,-109.51"/>
+</g>
+<!-- sourcefile~mqc_geometry_optimizer.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~AfferentGraph_node5" class="node">
+<title>sourcefile~mqc_geometry_optimizer.f90</title>
+<g id="a_sourcefile~~mqc_fingerprint.f90~~AfferentGraph_node5"><a xlink:href="../sourcefile/mqc_geometry_optimizer.f90.html" xlink:title="mqc_geometry_optimizer.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="451,-128 284,-128 284,-104 451,-104 451,-128"/>
+<text text-anchor="middle" x="367.5" y="-113.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_geometry_optimizer.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~main.f90&#45;&gt;sourcefile~mqc_geometry_optimizer.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~AfferentGraph_edge6" class="edge">
+<title>sourcefile~main.f90&#45;&gt;sourcefile~mqc_geometry_optimizer.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M523.77,-132.83C506.68,-130.98 484.08,-128.53 461.42,-126.07"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="461.69,-122.58 451.37,-124.98 460.94,-129.54 461.69,-122.58"/>
+</g>
+<!-- sourcefile~mqc_calculation_interface.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~AfferentGraph_node4" class="node">
+<title>sourcefile~mqc_calculation_interface.f90</title>
+<g id="a_sourcefile~~mqc_fingerprint.f90~~AfferentGraph_node4"><a xlink:href="../sourcefile/mqc_calculation_interface.f90.html" xlink:title="mqc_calculation_interface.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="454,-86 281,-86 281,-62 454,-62 454,-86"/>
+<text text-anchor="middle" x="367.5" y="-71.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_calculation_interface.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_calculation_interface.f90&#45;&gt;sourcefile~mqc_driver.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~AfferentGraph_edge3" class="edge">
+<title>sourcefile~mqc_calculation_interface.f90&#45;&gt;sourcefile~mqc_driver.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M280.58,-84.87C272.02,-85.95 263.49,-87.03 255.37,-88.06"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="254.82,-84.6 245.34,-89.33 255.7,-91.55 254.82,-84.6"/>
+</g>
+<!-- sourcefile~mqc_geometry_optimizer.f90&#45;&gt;sourcefile~mqc_driver.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~AfferentGraph_edge4" class="edge">
+<title>sourcefile~mqc_geometry_optimizer.f90&#45;&gt;sourcefile~mqc_driver.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M283.99,-105.56C274.29,-104.33 264.59,-103.11 255.4,-101.95"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="255.64,-98.45 245.28,-100.67 254.76,-105.39 255.64,-98.45"/>
+</g>
+<!-- sourcefile~mqc_session.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~AfferentGraph_node6" class="node">
+<title>sourcefile~mqc_session.f90</title>
+<g id="a_sourcefile~~mqc_fingerprint.f90~~AfferentGraph_node6"><a xlink:href="../sourcefile/mqc_session.f90.html" xlink:title="mqc_session.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="417.5,-44 317.5,-44 317.5,-20 417.5,-20 417.5,-44"/>
+<text text-anchor="middle" x="367.5" y="-29.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_session.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_session.f90&#45;&gt;sourcefile~mqc_driver.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~AfferentGraph_edge5" class="edge">
+<title>sourcefile~mqc_session.f90&#45;&gt;sourcefile~mqc_driver.f90</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M317.05,-42.01C305.08,-45.01 292.44,-48.68 281,-53 263.17,-59.73 244.22,-69.47 229.2,-77.88"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="227.34,-74.91 220.39,-82.9 230.81,-80.99 227.34,-74.91"/>
+</g>
+<!-- sourcefile~mqc_capi_run.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~AfferentGraph_node7" class="node">
+<title>sourcefile~mqc_capi_run.f90</title>
+<g id="a_sourcefile~~mqc_fingerprint.f90~~AfferentGraph_node7"><a xlink:href="../sourcefile/mqc_capi_run.f90.html" xlink:title="mqc_capi_run.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="761,-44 654,-44 654,-20 761,-20 761,-44"/>
+<text text-anchor="middle" x="707.5" y="-29.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_capi_run.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_capi_run.f90&#45;&gt;sourcefile~mqc_session.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~AfferentGraph_edge7" class="edge">
+<title>sourcefile~mqc_capi_run.f90&#45;&gt;sourcefile~mqc_session.f90</title>
+<path fill="none" stroke="#7f00ff" stroke-dasharray="5,2" d="M653.62,-32.7C641.89,-32.82 629.52,-32.93 618,-33 561.11,-33.32 546.89,-33.23 490,-33 469.7,-32.92 447.5,-32.75 427.69,-32.58"/>
+<polygon fill="#7f00ff" stroke="#7f00ff" points="427.6,-29.08 417.57,-32.5 427.54,-36.08 427.6,-29.08"/>
+</g>
+<!-- sourcefile~mqc_capi_session.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~AfferentGraph_node8" class="node">
+<title>sourcefile~mqc_capi_session.f90</title>
+<g id="a_sourcefile~~mqc_fingerprint.f90~~AfferentGraph_node8"><a xlink:href="../sourcefile/mqc_capi_session.f90.html" xlink:title="mqc_capi_session.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="618,-24 490,-24 490,0 618,0 618,-24"/>
+<text text-anchor="middle" x="554" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_capi_session.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mqc_capi_run.f90&#45;&gt;sourcefile~mqc_capi_session.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~AfferentGraph_edge9" class="edge">
+<title>sourcefile~mqc_capi_run.f90&#45;&gt;sourcefile~mqc_capi_session.f90</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M653.94,-25.06C645.65,-23.97 636.94,-22.82 628.28,-21.67"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="628.54,-18.18 618.16,-20.34 627.62,-25.12 628.54,-18.18"/>
+</g>
+<!-- sourcefile~mqc_capi_session.f90&#45;&gt;sourcefile~mqc_session.f90 -->
+<g id="sourcefile~~mqc_fingerprint.f90~~AfferentGraph_edge8" class="edge">
+<title>sourcefile~mqc_capi_session.f90&#45;&gt;sourcefile~mqc_session.f90</title>
+<path fill="none" stroke="#7f00ff" stroke-dasharray="5,2" d="M489.76,-18.85C469.69,-21.03 447.57,-23.43 427.78,-25.57"/>
+<polygon fill="#7f00ff" stroke="#7f00ff" points="427.24,-22.11 417.67,-26.67 427.99,-29.07 427.24,-22.11"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var pansourcefilemqc_fingerprintf90AfferentGraph = svgPanZoom('#sourcefilemqc_fingerprintf90AfferentGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#AfferentGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="AfferentGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="202pt" height="32pt"
+ viewBox="0.00 0.00 201.50 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 197.5,-28 197.5,4 -4,4"/>
+<!-- Source File -->
+<g id="node1" class="node">
+<title>Source File</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Source File</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node2" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="193.5,-24 88.5,-24 88.5,0 193.5,0 193.5,-24"/>
+<text text-anchor="middle" x="141" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a file to a file which it depends on. A file
+is dependent upon another if the latter must be compiled before the former
+can be.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+          </div>
+        </div>
+<br>
+      <section>
+        <h2><span class="anchor" id="src"></span>Source Code</h2>
+        <div class="hl codehilite"><pre><span></span><a id="ln-1" name="ln-1" href="#ln-1"></a><span class="c">!! Identifies the calculation that produced a number</span>
+<a id="ln-2" name="ln-2" href="#ln-2"></a><span class="k">module </span><span class="n">mqc_fingerprint</span>
+<a id="ln-3" name="ln-3" href="#ln-3"></a><span class="w">   </span><span class="c">!! A short hash of everything that decides a fragment energy, so a stored</span>
+<a id="ln-4" name="ln-4" href="#ln-4"></a><span class="w">   </span><span class="c">!! energy can be matched against the calculation asking to reuse it.</span>
+<a id="ln-5" name="ln-5" href="#ln-5"></a><span class="w">   </span><span class="c">!!</span>
+<a id="ln-6" name="ln-6" href="#ln-6"></a><span class="w">   </span><span class="c">!! In, because they change the number: coordinates, elements, charge and</span>
+<a id="ln-7" name="ln-7" href="#ln-7"></a><span class="w">   </span><span class="c">!! multiplicity; the monomer partition, since a term names monomers by index;</span>
+<a id="ln-8" name="ln-8" href="#ln-8"></a><span class="w">   </span><span class="c">!! the bonds, since they decide where caps go; the method, basis, functional</span>
+<a id="ln-9" name="ln-9" href="#ln-9"></a><span class="w">   </span><span class="c">!! and the thresholds the SCF converges to. Out: log level, output paths,</span>
+<a id="ln-10" name="ln-10" href="#ln-10"></a><span class="w">   </span><span class="c">!! rank counts, verbosity, GPU binding.</span>
+<a id="ln-11" name="ln-11" href="#ln-11"></a><span class="w">   </span><span class="c">!!</span>
+<a id="ln-12" name="ln-12" href="#ln-12"></a><span class="w">   </span><span class="c">!! Reals are hashed as their IEEE bits rather than as text, with negative</span>
+<a id="ln-13" name="ln-13" href="#ln-13"></a><span class="w">   </span><span class="c">!! zero normalised to positive so that an identical geometry cannot hash</span>
+<a id="ln-14" name="ln-14" href="#ln-14"></a><span class="w">   </span><span class="c">!! differently depending on how it was built.</span>
+<a id="ln-15" name="ln-15" href="#ln-15"></a><span class="w">   </span><span class="k">use </span><span class="n">pic_types</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="p">:</span><span class="w"> </span><span class="n">dp</span><span class="p">,</span><span class="w"> </span><span class="n">int32</span><span class="p">,</span><span class="w"> </span><span class="n">int64</span>
+<a id="ln-16" name="ln-16" href="#ln-16"></a><span class="w">   </span><span class="k">use </span><span class="n">mqc_physical_fragment</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="p">:</span><span class="w"> </span><span class="n">system_geometry_t</span>
+<a id="ln-17" name="ln-17" href="#ln-17"></a><span class="w">   </span><span class="k">use </span><span class="n">mqc_method_config</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="p">:</span><span class="w"> </span><span class="n">method_config_t</span>
+<a id="ln-18" name="ln-18" href="#ln-18"></a><span class="w">   </span><span class="k">use </span><span class="n">mqc_method_types</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="p">:</span><span class="w"> </span><span class="n">METHOD_TYPE_GFN1</span><span class="p">,</span><span class="w"> </span><span class="n">METHOD_TYPE_GFN2</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
+<a id="ln-19" name="ln-19" href="#ln-19"></a><span class="w">                               </span><span class="n">METHOD_TYPE_HF</span><span class="p">,</span><span class="w"> </span><span class="n">METHOD_TYPE_DFT</span>
+<a id="ln-20" name="ln-20" href="#ln-20"></a><span class="w">   </span><span class="k">implicit none</span>
+<a id="ln-21" name="ln-21" href="#ln-21"></a><span class="k">   private</span>
+<a id="ln-22" name="ln-22" href="#ln-22"></a>
+<a id="ln-23" name="ln-23" href="#ln-23"></a><span class="k">   public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">hasher_t</span>
+<a id="ln-24" name="ln-24" href="#ln-24"></a><span class="w">   </span><span class="k">public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">calculation_fingerprint</span>
+<a id="ln-25" name="ln-25" href="#ln-25"></a><span class="w">   </span><span class="k">public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">FINGERPRINT_LEN</span>
+<a id="ln-26" name="ln-26" href="#ln-26"></a>
+<a id="ln-27" name="ln-27" href="#ln-27"></a><span class="w">   </span><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">FINGERPRINT_LEN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">16</span>
+<a id="ln-28" name="ln-28" href="#ln-28"></a><span class="w">      </span><span class="c">!! Hex digits in a fingerprint: 64 bits</span>
+<a id="ln-29" name="ln-29" href="#ln-29"></a>
+<a id="ln-30" name="ln-30" href="#ln-30"></a><span class="w">   </span><span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span><span class="w"> </span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">FNV_OFFSET</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">3750763034362895579_int64</span>
+<a id="ln-31" name="ln-31" href="#ln-31"></a><span class="w">      </span><span class="c">!! 14695981039346656037 as a signed 64-bit value</span>
+<a id="ln-32" name="ln-32" href="#ln-32"></a><span class="w">   </span><span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span><span class="w"> </span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">FNV_PRIME</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1099511628211_int64</span>
+<a id="ln-33" name="ln-33" href="#ln-33"></a>
+<a id="ln-34" name="ln-34" href="#ln-34"></a><span class="w">   </span><span class="k">type</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">hasher_t</span>
+<a id="ln-35" name="ln-35" href="#ln-35"></a><span class="w">      </span><span class="c">!! FNV-1a, accumulated field by field</span>
+<a id="ln-36" name="ln-36" href="#ln-36"></a><span class="w">      </span><span class="c">!!</span>
+<a id="ln-37" name="ln-37" href="#ln-37"></a><span class="w">      </span><span class="c">!! Order matters and is part of the identity: the same values fed in a</span>
+<a id="ln-38" name="ln-38" href="#ln-38"></a><span class="w">      </span><span class="c">!! different order give a different hash, which is what makes two arrays</span>
+<a id="ln-39" name="ln-39" href="#ln-39"></a><span class="w">      </span><span class="c">!! of the same numbers in different roles distinguishable.</span>
+<a id="ln-40" name="ln-40" href="#ln-40"></a><span class="w">      </span><span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span><span class="w"> </span><span class="k">private</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FNV_OFFSET</span>
+<a id="ln-41" name="ln-41" href="#ln-41"></a><span class="w">   </span><span class="k">contains</span>
+<a id="ln-42" name="ln-42" href="#ln-42"></a><span class="k">      procedure</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="k">byte</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">hash_byte</span>
+<a id="ln-43" name="ln-43" href="#ln-43"></a><span class="w">      </span><span class="k">procedure</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="nb">int</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">hash_int</span>
+<a id="ln-44" name="ln-44" href="#ln-44"></a><span class="w">      </span><span class="k">procedure</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">int_array</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">hash_int_array</span>
+<a id="ln-45" name="ln-45" href="#ln-45"></a><span class="w">      </span><span class="k">procedure</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="kt">real</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">hash_real</span>
+<a id="ln-46" name="ln-46" href="#ln-46"></a><span class="w">      </span><span class="k">procedure</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">real_array</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">hash_real_array</span>
+<a id="ln-47" name="ln-47" href="#ln-47"></a><span class="w">      </span><span class="k">procedure</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">hash_text</span>
+<a id="ln-48" name="ln-48" href="#ln-48"></a><span class="w">      </span><span class="k">procedure</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">flag</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">hash_flag</span>
+<a id="ln-49" name="ln-49" href="#ln-49"></a><span class="w">      </span><span class="k">procedure</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">hex</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">hash_hex</span>
+<a id="ln-50" name="ln-50" href="#ln-50"></a><span class="w">   </span><span class="k">end type </span><span class="n">hasher_t</span>
+<a id="ln-51" name="ln-51" href="#ln-51"></a>
+<a id="ln-52" name="ln-52" href="#ln-52"></a><span class="k">contains</span>
+<a id="ln-53" name="ln-53" href="#ln-53"></a>
+<a id="ln-54" name="ln-54" href="#ln-54"></a><span class="k">   function </span><span class="n">calculation_fingerprint</span><span class="p">(</span><span class="n">sys_geom</span><span class="p">,</span><span class="w"> </span><span class="n">config</span><span class="p">,</span><span class="w"> </span><span class="n">calc_type</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">hex</span><span class="p">)</span>
+<a id="ln-55" name="ln-55" href="#ln-55"></a><span class="w">      </span><span class="c">!! The identity of a calculation: what it computes, and on what</span>
+<a id="ln-56" name="ln-56" href="#ln-56"></a><span class="w">      </span><span class="c">!!</span>
+<a id="ln-57" name="ln-57" href="#ln-57"></a><span class="w">      </span><span class="c">!! Two runs agreeing here may share energies. Two runs disagreeing may</span>
+<a id="ln-58" name="ln-58" href="#ln-58"></a><span class="w">      </span><span class="c">!! not, and the difference need not be visible -- swapping a functional</span>
+<a id="ln-59" name="ln-59" href="#ln-59"></a><span class="w">      </span><span class="c">!! leaves every array shape identical.</span>
+<a id="ln-60" name="ln-60" href="#ln-60"></a><span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">system_geometry_t</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">sys_geom</span>
+<a id="ln-61" name="ln-61" href="#ln-61"></a><span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">method_config_t</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">config</span>
+<a id="ln-62" name="ln-62" href="#ln-62"></a><span class="w">      </span><span class="kt">integer</span><span class="p">(</span><span class="n">int32</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">calc_type</span>
+<a id="ln-63" name="ln-63" href="#ln-63"></a><span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="n">FINGERPRINT_LEN</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">hex</span>
+<a id="ln-64" name="ln-64" href="#ln-64"></a>
+<a id="ln-65" name="ln-65" href="#ln-65"></a><span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">hasher_t</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">h</span>
+<a id="ln-66" name="ln-66" href="#ln-66"></a>
+<a id="ln-67" name="ln-67" href="#ln-67"></a><span class="w">      </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="n">text</span><span class="p">(</span><span class="s2">"mqc-fingerprint-v1"</span><span class="p">)</span>
+<a id="ln-68" name="ln-68" href="#ln-68"></a><span class="w">      </span><span class="k">call </span><span class="n">add_system</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="w"> </span><span class="n">sys_geom</span><span class="p">)</span>
+<a id="ln-69" name="ln-69" href="#ln-69"></a><span class="w">      </span><span class="k">call </span><span class="n">add_method</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="w"> </span><span class="n">config</span><span class="p">)</span>
+<a id="ln-70" name="ln-70" href="#ln-70"></a><span class="w">      </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="nb">int</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">calc_type</span><span class="p">))</span>
+<a id="ln-71" name="ln-71" href="#ln-71"></a><span class="w">      </span><span class="n">hex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">h</span><span class="p">%</span><span class="n">hex</span><span class="p">()</span>
+<a id="ln-72" name="ln-72" href="#ln-72"></a><span class="w">   </span><span class="k">end function </span><span class="n">calculation_fingerprint</span>
+<a id="ln-73" name="ln-73" href="#ln-73"></a>
+<a id="ln-74" name="ln-74" href="#ln-74"></a><span class="w">   </span><span class="k">subroutine </span><span class="n">add_system</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="w"> </span><span class="n">sys</span><span class="p">)</span>
+<a id="ln-75" name="ln-75" href="#ln-75"></a><span class="w">      </span><span class="c">!! Everything about the molecule and how it is cut up</span>
+<a id="ln-76" name="ln-76" href="#ln-76"></a><span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">hasher_t</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">h</span>
+<a id="ln-77" name="ln-77" href="#ln-77"></a><span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">system_geometry_t</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">sys</span>
+<a id="ln-78" name="ln-78" href="#ln-78"></a>
+<a id="ln-79" name="ln-79" href="#ln-79"></a><span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">imon</span><span class="p">,</span><span class="w"> </span><span class="n">islot</span>
+<a id="ln-80" name="ln-80" href="#ln-80"></a>
+<a id="ln-81" name="ln-81" href="#ln-81"></a><span class="w">      </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="n">text</span><span class="p">(</span><span class="s2">"system"</span><span class="p">)</span>
+<a id="ln-82" name="ln-82" href="#ln-82"></a><span class="w">      </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="p">%</span><span class="n">total_atoms</span><span class="p">)</span>
+<a id="ln-83" name="ln-83" href="#ln-83"></a><span class="w">      </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="p">%</span><span class="n">charge</span><span class="p">)</span>
+<a id="ln-84" name="ln-84" href="#ln-84"></a><span class="w">      </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="p">%</span><span class="n">multiplicity</span><span class="p">)</span>
+<a id="ln-85" name="ln-85" href="#ln-85"></a><span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">sys</span><span class="p">%</span><span class="n">element_numbers</span><span class="p">))</span><span class="w"> </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="n">int_array</span><span class="p">(</span><span class="n">sys</span><span class="p">%</span><span class="n">element_numbers</span><span class="p">)</span>
+<a id="ln-86" name="ln-86" href="#ln-86"></a><span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">sys</span><span class="p">%</span><span class="n">coordinates</span><span class="p">))</span><span class="w"> </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="n">real_array</span><span class="p">(</span><span class="nb">reshape</span><span class="p">(</span><span class="n">sys</span><span class="p">%</span><span class="n">coordinates</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
+<a id="ln-87" name="ln-87" href="#ln-87"></a><span class="w">                                                                </span><span class="p">[</span><span class="n">size</span><span class="p">(</span><span class="n">sys</span><span class="p">%</span><span class="n">coordinates</span><span class="p">)]))</span>
+<a id="ln-88" name="ln-88" href="#ln-88"></a>
+<a id="ln-89" name="ln-89" href="#ln-89"></a><span class="w">      </span><span class="c">! The partition. A term list names monomers by index, so term (1,2) is a</span>
+<a id="ln-90" name="ln-90" href="#ln-90"></a><span class="w">      </span><span class="c">! different dimer under a different grouping of the same atoms.</span>
+<a id="ln-91" name="ln-91" href="#ln-91"></a><span class="w">      </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="n">text</span><span class="p">(</span><span class="s2">"monomers"</span><span class="p">)</span>
+<a id="ln-92" name="ln-92" href="#ln-92"></a><span class="w">      </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="p">%</span><span class="n">n_monomers</span><span class="p">)</span>
+<a id="ln-93" name="ln-93" href="#ln-93"></a><span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">sys</span><span class="p">%</span><span class="n">fragment_sizes</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<a id="ln-94" name="ln-94" href="#ln-94"></a><span class="k">         call </span><span class="n">h</span><span class="p">%</span><span class="n">int_array</span><span class="p">(</span><span class="n">sys</span><span class="p">%</span><span class="n">fragment_sizes</span><span class="p">)</span>
+<a id="ln-95" name="ln-95" href="#ln-95"></a><span class="w">         </span><span class="k">do </span><span class="n">imon</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">sys</span><span class="p">%</span><span class="n">n_monomers</span>
+<a id="ln-96" name="ln-96" href="#ln-96"></a><span class="w">            </span><span class="k">do </span><span class="n">islot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">sys</span><span class="p">%</span><span class="n">fragment_sizes</span><span class="p">(</span><span class="n">imon</span><span class="p">)</span>
+<a id="ln-97" name="ln-97" href="#ln-97"></a><span class="w">               </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="p">%</span><span class="n">fragment_atoms</span><span class="p">(</span><span class="n">islot</span><span class="p">,</span><span class="w"> </span><span class="n">imon</span><span class="p">))</span>
+<a id="ln-98" name="ln-98" href="#ln-98"></a><span class="w">            </span><span class="k">end do</span>
+<a id="ln-99" name="ln-99" href="#ln-99"></a><span class="k">         end do</span>
+<a id="ln-100" name="ln-100" href="#ln-100"></a><span class="k">      end if</span>
+<a id="ln-101" name="ln-101" href="#ln-101"></a><span class="k">      if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">sys</span><span class="p">%</span><span class="n">fragment_charges</span><span class="p">))</span><span class="w"> </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="n">int_array</span><span class="p">(</span><span class="n">sys</span><span class="p">%</span><span class="n">fragment_charges</span><span class="p">)</span>
+<a id="ln-102" name="ln-102" href="#ln-102"></a><span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">sys</span><span class="p">%</span><span class="n">fragment_multiplicities</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<a id="ln-103" name="ln-103" href="#ln-103"></a><span class="k">         call </span><span class="n">h</span><span class="p">%</span><span class="n">int_array</span><span class="p">(</span><span class="n">sys</span><span class="p">%</span><span class="n">fragment_multiplicities</span><span class="p">)</span>
+<a id="ln-104" name="ln-104" href="#ln-104"></a><span class="w">      </span><span class="k">end if</span>
+<a id="ln-105" name="ln-105" href="#ln-105"></a>
+<a id="ln-106" name="ln-106" href="#ln-106"></a><span class="w">      </span><span class="c">! Bonds decide where caps go, and a cap is an atom that was not there</span>
+<a id="ln-107" name="ln-107" href="#ln-107"></a><span class="w">      </span><span class="c">! before. `is_broken` is derived from the partition hashed above, so it is</span>
+<a id="ln-108" name="ln-108" href="#ln-108"></a><span class="w">      </span><span class="c">! not folded in separately.</span>
+<a id="ln-109" name="ln-109" href="#ln-109"></a><span class="w">      </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="n">text</span><span class="p">(</span><span class="s2">"bonds"</span><span class="p">)</span>
+<a id="ln-110" name="ln-110" href="#ln-110"></a><span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">sys</span><span class="p">%</span><span class="n">bonds</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<a id="ln-111" name="ln-111" href="#ln-111"></a><span class="k">         call </span><span class="n">h</span><span class="p">%</span><span class="nb">int</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">sys</span><span class="p">%</span><span class="n">bonds</span><span class="p">))</span>
+<a id="ln-112" name="ln-112" href="#ln-112"></a><span class="w">         </span><span class="k">do </span><span class="n">imon</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="n">sys</span><span class="p">%</span><span class="n">bonds</span><span class="p">)</span>
+<a id="ln-113" name="ln-113" href="#ln-113"></a><span class="w">            </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="p">%</span><span class="n">bonds</span><span class="p">(</span><span class="n">imon</span><span class="p">)%</span><span class="n">atom_i</span><span class="p">)</span>
+<a id="ln-114" name="ln-114" href="#ln-114"></a><span class="w">            </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="p">%</span><span class="n">bonds</span><span class="p">(</span><span class="n">imon</span><span class="p">)%</span><span class="n">atom_j</span><span class="p">)</span>
+<a id="ln-115" name="ln-115" href="#ln-115"></a><span class="w">            </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="p">%</span><span class="n">bonds</span><span class="p">(</span><span class="n">imon</span><span class="p">)%</span><span class="n">order</span><span class="p">)</span>
+<a id="ln-116" name="ln-116" href="#ln-116"></a><span class="w">         </span><span class="k">end do</span>
+<a id="ln-117" name="ln-117" href="#ln-117"></a><span class="k">      else</span>
+<a id="ln-118" name="ln-118" href="#ln-118"></a><span class="k">         call </span><span class="n">h</span><span class="p">%</span><span class="nb">int</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<a id="ln-119" name="ln-119" href="#ln-119"></a><span class="w">      </span><span class="k">end if</span>
+<a id="ln-120" name="ln-120" href="#ln-120"></a><span class="k">   end subroutine </span><span class="n">add_system</span>
+<a id="ln-121" name="ln-121" href="#ln-121"></a>
+<a id="ln-122" name="ln-122" href="#ln-122"></a><span class="w">   </span><span class="k">subroutine </span><span class="n">add_method</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="w"> </span><span class="n">config</span><span class="p">)</span>
+<a id="ln-123" name="ln-123" href="#ln-123"></a><span class="w">      </span><span class="c">!! Everything that decides what number a fragment gets</span>
+<a id="ln-124" name="ln-124" href="#ln-124"></a><span class="w">      </span><span class="c">!!</span>
+<a id="ln-125" name="ln-125" href="#ln-125"></a><span class="w">      </span><span class="c">!! Only the branch that will actually run is hashed. A deck carrying</span>
+<a id="ln-126" name="ln-126" href="#ln-126"></a><span class="w">      </span><span class="c">!! stale `dft` settings while running xTB would otherwise fingerprint</span>
+<a id="ln-127" name="ln-127" href="#ln-127"></a><span class="w">      </span><span class="c">!! differently from the same xTB calculation written cleanly, and the two</span>
+<a id="ln-128" name="ln-128" href="#ln-128"></a><span class="w">      </span><span class="c">!! compute the same thing.</span>
+<a id="ln-129" name="ln-129" href="#ln-129"></a><span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">hasher_t</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">h</span>
+<a id="ln-130" name="ln-130" href="#ln-130"></a><span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">method_config_t</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">config</span>
+<a id="ln-131" name="ln-131" href="#ln-131"></a>
+<a id="ln-132" name="ln-132" href="#ln-132"></a><span class="w">      </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="n">text</span><span class="p">(</span><span class="s2">"method"</span><span class="p">)</span>
+<a id="ln-133" name="ln-133" href="#ln-133"></a><span class="w">      </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="nb">int</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">config</span><span class="p">%</span><span class="n">method_type</span><span class="p">))</span>
+<a id="ln-134" name="ln-134" href="#ln-134"></a>
+<a id="ln-135" name="ln-135" href="#ln-135"></a><span class="w">      </span><span class="k">select case</span><span class="w"> </span><span class="p">(</span><span class="n">config</span><span class="p">%</span><span class="n">method_type</span><span class="p">)</span>
+<a id="ln-136" name="ln-136" href="#ln-136"></a><span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="n">METHOD_TYPE_GFN1</span><span class="p">,</span><span class="w"> </span><span class="n">METHOD_TYPE_GFN2</span><span class="p">)</span>
+<a id="ln-137" name="ln-137" href="#ln-137"></a><span class="w">         </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="n">text</span><span class="p">(</span><span class="s2">"xtb"</span><span class="p">)</span>
+<a id="ln-138" name="ln-138" href="#ln-138"></a><span class="w">         </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="kt">real</span><span class="p">(</span><span class="n">config</span><span class="p">%</span><span class="n">xtb</span><span class="p">%</span><span class="n">accuracy</span><span class="p">)</span>
+<a id="ln-139" name="ln-139" href="#ln-139"></a><span class="w">         </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="kt">real</span><span class="p">(</span><span class="n">config</span><span class="p">%</span><span class="n">xtb</span><span class="p">%</span><span class="n">electronic_temp</span><span class="p">)</span>
+<a id="ln-140" name="ln-140" href="#ln-140"></a><span class="w">         </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="n">text</span><span class="p">(</span><span class="nb">trim</span><span class="p">(</span><span class="n">config</span><span class="p">%</span><span class="n">xtb</span><span class="p">%</span><span class="n">solvent</span><span class="p">))</span>
+<a id="ln-141" name="ln-141" href="#ln-141"></a><span class="w">         </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="n">text</span><span class="p">(</span><span class="nb">trim</span><span class="p">(</span><span class="n">config</span><span class="p">%</span><span class="n">xtb</span><span class="p">%</span><span class="n">solvation_model</span><span class="p">))</span>
+<a id="ln-142" name="ln-142" href="#ln-142"></a><span class="w">         </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="n">flag</span><span class="p">(</span><span class="n">config</span><span class="p">%</span><span class="n">xtb</span><span class="p">%</span><span class="n">use_cds</span><span class="p">)</span>
+<a id="ln-143" name="ln-143" href="#ln-143"></a><span class="w">         </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="n">flag</span><span class="p">(</span><span class="n">config</span><span class="p">%</span><span class="n">xtb</span><span class="p">%</span><span class="n">use_shift</span><span class="p">)</span>
+<a id="ln-144" name="ln-144" href="#ln-144"></a><span class="w">         </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="kt">real</span><span class="p">(</span><span class="n">config</span><span class="p">%</span><span class="n">xtb</span><span class="p">%</span><span class="n">dielectric</span><span class="p">)</span>
+<a id="ln-145" name="ln-145" href="#ln-145"></a><span class="w">         </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="nb">int</span><span class="p">(</span><span class="n">config</span><span class="p">%</span><span class="n">xtb</span><span class="p">%</span><span class="n">cpcm_nang</span><span class="p">)</span>
+<a id="ln-146" name="ln-146" href="#ln-146"></a><span class="w">         </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="kt">real</span><span class="p">(</span><span class="n">config</span><span class="p">%</span><span class="n">xtb</span><span class="p">%</span><span class="n">cpcm_rscale</span><span class="p">)</span>
+<a id="ln-147" name="ln-147" href="#ln-147"></a><span class="w">         </span><span class="c">! maxiter is in because it decides whether the SCF converged, and an</span>
+<a id="ln-148" name="ln-148" href="#ln-148"></a><span class="w">         </span><span class="c">! energy from a run that stopped early is not the same number.</span>
+<a id="ln-149" name="ln-149" href="#ln-149"></a><span class="w">         </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="nb">int</span><span class="p">(</span><span class="n">config</span><span class="p">%</span><span class="n">scf</span><span class="p">%</span><span class="n">max_iter</span><span class="p">)</span>
+<a id="ln-150" name="ln-150" href="#ln-150"></a>
+<a id="ln-151" name="ln-151" href="#ln-151"></a><span class="w">      </span><span class="k">case </span><span class="n">default</span>
+<a id="ln-152" name="ln-152" href="#ln-152"></a><span class="w">         </span><span class="c">! HF, DFT and anything else built on the SCF.</span>
+<a id="ln-153" name="ln-153" href="#ln-153"></a><span class="w">         </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="n">text</span><span class="p">(</span><span class="nb">trim</span><span class="p">(</span><span class="n">config</span><span class="p">%</span><span class="n">basis_set</span><span class="p">))</span>
+<a id="ln-154" name="ln-154" href="#ln-154"></a><span class="w">         </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="n">flag</span><span class="p">(</span><span class="n">config</span><span class="p">%</span><span class="n">use_spherical</span><span class="p">)</span>
+<a id="ln-155" name="ln-155" href="#ln-155"></a><span class="w">         </span><span class="c">! The angular form the deck asked for, which `use_spherical` above is</span>
+<a id="ln-156" name="ln-156" href="#ln-156"></a><span class="w">         </span><span class="c">! not: that one is hardcoded true and is the flag cuEST builds its AO</span>
+<a id="ln-157" name="ln-157" href="#ln-157"></a><span class="w">         </span><span class="c">! shells with, so it hashes the same for every run. `scf%cartesian` is</span>
+<a id="ln-158" name="ln-158" href="#ln-158"></a><span class="w">         </span><span class="c">! the one that changes the answer -- above p the two forms span</span>
+<a id="ln-159" name="ln-159" href="#ln-159"></a><span class="w">         </span><span class="c">! different spaces, so they are different energies.</span>
+<a id="ln-160" name="ln-160" href="#ln-160"></a><span class="w">         </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="n">flag</span><span class="p">(</span><span class="n">config</span><span class="p">%</span><span class="n">scf</span><span class="p">%</span><span class="n">cartesian</span><span class="p">)</span>
+<a id="ln-161" name="ln-161" href="#ln-161"></a><span class="w">         </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="n">text</span><span class="p">(</span><span class="nb">trim</span><span class="p">(</span><span class="n">config</span><span class="p">%</span><span class="n">scf</span><span class="p">%</span><span class="n">aux_basis_set</span><span class="p">))</span>
+<a id="ln-162" name="ln-162" href="#ln-162"></a><span class="w">         </span><span class="c">! Whether it was asked for, not only what it is: a double hybrid fits</span>
+<a id="ln-163" name="ln-163" href="#ln-163"></a><span class="w">         </span><span class="c">! its perturbative term when a deck names an auxiliary basis and not</span>
+<a id="ln-164" name="ln-164" href="#ln-164"></a><span class="w">         </span><span class="c">! when one merely defaulted.</span>
+<a id="ln-165" name="ln-165" href="#ln-165"></a><span class="w">         </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="n">flag</span><span class="p">(</span><span class="n">config</span><span class="p">%</span><span class="n">scf</span><span class="p">%</span><span class="n">aux_basis_named</span><span class="p">)</span>
+<a id="ln-166" name="ln-166" href="#ln-166"></a><span class="w">         </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="n">text</span><span class="p">(</span><span class="nb">trim</span><span class="p">(</span><span class="n">config</span><span class="p">%</span><span class="n">scf</span><span class="p">%</span><span class="n">guess</span><span class="p">))</span>
+<a id="ln-167" name="ln-167" href="#ln-167"></a><span class="w">         </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="n">flag</span><span class="p">(</span><span class="n">config</span><span class="p">%</span><span class="n">scf</span><span class="p">%</span><span class="n">unrestricted</span><span class="p">)</span>
+<a id="ln-168" name="ln-168" href="#ln-168"></a><span class="w">         </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="nb">int</span><span class="p">(</span><span class="n">config</span><span class="p">%</span><span class="n">scf</span><span class="p">%</span><span class="n">max_iter</span><span class="p">)</span>
+<a id="ln-169" name="ln-169" href="#ln-169"></a><span class="w">         </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="kt">real</span><span class="p">(</span><span class="n">config</span><span class="p">%</span><span class="n">scf</span><span class="p">%</span><span class="n">energy_convergence</span><span class="p">)</span>
+<a id="ln-170" name="ln-170" href="#ln-170"></a><span class="w">         </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="kt">real</span><span class="p">(</span><span class="n">config</span><span class="p">%</span><span class="n">scf</span><span class="p">%</span><span class="n">density_convergence</span><span class="p">)</span>
+<a id="ln-171" name="ln-171" href="#ln-171"></a><span class="w">         </span><span class="c">! The commutator threshold is half of the convergence test on both</span>
+<a id="ln-172" name="ln-172" href="#ln-172"></a><span class="w">         </span><span class="c">! backends, so two runs differing only in it hold different densities.</span>
+<a id="ln-173" name="ln-173" href="#ln-173"></a><span class="w">         </span><span class="c">! Zero -- the sentinel for "derive it" -- hashes as a request distinct</span>
+<a id="ln-174" name="ln-174" href="#ln-174"></a><span class="w">         </span><span class="c">! from any number a deck could name, since what a backend derives</span>
+<a id="ln-175" name="ln-175" href="#ln-175"></a><span class="w">         </span><span class="c">! depends on which backend it is.</span>
+<a id="ln-176" name="ln-176" href="#ln-176"></a><span class="w">         </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="kt">real</span><span class="p">(</span><span class="n">config</span><span class="p">%</span><span class="n">scf</span><span class="p">%</span><span class="n">gradient_convergence</span><span class="p">)</span>
+<a id="ln-177" name="ln-177" href="#ln-177"></a><span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">config</span><span class="p">%</span><span class="n">method_type</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">METHOD_TYPE_DFT</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<a id="ln-178" name="ln-178" href="#ln-178"></a><span class="k">            call </span><span class="n">h</span><span class="p">%</span><span class="n">text</span><span class="p">(</span><span class="s2">"dft"</span><span class="p">)</span>
+<a id="ln-179" name="ln-179" href="#ln-179"></a><span class="w">            </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="n">text</span><span class="p">(</span><span class="nb">trim</span><span class="p">(</span><span class="n">config</span><span class="p">%</span><span class="n">dft</span><span class="p">%</span><span class="n">functional</span><span class="p">))</span>
+<a id="ln-180" name="ln-180" href="#ln-180"></a><span class="w">            </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="n">text</span><span class="p">(</span><span class="nb">trim</span><span class="p">(</span><span class="n">config</span><span class="p">%</span><span class="n">dft</span><span class="p">%</span><span class="n">grid_type</span><span class="p">))</span>
+<a id="ln-181" name="ln-181" href="#ln-181"></a><span class="w">            </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="nb">int</span><span class="p">(</span><span class="n">config</span><span class="p">%</span><span class="n">dft</span><span class="p">%</span><span class="n">radial_points</span><span class="p">)</span>
+<a id="ln-182" name="ln-182" href="#ln-182"></a><span class="w">            </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="nb">int</span><span class="p">(</span><span class="n">config</span><span class="p">%</span><span class="n">dft</span><span class="p">%</span><span class="n">angular_points</span><span class="p">)</span>
+<a id="ln-183" name="ln-183" href="#ln-183"></a><span class="w">         </span><span class="k">end if</span>
+<a id="ln-184" name="ln-184" href="#ln-184"></a><span class="w">         </span><span class="c">! The continuum. Without these a checkpoint written in the gas phase</span>
+<a id="ln-185" name="ln-185" href="#ln-185"></a><span class="w">         </span><span class="c">! would satisfy a deck that asked for solvent.</span>
+<a id="ln-186" name="ln-186" href="#ln-186"></a><span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">config</span><span class="p">%</span><span class="n">pcm</span><span class="p">%</span><span class="n">enabled</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<a id="ln-187" name="ln-187" href="#ln-187"></a><span class="k">            call </span><span class="n">h</span><span class="p">%</span><span class="n">text</span><span class="p">(</span><span class="s2">"pcm"</span><span class="p">)</span>
+<a id="ln-188" name="ln-188" href="#ln-188"></a><span class="w">            </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="n">text</span><span class="p">(</span><span class="nb">trim</span><span class="p">(</span><span class="n">config</span><span class="p">%</span><span class="n">pcm</span><span class="p">%</span><span class="n">method</span><span class="p">))</span>
+<a id="ln-189" name="ln-189" href="#ln-189"></a><span class="w">            </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="kt">real</span><span class="p">(</span><span class="n">config</span><span class="p">%</span><span class="n">pcm</span><span class="p">%</span><span class="n">dielectric</span><span class="p">)</span>
+<a id="ln-190" name="ln-190" href="#ln-190"></a><span class="w">            </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="nb">int</span><span class="p">(</span><span class="n">config</span><span class="p">%</span><span class="n">pcm</span><span class="p">%</span><span class="n">angular_points</span><span class="p">)</span>
+<a id="ln-191" name="ln-191" href="#ln-191"></a><span class="w">            </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="kt">real</span><span class="p">(</span><span class="n">config</span><span class="p">%</span><span class="n">pcm</span><span class="p">%</span><span class="n">radii_scale</span><span class="p">)</span>
+<a id="ln-192" name="ln-192" href="#ln-192"></a><span class="w">            </span><span class="k">call </span><span class="n">h</span><span class="p">%</span><span class="kt">real</span><span class="p">(</span><span class="n">config</span><span class="p">%</span><span class="n">pcm</span><span class="p">%</span><span class="n">zeta</span><span class="p">)</span>
+<a id="ln-193" name="ln-193" href="#ln-193"></a><span class="w">         </span><span class="k">end if</span>
+<a id="ln-194" name="ln-194" href="#ln-194"></a><span class="k">      end select</span>
+<a id="ln-195" name="ln-195" href="#ln-195"></a><span class="k">   end subroutine </span><span class="n">add_method</span>
+<a id="ln-196" name="ln-196" href="#ln-196"></a>
+<a id="ln-197" name="ln-197" href="#ln-197"></a><span class="w">   </span><span class="c">! ==========================================================================</span>
+<a id="ln-198" name="ln-198" href="#ln-198"></a><span class="w">   </span><span class="c">!  The hasher</span>
+<a id="ln-199" name="ln-199" href="#ln-199"></a><span class="w">   </span><span class="c">! ==========================================================================</span>
+<a id="ln-200" name="ln-200" href="#ln-200"></a>
+<a id="ln-201" name="ln-201" href="#ln-201"></a><span class="w">   </span><span class="k">subroutine </span><span class="n">hash_byte</span><span class="p">(</span><span class="n">this</span><span class="p">,</span><span class="w"> </span><span class="k">value</span><span class="p">)</span>
+<a id="ln-202" name="ln-202" href="#ln-202"></a><span class="w">      </span><span class="c">!! Fold one byte in</span>
+<a id="ln-203" name="ln-203" href="#ln-203"></a><span class="w">      </span><span class="k">class</span><span class="p">(</span><span class="n">hasher_t</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">this</span>
+<a id="ln-204" name="ln-204" href="#ln-204"></a><span class="w">      </span><span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="k">value</span>
+<a id="ln-205" name="ln-205" href="#ln-205"></a>
+<a id="ln-206" name="ln-206" href="#ln-206"></a><span class="k">      </span><span class="n">this</span><span class="p">%</span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">ieor</span><span class="p">(</span><span class="n">this</span><span class="p">%</span><span class="n">state</span><span class="p">,</span><span class="w"> </span><span class="nb">iand</span><span class="p">(</span><span class="k">value</span><span class="p">,</span><span class="w"> </span><span class="mi">255_int64</span><span class="p">))</span>
+<a id="ln-207" name="ln-207" href="#ln-207"></a><span class="w">      </span><span class="n">this</span><span class="p">%</span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">this</span><span class="p">%</span><span class="n">state</span><span class="o">*</span><span class="n">FNV_PRIME</span>
+<a id="ln-208" name="ln-208" href="#ln-208"></a><span class="w">   </span><span class="k">end subroutine </span><span class="n">hash_byte</span>
+<a id="ln-209" name="ln-209" href="#ln-209"></a>
+<a id="ln-210" name="ln-210" href="#ln-210"></a><span class="w">   </span><span class="k">subroutine </span><span class="n">hash_int</span><span class="p">(</span><span class="n">this</span><span class="p">,</span><span class="w"> </span><span class="k">value</span><span class="p">)</span>
+<a id="ln-211" name="ln-211" href="#ln-211"></a><span class="w">      </span><span class="k">class</span><span class="p">(</span><span class="n">hasher_t</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">this</span>
+<a id="ln-212" name="ln-212" href="#ln-212"></a><span class="w">      </span><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="k">value</span>
+<a id="ln-213" name="ln-213" href="#ln-213"></a>
+<a id="ln-214" name="ln-214" href="#ln-214"></a><span class="k">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span>
+<a id="ln-215" name="ln-215" href="#ln-215"></a><span class="w">      </span><span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">wide</span>
+<a id="ln-216" name="ln-216" href="#ln-216"></a>
+<a id="ln-217" name="ln-217" href="#ln-217"></a><span class="w">      </span><span class="n">wide</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="k">value</span><span class="p">,</span><span class="w"> </span><span class="n">int64</span><span class="p">)</span>
+<a id="ln-218" name="ln-218" href="#ln-218"></a><span class="w">      </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span>
+<a id="ln-219" name="ln-219" href="#ln-219"></a><span class="w">         </span><span class="k">call </span><span class="n">this</span><span class="p">%</span><span class="k">byte</span><span class="p">(</span><span class="nb">ishft</span><span class="p">(</span><span class="n">wide</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">8</span><span class="o">*</span><span class="n">i</span><span class="p">))</span>
+<a id="ln-220" name="ln-220" href="#ln-220"></a><span class="w">      </span><span class="k">end do</span>
+<a id="ln-221" name="ln-221" href="#ln-221"></a><span class="k">   end subroutine </span><span class="n">hash_int</span>
+<a id="ln-222" name="ln-222" href="#ln-222"></a>
+<a id="ln-223" name="ln-223" href="#ln-223"></a><span class="w">   </span><span class="k">subroutine </span><span class="n">hash_int_array</span><span class="p">(</span><span class="n">this</span><span class="p">,</span><span class="w"> </span><span class="n">values</span><span class="p">)</span>
+<a id="ln-224" name="ln-224" href="#ln-224"></a><span class="w">      </span><span class="k">class</span><span class="p">(</span><span class="n">hasher_t</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">this</span>
+<a id="ln-225" name="ln-225" href="#ln-225"></a><span class="w">      </span><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">values</span><span class="p">(:)</span>
+<a id="ln-226" name="ln-226" href="#ln-226"></a>
+<a id="ln-227" name="ln-227" href="#ln-227"></a><span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span>
+<a id="ln-228" name="ln-228" href="#ln-228"></a>
+<a id="ln-229" name="ln-229" href="#ln-229"></a><span class="w">      </span><span class="k">call </span><span class="n">this</span><span class="p">%</span><span class="nb">int</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">values</span><span class="p">))</span>
+<a id="ln-230" name="ln-230" href="#ln-230"></a><span class="w">      </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+<a id="ln-231" name="ln-231" href="#ln-231"></a><span class="w">         </span><span class="k">call </span><span class="n">this</span><span class="p">%</span><span class="nb">int</span><span class="p">(</span><span class="n">values</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+<a id="ln-232" name="ln-232" href="#ln-232"></a><span class="w">      </span><span class="k">end do</span>
+<a id="ln-233" name="ln-233" href="#ln-233"></a><span class="k">   end subroutine </span><span class="n">hash_int_array</span>
+<a id="ln-234" name="ln-234" href="#ln-234"></a>
+<a id="ln-235" name="ln-235" href="#ln-235"></a><span class="w">   </span><span class="k">subroutine </span><span class="n">hash_real</span><span class="p">(</span><span class="n">this</span><span class="p">,</span><span class="w"> </span><span class="k">value</span><span class="p">)</span>
+<a id="ln-236" name="ln-236" href="#ln-236"></a><span class="w">      </span><span class="c">!! Fold a double in by its bits, not its digits</span>
+<a id="ln-237" name="ln-237" href="#ln-237"></a><span class="w">      </span><span class="k">class</span><span class="p">(</span><span class="n">hasher_t</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">this</span>
+<a id="ln-238" name="ln-238" href="#ln-238"></a><span class="w">      </span><span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="k">value</span>
+<a id="ln-239" name="ln-239" href="#ln-239"></a>
+<a id="ln-240" name="ln-240" href="#ln-240"></a><span class="k">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span>
+<a id="ln-241" name="ln-241" href="#ln-241"></a><span class="w">      </span><span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">bits</span>
+<a id="ln-242" name="ln-242" href="#ln-242"></a><span class="w">      </span><span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">normalised</span>
+<a id="ln-243" name="ln-243" href="#ln-243"></a>
+<a id="ln-244" name="ln-244" href="#ln-244"></a><span class="w">      </span><span class="c">! -0.0 and 0.0 are equal everywhere else in this program, so they must</span>
+<a id="ln-245" name="ln-245" href="#ln-245"></a><span class="w">      </span><span class="c">! not produce different fingerprints; the assignment below collapses the</span>
+<a id="ln-246" name="ln-246" href="#ln-246"></a><span class="w">      </span><span class="c">! two onto +0.0 before the bits are taken.</span>
+<a id="ln-247" name="ln-247" href="#ln-247"></a><span class="w">      </span><span class="n">normalised</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">value</span>
+<a id="ln-248" name="ln-248" href="#ln-248"></a><span class="k">      if</span><span class="w"> </span><span class="p">(</span><span class="n">normalised</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mf">0.0_dp</span><span class="p">)</span><span class="w"> </span><span class="n">normalised</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0_dp</span>
+<a id="ln-249" name="ln-249" href="#ln-249"></a><span class="w">      </span><span class="n">bits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">transfer</span><span class="p">(</span><span class="n">normalised</span><span class="p">,</span><span class="w"> </span><span class="n">bits</span><span class="p">)</span>
+<a id="ln-250" name="ln-250" href="#ln-250"></a><span class="w">      </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span>
+<a id="ln-251" name="ln-251" href="#ln-251"></a><span class="w">         </span><span class="k">call </span><span class="n">this</span><span class="p">%</span><span class="k">byte</span><span class="p">(</span><span class="nb">ishft</span><span class="p">(</span><span class="n">bits</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">8</span><span class="o">*</span><span class="n">i</span><span class="p">))</span>
+<a id="ln-252" name="ln-252" href="#ln-252"></a><span class="w">      </span><span class="k">end do</span>
+<a id="ln-253" name="ln-253" href="#ln-253"></a><span class="k">   end subroutine </span><span class="n">hash_real</span>
+<a id="ln-254" name="ln-254" href="#ln-254"></a>
+<a id="ln-255" name="ln-255" href="#ln-255"></a><span class="w">   </span><span class="k">subroutine </span><span class="n">hash_real_array</span><span class="p">(</span><span class="n">this</span><span class="p">,</span><span class="w"> </span><span class="n">values</span><span class="p">)</span>
+<a id="ln-256" name="ln-256" href="#ln-256"></a><span class="w">      </span><span class="k">class</span><span class="p">(</span><span class="n">hasher_t</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">this</span>
+<a id="ln-257" name="ln-257" href="#ln-257"></a><span class="w">      </span><span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">values</span><span class="p">(:)</span>
+<a id="ln-258" name="ln-258" href="#ln-258"></a>
+<a id="ln-259" name="ln-259" href="#ln-259"></a><span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span>
+<a id="ln-260" name="ln-260" href="#ln-260"></a>
+<a id="ln-261" name="ln-261" href="#ln-261"></a><span class="w">      </span><span class="k">call </span><span class="n">this</span><span class="p">%</span><span class="nb">int</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">values</span><span class="p">))</span>
+<a id="ln-262" name="ln-262" href="#ln-262"></a><span class="w">      </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+<a id="ln-263" name="ln-263" href="#ln-263"></a><span class="w">         </span><span class="k">call </span><span class="n">this</span><span class="p">%</span><span class="kt">real</span><span class="p">(</span><span class="n">values</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+<a id="ln-264" name="ln-264" href="#ln-264"></a><span class="w">      </span><span class="k">end do</span>
+<a id="ln-265" name="ln-265" href="#ln-265"></a><span class="k">   end subroutine </span><span class="n">hash_real_array</span>
+<a id="ln-266" name="ln-266" href="#ln-266"></a>
+<a id="ln-267" name="ln-267" href="#ln-267"></a><span class="w">   </span><span class="k">subroutine </span><span class="n">hash_text</span><span class="p">(</span><span class="n">this</span><span class="p">,</span><span class="w"> </span><span class="k">value</span><span class="p">)</span>
+<a id="ln-268" name="ln-268" href="#ln-268"></a><span class="w">      </span><span class="k">class</span><span class="p">(</span><span class="n">hasher_t</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">this</span>
+<a id="ln-269" name="ln-269" href="#ln-269"></a><span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="k">value</span>
+<a id="ln-270" name="ln-270" href="#ln-270"></a>
+<a id="ln-271" name="ln-271" href="#ln-271"></a><span class="k">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span>
+<a id="ln-272" name="ln-272" href="#ln-272"></a>
+<a id="ln-273" name="ln-273" href="#ln-273"></a><span class="w">      </span><span class="k">call </span><span class="n">this</span><span class="p">%</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="k">value</span><span class="p">))</span>
+<a id="ln-274" name="ln-274" href="#ln-274"></a><span class="w">      </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="k">value</span><span class="p">)</span>
+<a id="ln-275" name="ln-275" href="#ln-275"></a><span class="w">         </span><span class="k">call </span><span class="n">this</span><span class="p">%</span><span class="k">byte</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">iachar</span><span class="p">(</span><span class="k">value</span><span class="p">(</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="p">)),</span><span class="w"> </span><span class="n">int64</span><span class="p">))</span>
+<a id="ln-276" name="ln-276" href="#ln-276"></a><span class="w">      </span><span class="k">end do</span>
+<a id="ln-277" name="ln-277" href="#ln-277"></a><span class="k">   end subroutine </span><span class="n">hash_text</span>
+<a id="ln-278" name="ln-278" href="#ln-278"></a>
+<a id="ln-279" name="ln-279" href="#ln-279"></a><span class="w">   </span><span class="k">subroutine </span><span class="n">hash_flag</span><span class="p">(</span><span class="n">this</span><span class="p">,</span><span class="w"> </span><span class="k">value</span><span class="p">)</span>
+<a id="ln-280" name="ln-280" href="#ln-280"></a><span class="w">      </span><span class="k">class</span><span class="p">(</span><span class="n">hasher_t</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">this</span>
+<a id="ln-281" name="ln-281" href="#ln-281"></a><span class="w">      </span><span class="kt">logical</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="k">value</span>
+<a id="ln-282" name="ln-282" href="#ln-282"></a>
+<a id="ln-283" name="ln-283" href="#ln-283"></a><span class="k">      call </span><span class="n">this</span><span class="p">%</span><span class="nb">int</span><span class="p">(</span><span class="nb">merge</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="k">value</span><span class="p">))</span>
+<a id="ln-284" name="ln-284" href="#ln-284"></a><span class="w">   </span><span class="k">end subroutine </span><span class="n">hash_flag</span>
+<a id="ln-285" name="ln-285" href="#ln-285"></a>
+<a id="ln-286" name="ln-286" href="#ln-286"></a><span class="w">   </span><span class="k">function </span><span class="n">hash_hex</span><span class="p">(</span><span class="n">this</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">hex</span><span class="p">)</span>
+<a id="ln-287" name="ln-287" href="#ln-287"></a><span class="w">      </span><span class="c">!! The accumulated hash, as 16 lowercase hex digits</span>
+<a id="ln-288" name="ln-288" href="#ln-288"></a><span class="w">      </span><span class="k">class</span><span class="p">(</span><span class="n">hasher_t</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">this</span>
+<a id="ln-289" name="ln-289" href="#ln-289"></a><span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="n">FINGERPRINT_LEN</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">hex</span>
+<a id="ln-290" name="ln-290" href="#ln-290"></a>
+<a id="ln-291" name="ln-291" href="#ln-291"></a><span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="w"> </span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="nb">DIGITS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"0123456789abcdef"</span>
+<a id="ln-292" name="ln-292" href="#ln-292"></a><span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">nibble</span>
+<a id="ln-293" name="ln-293" href="#ln-293"></a>
+<a id="ln-294" name="ln-294" href="#ln-294"></a><span class="w">      </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">FINGERPRINT_LEN</span>
+<a id="ln-295" name="ln-295" href="#ln-295"></a><span class="w">         </span><span class="n">nibble</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="nb">iand</span><span class="p">(</span><span class="nb">ishft</span><span class="p">(</span><span class="n">this</span><span class="p">%</span><span class="n">state</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">4</span><span class="o">*</span><span class="p">(</span><span class="n">FINGERPRINT_LEN</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">i</span><span class="p">)),</span><span class="w"> </span><span class="mi">15_int64</span><span class="p">))</span>
+<a id="ln-296" name="ln-296" href="#ln-296"></a><span class="w">         </span><span class="n">hex</span><span class="p">(</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">DIGITS</span><span class="p">(</span><span class="n">nibble</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="n">nibble</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<a id="ln-297" name="ln-297" href="#ln-297"></a><span class="w">      </span><span class="k">end do</span>
+<a id="ln-298" name="ln-298" href="#ln-298"></a><span class="k">   end function </span><span class="n">hash_hex</span>
+<a id="ln-299" name="ln-299" href="#ln-299"></a>
+<a id="ln-300" name="ln-300" href="#ln-300"></a><span class="k">end module </span><span class="n">mqc_fingerprint</span>
+</pre></div>
+
+      </section>
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              metalquicha
+ was developed by Jorge Luis Galvez Vallejo<br>              &copy; 2026 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+ on 2026-09-07 09:10 +0000             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

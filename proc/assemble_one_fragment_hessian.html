@@ -1,0 +1,1772 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="A demonstration of PIC as a framework for scientific applications targetting quantum chemistry">
+    <meta name="author" content="Jorge Luis Galvez Vallejo" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>assemble_one_fragment_hessian &ndash; metalquicha</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">metalquicha </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../program/main.html">Program</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>assemble_one_fragment_hessian
+      <small>Subroutine</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 0.3% of total for procedures.">69 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/mqc_mbe_mpi_fragment_distribution_scheme.F90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/mqc_mbe_mpi_fragment_distribution_scheme.f90.html'>mqc_mbe_mpi_fragment_distribution_scheme.F90</a></li>
+                <li class="breadcrumb-item"><a href='../module/mpi_fragment_work_smod.html'>mpi_fragment_work_smod</a></li>
+            <li class="breadcrumb-item active" aria-current="page">assemble_one_fragment_hessian</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#vars-0"
+         aria-expanded="false" aria-controls="vars-0">
+         <h4 class="card-header bg-primary text-white">Variables</h4>
+      </a>
+      <div id="vars-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../proc/assemble_one_fragment_hessian.html#variable-base~6">base</a>
+            <a class="list-group-item" href="../proc/assemble_one_fragment_hessian.html#variable-bwd_dip">bwd_dip</a>
+            <a class="list-group-item" href="../proc/assemble_one_fragment_hessian.html#variable-bwd_grad">bwd_grad</a>
+            <a class="list-group-item" href="../proc/assemble_one_fragment_hessian.html#variable-error~137">error</a>
+            <a class="list-group-item" href="../proc/assemble_one_fragment_hessian.html#variable-frag~3">frag</a>
+            <a class="list-group-item" href="../proc/assemble_one_fragment_hessian.html#variable-fragment_size~5">fragment_size</a>
+            <a class="list-group-item" href="../proc/assemble_one_fragment_hessian.html#variable-fwd_dip">fwd_dip</a>
+            <a class="list-group-item" href="../proc/assemble_one_fragment_hessian.html#variable-fwd_grad">fwd_grad</a>
+            <a class="list-group-item" href="../proc/assemble_one_fragment_hessian.html#variable-have_dipoles~2">have_dipoles</a>
+            <a class="list-group-item" href="../proc/assemble_one_fragment_hessian.html#variable-k~41">k</a>
+            <a class="list-group-item" href="../proc/assemble_one_fragment_hessian.html#variable-n_atoms~31">n_atoms</a>
+            <a class="list-group-item" href="../proc/assemble_one_fragment_hessian.html#variable-n_disp~2">n_disp</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/assemble_one_fragment_hessian.html#src">assemble_one_fragment_hessian</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2> subroutine assemble_one_fragment_hessian(f, polymers, sys_geom, task_results, task_offset, frag_natoms, frag_result, world_comm)  
+</h2>
+        <div class="card mb-4">
+      <h3 class="card-header card-title bg-light">Uses</h3>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <ul class="list-inline">
+                  <li class="list-inline-item"><a href='../module/mqc_error.html'>mqc_error</a></li>
+                  <li class="list-inline-item"><a href='../module/mqc_finite_differences.html'>mqc_finite_differences</a></li>
+              </ul>
+            </li>
+            <li class="list-group-item">
+              <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~assemble_one_fragment_hessian~~UsesGraph Pages: 1 -->
+<svg id="procassemble_one_fragment_hessianUsesGraph" width="641pt" height="213pt"
+ viewBox="0.00 0.00 641.00 213.06" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~assemble_one_fragment_hessian~~UsesGraph" class="graph" transform="scale(0.66 0.66) rotate(0) translate(4 318.09)">
+<title>proc~~assemble_one_fragment_hessian~~UsesGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-318.09 965,-318.09 965,4 -4,4"/>
+<!-- proc~assemble_one_fragment_hessian -->
+<g id="proc~~assemble_one_fragment_hessian~~UsesGraph_node1" class="node">
+<title>proc~assemble_one_fragment_hessian</title>
+<polygon fill="none" stroke="black" points="961,-105 771,-105 771,-81 961,-81 961,-105"/>
+<text text-anchor="middle" x="866" y="-90.6" font-family="Helvetica,sans-Serif" font-size="10.50">assemble_one_fragment_hessian</text>
+</g>
+<!-- module~mqc_error -->
+<g id="proc~~assemble_one_fragment_hessian~~UsesGraph_node2" class="node">
+<title>module~mqc_error</title>
+<g id="a_proc~~assemble_one_fragment_hessian~~UsesGraph_node2"><a xlink:href="../module/mqc_error.html" xlink:title="mqc_error">
+<polygon fill="#337ab7" stroke="#337ab7" points="185,-24 118,-24 118,0 185,0 185,-24"/>
+<text text-anchor="middle" x="151.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_error</text>
+</a>
+</g>
+</g>
+<!-- proc~assemble_one_fragment_hessian&#45;&gt;module~mqc_error -->
+<g id="proc~~assemble_one_fragment_hessian~~UsesGraph_edge1" class="edge">
+<title>proc~assemble_one_fragment_hessian&#45;&gt;module~mqc_error</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M770.76,-81.55C660.48,-67.61 472.55,-42.15 312.5,-12"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M310.5,-12C272.27,-3.4 227.51,-4.4 195.41,-6.96"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="194.69,-3.51 185.03,-7.88 195.3,-10.48 194.69,-3.51"/>
+</g>
+<!-- module~mqc_finite_differences -->
+<g id="proc~~assemble_one_fragment_hessian~~UsesGraph_node3" class="node">
+<title>module~mqc_finite_differences</title>
+<g id="a_proc~~assemble_one_fragment_hessian~~UsesGraph_node3"><a xlink:href="../module/mqc_finite_differences.html" xlink:title="mqc_finite_differences">
+<polygon fill="#337ab7" stroke="#337ab7" points="735,-207 602,-207 602,-183 735,-183 735,-207"/>
+<text text-anchor="middle" x="668.5" y="-192.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_finite_differences</text>
+</a>
+</g>
+</g>
+<!-- proc~assemble_one_fragment_hessian&#45;&gt;module~mqc_finite_differences -->
+<g id="proc~~assemble_one_fragment_hessian~~UsesGraph_edge2" class="edge">
+<title>proc~assemble_one_fragment_hessian&#45;&gt;module~mqc_finite_differences</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M841.81,-105.1C806.97,-123.28 741.04,-157.67 701.61,-178.25"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="699.91,-175.19 692.66,-182.91 703.15,-181.39 699.91,-175.19"/>
+</g>
+<!-- module~mqc_calculation_defaults -->
+<g id="proc~~assemble_one_fragment_hessian~~UsesGraph_node4" class="node">
+<title>module~mqc_calculation_defaults</title>
+<g id="a_proc~~assemble_one_fragment_hessian~~UsesGraph_node4"><a xlink:href="../module/mqc_calculation_defaults.html" xlink:title="mqc_calculation_defaults">
+<polygon fill="#337ab7" stroke="#337ab7" points="566,-270 418,-270 418,-246 566,-246 566,-270"/>
+<text text-anchor="middle" x="492" y="-255.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_calculation_defaults</text>
+</a>
+</g>
+</g>
+<!-- module~mqc_finite_differences&#45;&gt;module~mqc_calculation_defaults -->
+<g id="proc~~assemble_one_fragment_hessian~~UsesGraph_edge3" class="edge">
+<title>module~mqc_finite_differences&#45;&gt;module~mqc_calculation_defaults</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M633.85,-207.15C605.88,-217.25 565.91,-231.68 535.69,-242.59"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="534.46,-239.31 526.25,-246 536.84,-245.89 534.46,-239.31"/>
+</g>
+<!-- module~mqc_physical_fragment -->
+<g id="proc~~assemble_one_fragment_hessian~~UsesGraph_node5" class="node">
+<title>module~mqc_physical_fragment</title>
+<g id="a_proc~~assemble_one_fragment_hessian~~UsesGraph_node5"><a xlink:href="../module/mqc_physical_fragment.html" xlink:title="mqc_physical_fragment">
+<polygon fill="#337ab7" stroke="#337ab7" points="561.5,-165 422.5,-165 422.5,-141 561.5,-141 561.5,-165"/>
+<text text-anchor="middle" x="492" y="-150.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_physical_fragment</text>
+</a>
+</g>
+</g>
+<!-- module~mqc_finite_differences&#45;&gt;module~mqc_physical_fragment -->
+<g id="proc~~assemble_one_fragment_hessian~~UsesGraph_edge4" class="edge">
+<title>module~mqc_finite_differences&#45;&gt;module~mqc_physical_fragment</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M617.5,-182.96C597.32,-178.11 573.88,-172.47 552.82,-167.4"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="553.55,-163.97 543.01,-165.04 551.92,-170.78 553.55,-163.97"/>
+</g>
+<!-- pic_types -->
+<g id="proc~~assemble_one_fragment_hessian~~UsesGraph_node6" class="node">
+<title>pic_types</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="62,-166 0,-166 0,-142 62,-142 62,-166"/>
+<text text-anchor="middle" x="31" y="-151.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">pic_types</text>
+</g>
+<!-- module~mqc_finite_differences&#45;&gt;pic_types -->
+<g id="proc~~assemble_one_fragment_hessian~~UsesGraph_edge5" class="edge">
+<title>module~mqc_finite_differences&#45;&gt;pic_types</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M657.47,-207.15C640.78,-226.36 605.25,-263.18 566,-279 461.21,-321.23 424.07,-280.18 312.5,-298"/>
+</g>
+<!-- module~mqc_calculation_defaults&#45;&gt;pic_types -->
+<g id="proc~~assemble_one_fragment_hessian~~UsesGraph_edge6" class="edge">
+<title>module~mqc_calculation_defaults&#45;&gt;pic_types</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M444.7,-270.04C408.85,-278.95 357.82,-290.76 312.5,-298"/>
+</g>
+<!-- module~mqc_physical_fragment&#45;&gt;module~mqc_error -->
+<g id="proc~~assemble_one_fragment_hessian~~UsesGraph_edge9" class="edge">
+<title>module~mqc_physical_fragment&#45;&gt;module~mqc_error</title>
+<path fill="none" stroke="#00ff00" stroke-dasharray="5,2" d="M483.64,-140.86C468.08,-116.25 429.34,-60.3 382,-31 354.77,-14.15 343.97,-17.93 312.5,-12"/>
+</g>
+<!-- module~mqc_physical_fragment&#45;&gt;pic_types -->
+<g id="proc~~assemble_one_fragment_hessian~~UsesGraph_edge14" class="edge">
+<title>module~mqc_physical_fragment&#45;&gt;pic_types</title>
+<path fill="none" stroke="#00ff00" stroke-dasharray="5,2" d="M480.33,-165.22C466.09,-181.55 440.09,-211.4 418,-237 401.94,-255.61 402.77,-265.85 382,-279 354.95,-296.13 344.09,-292.75 312.5,-298"/>
+<path fill="none" stroke="#00ff00" stroke-dasharray="5,2" d="M310.5,-298C216.96,-313.54 176.94,-331.53 98,-279 62.13,-255.13 44.42,-205.21 36.83,-176.19"/>
+<polygon fill="#00ff00" stroke="#00ff00" points="40.16,-175.09 34.4,-166.2 33.36,-176.74 40.16,-175.09"/>
+</g>
+<!-- module~mqc_cgto -->
+<g id="proc~~assemble_one_fragment_hessian~~UsesGraph_node7" class="node">
+<title>module~mqc_cgto</title>
+<g id="a_proc~~assemble_one_fragment_hessian~~UsesGraph_node7"><a xlink:href="../module/mqc_cgto.html" xlink:title="mqc_cgto">
+<polygon fill="#337ab7" stroke="#337ab7" points="343.5,-228 279.5,-228 279.5,-204 343.5,-204 343.5,-228"/>
+<text text-anchor="middle" x="311.5" y="-213.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_cgto</text>
+</a>
+</g>
+</g>
+<!-- module~mqc_physical_fragment&#45;&gt;module~mqc_cgto -->
+<g id="proc~~assemble_one_fragment_hessian~~UsesGraph_edge7" class="edge">
+<title>module~mqc_physical_fragment&#45;&gt;module~mqc_cgto</title>
+<path fill="none" stroke="#00ff00" stroke-dasharray="5,2" d="M461.61,-165.01C439.8,-173.75 409.24,-185.65 382,-195 372.8,-198.16 362.83,-201.32 353.39,-204.2"/>
+<polygon fill="#00ff00" stroke="#00ff00" points="352.36,-200.85 343.8,-207.08 354.38,-207.55 352.36,-200.85"/>
+</g>
+<!-- module~mqc_elements -->
+<g id="proc~~assemble_one_fragment_hessian~~UsesGraph_node8" class="node">
+<title>module~mqc_elements</title>
+<g id="a_proc~~assemble_one_fragment_hessian~~UsesGraph_node8"><a xlink:href="../module/mqc_elements.html" xlink:title="mqc_elements">
+<polygon fill="#337ab7" stroke="#337ab7" points="357,-270 266,-270 266,-246 357,-246 357,-270"/>
+<text text-anchor="middle" x="311.5" y="-255.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_elements</text>
+</a>
+</g>
+</g>
+<!-- module~mqc_physical_fragment&#45;&gt;module~mqc_elements -->
+<g id="proc~~assemble_one_fragment_hessian~~UsesGraph_edge8" class="edge">
+<title>module~mqc_physical_fragment&#45;&gt;module~mqc_elements</title>
+<path fill="none" stroke="#00ff00" stroke-dasharray="5,2" d="M478.64,-165.01C459.45,-183.05 420.67,-217.11 382,-237 377.17,-239.49 371.99,-241.73 366.72,-243.74"/>
+<polygon fill="#00ff00" stroke="#00ff00" points="365.45,-240.48 357.19,-247.12 367.79,-247.08 365.45,-240.48"/>
+</g>
+<!-- module~mqc_geometry -->
+<g id="proc~~assemble_one_fragment_hessian~~UsesGraph_node9" class="node">
+<title>module~mqc_geometry</title>
+<g id="a_proc~~assemble_one_fragment_hessian~~UsesGraph_node9"><a xlink:href="../module/mqc_geometry.html" xlink:title="mqc_geometry">
+<polygon fill="#337ab7" stroke="#337ab7" points="198,-146 105,-146 105,-122 198,-122 198,-146"/>
+<text text-anchor="middle" x="151.5" y="-131.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_geometry</text>
+</a>
+</g>
+</g>
+<!-- module~mqc_physical_fragment&#45;&gt;module~mqc_geometry -->
+<g id="proc~~assemble_one_fragment_hessian~~UsesGraph_edge10" class="edge">
+<title>module~mqc_physical_fragment&#45;&gt;module~mqc_geometry</title>
+<path fill="none" stroke="#00ff00" stroke-dasharray="5,2" d="M467.08,-140.83C445.48,-130.57 412.5,-116.67 382,-111 320.39,-99.54 303.16,-103.05 241,-111 227.57,-112.72 213.27,-115.84 200.17,-119.24"/>
+<polygon fill="#00ff00" stroke="#00ff00" points="199.16,-115.89 190.42,-121.88 200.99,-122.65 199.16,-115.89"/>
+</g>
+<!-- module~mqc_physical_constants -->
+<g id="proc~~assemble_one_fragment_hessian~~UsesGraph_node10" class="node">
+<title>module~mqc_physical_constants</title>
+<g id="a_proc~~assemble_one_fragment_hessian~~UsesGraph_node10"><a xlink:href="../module/mqc_physical_constants.html" xlink:title="mqc_physical_constants">
+<polygon fill="#337ab7" stroke="#337ab7" points="382,-186 241,-186 241,-162 382,-162 382,-186"/>
+<text text-anchor="middle" x="311.5" y="-171.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_physical_constants</text>
+</a>
+</g>
+</g>
+<!-- module~mqc_physical_fragment&#45;&gt;module~mqc_physical_constants -->
+<g id="proc~~assemble_one_fragment_hessian~~UsesGraph_edge11" class="edge">
+<title>module~mqc_physical_fragment&#45;&gt;module~mqc_physical_constants</title>
+<path fill="none" stroke="#00ff00" stroke-dasharray="5,2" d="M422.5,-161.06C412.62,-162.22 402.38,-163.43 392.3,-164.61"/>
+<polygon fill="#00ff00" stroke="#00ff00" points="391.82,-161.14 382.3,-165.79 392.64,-168.1 391.82,-161.14"/>
+</g>
+<!-- module~mqc_program_limits -->
+<g id="proc~~assemble_one_fragment_hessian~~UsesGraph_node11" class="node">
+<title>module~mqc_program_limits</title>
+<g id="a_proc~~assemble_one_fragment_hessian~~UsesGraph_node11"><a xlink:href="../module/mqc_program_limits.html" xlink:title="mqc_program_limits">
+<polygon fill="#337ab7" stroke="#337ab7" points="372,-144 251,-144 251,-120 372,-120 372,-144"/>
+<text text-anchor="middle" x="311.5" y="-129.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_program_limits</text>
+</a>
+</g>
+</g>
+<!-- module~mqc_physical_fragment&#45;&gt;module~mqc_program_limits -->
+<g id="proc~~assemble_one_fragment_hessian~~UsesGraph_edge12" class="edge">
+<title>module~mqc_physical_fragment&#45;&gt;module~mqc_program_limits</title>
+<path fill="none" stroke="#00ff00" stroke-dasharray="5,2" d="M422.5,-144.94C409.26,-143.38 395.37,-141.75 382.1,-140.19"/>
+<polygon fill="#00ff00" stroke="#00ff00" points="382.43,-136.7 372.09,-139.01 381.61,-143.65 382.43,-136.7"/>
+</g>
+<!-- module~mqc_xyz_reader -->
+<g id="proc~~assemble_one_fragment_hessian~~UsesGraph_node12" class="node">
+<title>module~mqc_xyz_reader</title>
+<g id="a_proc~~assemble_one_fragment_hessian~~UsesGraph_node12"><a xlink:href="../module/mqc_xyz_reader.html" xlink:title="mqc_xyz_reader">
+<polygon fill="#337ab7" stroke="#337ab7" points="361,-64 262,-64 262,-40 361,-40 361,-64"/>
+<text text-anchor="middle" x="311.5" y="-49.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_xyz_reader</text>
+</a>
+</g>
+</g>
+<!-- module~mqc_physical_fragment&#45;&gt;module~mqc_xyz_reader -->
+<g id="proc~~assemble_one_fragment_hessian~~UsesGraph_edge13" class="edge">
+<title>module~mqc_physical_fragment&#45;&gt;module~mqc_xyz_reader</title>
+<path fill="none" stroke="#00ff00" stroke-dasharray="5,2" d="M475.88,-140.8C455.5,-124.8 417.65,-96.57 382,-78 374.93,-74.32 367.22,-70.9 359.59,-67.82"/>
+<polygon fill="#00ff00" stroke="#00ff00" points="360.61,-64.47 350.02,-64.13 358.09,-71 360.61,-64.47"/>
+</g>
+<!-- module~mqc_cgto&#45;&gt;pic_types -->
+<g id="proc~~assemble_one_fragment_hessian~~UsesGraph_edge15" class="edge">
+<title>module~mqc_cgto&#45;&gt;pic_types</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M279.42,-207.1C240.74,-196.18 176.81,-178.64 152.5,-175"/>
+</g>
+<!-- module~mqc_elements&#45;&gt;pic_types -->
+<g id="proc~~assemble_one_fragment_hessian~~UsesGraph_edge18" class="edge">
+<title>module~mqc_elements&#45;&gt;pic_types</title>
+<path fill="none" stroke="#ffff00" stroke-dasharray="5,2" d="M265.82,-248.61C257.18,-245.68 248.5,-241.89 241,-237 220.41,-223.57 225.11,-209.15 205,-195 184.58,-180.63 177.19,-178.69 152.5,-175"/>
+</g>
+<!-- module~mqc_atomic_radii -->
+<g id="proc~~assemble_one_fragment_hessian~~UsesGraph_node13" class="node">
+<title>module~mqc_atomic_radii</title>
+<g id="a_proc~~assemble_one_fragment_hessian~~UsesGraph_node13"><a xlink:href="../module/mqc_atomic_radii.html" xlink:title="mqc_atomic_radii">
+<polygon fill="#337ab7" stroke="#337ab7" points="205,-228 98,-228 98,-204 205,-204 205,-228"/>
+<text text-anchor="middle" x="151.5" y="-213.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_atomic_radii</text>
+</a>
+</g>
+</g>
+<!-- module~mqc_elements&#45;&gt;module~mqc_atomic_radii -->
+<g id="proc~~assemble_one_fragment_hessian~~UsesGraph_edge16" class="edge">
+<title>module~mqc_elements&#45;&gt;module~mqc_atomic_radii</title>
+<path fill="none" stroke="#ffff00" stroke-dasharray="5,2" d="M265.65,-246.08C247.54,-241.26 226.48,-235.67 207.47,-230.61"/>
+<polygon fill="#ffff00" stroke="#ffff00" points="208.3,-227.21 197.74,-228.03 206.51,-233.98 208.3,-227.21"/>
+</g>
+<!-- pic_ascii -->
+<g id="proc~~assemble_one_fragment_hessian~~UsesGraph_node15" class="node">
+<title>pic_ascii</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="180.5,-270 122.5,-270 122.5,-246 180.5,-246 180.5,-270"/>
+<text text-anchor="middle" x="151.5" y="-255.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">pic_ascii</text>
+</g>
+<!-- module~mqc_elements&#45;&gt;pic_ascii -->
+<g id="proc~~assemble_one_fragment_hessian~~UsesGraph_edge17" class="edge">
+<title>module~mqc_elements&#45;&gt;pic_ascii</title>
+<path fill="none" stroke="#ffff00" stroke-dasharray="5,2" d="M265.65,-258C242.02,-258 213.34,-258 190.77,-258"/>
+<polygon fill="#ffff00" stroke="#ffff00" points="190.55,-254.5 180.55,-258 190.55,-261.5 190.55,-254.5"/>
+</g>
+<!-- module~mqc_geometry&#45;&gt;pic_types -->
+<g id="proc~~assemble_one_fragment_hessian~~UsesGraph_edge19" class="edge">
+<title>module~mqc_geometry&#45;&gt;pic_types</title>
+<path fill="none" stroke="#00ff00" stroke-dasharray="5,2" d="M104.68,-141.73C94.04,-143.53 82.78,-145.43 72.38,-147.18"/>
+<polygon fill="#00ff00" stroke="#00ff00" points="71.61,-143.77 62.33,-148.88 72.77,-150.67 71.61,-143.77"/>
+</g>
+<!-- module~mqc_physical_constants&#45;&gt;pic_types -->
+<g id="proc~~assemble_one_fragment_hessian~~UsesGraph_edge20" class="edge">
+<title>module~mqc_physical_constants&#45;&gt;pic_types</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M240.95,-179.06C213.29,-179.87 181.26,-179.3 152.5,-175"/>
+</g>
+<!-- module~mqc_program_limits&#45;&gt;pic_types -->
+<g id="proc~~assemble_one_fragment_hessian~~UsesGraph_edge21" class="edge">
+<title>module~mqc_program_limits&#45;&gt;pic_types</title>
+<path fill="none" stroke="#0000ff" stroke-dasharray="5,2" d="M269.42,-144.06C224.6,-157.09 158.4,-175.88 152.5,-175"/>
+<path fill="none" stroke="#0000ff" stroke-dasharray="5,2" d="M150.5,-175C124.34,-171.09 95.07,-165.91 72.17,-161.67"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="72.6,-158.19 62.12,-159.8 71.31,-165.07 72.6,-158.19"/>
+</g>
+<!-- module~mqc_xyz_reader&#45;&gt;module~mqc_error -->
+<g id="proc~~assemble_one_fragment_hessian~~UsesGraph_edge22" class="edge">
+<title>module~mqc_xyz_reader&#45;&gt;module~mqc_error</title>
+<path fill="none" stroke="#ff00ff" stroke-dasharray="5,2" d="M263.09,-40C241.53,-34.54 216.22,-28.13 195.25,-22.82"/>
+<polygon fill="#ff00ff" stroke="#ff00ff" points="195.89,-19.38 185.34,-20.31 194.17,-26.16 195.89,-19.38"/>
+</g>
+<!-- module~mqc_xyz_reader&#45;&gt;pic_types -->
+<g id="proc~~assemble_one_fragment_hessian~~UsesGraph_edge25" class="edge">
+<title>module~mqc_xyz_reader&#45;&gt;pic_types</title>
+<path fill="none" stroke="#ff00ff" stroke-dasharray="5,2" d="M261.84,-45.89C216.65,-42.54 148.87,-43.6 98,-71 72.37,-84.81 53.22,-113.22 42.33,-132.93"/>
+<polygon fill="#ff00ff" stroke="#ff00ff" points="39.22,-131.33 37.65,-141.81 45.41,-134.59 39.22,-131.33"/>
+</g>
+<!-- module~mqc_xyz_reader&#45;&gt;module~mqc_geometry -->
+<g id="proc~~assemble_one_fragment_hessian~~UsesGraph_edge23" class="edge">
+<title>module~mqc_xyz_reader&#45;&gt;module~mqc_geometry</title>
+<path fill="none" stroke="#ff00ff" stroke-dasharray="5,2" d="M269.83,-64.01C260.01,-67.76 249.82,-72.42 241,-78 222.15,-89.94 223.72,-100.85 205,-113 202.57,-114.58 200,-116.07 197.36,-117.48"/>
+<polygon fill="#ff00ff" stroke="#ff00ff" points="195.65,-114.42 188.18,-121.93 198.71,-120.72 195.65,-114.42"/>
+</g>
+<!-- module~mqc_string_utils -->
+<g id="proc~~assemble_one_fragment_hessian~~UsesGraph_node14" class="node">
+<title>module~mqc_string_utils</title>
+<g id="a_proc~~assemble_one_fragment_hessian~~UsesGraph_node14"><a xlink:href="../module/mqc_string_utils.html" xlink:title="mqc_string_utils">
+<polygon fill="#337ab7" stroke="#337ab7" points="200.5,-104 102.5,-104 102.5,-80 200.5,-80 200.5,-104"/>
+<text text-anchor="middle" x="151.5" y="-89.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_string_utils</text>
+</a>
+</g>
+</g>
+<!-- module~mqc_xyz_reader&#45;&gt;module~mqc_string_utils -->
+<g id="proc~~assemble_one_fragment_hessian~~UsesGraph_edge24" class="edge">
+<title>module~mqc_xyz_reader&#45;&gt;module~mqc_string_utils</title>
+<path fill="none" stroke="#ff00ff" stroke-dasharray="5,2" d="M263.09,-64C246.45,-68.21 227.57,-72.99 210.18,-77.4"/>
+<polygon fill="#ff00ff" stroke="#ff00ff" points="208.98,-74.09 200.14,-79.94 210.7,-80.88 208.98,-74.09"/>
+</g>
+<!-- module~mqc_atomic_radii&#45;&gt;pic_types -->
+<g id="proc~~assemble_one_fragment_hessian~~UsesGraph_edge26" class="edge">
+<title>module~mqc_atomic_radii&#45;&gt;pic_types</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M126.95,-203.97C117.88,-199.32 107.45,-193.93 98,-189 86.8,-183.15 74.56,-176.68 63.7,-170.91"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="65.04,-167.66 54.57,-166.06 61.75,-173.84 65.04,-167.66"/>
+</g>
+<!-- module~mqc_string_utils&#45;&gt;pic_types -->
+<g id="proc~~assemble_one_fragment_hessian~~UsesGraph_edge27" class="edge">
+<title>module~mqc_string_utils&#45;&gt;pic_types</title>
+<path fill="none" stroke="#00ff00" stroke-dasharray="5,2" d="M117.9,-104.01C111.22,-106.75 104.31,-109.81 98,-113 84.38,-119.89 69.9,-128.7 57.99,-136.38"/>
+<polygon fill="#00ff00" stroke="#00ff00" points="55.88,-133.58 49.44,-141.99 59.72,-139.44 55.88,-133.58"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panprocassemble_one_fragment_hessianUsesGraph = svgPanZoom('#procassemble_one_fragment_hessianUsesGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#UsesGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="UsesGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="518pt" height="32pt"
+ viewBox="0.00 0.00 517.50 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 513.5,-28 513.5,4 -4,4"/>
+<!-- Module -->
+<g id="node1" class="node">
+<title>Module</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="54,-24 0,-24 0,0 54,0 54,-24"/>
+<text text-anchor="middle" x="27" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Module</text>
+</g>
+<!-- Submodule -->
+<g id="node2" class="node">
+<title>Submodule</title>
+<polygon fill="#5bc0de" stroke="#5bc0de" points="145.5,-24 72.5,-24 72.5,0 145.5,0 145.5,-24"/>
+<text text-anchor="middle" x="109" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Submodule</text>
+</g>
+<!-- Subroutine -->
+<g id="node3" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="234,-24 164,-24 164,0 234,0 234,-24"/>
+<text text-anchor="middle" x="199" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node4" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="310,-24 252,-24 252,0 310,0 310,-24"/>
+<text text-anchor="middle" x="281" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Program -->
+<g id="node5" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="386,-24 328,-24 328,0 386,0 386,-24"/>
+<text text-anchor="middle" x="357" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node6" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="509.5,-24 404.5,-24 404.5,0 509.5,0 509.5,-24"/>
+<text text-anchor="middle" x="457" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a submodule to the (sub)module which it is
+descended from. Dashed arrows point from a module or program unit to 
+modules which it uses.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+            </li>
+        </ul>
+      </div>
+    </div>
+
+
+    <p>Fold one fragment&rsquo;s displacement results into its Hessian, then release them</p>
+<p>The fragment owns a contiguous block of task results laid out by
+<code>build_hessian_task_table</code> as [reference, +1, -1, +2, -2, &hellip;], which is
+exactly the forward/backward gradient arrays the serial path builds.</p>
+
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-f~4"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>f</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-polymers~9"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>polymers</strong>(:,:)</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-sys_geom~68"></span>
+              type(<a href='../type/system_geometry_t.html'>system_geometry_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>sys_geom</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-task_results"></span>
+              type(<a href='../type/calculation_result_t.html'>calculation_result_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>task_results</strong>(:)</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-task_offset~2"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>task_offset</strong>(:)</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-frag_natoms~2"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>frag_natoms</strong>(:)</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-frag_result"></span>
+              type(<a href='../type/calculation_result_t.html'>calculation_result_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>frag_result</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-world_comm~11"></span>
+              type(comm_t),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>world_comm</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <br>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Calls</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~assemble_one_fragment_hessian~~CallsGraph Pages: 1 -->
+<svg id="procassemble_one_fragment_hessianCallsGraph" width="641pt" height="314pt"
+ viewBox="0.00 0.00 641.00 313.95" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph" class="graph" transform="scale(0.52 0.52) rotate(0) translate(4 595)">
+<title>proc~~assemble_one_fragment_hessian~~CallsGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-595 1219,-595 1219,4 -4,4"/>
+<!-- proc~assemble_one_fragment_hessian -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_node1" class="node">
+<title>proc~assemble_one_fragment_hessian</title>
+<polygon fill="none" stroke="black" points="190,-209 0,-209 0,-185 190,-185 190,-209"/>
+<text text-anchor="middle" x="95" y="-194.6" font-family="Helvetica,sans-Serif" font-size="10.50">assemble_one_fragment_hessian</text>
+</g>
+<!-- abort_comm -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_node2" class="node">
+<title>abort_comm</title>
+<polygon fill="#777777" stroke="#777777" points="377.5,-591 297.5,-591 297.5,-567 377.5,-567 377.5,-591"/>
+<text text-anchor="middle" x="337.5" y="-576.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">abort_comm</text>
+</g>
+<!-- proc~assemble_one_fragment_hessian&#45;&gt;abort_comm -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_edge1" class="edge">
+<title>proc~assemble_one_fragment_hessian&#45;&gt;abort_comm</title>
+<path fill="none" stroke="#ff0000" d="M96.49,-209.04C99.22,-259.53 116.75,-456.04 226,-553 242.66,-567.78 266.14,-574.58 287.18,-577.56"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="286.93,-581.06 297.27,-578.74 287.74,-574.11 286.93,-581.06"/>
+</g>
+<!-- error -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_node3" class="node">
+<title>error</title>
+<polygon fill="#777777" stroke="#777777" points="1160.5,-531 1106.5,-531 1106.5,-507 1160.5,-507 1160.5,-531"/>
+<text text-anchor="middle" x="1133.5" y="-516.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">error</text>
+</g>
+<!-- proc~assemble_one_fragment_hessian&#45;&gt;error -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_edge2" class="edge">
+<title>proc~assemble_one_fragment_hessian&#45;&gt;error</title>
+<path fill="none" stroke="#ff0000" d="M101.34,-209.32C116.17,-242.15 161.14,-332.54 226,-381 503.52,-588.33 964.23,-542.9 1096.17,-524.61"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="1096.75,-528.06 1106.16,-523.19 1095.77,-521.13 1096.75,-528.06"/>
+</g>
+<!-- proc~build_fragment_from_indices -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_node4" class="node">
+<title>proc~build_fragment_from_indices</title>
+<g id="a_proc~~assemble_one_fragment_hessian~~CallsGraph_node4"><a xlink:href="../proc/build_fragment_from_indices.html" xlink:title="build_fragment_from_indices">
+<polygon fill="#d9534f" stroke="#d9534f" points="420.5,-304 254.5,-304 254.5,-280 420.5,-280 420.5,-304"/>
+<text text-anchor="middle" x="337.5" y="-289.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">build_fragment_from_indices</text>
+</a>
+</g>
+</g>
+<!-- proc~assemble_one_fragment_hessian&#45;&gt;proc~build_fragment_from_indices -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_edge3" class="edge">
+<title>proc~assemble_one_fragment_hessian&#45;&gt;proc~build_fragment_from_indices</title>
+<path fill="none" stroke="#ff0000" d="M126.46,-209.03C169.62,-226.08 248.64,-257.29 296.49,-276.19"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="295.32,-279.5 305.91,-279.92 297.89,-272.99 295.32,-279.5"/>
+</g>
+<!-- proc~error_get_full_trace -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_node5" class="node">
+<title>proc~error_get_full_trace</title>
+<g id="a_proc~~assemble_one_fragment_hessian~~CallsGraph_node5"><a xlink:href="../proc/error_get_full_trace.html" xlink:title="error_t%error_get_full_trace">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="680,-182 519,-182 519,-158 680,-158 680,-182"/>
+<text text-anchor="middle" x="599.5" y="-167.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">error_t%error_get_full_trace</text>
+</a>
+</g>
+</g>
+<!-- proc~assemble_one_fragment_hessian&#45;&gt;proc~error_get_full_trace -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_edge4" class="edge">
+<title>proc~assemble_one_fragment_hessian&#45;&gt;proc~error_get_full_trace</title>
+<path fill="none" stroke="#ff0000" d="M190.22,-191.94C281.48,-187.03 418.87,-179.65 508.63,-174.83"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="508.99,-178.31 518.79,-174.28 508.61,-171.32 508.99,-178.31"/>
+</g>
+<!-- proc~error_has_error -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_node6" class="node">
+<title>proc~error_has_error</title>
+<g id="a_proc~~assemble_one_fragment_hessian~~CallsGraph_node6"><a xlink:href="../proc/error_has_error.html" xlink:title="error_t%error_has_error">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="952.5,-179 813.5,-179 813.5,-155 952.5,-155 952.5,-179"/>
+<text text-anchor="middle" x="883" y="-164.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">error_t%error_has_error</text>
+</a>
+</g>
+</g>
+<!-- proc~assemble_one_fragment_hessian&#45;&gt;proc~error_has_error -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_edge5" class="edge">
+<title>proc~assemble_one_fragment_hessian&#45;&gt;proc~error_has_error</title>
+<path fill="none" stroke="#ff0000" d="M190.17,-200.43C311.52,-203.85 528.9,-206.61 714,-191 743.15,-188.54 774.97,-184.38 802.99,-180.2"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="803.77,-183.63 813.14,-178.67 802.73,-176.7 803.77,-183.63"/>
+</g>
+<!-- proc~finite_diff_dipole_derivatives -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_node7" class="node">
+<title>proc~finite_diff_dipole_derivatives</title>
+<g id="a_proc~~assemble_one_fragment_hessian~~CallsGraph_node7"><a xlink:href="../proc/finite_diff_dipole_derivatives.html" xlink:title="finite_diff_dipole_derivatives">
+<polygon fill="#d9534f" stroke="#d9534f" points="419.5,-150 255.5,-150 255.5,-126 419.5,-126 419.5,-150"/>
+<text text-anchor="middle" x="337.5" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">finite_diff_dipole_derivatives</text>
+</a>
+</g>
+</g>
+<!-- proc~assemble_one_fragment_hessian&#45;&gt;proc~finite_diff_dipole_derivatives -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_edge6" class="edge">
+<title>proc~assemble_one_fragment_hessian&#45;&gt;proc~finite_diff_dipole_derivatives</title>
+<path fill="none" stroke="#ff0000" d="M142.58,-184.97C167.33,-178.62 198.29,-170.78 226,-164 241.63,-160.18 258.52,-156.15 274.29,-152.44"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="275.52,-155.74 284.46,-150.05 273.92,-148.93 275.52,-155.74"/>
+</g>
+<!-- proc~finite_diff_hessian_from_gradients -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_node8" class="node">
+<title>proc~finite_diff_hessian_from_gradients</title>
+<g id="a_proc~~assemble_one_fragment_hessian~~CallsGraph_node8"><a xlink:href="../proc/finite_diff_hessian_from_gradients.html" xlink:title="finite_diff_hessian_from_gradients">
+<polygon fill="#d9534f" stroke="#d9534f" points="434,-108 241,-108 241,-84 434,-84 434,-108"/>
+<text text-anchor="middle" x="337.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">finite_diff_hessian_from_gradients</text>
+</a>
+</g>
+</g>
+<!-- proc~assemble_one_fragment_hessian&#45;&gt;proc~finite_diff_hessian_from_gradients -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_edge7" class="edge">
+<title>proc~assemble_one_fragment_hessian&#45;&gt;proc~finite_diff_hessian_from_gradients</title>
+<path fill="none" stroke="#ff0000" d="M111.42,-184.89C134.81,-167.15 181.28,-134.33 226,-117 231.97,-114.68 238.23,-112.62 244.6,-110.77"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="245.94,-114.04 254.68,-108.06 244.12,-107.28 245.94,-114.04"/>
+</g>
+<!-- proc~fragment_destroy -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_node9" class="node">
+<title>proc~fragment_destroy</title>
+<g id="a_proc~~assemble_one_fragment_hessian~~CallsGraph_node9"><a xlink:href="../proc/fragment_destroy.html" xlink:title="physical_fragment_t%fragment_destroy">
+<polygon fill="#d9534f" stroke="#d9534f" points="449,-66 226,-66 226,-42 449,-42 449,-66"/>
+<text text-anchor="middle" x="337.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">physical_fragment_t%fragment_destroy</text>
+</a>
+</g>
+</g>
+<!-- proc~assemble_one_fragment_hessian&#45;&gt;proc~fragment_destroy -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_edge8" class="edge">
+<title>proc~assemble_one_fragment_hessian&#45;&gt;proc~fragment_destroy</title>
+<path fill="none" stroke="#ff0000" d="M104.87,-184.95C123.97,-159.99 171.66,-102.65 226,-75 230.02,-72.95 234.22,-71.1 238.53,-69.43"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="239.85,-72.68 248.12,-66.06 237.52,-66.08 239.85,-72.68"/>
+</g>
+<!-- proc~fragment_size_of -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_node10" class="node">
+<title>proc~fragment_size_of</title>
+<g id="a_proc~~assemble_one_fragment_hessian~~CallsGraph_node10"><a xlink:href="../proc/fragment_size_of.html" xlink:title="fragment_size_of">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="389,-24 286,-24 286,0 389,0 389,-24"/>
+<text text-anchor="middle" x="337.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fragment_size_of</text>
+</a>
+</g>
+</g>
+<!-- proc~assemble_one_fragment_hessian&#45;&gt;proc~fragment_size_of -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_edge9" class="edge">
+<title>proc~assemble_one_fragment_hessian&#45;&gt;proc~fragment_size_of</title>
+<path fill="none" stroke="#ff0000" d="M101.84,-184.66C117.25,-153.53 162.28,-71.56 226,-33 240.94,-23.96 258.93,-18.67 276.02,-15.62"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="276.6,-19.07 285.94,-14.07 275.52,-12.15 276.6,-19.07"/>
+</g>
+<!-- to_char -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_node11" class="node">
+<title>to_char</title>
+<polygon fill="#777777" stroke="#777777" points="1160.5,-450 1106.5,-450 1106.5,-426 1160.5,-426 1160.5,-450"/>
+<text text-anchor="middle" x="1133.5" y="-435.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">to_char</text>
+</g>
+<!-- proc~assemble_one_fragment_hessian&#45;&gt;to_char -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_edge10" class="edge">
+<title>proc~assemble_one_fragment_hessian&#45;&gt;to_char</title>
+<path fill="none" stroke="#ff0000" d="M106.63,-209.2C127.42,-232.38 175.83,-283.15 226,-313 436.3,-438.1 507.68,-447.94 750,-482 867.07,-498.46 899.7,-503.23 1016,-482 1045.03,-476.7 1076.23,-464.54 1099.02,-454.35"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="1100.61,-457.47 1108.25,-450.12 1097.7,-451.1 1100.61,-457.47"/>
+</g>
+<!-- proc~build_fragment_from_indices&#45;&gt;proc~error_has_error -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_edge12" class="edge">
+<title>proc~build_fragment_from_indices&#45;&gt;proc~error_has_error</title>
+<path fill="none" stroke="#cbff00" d="M412.04,-279.94C521.13,-262.03 713.18,-230.46 714,-230 735.42,-217.94 728.54,-200 750,-188 766.06,-179.02 784.84,-173.58 803.11,-170.36"/>
+<polygon fill="#cbff00" stroke="#cbff00" points="803.85,-173.79 813.19,-168.79 802.77,-166.87 803.85,-173.79"/>
+</g>
+<!-- proc~build_fragment_core -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_node13" class="node">
+<title>proc~build_fragment_core</title>
+<g id="a_proc~~assemble_one_fragment_hessian~~CallsGraph_node13"><a xlink:href="../proc/build_fragment_core.html" xlink:title="build_fragment_core">
+<polygon fill="#d9534f" stroke="#d9534f" points="660.5,-344 538.5,-344 538.5,-320 660.5,-320 660.5,-344"/>
+<text text-anchor="middle" x="599.5" y="-329.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">build_fragment_core</text>
+</a>
+</g>
+</g>
+<!-- proc~build_fragment_from_indices&#45;&gt;proc~build_fragment_core -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_edge11" class="edge">
+<title>proc~build_fragment_from_indices&#45;&gt;proc~build_fragment_core</title>
+<path fill="none" stroke="#cbff00" d="M416.51,-304C452.04,-309.47 493.78,-315.89 528.31,-321.2"/>
+<polygon fill="#cbff00" stroke="#cbff00" points="527.9,-324.68 538.32,-322.74 528.97,-317.76 527.9,-324.68"/>
+</g>
+<!-- proc~fragment_charge_multiplicity -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_node14" class="node">
+<title>proc~fragment_charge_multiplicity</title>
+<g id="a_proc~~assemble_one_fragment_hessian~~CallsGraph_node14"><a xlink:href="../proc/fragment_charge_multiplicity.html" xlink:title="fragment_charge_multiplicity">
+<polygon fill="#d9534f" stroke="#d9534f" points="967.5,-221 798.5,-221 798.5,-197 967.5,-197 967.5,-221"/>
+<text text-anchor="middle" x="883" y="-206.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fragment_charge_multiplicity</text>
+</a>
+</g>
+</g>
+<!-- proc~build_fragment_from_indices&#45;&gt;proc~fragment_charge_multiplicity -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_edge13" class="edge">
+<title>proc~build_fragment_from_indices&#45;&gt;proc~fragment_charge_multiplicity</title>
+<path fill="none" stroke="#cbff00" d="M420.74,-303.43C499.79,-310.67 620.68,-311.72 714,-268 735.07,-258.13 729.42,-240.85 750,-230 761.89,-223.73 775.16,-219.22 788.58,-216"/>
+<polygon fill="#cbff00" stroke="#cbff00" points="789.33,-219.42 798.36,-213.88 787.84,-212.58 789.33,-219.42"/>
+</g>
+<!-- proc~fragment_compute_nelec -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_node15" class="node">
+<title>proc~fragment_compute_nelec</title>
+<g id="a_proc~~assemble_one_fragment_hessian~~CallsGraph_node15"><a xlink:href="../proc/fragment_compute_nelec.html" xlink:title="physical_fragment_t%fragment_compute_nelec">
+<polygon fill="#d9534f" stroke="#d9534f" points="1016,-473 750,-473 750,-449 1016,-449 1016,-473"/>
+<text text-anchor="middle" x="883" y="-458.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">physical_fragment_t%fragment_compute_nelec</text>
+</a>
+</g>
+</g>
+<!-- proc~build_fragment_from_indices&#45;&gt;proc~fragment_compute_nelec -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_edge14" class="edge">
+<title>proc~build_fragment_from_indices&#45;&gt;proc~fragment_compute_nelec</title>
+<path fill="none" stroke="#cbff00" d="M365.81,-304.16C430.91,-332.63 600.94,-403.92 750,-440 760.9,-442.64 772.39,-445.03 783.86,-447.17"/>
+<polygon fill="#cbff00" stroke="#cbff00" points="783.46,-450.66 793.92,-448.99 784.7,-443.77 783.46,-450.66"/>
+</g>
+<!-- proc~error_get_full_trace&#45;&gt;proc~error_has_error -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_edge15" class="edge">
+<title>proc~error_get_full_trace&#45;&gt;proc~error_has_error</title>
+<path fill="none" stroke="#33ff00" d="M680.04,-169.15C718.54,-168.74 764.64,-168.25 803.07,-167.84"/>
+<polygon fill="#33ff00" stroke="#33ff00" points="803.21,-171.34 813.17,-167.73 803.14,-164.34 803.21,-171.34"/>
+</g>
+<!-- proc~basis_set_destroy -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_node12" class="node">
+<title>proc~basis_set_destroy</title>
+<g id="a_proc~~assemble_one_fragment_hessian~~CallsGraph_node12"><a xlink:href="../proc/basis_set_destroy.html" xlink:title="molecular_basis_type%basis_set_destroy">
+<polygon fill="#d9534f" stroke="#d9534f" points="714,-66 485,-66 485,-42 714,-42 714,-66"/>
+<text text-anchor="middle" x="599.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">molecular_basis_type%basis_set_destroy</text>
+</a>
+</g>
+</g>
+<!-- proc~fragment_destroy&#45;&gt;proc~basis_set_destroy -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_edge16" class="edge">
+<title>proc~fragment_destroy&#45;&gt;proc~basis_set_destroy</title>
+<path fill="none" stroke="#3200ff" d="M449.14,-54C457.49,-54 465.95,-54 474.38,-54"/>
+<polygon fill="#3200ff" stroke="#3200ff" points="474.64,-57.5 484.64,-54 474.64,-50.5 474.64,-57.5"/>
+</g>
+<!-- proc~atomic_basis_destroy -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_node17" class="node">
+<title>proc~atomic_basis_destroy</title>
+<g id="a_proc~~assemble_one_fragment_hessian~~CallsGraph_node17"><a xlink:href="../proc/atomic_basis_destroy.html" xlink:title="atomic_basis_type%atomic_basis_destroy">
+<polygon fill="#d9534f" stroke="#d9534f" points="999.5,-66 766.5,-66 766.5,-42 999.5,-42 999.5,-66"/>
+<text text-anchor="middle" x="883" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">atomic_basis_type%atomic_basis_destroy</text>
+</a>
+</g>
+</g>
+<!-- proc~basis_set_destroy&#45;&gt;proc~atomic_basis_destroy -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_edge17" class="edge">
+<title>proc~basis_set_destroy&#45;&gt;proc~atomic_basis_destroy</title>
+<path fill="none" stroke="#ff0000" d="M714.19,-54C727.94,-54 742.05,-54 755.96,-54"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="756.06,-57.5 766.06,-54 756.06,-50.5 756.06,-57.5"/>
+</g>
+<!-- proc~build_fragment_core&#45;&gt;proc~error_has_error -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_edge23" class="edge">
+<title>proc~build_fragment_core&#45;&gt;proc~error_has_error</title>
+<path fill="none" stroke="#7fff00" d="M633.53,-320C658.41,-309.54 691.88,-292.22 714,-268 740.29,-239.21 719.03,-211.68 750,-188 765.16,-176.41 784.19,-170.1 803.05,-166.87"/>
+<polygon fill="#7fff00" stroke="#7fff00" points="803.78,-170.3 813.18,-165.42 802.79,-163.37 803.78,-170.3"/>
+</g>
+<!-- proc~build_fragment_core&#45;&gt;proc~fragment_charge_multiplicity -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_edge24" class="edge">
+<title>proc~build_fragment_core&#45;&gt;proc~fragment_charge_multiplicity</title>
+<path fill="none" stroke="#7fff00" d="M660.65,-328.41C679.33,-324.78 698.95,-318.09 714,-306 743.14,-282.59 720.09,-252.41 750,-230 761.21,-221.6 774.47,-216 788.19,-212.33"/>
+<polygon fill="#7fff00" stroke="#7fff00" points="789.29,-215.67 798.24,-210 787.7,-208.85 789.29,-215.67"/>
+</g>
+<!-- proc~build_fragment_core&#45;&gt;proc~fragment_compute_nelec -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_edge25" class="edge">
+<title>proc~build_fragment_core&#45;&gt;proc~fragment_compute_nelec</title>
+<path fill="none" stroke="#7fff00" d="M623.32,-344.12C647.03,-357.2 684.7,-379.35 714,-403 731.85,-417.41 729.63,-429.44 750,-440 753.82,-441.98 757.79,-443.79 761.85,-445.43"/>
+<polygon fill="#7fff00" stroke="#7fff00" points="760.9,-448.81 771.49,-448.98 763.31,-442.24 760.9,-448.81"/>
+</g>
+<!-- proc~add_hydrogen_caps -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_node16" class="node">
+<title>proc~add_hydrogen_caps</title>
+<g id="a_proc~~assemble_one_fragment_hessian~~CallsGraph_node16"><a xlink:href="../proc/add_hydrogen_caps.html" xlink:title="add_hydrogen_caps">
+<polygon fill="#d9534f" stroke="#d9534f" points="942,-263 824,-263 824,-239 942,-239 942,-263"/>
+<text text-anchor="middle" x="883" y="-248.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">add_hydrogen_caps</text>
+</a>
+</g>
+</g>
+<!-- proc~build_fragment_core&#45;&gt;proc~add_hydrogen_caps -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_edge18" class="edge">
+<title>proc~build_fragment_core&#45;&gt;proc~add_hydrogen_caps</title>
+<path fill="none" stroke="#7fff00" d="M660.66,-324.39C678.54,-320.53 697.69,-314.72 714,-306 733.41,-295.62 730.25,-281.72 750,-272 769.59,-262.36 792.61,-256.97 813.9,-254.01"/>
+<polygon fill="#7fff00" stroke="#7fff00" points="814.37,-257.47 823.86,-252.77 813.51,-250.53 814.37,-257.47"/>
+</g>
+<!-- proc~calculate_monomer_distance -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_node18" class="node">
+<title>proc~calculate_monomer_distance</title>
+<g id="a_proc~~assemble_one_fragment_hessian~~CallsGraph_node18"><a xlink:href="../proc/calculate_monomer_distance.html" xlink:title="calculate_monomer_distance">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="967.5,-305 798.5,-305 798.5,-281 967.5,-281 967.5,-305"/>
+<text text-anchor="middle" x="883" y="-290.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">calculate_monomer_distance</text>
+</a>
+</g>
+</g>
+<!-- proc~build_fragment_core&#45;&gt;proc~calculate_monomer_distance -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_edge19" class="edge">
+<title>proc~build_fragment_core&#45;&gt;proc~calculate_monomer_distance</title>
+<path fill="none" stroke="#7fff00" d="M660.54,-323.68C697.69,-318.53 746.17,-311.82 788.29,-305.98"/>
+<polygon fill="#7fff00" stroke="#7fff00" points="788.87,-309.44 798.29,-304.6 787.9,-302.5 788.87,-309.44"/>
+</g>
+<!-- proc~check_duplicate_atoms -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_node19" class="node">
+<title>proc~check_duplicate_atoms</title>
+<g id="a_proc~~assemble_one_fragment_hessian~~CallsGraph_node19"><a xlink:href="../proc/check_duplicate_atoms.html" xlink:title="check_duplicate_atoms">
+<polygon fill="#d9534f" stroke="#d9534f" points="951.5,-347 814.5,-347 814.5,-323 951.5,-323 951.5,-347"/>
+<text text-anchor="middle" x="883" y="-332.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">check_duplicate_atoms</text>
+</a>
+</g>
+</g>
+<!-- proc~build_fragment_core&#45;&gt;proc~check_duplicate_atoms -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_edge20" class="edge">
+<title>proc~build_fragment_core&#45;&gt;proc~check_duplicate_atoms</title>
+<path fill="none" stroke="#7fff00" d="M660.54,-332.64C702.5,-333.09 758.91,-333.69 804.3,-334.17"/>
+<polygon fill="#7fff00" stroke="#7fff00" points="804.36,-337.67 814.4,-334.28 804.43,-330.67 804.36,-337.67"/>
+</g>
+<!-- proc~count_hydrogen_caps -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_node20" class="node">
+<title>proc~count_hydrogen_caps</title>
+<g id="a_proc~~assemble_one_fragment_hessian~~CallsGraph_node20"><a xlink:href="../proc/count_hydrogen_caps.html" xlink:title="count_hydrogen_caps">
+<polygon fill="#d9534f" stroke="#d9534f" points="947,-431 819,-431 819,-407 947,-407 947,-431"/>
+<text text-anchor="middle" x="883" y="-416.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">count_hydrogen_caps</text>
+</a>
+</g>
+</g>
+<!-- proc~build_fragment_core&#45;&gt;proc~count_hydrogen_caps -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_edge21" class="edge">
+<title>proc~build_fragment_core&#45;&gt;proc~count_hydrogen_caps</title>
+<path fill="none" stroke="#7fff00" d="M623.11,-344.2C651.8,-359.15 703.19,-384.2 750,-398 768.76,-403.53 789.48,-407.7 808.84,-410.8"/>
+<polygon fill="#7fff00" stroke="#7fff00" points="808.4,-414.27 818.82,-412.32 809.46,-407.35 808.4,-414.27"/>
+</g>
+<!-- proc~error_add_context -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_node21" class="node">
+<title>proc~error_add_context</title>
+<g id="a_proc~~assemble_one_fragment_hessian~~CallsGraph_node21"><a xlink:href="../proc/error_add_context.html" xlink:title="error_t%error_add_context">
+<polygon fill="#d9534f" stroke="#d9534f" points="960,-389 806,-389 806,-365 960,-365 960,-389"/>
+<text text-anchor="middle" x="883" y="-374.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">error_t%error_add_context</text>
+</a>
+</g>
+</g>
+<!-- proc~build_fragment_core&#45;&gt;proc~error_add_context -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_edge22" class="edge">
+<title>proc~build_fragment_core&#45;&gt;proc~error_add_context</title>
+<path fill="none" stroke="#7fff00" d="M660.51,-341.65C687.81,-346.04 720.54,-351.29 750,-356 764.94,-358.39 780.84,-360.92 796.23,-363.37"/>
+<polygon fill="#7fff00" stroke="#7fff00" points="795.84,-366.85 806.26,-364.97 796.94,-359.94 795.84,-366.85"/>
+</g>
+<!-- proc~cgto_destroy -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_node22" class="node">
+<title>proc~cgto_destroy</title>
+<g id="a_proc~~assemble_one_fragment_hessian~~CallsGraph_node22"><a xlink:href="../proc/cgto_destroy.html" xlink:title="cgto_type%cgto_destroy">
+<polygon fill="#d9534f" stroke="#d9534f" points="1204.5,-66 1062.5,-66 1062.5,-42 1204.5,-42 1204.5,-66"/>
+<text text-anchor="middle" x="1133.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">cgto_type%cgto_destroy</text>
+</a>
+</g>
+</g>
+<!-- proc~atomic_basis_destroy&#45;&gt;proc~cgto_destroy -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_edge26" class="edge">
+<title>proc~atomic_basis_destroy&#45;&gt;proc~cgto_destroy</title>
+<path fill="none" stroke="#ffff00" d="M999.52,-54C1017.26,-54 1035.24,-54 1052,-54"/>
+<polygon fill="#ffff00" stroke="#ffff00" points="1052.26,-57.5 1062.26,-54 1052.26,-50.5 1052.26,-57.5"/>
+</g>
+<!-- proc~to_angstrom -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_node25" class="node">
+<title>proc~to_angstrom</title>
+<g id="a_proc~~assemble_one_fragment_hessian~~CallsGraph_node25"><a xlink:href="../proc/to_angstrom.html" xlink:title="to_angstrom">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="1173,-305 1094,-305 1094,-281 1173,-281 1173,-305"/>
+<text text-anchor="middle" x="1133.5" y="-290.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">to_angstrom</text>
+</a>
+</g>
+</g>
+<!-- proc~calculate_monomer_distance&#45;&gt;proc~to_angstrom -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_edge27" class="edge">
+<title>proc~calculate_monomer_distance&#45;&gt;proc~to_angstrom</title>
+<path fill="none" stroke="#00ff00" d="M967.78,-293C1006.31,-293 1050.66,-293 1083.63,-293"/>
+<polygon fill="#00ff00" stroke="#00ff00" points="1083.91,-296.5 1093.91,-293 1083.91,-289.5 1083.91,-296.5"/>
+</g>
+<!-- proc~check_duplicate_atoms&#45;&gt;error -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_edge28" class="edge">
+<title>proc~check_duplicate_atoms&#45;&gt;error</title>
+<path fill="none" stroke="#00ffff" d="M951.82,-332.35C974.4,-334.72 998.28,-341.19 1016,-356 1053.21,-387.1 1023.3,-419.91 1052,-459 1064.79,-476.43 1084.09,-491.05 1100.58,-501.5"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="1099.03,-504.65 1109.39,-506.86 1102.67,-498.67 1099.03,-504.65"/>
+</g>
+<!-- proc~check_duplicate_atoms&#45;&gt;to_char -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_edge32" class="edge">
+<title>proc~check_duplicate_atoms&#45;&gt;to_char</title>
+<path fill="none" stroke="#00ffff" d="M951.79,-336.66C973.38,-339.51 996.66,-345.18 1016,-356 1037.46,-368 1032.6,-382.89 1052,-398 1065.53,-408.54 1082.29,-417.4 1097,-424.09"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="1095.75,-427.36 1106.32,-428.16 1098.56,-420.95 1095.75,-427.36"/>
+</g>
+<!-- proc~element_number_to_symbol -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_node23" class="node">
+<title>proc~element_number_to_symbol</title>
+<g id="a_proc~~assemble_one_fragment_hessian~~CallsGraph_node23"><a xlink:href="../proc/element_number_to_symbol.html" xlink:title="element_number_to_symbol">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="1215,-389 1052,-389 1052,-365 1215,-365 1215,-389"/>
+<text text-anchor="middle" x="1133.5" y="-374.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">element_number_to_symbol</text>
+</a>
+</g>
+</g>
+<!-- proc~check_duplicate_atoms&#45;&gt;proc~element_number_to_symbol -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_edge29" class="edge">
+<title>proc~check_duplicate_atoms&#45;&gt;proc~element_number_to_symbol</title>
+<path fill="none" stroke="#00ffff" d="M951.53,-345.47C972.23,-348.75 995.07,-352.45 1016,-356 1029.37,-358.27 1043.59,-360.76 1057.33,-363.22"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="1056.77,-366.67 1067.23,-364.99 1058,-359.78 1056.77,-366.67"/>
+</g>
+<!-- proc~error_set -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_node24" class="node">
+<title>proc~error_set</title>
+<g id="a_proc~~assemble_one_fragment_hessian~~CallsGraph_node24"><a xlink:href="../proc/error_set.html" xlink:title="error_t%error_set">
+<polygon fill="#d9534f" stroke="#d9534f" points="1186,-347 1081,-347 1081,-323 1186,-323 1186,-347"/>
+<text text-anchor="middle" x="1133.5" y="-332.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">error_t%error_set</text>
+</a>
+</g>
+</g>
+<!-- proc~check_duplicate_atoms&#45;&gt;proc~error_set -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_edge30" class="edge">
+<title>proc~check_duplicate_atoms&#45;&gt;proc~error_set</title>
+<path fill="none" stroke="#00ffff" d="M951.58,-335C988.59,-335 1034.16,-335 1070.3,-335"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="1070.71,-338.5 1080.71,-335 1070.71,-331.5 1070.71,-338.5"/>
+</g>
+<!-- proc~check_duplicate_atoms&#45;&gt;proc~to_angstrom -->
+<g id="proc~~assemble_one_fragment_hessian~~CallsGraph_edge31" class="edge">
+<title>proc~check_duplicate_atoms&#45;&gt;proc~to_angstrom</title>
+<path fill="none" stroke="#00ffff" d="M951.53,-324.53C972.23,-321.25 995.07,-317.55 1016,-314 1038.38,-310.2 1063.12,-305.78 1084.04,-301.97"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="1084.76,-305.39 1093.97,-300.15 1083.5,-298.51 1084.76,-305.39"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panprocassemble_one_fragment_hessianCallsGraph = svgPanZoom('#procassemble_one_fragment_hessianCallsGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CallsGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CallsGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="374,-24 244,-24 244,0 374,0 374,-24"/>
+<text text-anchor="middle" x="309" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="537.5,-24 392.5,-24 392.5,0 537.5,0 537.5,-24"/>
+<text text-anchor="middle" x="465" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="614,-24 556,-24 556,0 614,0 614,-24"/>
+<text text-anchor="middle" x="585" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="737.5,-24 632.5,-24 632.5,0 737.5,0 737.5,-24"/>
+<text text-anchor="middle" x="685" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Called by</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~assemble_one_fragment_hessian~~CalledByGraph Pages: 1 -->
+<svg id="procassemble_one_fragment_hessianCalledByGraph" width="641pt" height="18pt"
+ viewBox="0.00 0.00 641.00 18.48" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~assemble_one_fragment_hessian~~CalledByGraph" class="graph" transform="scale(0.58 0.58) rotate(0) translate(4 28)">
+<title>proc~~assemble_one_fragment_hessian~~CalledByGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 1106,-28 1106,4 -4,4"/>
+<!-- proc~assemble_one_fragment_hessian -->
+<g id="proc~~assemble_one_fragment_hessian~~CalledByGraph_node1" class="node">
+<title>proc~assemble_one_fragment_hessian</title>
+<polygon fill="none" stroke="black" points="1102,-24 912,-24 912,0 1102,0 1102,-24"/>
+<text text-anchor="middle" x="1007" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">assemble_one_fragment_hessian</text>
+</g>
+<!-- proc~fold_completed_fragments -->
+<g id="proc~~assemble_one_fragment_hessian~~CalledByGraph_node2" class="node">
+<title>proc~fold_completed_fragments</title>
+<g id="a_proc~~assemble_one_fragment_hessian~~CalledByGraph_node2"><a xlink:href="../proc/fold_completed_fragments.html" xlink:title="fold_completed_fragments">
+<polygon fill="#d9534f" stroke="#d9534f" points="876,-24 721,-24 721,0 876,0 876,-24"/>
+<text text-anchor="middle" x="798.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fold_completed_fragments</text>
+</a>
+</g>
+</g>
+<!-- proc~fold_completed_fragments&#45;&gt;proc~assemble_one_fragment_hessian -->
+<g id="proc~~assemble_one_fragment_hessian~~CalledByGraph_edge1" class="edge">
+<title>proc~fold_completed_fragments&#45;&gt;proc~assemble_one_fragment_hessian</title>
+<path fill="none" stroke="#ff0000" d="M876.1,-12C884.43,-12 893.01,-12 901.6,-12"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="901.68,-15.5 911.68,-12 901.68,-8.5 901.68,-15.5"/>
+</g>
+<!-- proc~global_coordinator_impl -->
+<g id="proc~~assemble_one_fragment_hessian~~CalledByGraph_node3" class="node">
+<title>proc~global_coordinator_impl</title>
+<g id="a_proc~~assemble_one_fragment_hessian~~CalledByGraph_node3"><a xlink:href="../proc/global_coordinator_impl.html" xlink:title="global_coordinator_impl">
+<polygon fill="#d9534f" stroke="#d9534f" points="685,-24 543,-24 543,0 685,0 685,-24"/>
+<text text-anchor="middle" x="614" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">global_coordinator_impl</text>
+</a>
+</g>
+</g>
+<!-- proc~global_coordinator_impl&#45;&gt;proc~fold_completed_fragments -->
+<g id="proc~~assemble_one_fragment_hessian~~CalledByGraph_edge2" class="edge">
+<title>proc~global_coordinator_impl&#45;&gt;proc~fold_completed_fragments</title>
+<path fill="none" stroke="#ff0000" d="M685.04,-12C693.49,-12 702.2,-12 710.86,-12"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="710.97,-15.5 720.97,-12 710.97,-8.5 710.97,-15.5"/>
+</g>
+<!-- proc~global_coordinator -->
+<g id="proc~~assemble_one_fragment_hessian~~CalledByGraph_node4" class="node">
+<title>proc~global_coordinator</title>
+<g id="a_proc~~assemble_one_fragment_hessian~~CalledByGraph_node4"><a xlink:href="../proc/global_coordinator.html" xlink:title="global_coordinator">
+<polygon fill="#d9534f" stroke="#d9534f" points="507,-24 394,-24 394,0 507,0 507,-24"/>
+<text text-anchor="middle" x="450.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">global_coordinator</text>
+</a>
+</g>
+</g>
+<!-- proc~global_coordinator&#45;&gt;proc~global_coordinator_impl -->
+<g id="proc~~assemble_one_fragment_hessian~~CalledByGraph_edge3" class="edge">
+<title>proc~global_coordinator&#45;&gt;proc~global_coordinator_impl</title>
+<path fill="none" stroke="#ff0000" d="M507.08,-12C515.34,-12 524,-12 532.64,-12"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="532.77,-15.5 542.77,-12 532.77,-8.5 532.77,-15.5"/>
+</g>
+<!-- interface~global_coordinator -->
+<g id="proc~~assemble_one_fragment_hessian~~CalledByGraph_node5" class="node">
+<title>interface~global_coordinator</title>
+<g id="a_proc~~assemble_one_fragment_hessian~~CalledByGraph_node5"><a xlink:href="../interface/global_coordinator.html" xlink:title="global_coordinator">
+<polygon fill="#a7506f" stroke="#a7506f" points="358,-24 245,-24 245,0 358,0 358,-24"/>
+<text text-anchor="middle" x="301.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">global_coordinator</text>
+</a>
+</g>
+</g>
+<!-- interface~global_coordinator&#45;&gt;proc~global_coordinator -->
+<g id="proc~~assemble_one_fragment_hessian~~CalledByGraph_edge4" class="edge">
+<title>interface~global_coordinator&#45;&gt;proc~global_coordinator</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M358.07,-12C366.49,-12 375.24,-12 383.84,-12"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="383.85,-15.5 393.85,-12 383.85,-8.5 383.85,-15.5"/>
+</g>
+<!-- proc~mbe_run_distributed -->
+<g id="proc~~assemble_one_fragment_hessian~~CalledByGraph_node6" class="node">
+<title>proc~mbe_run_distributed</title>
+<g id="a_proc~~assemble_one_fragment_hessian~~CalledByGraph_node6"><a xlink:href="../proc/mbe_run_distributed.html" xlink:title="mbe_context_t%mbe_run_distributed">
+<polygon fill="#d9534f" stroke="#d9534f" points="209,-24 0,-24 0,0 209,0 209,-24"/>
+<text text-anchor="middle" x="104.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mbe_context_t%mbe_run_distributed</text>
+</a>
+</g>
+</g>
+<!-- proc~mbe_run_distributed&#45;&gt;interface~global_coordinator -->
+<g id="proc~~assemble_one_fragment_hessian~~CalledByGraph_edge5" class="edge">
+<title>proc~mbe_run_distributed&#45;&gt;interface~global_coordinator</title>
+<path fill="none" stroke="#ff0000" d="M209.28,-12C217.91,-12 226.48,-12 234.71,-12"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="234.93,-15.5 244.93,-12 234.93,-8.5 234.93,-15.5"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panprocassemble_one_fragment_hessianCalledByGraph = svgPanZoom('#procassemble_one_fragment_hessianCalledByGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CalledByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CalledByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="374,-24 244,-24 244,0 374,0 374,-24"/>
+<text text-anchor="middle" x="309" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="537.5,-24 392.5,-24 392.5,0 537.5,0 537.5,-24"/>
+<text text-anchor="middle" x="465" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="614,-24 556,-24 556,0 614,0 614,-24"/>
+<text text-anchor="middle" x="585" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="737.5,-24 632.5,-24 632.5,0 737.5,0 737.5,-24"/>
+<text text-anchor="middle" x="685" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+
+    <section>    
+      <h2>Variables</h2>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+<th></th><th scope="col">Initial</th>        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-base~6"></span>
+              integer(kind=int64),
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>base</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-bwd_dip"></span>
+              real(kind=dp),
+            </td>
+              <td>private,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>bwd_dip</strong>(:,:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-bwd_grad"></span>
+              real(kind=dp),
+            </td>
+              <td>private,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>bwd_grad</strong>(:,:,:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-error~137"></span>
+              type(<a href='../type/error_t.html'>error_t</a>),
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>error</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-frag~3"></span>
+              type(<a href='../type/physical_fragment_t.html'>physical_fragment_t</a>),
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>frag</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-fragment_size~5"></span>
+              integer,
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>fragment_size</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-fwd_dip"></span>
+              real(kind=dp),
+            </td>
+              <td>private,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>fwd_dip</strong>(:,:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-fwd_grad"></span>
+              real(kind=dp),
+            </td>
+              <td>private,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>fwd_grad</strong>(:,:,:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-have_dipoles~2"></span>
+              logical,
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>have_dipoles</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-k~41"></span>
+              integer,
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>k</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_atoms~31"></span>
+              integer,
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_atoms</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_disp~2"></span>
+              integer,
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_disp</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    </section>
+    <br>
+    
+    
+
+    
+    
+
+
+
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="hl codehilite"><pre><span></span><span class="w">   </span><span class="k">subroutine </span><span class="n">assemble_one_fragment_hessian</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="w"> </span><span class="n">polymers</span><span class="p">,</span><span class="w"> </span><span class="n">sys_geom</span><span class="p">,</span><span class="w"> </span><span class="n">task_results</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">                                            </span><span class="n">task_offset</span><span class="p">,</span><span class="w"> </span><span class="n">frag_natoms</span><span class="p">,</span><span class="w"> </span><span class="n">frag_result</span><span class="p">,</span><span class="w"> </span><span class="n">world_comm</span><span class="p">)</span>
+<span class="w">      </span><span class="c">!! Fold one fragment's displacement results into its Hessian, then release them</span>
+<span class="w">      </span><span class="c">!!</span>
+<span class="w">      </span><span class="c">!! The fragment owns a contiguous block of task results laid out by</span>
+<span class="w">      </span><span class="c">!! `build_hessian_task_table` as [reference, +1, -1, +2, -2, ...], which is</span>
+<span class="w">      </span><span class="c">!! exactly the forward/backward gradient arrays the serial path builds.</span>
+<span class="w">      </span><span class="k">use </span><span class="n">mqc_error</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="p">:</span><span class="w"> </span><span class="n">error_t</span>
+<span class="w">      </span><span class="k">use </span><span class="n">mqc_finite_differences</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="p">:</span><span class="w"> </span><span class="n">finite_diff_hessian_from_gradients</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">                                        </span><span class="n">finite_diff_dipole_derivatives</span><span class="p">,</span><span class="w"> </span><span class="n">DEFAULT_DISPLACEMENT</span>
+<span class="w">      </span><span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">f</span>
+<span class="w">      </span><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">polymers</span><span class="p">(:,</span><span class="w"> </span><span class="p">:)</span>
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">system_geometry_t</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">sys_geom</span>
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">calculation_result_t</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">task_results</span><span class="p">(:)</span>
+<span class="w">      </span><span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">task_offset</span><span class="p">(:)</span>
+<span class="w">      </span><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">frag_natoms</span><span class="p">(:)</span>
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">calculation_result_t</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">frag_result</span>
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">comm_t</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">world_comm</span>
+
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">physical_fragment_t</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">frag</span>
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">error_t</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">error</span>
+<span class="w">      </span><span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">fwd_grad</span><span class="p">(:,</span><span class="w"> </span><span class="p">:,</span><span class="w"> </span><span class="p">:),</span><span class="w"> </span><span class="n">bwd_grad</span><span class="p">(:,</span><span class="w"> </span><span class="p">:,</span><span class="w"> </span><span class="p">:)</span>
+<span class="w">      </span><span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">fwd_dip</span><span class="p">(:,</span><span class="w"> </span><span class="p">:),</span><span class="w"> </span><span class="n">bwd_dip</span><span class="p">(:,</span><span class="w"> </span><span class="p">:)</span>
+<span class="w">      </span><span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">base</span>
+<span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">fragment_size</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">n_disp</span><span class="p">,</span><span class="w"> </span><span class="n">n_atoms</span>
+<span class="w">      </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">have_dipoles</span>
+
+<span class="w">      </span><span class="n">n_atoms</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">frag_natoms</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="w">      </span><span class="n">n_disp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="o">*</span><span class="n">n_atoms</span>
+<span class="w">      </span><span class="n">base</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">task_offset</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="w">      </span><span class="n">fragment_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fragment_size_of</span><span class="p">(</span><span class="n">polymers</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="w"> </span><span class="p">:))</span>
+<span class="w">      </span><span class="k">call </span><span class="n">build_fragment_from_indices</span><span class="p">(</span><span class="n">sys_geom</span><span class="p">,</span><span class="w"> </span><span class="n">polymers</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="n">fragment_size</span><span class="p">),</span><span class="w"> </span><span class="n">frag</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="p">,</span><span class="w"> </span><span class="n">sys_geom</span><span class="p">%</span><span class="n">bonds</span><span class="p">)</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="p">%</span><span class="n">has_error</span><span class="p">())</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         call </span><span class="n">logger</span><span class="p">%</span><span class="n">error</span><span class="p">(</span><span class="s2">"assemble_one_fragment_hessian: "</span><span class="o">//</span><span class="n">error</span><span class="p">%</span><span class="n">get_full_trace</span><span class="p">())</span>
+<span class="w">         </span><span class="k">call </span><span class="n">abort_comm</span><span class="p">(</span><span class="n">world_comm</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="w">      </span><span class="k">end if</span>
+
+<span class="k">      allocate</span><span class="w"> </span><span class="p">(</span><span class="n">fwd_grad</span><span class="p">(</span><span class="n">n_disp</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="n">n_atoms</span><span class="p">),</span><span class="w"> </span><span class="n">bwd_grad</span><span class="p">(</span><span class="n">n_disp</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="n">n_atoms</span><span class="p">))</span>
+<span class="w">      </span><span class="k">allocate</span><span class="w"> </span><span class="p">(</span><span class="n">fwd_dip</span><span class="p">(</span><span class="n">n_disp</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">),</span><span class="w"> </span><span class="n">bwd_dip</span><span class="p">(</span><span class="n">n_disp</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">))</span>
+<span class="w">      </span><span class="n">fwd_dip</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0_dp</span>
+<span class="w">      </span><span class="n">bwd_dip</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0_dp</span>
+<span class="w">      </span><span class="n">have_dipoles</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+
+<span class="w">      </span><span class="k">do </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">n_disp</span>
+<span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="n">task_results</span><span class="p">(</span><span class="n">base</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="n">k</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)%</span><span class="n">has_gradient</span><span class="w"> </span><span class="p">.</span><span class="nb">or</span><span class="p">.</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">             </span><span class="p">.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="n">task_results</span><span class="p">(</span><span class="n">base</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="n">k</span><span class="p">)%</span><span class="n">has_gradient</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            call </span><span class="n">logger</span><span class="p">%</span><span class="n">error</span><span class="p">(</span><span class="s2">"Missing gradient for displacement "</span><span class="o">//</span><span class="n">to_char</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">//</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">                              </span><span class="s2">" of fragment "</span><span class="o">//</span><span class="n">to_char</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
+<span class="w">            </span><span class="k">call </span><span class="n">abort_comm</span><span class="p">(</span><span class="n">world_comm</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="w">         </span><span class="k">end if</span>
+<span class="k">         </span><span class="n">fwd_grad</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="p">:,</span><span class="w"> </span><span class="p">:)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">task_results</span><span class="p">(</span><span class="n">base</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="n">k</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)%</span><span class="n">gradient</span>
+<span class="w">         </span><span class="n">bwd_grad</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="p">:,</span><span class="w"> </span><span class="p">:)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">task_results</span><span class="p">(</span><span class="n">base</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="n">k</span><span class="p">)%</span><span class="n">gradient</span>
+
+<span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">task_results</span><span class="p">(</span><span class="n">base</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="n">k</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)%</span><span class="n">has_dipole</span><span class="w"> </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="n">task_results</span><span class="p">(</span><span class="n">base</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="n">k</span><span class="p">)%</span><span class="n">has_dipole</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            </span><span class="n">fwd_dip</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="p">:)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">task_results</span><span class="p">(</span><span class="n">base</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="n">k</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)%</span><span class="n">dipole</span>
+<span class="w">            </span><span class="n">bwd_dip</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="p">:)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">task_results</span><span class="p">(</span><span class="n">base</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="n">k</span><span class="p">)%</span><span class="n">dipole</span>
+<span class="w">         </span><span class="k">else</span>
+<span class="k">            </span><span class="n">have_dipoles</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<span class="w">         </span><span class="k">end if</span>
+<span class="k">      end do</span>
+
+<span class="k">      call </span><span class="n">finite_diff_hessian_from_gradients</span><span class="p">(</span><span class="n">frag</span><span class="p">,</span><span class="w"> </span><span class="n">fwd_grad</span><span class="p">,</span><span class="w"> </span><span class="n">bwd_grad</span><span class="p">,</span><span class="w"> </span><span class="n">DEFAULT_DISPLACEMENT</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">                                              </span><span class="n">frag_result</span><span class="p">%</span><span class="n">hessian</span><span class="p">)</span>
+<span class="w">      </span><span class="n">frag_result</span><span class="p">%</span><span class="n">has_hessian</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+
+<span class="w">      </span><span class="c">! The undisplaced point carries the energy, gradient and dipole that belong</span>
+<span class="w">      </span><span class="c">! beside this fragment's Hessian.</span>
+<span class="w">      </span><span class="n">frag_result</span><span class="p">%</span><span class="n">energy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">task_results</span><span class="p">(</span><span class="n">base</span><span class="p">)%</span><span class="n">energy</span>
+<span class="w">      </span><span class="n">frag_result</span><span class="p">%</span><span class="n">has_energy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">task_results</span><span class="p">(</span><span class="n">base</span><span class="p">)%</span><span class="n">has_energy</span>
+<span class="w">      </span><span class="n">frag_result</span><span class="p">%</span><span class="n">distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">task_results</span><span class="p">(</span><span class="n">base</span><span class="p">)%</span><span class="n">distance</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">task_results</span><span class="p">(</span><span class="n">base</span><span class="p">)%</span><span class="n">has_gradient</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         </span><span class="n">frag_result</span><span class="p">%</span><span class="n">gradient</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">task_results</span><span class="p">(</span><span class="n">base</span><span class="p">)%</span><span class="n">gradient</span>
+<span class="w">         </span><span class="n">frag_result</span><span class="p">%</span><span class="n">has_gradient</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="w">      </span><span class="k">end if</span>
+<span class="k">      if</span><span class="w"> </span><span class="p">(</span><span class="n">task_results</span><span class="p">(</span><span class="n">base</span><span class="p">)%</span><span class="n">has_dipole</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         </span><span class="n">frag_result</span><span class="p">%</span><span class="n">dipole</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">task_results</span><span class="p">(</span><span class="n">base</span><span class="p">)%</span><span class="n">dipole</span>
+<span class="w">         </span><span class="n">frag_result</span><span class="p">%</span><span class="n">has_dipole</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="w">      </span><span class="k">end if</span>
+
+<span class="k">      if</span><span class="w"> </span><span class="p">(</span><span class="n">have_dipoles</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         call </span><span class="n">finite_diff_dipole_derivatives</span><span class="p">(</span><span class="n">n_atoms</span><span class="p">,</span><span class="w"> </span><span class="n">fwd_dip</span><span class="p">,</span><span class="w"> </span><span class="n">bwd_dip</span><span class="p">,</span><span class="w"> </span><span class="n">DEFAULT_DISPLACEMENT</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">                                             </span><span class="n">frag_result</span><span class="p">%</span><span class="n">dipole_derivatives</span><span class="p">)</span>
+<span class="w">         </span><span class="n">frag_result</span><span class="p">%</span><span class="n">has_dipole_derivatives</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="w">      </span><span class="k">end if</span>
+
+<span class="k">      deallocate</span><span class="w"> </span><span class="p">(</span><span class="n">fwd_grad</span><span class="p">,</span><span class="w"> </span><span class="n">bwd_grad</span><span class="p">,</span><span class="w"> </span><span class="n">fwd_dip</span><span class="p">,</span><span class="w"> </span><span class="n">bwd_dip</span><span class="p">)</span>
+<span class="w">      </span><span class="k">call </span><span class="n">frag</span><span class="p">%</span><span class="n">destroy</span><span class="p">()</span>
+
+<span class="w">      </span><span class="c">! Release this fragment's task results now that they are folded in</span>
+<span class="w">      </span><span class="k">do </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="n">n_disp</span>
+<span class="w">         </span><span class="k">call </span><span class="n">task_results</span><span class="p">(</span><span class="n">base</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">k</span><span class="p">)%</span><span class="n">destroy</span><span class="p">()</span>
+<span class="w">      </span><span class="k">end do</span>
+
+<span class="k">   end subroutine </span><span class="n">assemble_one_fragment_hessian</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              metalquicha
+ was developed by Jorge Luis Galvez Vallejo<br>              &copy; 2026 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+ on 2026-09-07 09:10 +0000             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

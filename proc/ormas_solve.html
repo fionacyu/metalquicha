@@ -1,0 +1,1498 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="A demonstration of PIC as a framework for scientific applications targetting quantum chemistry">
+    <meta name="author" content="Jorge Luis Galvez Vallejo" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>ormas_solve &ndash; metalquicha</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">metalquicha </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../program/main.html">Program</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>ormas_solve
+      <small>Subroutine</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 0.2% of total for procedures.">46 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/mqc_ormas_ci.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/mqc_ormas_ci.f90.html'>mqc_ormas_ci.f90</a></li>
+                <li class="breadcrumb-item"><a href='../module/mqc_ormas_ci.html'>mqc_ormas_ci</a></li>
+            <li class="breadcrumb-item active" aria-current="page">ormas_solve</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#vars-0"
+         aria-expanded="false" aria-controls="vars-0">
+         <h4 class="card-header bg-primary text-white">Variables</h4>
+      </a>
+      <div id="vars-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../proc/ormas_solve.html#variable-alpha~7">alpha</a>
+            <a class="list-group-item" href="../proc/ormas_solve.html#variable-alpha_table~7">alpha_table</a>
+            <a class="list-group-item" href="../proc/ormas_solve.html#variable-beta~7">beta</a>
+            <a class="list-group-item" href="../proc/ormas_solve.html#variable-beta_table~7">beta_table</a>
+            <a class="list-group-item" href="../proc/ormas_solve.html#variable-closure~9">closure</a>
+            <a class="list-group-item" href="../proc/ormas_solve.html#variable-converged~6">converged</a>
+            <a class="list-group-item" href="../proc/ormas_solve.html#variable-diagonal~2">diagonal</a>
+            <a class="list-group-item" href="../proc/ormas_solve.html#variable-folded~5">folded</a>
+            <a class="list-group-item" href="../proc/ormas_solve.html#variable-iterations_taken">iterations_taken</a>
+            <a class="list-group-item" href="../proc/ormas_solve.html#variable-operator">operator</a>
+            <a class="list-group-item" href="../proc/ormas_solve.html#variable-residuals">residuals</a>
+            <a class="list-group-item" href="../proc/ormas_solve.html#variable-sigma_products">sigma_products</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/ormas_solve.html#src">ormas_solve</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>public  subroutine ormas_solve(space, h1e, eri, n_roots, energies, vectors, error, tolerance, max_iterations, guess, verbose, energy_offset)  
+</h2>
+    
+
+    <p>The lowest states of a restricted active space, iteratively</p>
+<p>Everything from the partition and the integrals: the strings, the
+closure the sigma needs, the excitation tables, the folded Hamiltonian,
+the diagonal to precondition with, and then Davidson. One sigma per
+expansion vector, and no matrix is ever formed.</p>
+
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-space~30"></span>
+              type(<a href='../type/ormas_space_t.html'>ormas_space_t</a>),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              target
+            </td>
+            <td>::</td>
+            <td><strong>space</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-h1e~4"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>h1e</strong>(:,:)</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-eri~3"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>eri</strong>(:,:,:,:)</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_roots~3"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_roots</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-energies~3"></span>
+              real(kind=dp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>energies</strong>(:)</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-vectors"></span>
+              real(kind=dp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>vectors</strong>(:,:)</td>
+            <td>
+                <p>(n_determinants, n_roots)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-error~161"></span>
+              type(<a href='../type/error_t.html'>error_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>error</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-tolerance~13"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>tolerance</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-max_iterations"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>max_iterations</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-guess~6"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>guess</strong>(:,:)</td>
+            <td>
+                <p>(n_determinants, n_roots) starting vectors, as an orbital optimiser
+has from the previous macro-iteration</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-verbose~9"></span>
+              logical,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>verbose</strong></td>
+            <td>
+                <p>Print a line per iteration, as the complete-space solver does</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-energy_offset"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>energy_offset</strong></td>
+            <td>
+                <p>Added to the eigenvalue before printing, so the table shows the
+total rather than the active-space energy alone</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <br>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Calls</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~ormas_solve~~CallsGraph Pages: 1 -->
+<svg id="procormas_solveCallsGraph" width="641pt" height="553pt"
+ viewBox="0.00 0.00 641.00 553.36" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~ormas_solve~~CallsGraph" class="graph" transform="scale(0.5 0.5) rotate(0) translate(4 1092.36)">
+<title>proc~~ormas_solve~~CallsGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-1092.36 1266,-1092.36 1266,4 -4,4"/>
+<!-- proc~ormas_solve -->
+<g id="proc~~ormas_solve~~CallsGraph_node1" class="node">
+<title>proc~ormas_solve</title>
+<polygon fill="none" stroke="black" points="79,-542 0,-542 0,-518 79,-518 79,-542"/>
+<text text-anchor="middle" x="39.5" y="-527.6" font-family="Helvetica,sans-Serif" font-size="10.50">ormas_solve</text>
+</g>
+<!-- proc~absorb_one_electron -->
+<g id="proc~~ormas_solve~~CallsGraph_node2" class="node">
+<title>proc~absorb_one_electron</title>
+<g id="a_proc~~ormas_solve~~CallsGraph_node2"><a xlink:href="../proc/absorb_one_electron.html" xlink:title="absorb_one_electron">
+<polygon fill="#d9534f" stroke="#d9534f" points="827,-637 703,-637 703,-613 827,-613 827,-637"/>
+<text text-anchor="middle" x="765" y="-622.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">absorb_one_electron</text>
+</a>
+</g>
+</g>
+<!-- proc~ormas_solve&#45;&gt;proc~absorb_one_electron -->
+<g id="proc~~ormas_solve~~CallsGraph_edge1" class="edge">
+<title>proc~ormas_solve&#45;&gt;proc~absorb_one_electron</title>
+<path fill="none" stroke="#ff0000" d="M49.17,-542.24C61.6,-558.63 86.18,-587.03 115,-599 217.53,-641.57 546.27,-634.04 692.59,-628.29"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="692.96,-631.78 702.81,-627.88 692.68,-624.78 692.96,-631.78"/>
+</g>
+<!-- proc~build_ormas_closure -->
+<g id="proc~~ormas_solve~~CallsGraph_node3" class="node">
+<title>proc~build_ormas_closure</title>
+<g id="a_proc~~ormas_solve~~CallsGraph_node3"><a xlink:href="../proc/build_ormas_closure.html" xlink:title="build_ormas_closure">
+<polygon fill="#d9534f" stroke="#d9534f" points="666,-497 545,-497 545,-473 666,-473 666,-497"/>
+<text text-anchor="middle" x="605.5" y="-482.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">build_ormas_closure</text>
+</a>
+</g>
+</g>
+<!-- proc~ormas_solve&#45;&gt;proc~build_ormas_closure -->
+<g id="proc~~ormas_solve~~CallsGraph_edge2" class="edge">
+<title>proc~ormas_solve&#45;&gt;proc~build_ormas_closure</title>
+<path fill="none" stroke="#ff0000" d="M79.13,-524.98C90.66,-523.58 103.33,-522.13 115,-521 264.34,-506.5 439.83,-494.91 534.84,-489.09"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="535.13,-492.58 544.9,-488.48 534.7,-485.6 535.13,-492.58"/>
+</g>
+<!-- proc~build_ormas_links -->
+<g id="proc~~ormas_solve~~CallsGraph_node4" class="node">
+<title>proc~build_ormas_links</title>
+<g id="a_proc~~ormas_solve~~CallsGraph_node4"><a xlink:href="../proc/build_ormas_links.html" xlink:title="build_ormas_links">
+<polygon fill="#d9534f" stroke="#d9534f" points="283.5,-204 176.5,-204 176.5,-180 283.5,-180 283.5,-204"/>
+<text text-anchor="middle" x="230" y="-189.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">build_ormas_links</text>
+</a>
+</g>
+</g>
+<!-- proc~ormas_solve&#45;&gt;proc~build_ormas_links -->
+<g id="proc~~ormas_solve~~CallsGraph_edge3" class="edge">
+<title>proc~ormas_solve&#45;&gt;proc~build_ormas_links</title>
+<path fill="none" stroke="#ff0000" d="M40.42,-517.88C40.76,-476 47.15,-335.4 115,-251 131.07,-231.01 155.72,-217.08 178,-207.78"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="179.35,-211.01 187.36,-204.08 176.78,-204.5 179.35,-211.01"/>
+</g>
+<!-- proc~davidson_flat -->
+<g id="proc~~ormas_solve~~CallsGraph_node5" class="node">
+<title>proc~davidson_flat</title>
+<g id="a_proc~~ormas_solve~~CallsGraph_node5"><a xlink:href="../proc/davidson_flat.html" xlink:title="davidson_flat">
+<polygon fill="#d9534f" stroke="#d9534f" points="647,-843 564,-843 564,-819 647,-819 647,-843"/>
+<text text-anchor="middle" x="605.5" y="-828.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">davidson_flat</text>
+</a>
+</g>
+</g>
+<!-- proc~ormas_solve&#45;&gt;proc~davidson_flat -->
+<g id="proc~~ormas_solve~~CallsGraph_edge4" class="edge">
+<title>proc~ormas_solve&#45;&gt;proc~davidson_flat</title>
+<path fill="none" stroke="#ff0000" d="M45.88,-542.12C56.23,-564.14 80.93,-610.94 115,-638 252.34,-747.09 459.02,-801.11 553.77,-821.3"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="553.17,-824.75 563.68,-823.37 554.6,-817.9 553.17,-824.75"/>
+</g>
+<!-- proc~error_has_error -->
+<g id="proc~~ormas_solve~~CallsGraph_node6" class="node">
+<title>proc~error_has_error</title>
+<g id="a_proc~~ormas_solve~~CallsGraph_node6"><a xlink:href="../proc/error_has_error.html" xlink:title="error_t%error_has_error">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="1003,-377 864,-377 864,-353 1003,-353 1003,-377"/>
+<text text-anchor="middle" x="933.5" y="-362.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">error_t%error_has_error</text>
+</a>
+</g>
+</g>
+<!-- proc~ormas_solve&#45;&gt;proc~error_has_error -->
+<g id="proc~~ormas_solve~~CallsGraph_edge5" class="edge">
+<title>proc~ormas_solve&#45;&gt;proc~error_has_error</title>
+<path fill="none" stroke="#ff0000" d="M64.52,-517.93C78.9,-511.07 97.68,-502.74 115,-497 368.93,-412.88 436.16,-393.74 702,-364 752.27,-358.38 809.09,-358.55 853.74,-360.17"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="853.82,-363.67 863.95,-360.57 854.09,-356.68 853.82,-363.67"/>
+</g>
+<!-- proc~error_set -->
+<g id="proc~~ormas_solve~~CallsGraph_node7" class="node">
+<title>proc~error_set</title>
+<g id="a_proc~~ormas_solve~~CallsGraph_node7"><a xlink:href="../proc/error_set.html" xlink:title="error_t%error_set">
+<polygon fill="#d9534f" stroke="#d9534f" points="986,-618 881,-618 881,-594 986,-594 986,-618"/>
+<text text-anchor="middle" x="933.5" y="-603.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">error_t%error_set</text>
+</a>
+</g>
+</g>
+<!-- proc~ormas_solve&#45;&gt;proc~error_set -->
+<g id="proc~~ormas_solve~~CallsGraph_edge6" class="edge">
+<title>proc~ormas_solve&#45;&gt;proc~error_set</title>
+<path fill="none" stroke="#ff0000" d="M79.01,-539.63C90.53,-542.28 103.23,-544.98 115,-547 260.08,-571.85 296.81,-585 444,-585 444,-585 444,-585 606.5,-585 698.69,-585 805.25,-593.47 870.75,-599.65"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="870.62,-603.15 880.9,-600.62 871.28,-596.18 870.62,-603.15"/>
+</g>
+<!-- proc~ormas_closure_destroy -->
+<g id="proc~~ormas_solve~~CallsGraph_node8" class="node">
+<title>proc~ormas_closure_destroy</title>
+<g id="a_proc~~ormas_solve~~CallsGraph_node8"><a xlink:href="../proc/ormas_closure_destroy.html" xlink:title="ormas_closure_t%ormas_closure_destroy">
+<polygon fill="#d9534f" stroke="#d9534f" points="345,-162 115,-162 115,-138 345,-138 345,-162"/>
+<text text-anchor="middle" x="230" y="-147.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">ormas_closure_t%ormas_closure_destroy</text>
+</a>
+</g>
+</g>
+<!-- proc~ormas_solve&#45;&gt;proc~ormas_closure_destroy -->
+<g id="proc~~ormas_solve~~CallsGraph_edge7" class="edge">
+<title>proc~ormas_solve&#45;&gt;proc~ormas_closure_destroy</title>
+<path fill="none" stroke="#ff0000" d="M41.26,-517.68C45.05,-460.44 63.8,-221.07 115,-171 116.1,-169.92 117.24,-168.89 118.41,-167.9"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="120.52,-170.7 126.58,-162 116.42,-165.02 120.52,-170.7"/>
+</g>
+<!-- proc~ormas_diagonal -->
+<g id="proc~~ormas_solve~~CallsGraph_node9" class="node">
+<title>proc~ormas_diagonal</title>
+<g id="a_proc~~ormas_solve~~CallsGraph_node9"><a xlink:href="../proc/ormas_diagonal.html" xlink:title="ormas_diagonal">
+<polygon fill="#d9534f" stroke="#d9534f" points="814,-557 716,-557 716,-533 814,-533 814,-557"/>
+<text text-anchor="middle" x="765" y="-542.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">ormas_diagonal</text>
+</a>
+</g>
+</g>
+<!-- proc~ormas_solve&#45;&gt;proc~ormas_diagonal -->
+<g id="proc~~ormas_solve~~CallsGraph_edge8" class="edge">
+<title>proc~ormas_solve&#45;&gt;proc~ormas_diagonal</title>
+<path fill="none" stroke="#ff0000" d="M79.14,-530.8C198.56,-533.28 562.2,-540.82 705.28,-543.78"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="705.53,-547.29 715.6,-544 705.68,-540.29 705.53,-547.29"/>
+</g>
+<!-- proc~ormas_strings -->
+<g id="proc~~ormas_solve~~CallsGraph_node10" class="node">
+<title>proc~ormas_strings</title>
+<g id="a_proc~~ormas_solve~~CallsGraph_node10"><a xlink:href="../proc/ormas_strings.html" xlink:title="ormas_strings">
+<polygon fill="#d9534f" stroke="#d9534f" points="273.5,-284 186.5,-284 186.5,-260 273.5,-260 273.5,-284"/>
+<text text-anchor="middle" x="230" y="-269.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">ormas_strings</text>
+</a>
+</g>
+</g>
+<!-- proc~ormas_solve&#45;&gt;proc~ormas_strings -->
+<g id="proc~~ormas_solve~~CallsGraph_edge9" class="edge">
+<title>proc~ormas_solve&#45;&gt;proc~ormas_strings</title>
+<path fill="none" stroke="#ff0000" d="M42.23,-517.53C47.45,-484.17 65.79,-391.62 115,-335 133.45,-313.77 160.88,-298.3 184.2,-288"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="185.73,-291.16 193.58,-284.04 183.01,-284.71 185.73,-291.16"/>
+</g>
+<!-- to_char -->
+<g id="proc~~ormas_solve~~CallsGraph_node11" class="node">
+<title>to_char</title>
+<polygon fill="#777777" stroke="#777777" points="960.5,-679 906.5,-679 906.5,-655 960.5,-655 960.5,-679"/>
+<text text-anchor="middle" x="933.5" y="-664.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">to_char</text>
+</g>
+<!-- proc~ormas_solve&#45;&gt;to_char -->
+<g id="proc~~ormas_solve~~CallsGraph_edge10" class="edge">
+<title>proc~ormas_solve&#45;&gt;to_char</title>
+<path fill="none" stroke="#ff0000" d="M43,-542.1C60.34,-622.22 170.05,-1073 444,-1073 444,-1073 444,-1073 606.5,-1073 705.31,-1073 752.19,-1117.37 828,-1054 831.65,-1050.95 905.32,-770.72 926.72,-689.08"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="930.12,-689.89 929.27,-679.33 923.35,-688.11 930.12,-689.89"/>
+</g>
+<!-- proc~absorb_one_electron&#45;&gt;proc~error_has_error -->
+<g id="proc~~ormas_solve~~CallsGraph_edge11" class="edge">
+<title>proc~absorb_one_electron&#45;&gt;proc~error_has_error</title>
+<path fill="none" stroke="#ff0000" d="M781.4,-612.86C794.86,-601.69 814.34,-584.17 828,-566 872.73,-506.53 908.42,-425.16 924.01,-386.76"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="927.4,-387.71 927.86,-377.12 920.9,-385.11 927.4,-387.71"/>
+</g>
+<!-- proc~absorb_one_electron&#45;&gt;proc~error_set -->
+<g id="proc~~ormas_solve~~CallsGraph_edge12" class="edge">
+<title>proc~absorb_one_electron&#45;&gt;proc~error_set</title>
+<path fill="none" stroke="#ff0000" d="M827.05,-618.03C841.24,-616.41 856.36,-614.69 870.59,-613.07"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="871.22,-616.52 880.76,-611.9 870.43,-609.56 871.22,-616.52"/>
+</g>
+<!-- proc~absorb_one_electron&#45;&gt;to_char -->
+<g id="proc~~ormas_solve~~CallsGraph_edge13" class="edge">
+<title>proc~absorb_one_electron&#45;&gt;to_char</title>
+<path fill="none" stroke="#ff0000" d="M813.71,-637.04C840.11,-643.7 872.39,-651.84 896.63,-657.95"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="895.93,-661.38 906.48,-660.44 897.64,-654.6 895.93,-661.38"/>
+</g>
+<!-- proc~build_ormas_closure&#45;&gt;proc~error_has_error -->
+<g id="proc~~ormas_solve~~CallsGraph_edge14" class="edge">
+<title>proc~build_ormas_closure&#45;&gt;proc~error_has_error</title>
+<path fill="none" stroke="#ff9900" d="M632.53,-472.88C651.55,-464.26 678.09,-452.7 702,-444 756.96,-423.99 772.73,-425.14 828,-406 850.06,-398.36 874.35,-388.9 893.95,-380.99"/>
+<polygon fill="#ff9900" stroke="#ff9900" points="895.51,-384.13 903.46,-377.13 892.87,-377.65 895.51,-384.13"/>
+</g>
+<!-- proc~layout_addressing -->
+<g id="proc~~ormas_solve~~CallsGraph_node20" class="node">
+<title>proc~layout_addressing</title>
+<g id="a_proc~~ormas_solve~~CallsGraph_node20"><a xlink:href="../proc/layout_addressing.html" xlink:title="layout_addressing">
+<polygon fill="#d9534f" stroke="#d9534f" points="819.5,-679 710.5,-679 710.5,-655 819.5,-655 819.5,-679"/>
+<text text-anchor="middle" x="765" y="-664.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">layout_addressing</text>
+</a>
+</g>
+</g>
+<!-- proc~build_ormas_closure&#45;&gt;proc~layout_addressing -->
+<g id="proc~~ormas_solve~~CallsGraph_edge15" class="edge">
+<title>proc~build_ormas_closure&#45;&gt;proc~layout_addressing</title>
+<path fill="none" stroke="#ff9900" d="M610.34,-497.06C620.43,-526.81 650.49,-604.26 702,-646 703.76,-647.42 705.62,-648.75 707.55,-650"/>
+<polygon fill="#ff9900" stroke="#ff9900" points="705.98,-653.13 716.43,-654.89 709.36,-647 705.98,-653.13"/>
+</g>
+<!-- proc~one_move_apart -->
+<g id="proc~~ormas_solve~~CallsGraph_node21" class="node">
+<title>proc~one_move_apart</title>
+<g id="a_proc~~ormas_solve~~CallsGraph_node21"><a xlink:href="../proc/one_move_apart.html" xlink:title="one_move_apart">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="816,-477 714,-477 714,-453 816,-453 816,-477"/>
+<text text-anchor="middle" x="765" y="-462.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">one_move_apart</text>
+</a>
+</g>
+</g>
+<!-- proc~build_ormas_closure&#45;&gt;proc~one_move_apart -->
+<g id="proc~~ormas_solve~~CallsGraph_edge16" class="edge">
+<title>proc~build_ormas_closure&#45;&gt;proc~one_move_apart</title>
+<path fill="none" stroke="#ff9900" d="M666.04,-477.44C678.36,-475.87 691.35,-474.23 703.69,-472.66"/>
+<polygon fill="#ff9900" stroke="#ff9900" points="704.4,-476.1 713.88,-471.36 703.52,-469.15 704.4,-476.1"/>
+</g>
+<!-- proc~build_ormas_links&#45;&gt;proc~error_has_error -->
+<g id="proc~~ormas_solve~~CallsGraph_edge17" class="edge">
+<title>proc~build_ormas_links&#45;&gt;proc~error_has_error</title>
+<path fill="none" stroke="#cbff00" d="M283.85,-188.5C411.93,-180.92 735.16,-167.5 828,-218 878.6,-245.52 910.44,-309.4 924.35,-343.17"/>
+<polygon fill="#cbff00" stroke="#cbff00" points="921.16,-344.61 928.1,-352.61 927.67,-342.03 921.16,-344.61"/>
+</g>
+<!-- proc~excitation_phase -->
+<g id="proc~~ormas_solve~~CallsGraph_node18" class="node">
+<title>proc~excitation_phase</title>
+<g id="a_proc~~ormas_solve~~CallsGraph_node18"><a xlink:href="../proc/excitation_phase.html" xlink:title="excitation_phase">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="496,-66 394,-66 394,-42 496,-42 496,-66"/>
+<text text-anchor="middle" x="445" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">excitation_phase</text>
+</a>
+</g>
+</g>
+<!-- proc~build_ormas_links&#45;&gt;proc~excitation_phase -->
+<g id="proc~~ormas_solve~~CallsGraph_edge18" class="edge">
+<title>proc~build_ormas_links&#45;&gt;proc~excitation_phase</title>
+<path fill="none" stroke="#cbff00" d="M283.67,-193.14C304.81,-191.03 328.1,-185.15 345,-171 379.94,-141.75 348.19,-106.62 381,-75 382.28,-73.76 383.64,-72.6 385.06,-71.5"/>
+<polygon fill="#cbff00" stroke="#cbff00" points="387.22,-74.28 393.77,-65.94 383.46,-68.38 387.22,-74.28"/>
+</g>
+<!-- proc~ormas_string_address -->
+<g id="proc~~ormas_solve~~CallsGraph_node22" class="node">
+<title>proc~ormas_string_address</title>
+<g id="a_proc~~ormas_solve~~CallsGraph_node22"><a xlink:href="../proc/ormas_string_address.html" xlink:title="ormas_string_address">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="509,-108 381,-108 381,-84 509,-84 509,-108"/>
+<text text-anchor="middle" x="445" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">ormas_string_address</text>
+</a>
+</g>
+</g>
+<!-- proc~build_ormas_links&#45;&gt;proc~ormas_string_address -->
+<g id="proc~~ormas_solve~~CallsGraph_edge19" class="edge">
+<title>proc~build_ormas_links&#45;&gt;proc~ormas_string_address</title>
+<path fill="none" stroke="#cbff00" d="M283.59,-187.51C303.44,-184.49 325.85,-179.44 345,-171 375.9,-157.38 406.05,-132.35 424.8,-114.97"/>
+<polygon fill="#cbff00" stroke="#cbff00" points="427.25,-117.47 432.1,-108.05 422.44,-112.39 427.25,-117.47"/>
+</g>
+<!-- proc~davidson_flat&#45;&gt;proc~error_has_error -->
+<g id="proc~~ormas_solve~~CallsGraph_edge26" class="edge">
+<title>proc~davidson_flat&#45;&gt;proc~error_has_error</title>
+<path fill="none" stroke="#33ff00" d="M606.47,-818.69C607.05,-772.8 615.39,-609.87 702,-524 743.54,-482.82 778.94,-517.84 828,-486 868.61,-459.64 902.4,-413.03 919.8,-386"/>
+<polygon fill="#33ff00" stroke="#33ff00" points="922.9,-387.65 925.26,-377.32 916.97,-383.92 922.9,-387.65"/>
+</g>
+<!-- proc~davidson_flat&#45;&gt;proc~error_set -->
+<g id="proc~~ormas_solve~~CallsGraph_edge27" class="edge">
+<title>proc~davidson_flat&#45;&gt;proc~error_set</title>
+<path fill="none" stroke="#33ff00" d="M614.15,-818.99C628.63,-797.2 662.19,-751.11 702,-726 751.47,-694.79 779,-719.93 828,-688 848.6,-674.58 845.12,-661.75 864,-646 874.43,-637.3 886.99,-629.36 898.49,-622.9"/>
+<polygon fill="#33ff00" stroke="#33ff00" points="900.32,-625.89 907.43,-618.04 896.97,-619.74 900.32,-625.89"/>
+</g>
+<!-- proc~davidson_flat&#45;&gt;to_char -->
+<g id="proc~~ormas_solve~~CallsGraph_edge29" class="edge">
+<title>proc~davidson_flat&#45;&gt;to_char</title>
+<path fill="none" stroke="#33ff00" d="M633.56,-843.12C677.61,-860.87 766.12,-888.12 828,-852 889.12,-816.33 917.32,-730.22 927.62,-689.3"/>
+<polygon fill="#33ff00" stroke="#33ff00" points="931.04,-690.03 929.96,-679.49 924.23,-688.4 931.04,-690.03"/>
+</g>
+<!-- apply -->
+<g id="proc~~ormas_solve~~CallsGraph_node12" class="node">
+<title>apply</title>
+<polygon fill="#777777" stroke="#777777" points="792,-843 738,-843 738,-819 792,-819 792,-843"/>
+<text text-anchor="middle" x="765" y="-828.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">apply</text>
+</g>
+<!-- proc~davidson_flat&#45;&gt;apply -->
+<g id="proc~~ormas_solve~~CallsGraph_edge20" class="edge">
+<title>proc~davidson_flat&#45;&gt;apply</title>
+<path fill="none" stroke="#33ff00" d="M647.06,-831C671.99,-831 703.66,-831 727.75,-831"/>
+<polygon fill="#33ff00" stroke="#33ff00" points="727.9,-834.5 737.9,-831 727.9,-827.5 727.9,-834.5"/>
+</g>
+<!-- info -->
+<g id="proc~~ormas_solve~~CallsGraph_node13" class="node">
+<title>info</title>
+<polygon fill="#777777" stroke="#777777" points="960.5,-963 906.5,-963 906.5,-939 960.5,-939 960.5,-963"/>
+<text text-anchor="middle" x="933.5" y="-948.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">info</text>
+</g>
+<!-- proc~davidson_flat&#45;&gt;info -->
+<g id="proc~~ormas_solve~~CallsGraph_edge21" class="edge">
+<title>proc~davidson_flat&#45;&gt;info</title>
+<path fill="none" stroke="#33ff00" d="M613.59,-843.02C627.4,-865.16 660.24,-911.94 702,-932 765.09,-962.31 849.14,-960.15 896.34,-955.69"/>
+<polygon fill="#33ff00" stroke="#33ff00" points="896.81,-959.16 906.4,-954.65 896.09,-952.2 896.81,-959.16"/>
+</g>
+<!-- pic_gemm -->
+<g id="proc~~ormas_solve~~CallsGraph_node14" class="node">
+<title>pic_gemm</title>
+<polygon fill="#777777" stroke="#777777" points="799,-801 731,-801 731,-777 799,-777 799,-801"/>
+<text text-anchor="middle" x="765" y="-786.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">pic_gemm</text>
+</g>
+<!-- proc~davidson_flat&#45;&gt;pic_gemm -->
+<g id="proc~~ormas_solve~~CallsGraph_edge22" class="edge">
+<title>proc~davidson_flat&#45;&gt;pic_gemm</title>
+<path fill="none" stroke="#33ff00" d="M647.06,-820.18C669.77,-814.13 698.06,-806.58 721.13,-800.43"/>
+<polygon fill="#33ff00" stroke="#33ff00" points="722.24,-803.76 731,-797.8 720.43,-797 722.24,-803.76"/>
+</g>
+<!-- pic_syev -->
+<g id="proc~~ormas_solve~~CallsGraph_node15" class="node">
+<title>pic_syev</title>
+<polygon fill="#777777" stroke="#777777" points="794,-759 736,-759 736,-735 794,-735 794,-759"/>
+<text text-anchor="middle" x="765" y="-744.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">pic_syev</text>
+</g>
+<!-- proc~davidson_flat&#45;&gt;pic_syev -->
+<g id="proc~~ormas_solve~~CallsGraph_edge23" class="edge">
+<title>proc~davidson_flat&#45;&gt;pic_syev</title>
+<path fill="none" stroke="#33ff00" d="M621.97,-818.98C640.26,-805.21 672.02,-782.66 702,-768 709.62,-764.27 718.07,-760.93 726.21,-758.07"/>
+<polygon fill="#33ff00" stroke="#33ff00" points="727.55,-761.32 735.92,-754.83 725.33,-754.68 727.55,-761.32"/>
+</g>
+<!-- proc~convergence_footer -->
+<g id="proc~~ormas_solve~~CallsGraph_node16" class="node">
+<title>proc~convergence_footer</title>
+<g id="a_proc~~ormas_solve~~CallsGraph_node16"><a xlink:href="../proc/convergence_footer.html" xlink:title="convergence_footer">
+<polygon fill="#d9534f" stroke="#d9534f" points="825,-923 705,-923 705,-899 825,-899 825,-923"/>
+<text text-anchor="middle" x="765" y="-908.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">convergence_footer</text>
+</a>
+</g>
+</g>
+<!-- proc~davidson_flat&#45;&gt;proc~convergence_footer -->
+<g id="proc~~ormas_solve~~CallsGraph_edge24" class="edge">
+<title>proc~davidson_flat&#45;&gt;proc~convergence_footer</title>
+<path fill="none" stroke="#33ff00" d="M626.25,-843.07C645.31,-854.51 675.15,-871.84 702,-885 708.84,-888.36 716.23,-891.69 723.44,-894.8"/>
+<polygon fill="#33ff00" stroke="#33ff00" points="722.52,-898.21 733.09,-898.88 725.24,-891.76 722.52,-898.21"/>
+</g>
+<!-- proc~convergence_header -->
+<g id="proc~~ormas_solve~~CallsGraph_node17" class="node">
+<title>proc~convergence_header</title>
+<g id="a_proc~~ormas_solve~~CallsGraph_node17"><a xlink:href="../proc/convergence_header.html" xlink:title="convergence_header">
+<polygon fill="#d9534f" stroke="#d9534f" points="828,-1045 702,-1045 702,-1021 828,-1021 828,-1045"/>
+<text text-anchor="middle" x="765" y="-1030.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">convergence_header</text>
+</a>
+</g>
+</g>
+<!-- proc~davidson_flat&#45;&gt;proc~convergence_header -->
+<g id="proc~~ormas_solve~~CallsGraph_edge25" class="edge">
+<title>proc~davidson_flat&#45;&gt;proc~convergence_header</title>
+<path fill="none" stroke="#33ff00" d="M609.51,-843.11C618.13,-875.39 646.03,-964.29 702,-1012 703.56,-1013.33 705.2,-1014.57 706.91,-1015.74"/>
+<polygon fill="#33ff00" stroke="#33ff00" points="705.53,-1018.98 715.94,-1020.95 709.03,-1012.92 705.53,-1018.98"/>
+</g>
+<!-- proc~initial_basis -->
+<g id="proc~~ormas_solve~~CallsGraph_node19" class="node">
+<title>proc~initial_basis</title>
+<g id="a_proc~~ormas_solve~~CallsGraph_node19"><a xlink:href="../proc/initial_basis.html" xlink:title="initial_basis">
+<polygon fill="#d9534f" stroke="#d9534f" points="802,-1003 728,-1003 728,-979 802,-979 802,-1003"/>
+<text text-anchor="middle" x="765" y="-988.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">initial_basis</text>
+</a>
+</g>
+</g>
+<!-- proc~davidson_flat&#45;&gt;proc~initial_basis -->
+<g id="proc~~ormas_solve~~CallsGraph_edge28" class="edge">
+<title>proc~davidson_flat&#45;&gt;proc~initial_basis</title>
+<path fill="none" stroke="#33ff00" d="M612.18,-843.08C624.85,-868.84 657.82,-929.68 702,-965 706.97,-968.97 712.63,-972.43 718.46,-975.41"/>
+<polygon fill="#33ff00" stroke="#33ff00" points="717.15,-978.66 727.69,-979.71 720.11,-972.32 717.15,-978.66"/>
+</g>
+<!-- proc~ormas_diagonal&#45;&gt;proc~error_has_error -->
+<g id="proc~~ormas_solve~~CallsGraph_edge30" class="edge">
+<title>proc~ormas_diagonal&#45;&gt;proc~error_has_error</title>
+<path fill="none" stroke="#3200ff" d="M804.35,-532.99C812.66,-529.31 821.04,-524.69 828,-519 873.77,-481.54 907.52,-418.91 923.03,-386.26"/>
+<polygon fill="#3200ff" stroke="#3200ff" points="926.22,-387.69 927.25,-377.15 919.87,-384.75 926.22,-387.69"/>
+</g>
+<!-- proc~ormas_diagonal&#45;&gt;proc~error_set -->
+<g id="proc~~ormas_solve~~CallsGraph_edge31" class="edge">
+<title>proc~ormas_diagonal&#45;&gt;proc~error_set</title>
+<path fill="none" stroke="#3200ff" d="M798.9,-557.05C825.01,-566.62 861.7,-580.06 890.03,-590.44"/>
+<polygon fill="#3200ff" stroke="#3200ff" points="889.08,-593.82 899.67,-593.97 891.49,-587.25 889.08,-593.82"/>
+</g>
+<!-- proc~ormas_diagonal&#45;&gt;to_char -->
+<g id="proc~~ormas_solve~~CallsGraph_edge33" class="edge">
+<title>proc~ormas_diagonal&#45;&gt;to_char</title>
+<path fill="none" stroke="#3200ff" d="M779.06,-557.16C797.32,-573.87 831.88,-604.42 864,-627 875.56,-635.12 888.85,-643.16 900.63,-649.87"/>
+<polygon fill="#3200ff" stroke="#3200ff" points="899.26,-653.12 909.7,-654.95 902.68,-647.01 899.26,-653.12"/>
+</g>
+<!-- proc~string_terms -->
+<g id="proc~~ormas_solve~~CallsGraph_node23" class="node">
+<title>proc~string_terms</title>
+<g id="a_proc~~ormas_solve~~CallsGraph_node23"><a xlink:href="../proc/string_terms.html" xlink:title="string_terms">
+<polygon fill="#d9534f" stroke="#d9534f" points="973,-557 894,-557 894,-533 973,-533 973,-557"/>
+<text text-anchor="middle" x="933.5" y="-542.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string_terms</text>
+</a>
+</g>
+</g>
+<!-- proc~ormas_diagonal&#45;&gt;proc~string_terms -->
+<g id="proc~~ormas_solve~~CallsGraph_edge32" class="edge">
+<title>proc~ormas_diagonal&#45;&gt;proc~string_terms</title>
+<path fill="none" stroke="#3200ff" d="M814.16,-545C836.05,-545 861.9,-545 883.85,-545"/>
+<polygon fill="#3200ff" stroke="#3200ff" points="883.95,-548.5 893.95,-545 883.95,-541.5 883.95,-548.5"/>
+</g>
+<!-- proc~ormas_strings&#45;&gt;proc~error_has_error -->
+<g id="proc~~ormas_solve~~CallsGraph_edge34" class="edge">
+<title>proc~ormas_strings&#45;&gt;proc~error_has_error</title>
+<path fill="none" stroke="#cc00ff" d="M273.54,-267.9C373.24,-259.74 628.62,-247.35 828,-311 855.5,-319.78 884.49,-335.33 904.94,-347.49"/>
+<polygon fill="#cc00ff" stroke="#cc00ff" points="903.34,-350.61 913.7,-352.81 906.97,-344.63 903.34,-350.61"/>
+</g>
+<!-- proc~strings_of_one_spin -->
+<g id="proc~~ormas_solve~~CallsGraph_node24" class="node">
+<title>proc~strings_of_one_spin</title>
+<g id="a_proc~~ormas_solve~~CallsGraph_node24"><a xlink:href="../proc/strings_of_one_spin.html" xlink:title="strings_of_one_spin">
+<polygon fill="#d9534f" stroke="#d9534f" points="503,-244 387,-244 387,-220 503,-220 503,-244"/>
+<text text-anchor="middle" x="445" y="-229.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">strings_of_one_spin</text>
+</a>
+</g>
+</g>
+<!-- proc~ormas_strings&#45;&gt;proc~strings_of_one_spin -->
+<g id="proc~~ormas_solve~~CallsGraph_edge35" class="edge">
+<title>proc~ormas_strings&#45;&gt;proc~strings_of_one_spin</title>
+<path fill="none" stroke="#cc00ff" d="M273.59,-264C303.08,-258.46 342.94,-250.98 376.69,-244.64"/>
+<polygon fill="#cc00ff" stroke="#cc00ff" points="377.77,-248 386.95,-242.71 376.48,-241.12 377.77,-248"/>
+</g>
+<!-- proc~convergence_footer&#45;&gt;to_char -->
+<g id="proc~~ormas_solve~~CallsGraph_edge37" class="edge">
+<title>proc~convergence_footer&#45;&gt;to_char</title>
+<path fill="none" stroke="#27ff00" d="M806.61,-898.99C814.34,-895.38 821.91,-890.79 828,-885 887.15,-828.73 916.74,-732.11 927.55,-688.95"/>
+<polygon fill="#27ff00" stroke="#27ff00" points="930.96,-689.72 929.9,-679.18 924.15,-688.09 930.96,-689.72"/>
+</g>
+<!-- proc~convergence_footer&#45;&gt;info -->
+<g id="proc~~ormas_solve~~CallsGraph_edge36" class="edge">
+<title>proc~convergence_footer&#45;&gt;info</title>
+<path fill="none" stroke="#27ff00" d="M815.96,-923C841.82,-929.22 872.82,-936.66 896.35,-942.31"/>
+<polygon fill="#27ff00" stroke="#27ff00" points="895.72,-945.76 906.26,-944.7 897.35,-938.96 895.72,-945.76"/>
+</g>
+<!-- proc~convergence_header&#45;&gt;info -->
+<g id="proc~~ormas_solve~~CallsGraph_edge38" class="edge">
+<title>proc~convergence_header&#45;&gt;info</title>
+<path fill="none" stroke="#00ff4e" d="M805.49,-1020.96C813.07,-1018.27 820.86,-1015.25 828,-1012 855.48,-999.48 885.04,-981.79 905.69,-968.68"/>
+<polygon fill="#00ff4e" stroke="#00ff4e" points="907.71,-971.55 914.23,-963.2 903.93,-965.66 907.71,-971.55"/>
+</g>
+<!-- proc~layout_addressing&#45;&gt;proc~error_set -->
+<g id="proc~~ormas_solve~~CallsGraph_edge39" class="edge">
+<title>proc~layout_addressing&#45;&gt;proc~error_set</title>
+<path fill="none" stroke="#004eff" d="M802.47,-654.91C810.88,-652.05 819.77,-648.97 828,-646 849.42,-638.28 873.13,-629.24 892.54,-621.71"/>
+<polygon fill="#004eff" stroke="#004eff" points="893.93,-624.93 901.98,-618.04 891.39,-618.41 893.93,-624.93"/>
+</g>
+<!-- proc~layout_addressing&#45;&gt;to_char -->
+<g id="proc~~ormas_solve~~CallsGraph_edge40" class="edge">
+<title>proc~layout_addressing&#45;&gt;to_char</title>
+<path fill="none" stroke="#004eff" d="M819.6,-667C844.55,-667 873.58,-667 895.96,-667"/>
+<polygon fill="#004eff" stroke="#004eff" points="896.05,-670.5 906.05,-667 896.05,-663.5 896.05,-670.5"/>
+</g>
+<!-- proc~class_holding -->
+<g id="proc~~ormas_solve~~CallsGraph_node26" class="node">
+<title>proc~class_holding</title>
+<g id="a_proc~~ormas_solve~~CallsGraph_node26"><a xlink:href="../proc/class_holding.html" xlink:title="class_holding">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="647.5,-24 563.5,-24 563.5,0 647.5,0 647.5,-24"/>
+<text text-anchor="middle" x="605.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">class_holding</text>
+</a>
+</g>
+</g>
+<!-- proc~ormas_string_address&#45;&gt;proc~class_holding -->
+<g id="proc~~ormas_solve~~CallsGraph_edge41" class="edge">
+<title>proc~ormas_string_address&#45;&gt;proc~class_holding</title>
+<path fill="none" stroke="#9c00ff" d="M492.12,-83.9C498.04,-81.42 503.83,-78.47 509,-75 529.4,-61.28 524.72,-46.9 545,-33 547.89,-31.02 550.98,-29.21 554.19,-27.55"/>
+<polygon fill="#9c00ff" stroke="#9c00ff" points="555.82,-30.65 563.43,-23.29 552.89,-24.3 555.82,-30.65"/>
+</g>
+<!-- proc~occupation_of -->
+<g id="proc~~ormas_solve~~CallsGraph_node28" class="node">
+<title>proc~occupation_of</title>
+<g id="a_proc~~ormas_solve~~CallsGraph_node28"><a xlink:href="../proc/occupation_of.html" xlink:title="occupation_of">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="649.5,-66 561.5,-66 561.5,-42 649.5,-42 649.5,-66"/>
+<text text-anchor="middle" x="605.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">occupation_of</text>
+</a>
+</g>
+</g>
+<!-- proc~ormas_string_address&#45;&gt;proc~occupation_of -->
+<g id="proc~~ormas_solve~~CallsGraph_edge42" class="edge">
+<title>proc~ormas_string_address&#45;&gt;proc~occupation_of</title>
+<path fill="none" stroke="#9c00ff" d="M491.42,-83.96C510.12,-79.01 531.9,-73.24 551.34,-68.09"/>
+<polygon fill="#9c00ff" stroke="#9c00ff" points="552.48,-71.4 561.25,-65.46 550.69,-64.64 552.48,-71.4"/>
+</g>
+<!-- proc~within_class_rank -->
+<g id="proc~~ormas_solve~~CallsGraph_node30" class="node">
+<title>proc~within_class_rank</title>
+<g id="a_proc~~ormas_solve~~CallsGraph_node30"><a xlink:href="../proc/within_class_rank.html" xlink:title="within_class_rank">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="658,-108 553,-108 553,-84 658,-84 658,-108"/>
+<text text-anchor="middle" x="605.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">within_class_rank</text>
+</a>
+</g>
+</g>
+<!-- proc~ormas_string_address&#45;&gt;proc~within_class_rank -->
+<g id="proc~~ormas_solve~~CallsGraph_edge43" class="edge">
+<title>proc~ormas_string_address&#45;&gt;proc~within_class_rank</title>
+<path fill="none" stroke="#9c00ff" d="M509.1,-96C520.09,-96 531.51,-96 542.47,-96"/>
+<polygon fill="#9c00ff" stroke="#9c00ff" points="542.81,-99.5 552.81,-96 542.81,-92.5 542.81,-99.5"/>
+</g>
+<!-- proc~occupied_orbitals -->
+<g id="proc~~ormas_solve~~CallsGraph_node29" class="node">
+<title>proc~occupied_orbitals</title>
+<g id="a_proc~~ormas_solve~~CallsGraph_node29"><a xlink:href="../proc/occupied_orbitals.html" xlink:title="occupied_orbitals">
+<polygon fill="#d9534f" stroke="#d9534f" points="1145,-557 1039,-557 1039,-533 1145,-533 1145,-557"/>
+<text text-anchor="middle" x="1092" y="-542.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">occupied_orbitals</text>
+</a>
+</g>
+</g>
+<!-- proc~string_terms&#45;&gt;proc~occupied_orbitals -->
+<g id="proc~~ormas_solve~~CallsGraph_edge44" class="edge">
+<title>proc~string_terms&#45;&gt;proc~occupied_orbitals</title>
+<path fill="none" stroke="#ff00eb" d="M973.19,-545C989.91,-545 1009.91,-545 1028.64,-545"/>
+<polygon fill="#ff00eb" stroke="#ff00eb" points="1028.89,-548.5 1038.89,-545 1028.89,-541.5 1028.89,-548.5"/>
+</g>
+<!-- proc~strings_of_one_spin&#45;&gt;proc~error_has_error -->
+<g id="proc~~ormas_solve~~CallsGraph_edge46" class="edge">
+<title>proc~strings_of_one_spin&#45;&gt;proc~error_has_error</title>
+<path fill="none" stroke="#ff0075" d="M503.21,-222.92C580.79,-213.31 721.83,-205.59 828,-255 869.48,-274.3 902.77,-318.04 919.9,-344.18"/>
+<polygon fill="#ff0075" stroke="#ff0075" points="917.14,-346.37 925.46,-352.93 923.05,-342.61 917.14,-346.37"/>
+</g>
+<!-- interface~binomial -->
+<g id="proc~~ormas_solve~~CallsGraph_node25" class="node">
+<title>interface~binomial</title>
+<g id="a_proc~~ormas_solve~~CallsGraph_node25"><a xlink:href="../interface/binomial.html" xlink:title="binomial">
+<polygon fill="#a7506f" stroke="#a7506f" points="963,-148 904,-148 904,-124 963,-124 963,-148"/>
+<text text-anchor="middle" x="933.5" y="-133.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">binomial</text>
+</a>
+</g>
+</g>
+<!-- proc~strings_of_one_spin&#45;&gt;interface~binomial -->
+<g id="proc~~ormas_solve~~CallsGraph_edge45" class="edge">
+<title>proc~strings_of_one_spin&#45;&gt;interface~binomial</title>
+<path fill="none" stroke="#ff0075" d="M503.24,-220.71C603.54,-200.91 808.52,-160.46 893.87,-143.62"/>
+<polygon fill="#ff0075" stroke="#ff0075" points="894.77,-147.01 903.91,-141.64 893.42,-140.14 894.77,-147.01"/>
+</g>
+<!-- proc~generate_strings -->
+<g id="proc~~ormas_solve~~CallsGraph_node27" class="node">
+<title>proc~generate_strings</title>
+<g id="a_proc~~ormas_solve~~CallsGraph_node27"><a xlink:href="../proc/generate_strings.html" xlink:title="generate_strings">
+<polygon fill="#d9534f" stroke="#d9534f" points="656.5,-321 554.5,-321 554.5,-297 656.5,-297 656.5,-321"/>
+<text text-anchor="middle" x="605.5" y="-306.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">generate_strings</text>
+</a>
+</g>
+</g>
+<!-- proc~strings_of_one_spin&#45;&gt;proc~generate_strings -->
+<g id="proc~~ormas_solve~~CallsGraph_edge47" class="edge">
+<title>proc~strings_of_one_spin&#45;&gt;proc~generate_strings</title>
+<path fill="none" stroke="#ff0075" d="M470.77,-244.03C497.56,-257.05 540.45,-277.88 570.41,-292.44"/>
+<polygon fill="#ff0075" stroke="#ff0075" points="569.12,-295.7 579.65,-296.93 572.18,-289.41 569.12,-295.7"/>
+</g>
+<!-- proc~binomial_i32 -->
+<g id="proc~~ormas_solve~~CallsGraph_node31" class="node">
+<title>proc~binomial_i32</title>
+<g id="a_proc~~ormas_solve~~CallsGraph_node31"><a xlink:href="../proc/binomial_i32.html" xlink:title="binomial_i32">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="1132.5,-128 1051.5,-128 1051.5,-104 1132.5,-104 1132.5,-128"/>
+<text text-anchor="middle" x="1092" y="-113.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">binomial_i32</text>
+</a>
+</g>
+</g>
+<!-- interface~binomial&#45;&gt;proc~binomial_i32 -->
+<g id="proc~~ormas_solve~~CallsGraph_edge48" class="edge">
+<title>interface~binomial&#45;&gt;proc~binomial_i32</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M963.2,-132.33C985.02,-129.54 1015.55,-125.64 1041.31,-122.35"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="1041.81,-125.82 1051.28,-121.08 1040.92,-118.87 1041.81,-125.82"/>
+</g>
+<!-- proc~binomial_i64 -->
+<g id="proc~~ormas_solve~~CallsGraph_node32" class="node">
+<title>proc~binomial_i64</title>
+<g id="a_proc~~ormas_solve~~CallsGraph_node32"><a xlink:href="../proc/binomial_i64.html" xlink:title="binomial_i64">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="1262,-148 1181,-148 1181,-124 1262,-124 1262,-148"/>
+<text text-anchor="middle" x="1221.5" y="-133.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">binomial_i64</text>
+</a>
+</g>
+</g>
+<!-- interface~binomial&#45;&gt;proc~binomial_i64 -->
+<g id="proc~~ormas_solve~~CallsGraph_edge49" class="edge">
+<title>interface~binomial&#45;&gt;proc~binomial_i64</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M963.33,-136.35C984.32,-136.59 1013.42,-136.88 1039,-137 1086.11,-137.23 1097.89,-137.31 1145,-137 1153.29,-136.95 1162.1,-136.86 1170.66,-136.75"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="1170.97,-140.25 1180.93,-136.62 1170.88,-133.25 1170.97,-140.25"/>
+</g>
+<!-- proc~generate_strings&#45;&gt;proc~error_has_error -->
+<g id="proc~~ormas_solve~~CallsGraph_edge51" class="edge">
+<title>proc~generate_strings&#45;&gt;proc~error_has_error</title>
+<path fill="none" stroke="#00ff00" d="M656.67,-310.9C701.87,-313.34 769.94,-318.82 828,-331 849.47,-335.5 872.73,-342.82 891.84,-349.51"/>
+<polygon fill="#00ff00" stroke="#00ff00" points="890.83,-352.87 901.43,-352.94 893.19,-346.28 890.83,-352.87"/>
+</g>
+<!-- proc~check_space -->
+<g id="proc~~ormas_solve~~CallsGraph_node33" class="node">
+<title>proc~check_space</title>
+<g id="a_proc~~ormas_solve~~CallsGraph_node33"><a xlink:href="../proc/check_space.html" xlink:title="check_space">
+<polygon fill="#d9534f" stroke="#d9534f" points="805.5,-397 724.5,-397 724.5,-373 805.5,-373 805.5,-397"/>
+<text text-anchor="middle" x="765" y="-382.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">check_space</text>
+</a>
+</g>
+</g>
+<!-- proc~generate_strings&#45;&gt;proc~check_space -->
+<g id="proc~~ormas_solve~~CallsGraph_edge50" class="edge">
+<title>proc~generate_strings&#45;&gt;proc~check_space</title>
+<path fill="none" stroke="#00ff00" d="M631.46,-321.04C657.99,-333.85 700.13,-354.18 729.76,-368.48"/>
+<polygon fill="#00ff00" stroke="#00ff00" points="728.37,-371.69 738.9,-372.89 731.41,-365.39 728.37,-371.69"/>
+</g>
+<!-- proc~subspace_string -->
+<g id="proc~~ormas_solve~~CallsGraph_node35" class="node">
+<title>proc~subspace_string</title>
+<g id="a_proc~~ormas_solve~~CallsGraph_node35"><a xlink:href="../proc/subspace_string.html" xlink:title="subspace_string">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="814,-47 716,-47 716,-23 814,-23 814,-47"/>
+<text text-anchor="middle" x="765" y="-32.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">subspace_string</text>
+</a>
+</g>
+</g>
+<!-- proc~occupation_of&#45;&gt;proc~subspace_string -->
+<g id="proc~~ormas_solve~~CallsGraph_edge52" class="edge">
+<title>proc~occupation_of&#45;&gt;proc~subspace_string</title>
+<path fill="none" stroke="#00ffff" d="M649.54,-48.81C666.83,-46.72 687.03,-44.28 705.61,-42.04"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="706.23,-45.49 715.74,-40.82 705.39,-38.54 706.23,-45.49"/>
+</g>
+<!-- proc~within_class_rank&#45;&gt;interface~binomial -->
+<g id="proc~~ormas_solve~~CallsGraph_edge53" class="edge">
+<title>proc~within_class_rank&#45;&gt;interface~binomial</title>
+<path fill="none" stroke="#ff00ff" d="M658.16,-102.34C723.7,-110.38 835.26,-124.07 893.89,-131.26"/>
+<polygon fill="#ff00ff" stroke="#ff00ff" points="893.5,-134.74 903.85,-132.48 894.35,-127.79 893.5,-134.74"/>
+</g>
+<!-- proc~string_address -->
+<g id="proc~~ormas_solve~~CallsGraph_node34" class="node">
+<title>proc~string_address</title>
+<g id="a_proc~~ormas_solve~~CallsGraph_node34"><a xlink:href="../proc/string_address.html" xlink:title="string_address">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="809.5,-89 720.5,-89 720.5,-65 809.5,-65 809.5,-89"/>
+<text text-anchor="middle" x="765" y="-74.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string_address</text>
+</a>
+</g>
+</g>
+<!-- proc~within_class_rank&#45;&gt;proc~string_address -->
+<g id="proc~~ormas_solve~~CallsGraph_edge54" class="edge">
+<title>proc~within_class_rank&#45;&gt;proc~string_address</title>
+<path fill="none" stroke="#ff00ff" d="M658.07,-89.78C674.79,-87.76 693.37,-85.52 710.24,-83.49"/>
+<polygon fill="#ff00ff" stroke="#ff00ff" points="710.98,-86.92 720.49,-82.25 710.14,-79.97 710.98,-86.92"/>
+</g>
+<!-- proc~within_class_rank&#45;&gt;proc~subspace_string -->
+<g id="proc~~ormas_solve~~CallsGraph_edge55" class="edge">
+<title>proc~within_class_rank&#45;&gt;proc~subspace_string</title>
+<path fill="none" stroke="#ff00ff" d="M643.33,-83.95C650.91,-81.21 658.77,-78.16 666,-75 682.57,-67.75 685.38,-63.15 702,-56 706.4,-54.11 711.03,-52.27 715.7,-50.52"/>
+<polygon fill="#ff00ff" stroke="#ff00ff" points="717.06,-53.75 725.27,-47.06 714.68,-47.17 717.06,-53.75"/>
+</g>
+<!-- proc~binomial_i32&#45;&gt;proc~binomial_i64 -->
+<g id="proc~~ormas_solve~~CallsGraph_edge56" class="edge">
+<title>proc~binomial_i32&#45;&gt;proc~binomial_i64</title>
+<path fill="none" stroke="#ff0000" d="M1132.64,-122.22C1144.76,-124.12 1158.23,-126.23 1170.92,-128.22"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="1170.46,-131.69 1180.88,-129.79 1171.54,-124.78 1170.46,-131.69"/>
+</g>
+<!-- proc~check_space&#45;&gt;proc~error_has_error -->
+<g id="proc~~ormas_solve~~CallsGraph_edge58" class="edge">
+<title>proc~check_space&#45;&gt;proc~error_has_error</title>
+<path fill="none" stroke="#00ff66" d="M805.88,-380.21C820.3,-378.48 837.13,-376.46 853.72,-374.46"/>
+<polygon fill="#00ff66" stroke="#00ff66" points="854.49,-377.9 864,-373.23 853.65,-370.95 854.49,-377.9"/>
+</g>
+<!-- proc~check_space&#45;&gt;proc~error_set -->
+<g id="proc~~ormas_solve~~CallsGraph_edge59" class="edge">
+<title>proc~check_space&#45;&gt;proc~error_set</title>
+<path fill="none" stroke="#00ff66" d="M783.11,-397.19C797.09,-407.99 816.38,-424.98 828,-444 857.48,-492.24 829.13,-521.5 864,-566 871.42,-575.47 881.76,-583.14 892.16,-589.13"/>
+<polygon fill="#00ff66" stroke="#00ff66" points="890.77,-592.36 901.24,-593.97 894.06,-586.18 890.77,-592.36"/>
+</g>
+<!-- proc~check_space&#45;&gt;to_char -->
+<g id="proc~~ormas_solve~~CallsGraph_edge60" class="edge">
+<title>proc~check_space&#45;&gt;to_char</title>
+<path fill="none" stroke="#00ff66" d="M783.85,-397.13C798.09,-407.79 817.34,-424.59 828,-444 867.9,-516.66 815.95,-559.45 864,-627 872.21,-638.54 884.87,-647.26 897.08,-653.56"/>
+<polygon fill="#00ff66" stroke="#00ff66" points="895.72,-656.79 906.25,-657.92 898.72,-650.47 895.72,-656.79"/>
+</g>
+<!-- proc~check_space&#45;&gt;interface~binomial -->
+<g id="proc~~ormas_solve~~CallsGraph_edge57" class="edge">
+<title>proc~check_space&#45;&gt;interface~binomial</title>
+<path fill="none" stroke="#00ff66" d="M774.03,-372.99C800.51,-333.39 885.27,-206.63 918.73,-156.59"/>
+<polygon fill="#00ff66" stroke="#00ff66" points="921.71,-158.44 924.35,-148.18 915.89,-154.55 921.71,-158.44"/>
+</g>
+<!-- proc~string_address&#45;&gt;interface~binomial -->
+<g id="proc~~ormas_solve~~CallsGraph_edge61" class="edge">
+<title>proc~string_address&#45;&gt;interface~binomial</title>
+<path fill="none" stroke="#0066ff" d="M800.1,-89.08C827.5,-98.79 865.97,-112.43 894.39,-122.5"/>
+<polygon fill="#0066ff" stroke="#0066ff" points="893.39,-125.86 903.99,-125.9 895.73,-119.26 893.39,-125.86"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panprocormas_solveCallsGraph = svgPanZoom('#procormas_solveCallsGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CallsGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CallsGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="374,-24 244,-24 244,0 374,0 374,-24"/>
+<text text-anchor="middle" x="309" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="537.5,-24 392.5,-24 392.5,0 537.5,0 537.5,-24"/>
+<text text-anchor="middle" x="465" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="614,-24 556,-24 556,0 614,0 614,-24"/>
+<text text-anchor="middle" x="585" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="737.5,-24 632.5,-24 632.5,0 737.5,0 737.5,-24"/>
+<text text-anchor="middle" x="685" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+
+    <section>    
+      <h2>Variables</h2>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+<th></th><th scope="col">Initial</th>        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-alpha~7"></span>
+              integer(kind=int64),
+            </td>
+              <td>private,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>alpha</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-alpha_table~7"></span>
+              type(<a href='../type/link_table_t.html'>link_table_t</a>),
+            </td>
+              <td>private,</td>
+            <td>
+              target
+            </td>
+            <td>::</td>
+            <td><strong>alpha_table</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-beta~7"></span>
+              integer(kind=int64),
+            </td>
+              <td>private,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>beta</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-beta_table~7"></span>
+              type(<a href='../type/link_table_t.html'>link_table_t</a>),
+            </td>
+              <td>private,</td>
+            <td>
+              target
+            </td>
+            <td>::</td>
+            <td><strong>beta_table</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-closure~9"></span>
+              type(<a href='../type/ormas_closure_t.html'>ormas_closure_t</a>),
+            </td>
+              <td>private,</td>
+            <td>
+              target
+            </td>
+            <td>::</td>
+            <td><strong>closure</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-converged~6"></span>
+              logical,
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>converged</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-diagonal~2"></span>
+              real(kind=dp),
+            </td>
+              <td>private,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>diagonal</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-folded~5"></span>
+              real(kind=dp),
+            </td>
+              <td>private,</td>
+            <td>
+              allocatable, target
+            </td>
+            <td>::</td>
+            <td><strong>folded</strong>(:,:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-iterations_taken"></span>
+              integer,
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>iterations_taken</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-operator"></span>
+              type(<a href='../type/ormas_operator_t.html'>ormas_operator_t</a>),
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>operator</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-residuals"></span>
+              real(kind=dp),
+            </td>
+              <td>private,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>residuals</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-sigma_products"></span>
+              integer,
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>sigma_products</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    </section>
+    <br>
+    
+    
+
+    
+    
+
+
+
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="hl codehilite"><pre><span></span><span class="w">   </span><span class="k">subroutine </span><span class="n">ormas_solve</span><span class="p">(</span><span class="n">space</span><span class="p">,</span><span class="w"> </span><span class="n">h1e</span><span class="p">,</span><span class="w"> </span><span class="n">eri</span><span class="p">,</span><span class="w"> </span><span class="n">n_roots</span><span class="p">,</span><span class="w"> </span><span class="n">energies</span><span class="p">,</span><span class="w"> </span><span class="n">vectors</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">                          </span><span class="n">tolerance</span><span class="p">,</span><span class="w"> </span><span class="n">max_iterations</span><span class="p">,</span><span class="w"> </span><span class="n">guess</span><span class="p">,</span><span class="w"> </span><span class="n">verbose</span><span class="p">,</span><span class="w"> </span><span class="n">energy_offset</span><span class="p">)</span>
+<span class="w">      </span><span class="c">!! The lowest states of a restricted active space, iteratively</span>
+<span class="w">      </span><span class="c">!!</span>
+<span class="w">      </span><span class="c">!! Everything from the partition and the integrals: the strings, the</span>
+<span class="w">      </span><span class="c">!! closure the sigma needs, the excitation tables, the folded Hamiltonian,</span>
+<span class="w">      </span><span class="c">!! the diagonal to precondition with, and then Davidson. One sigma per</span>
+<span class="w">      </span><span class="c">!! expansion vector, and no matrix is ever formed.</span>
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">ormas_space_t</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="w"> </span><span class="k">target</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">space</span>
+<span class="w">      </span><span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">h1e</span><span class="p">(:,</span><span class="w"> </span><span class="p">:),</span><span class="w"> </span><span class="n">eri</span><span class="p">(:,</span><span class="w"> </span><span class="p">:,</span><span class="w"> </span><span class="p">:,</span><span class="w"> </span><span class="p">:)</span>
+<span class="w">      </span><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">n_roots</span>
+<span class="w">      </span><span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">energies</span><span class="p">(:)</span>
+<span class="w">      </span><span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">vectors</span><span class="p">(:,</span><span class="w"> </span><span class="p">:)</span><span class="w">   </span><span class="c">!! (n_determinants, n_roots)</span>
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">error_t</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">error</span>
+<span class="w">      </span><span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="w"> </span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">tolerance</span>
+<span class="w">      </span><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="w"> </span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">max_iterations</span>
+<span class="w">      </span><span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="w"> </span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">guess</span><span class="p">(:,</span><span class="w"> </span><span class="p">:)</span>
+<span class="w">         </span><span class="c">!! (n_determinants, n_roots) starting vectors, as an orbital optimiser</span>
+<span class="w">         </span><span class="c">!! has from the previous macro-iteration</span>
+<span class="w">      </span><span class="kt">logical</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="w"> </span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">verbose</span>
+<span class="w">         </span><span class="c">!! Print a line per iteration, as the complete-space solver does</span>
+<span class="w">      </span><span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="w"> </span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">energy_offset</span>
+<span class="w">         </span><span class="c">!! Added to the eigenvalue before printing, so the table shows the</span>
+<span class="w">         </span><span class="c">!! total rather than the active-space energy alone</span>
+
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">ormas_operator_t</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">operator</span>
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">ormas_closure_t</span><span class="p">),</span><span class="w"> </span><span class="k">target</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">closure</span>
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">link_table_t</span><span class="p">),</span><span class="w"> </span><span class="k">target</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">alpha_table</span><span class="p">,</span><span class="w"> </span><span class="n">beta_table</span>
+<span class="w">      </span><span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">target</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">folded</span><span class="p">(:,</span><span class="w"> </span><span class="p">:)</span>
+<span class="w">      </span><span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">diagonal</span><span class="p">(:),</span><span class="w"> </span><span class="n">residuals</span><span class="p">(:)</span>
+<span class="w">      </span><span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">alpha</span><span class="p">(:),</span><span class="w"> </span><span class="n">beta</span><span class="p">(:)</span>
+<span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">iterations_taken</span><span class="p">,</span><span class="w"> </span><span class="n">sigma_products</span>
+<span class="w">      </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">converged</span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="p">%</span><span class="n">has_error</span><span class="p">())</span><span class="w"> </span><span class="k">return</span>
+
+<span class="k">      call </span><span class="n">ormas_strings</span><span class="p">(</span><span class="n">space</span><span class="p">,</span><span class="w"> </span><span class="n">alpha</span><span class="p">,</span><span class="w"> </span><span class="n">beta</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="p">)</span>
+<span class="w">      </span><span class="k">call </span><span class="n">build_ormas_closure</span><span class="p">(</span><span class="n">space</span><span class="p">,</span><span class="w"> </span><span class="n">closure</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="p">)</span>
+<span class="w">      </span><span class="k">call </span><span class="n">ormas_diagonal</span><span class="p">(</span><span class="n">space</span><span class="p">,</span><span class="w"> </span><span class="n">alpha</span><span class="p">,</span><span class="w"> </span><span class="n">beta</span><span class="p">,</span><span class="w"> </span><span class="n">h1e</span><span class="p">,</span><span class="w"> </span><span class="n">eri</span><span class="p">,</span><span class="w"> </span><span class="n">diagonal</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="p">)</span>
+<span class="w">      </span><span class="k">call </span><span class="n">absorb_one_electron</span><span class="p">(</span><span class="n">h1e</span><span class="p">,</span><span class="w"> </span><span class="n">eri</span><span class="p">,</span><span class="w"> </span><span class="n">space</span><span class="p">%</span><span class="n">n_alpha</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">space</span><span class="p">%</span><span class="n">n_beta</span><span class="p">,</span><span class="w"> </span><span class="n">folded</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="p">)</span>
+<span class="w">      </span><span class="k">call </span><span class="n">build_ormas_links</span><span class="p">(</span><span class="n">space</span><span class="p">,</span><span class="w"> </span><span class="n">alpha</span><span class="p">,</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.,</span><span class="w"> </span><span class="n">alpha_table</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="p">)</span>
+<span class="w">      </span><span class="k">call </span><span class="n">build_ormas_links</span><span class="p">(</span><span class="n">space</span><span class="p">,</span><span class="w"> </span><span class="n">beta</span><span class="p">,</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.,</span><span class="w"> </span><span class="n">beta_table</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="p">)</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="p">%</span><span class="n">has_error</span><span class="p">())</span><span class="w"> </span><span class="k">return</span>
+
+<span class="k">      </span><span class="n">operator</span><span class="p">%</span><span class="n">space</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">space</span>
+<span class="w">      </span><span class="n">operator</span><span class="p">%</span><span class="n">closure</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">closure</span>
+<span class="w">      </span><span class="n">operator</span><span class="p">%</span><span class="n">folded</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">folded</span>
+<span class="w">      </span><span class="n">operator</span><span class="p">%</span><span class="n">alpha_table</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">alpha_table</span>
+<span class="w">      </span><span class="n">operator</span><span class="p">%</span><span class="n">beta_table</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">beta_table</span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">guess</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         call </span><span class="n">davidson_flat</span><span class="p">(</span><span class="n">operator</span><span class="p">,</span><span class="w"> </span><span class="n">diagonal</span><span class="p">,</span><span class="w"> </span><span class="n">n_roots</span><span class="p">,</span><span class="w"> </span><span class="n">energies</span><span class="p">,</span><span class="w"> </span><span class="n">vectors</span><span class="p">,</span><span class="w"> </span><span class="n">residuals</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">                            </span><span class="n">iterations_taken</span><span class="p">,</span><span class="w"> </span><span class="n">sigma_products</span><span class="p">,</span><span class="w"> </span><span class="n">converged</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">                            </span><span class="n">tolerance</span><span class="p">,</span><span class="w"> </span><span class="n">max_iterations</span><span class="p">,</span><span class="w"> </span><span class="n">guess</span><span class="o">=</span><span class="n">guess</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">                            </span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span><span class="w"> </span><span class="n">energy_offset</span><span class="o">=</span><span class="n">energy_offset</span><span class="p">)</span>
+<span class="w">      </span><span class="k">else</span>
+<span class="k">         call </span><span class="n">davidson_flat</span><span class="p">(</span><span class="n">operator</span><span class="p">,</span><span class="w"> </span><span class="n">diagonal</span><span class="p">,</span><span class="w"> </span><span class="n">n_roots</span><span class="p">,</span><span class="w"> </span><span class="n">energies</span><span class="p">,</span><span class="w"> </span><span class="n">vectors</span><span class="p">,</span><span class="w"> </span><span class="n">residuals</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">                            </span><span class="n">iterations_taken</span><span class="p">,</span><span class="w"> </span><span class="n">sigma_products</span><span class="p">,</span><span class="w"> </span><span class="n">converged</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">                            </span><span class="n">tolerance</span><span class="p">,</span><span class="w"> </span><span class="n">max_iterations</span><span class="p">,</span><span class="w"> </span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">                            </span><span class="n">energy_offset</span><span class="o">=</span><span class="n">energy_offset</span><span class="p">)</span>
+<span class="w">      </span><span class="k">end if</span>
+<span class="k">      if</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="p">%</span><span class="n">has_error</span><span class="p">())</span><span class="w"> </span><span class="k">return</span>
+
+<span class="k">      if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="n">converged</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         call </span><span class="n">error</span><span class="p">%</span><span class="n">set</span><span class="p">(</span><span class="n">ERROR_VALIDATION</span><span class="p">,</span><span class="w"> </span><span class="s2">"the restricted CI did not converge in "</span><span class="o">//</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">                        </span><span class="n">to_char</span><span class="p">(</span><span class="n">iterations_taken</span><span class="p">)</span><span class="o">//</span><span class="s2">" iterations; the largest residual "</span><span class="o">//</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">                        </span><span class="s2">"was "</span><span class="o">//</span><span class="n">to_char</span><span class="p">(</span><span class="nb">maxval</span><span class="p">(</span><span class="n">residuals</span><span class="p">))</span><span class="o">//</span><span class="s2">"."</span><span class="p">)</span>
+<span class="w">      </span><span class="k">end if</span>
+
+<span class="k">      call </span><span class="n">closure</span><span class="p">%</span><span class="n">destroy</span><span class="p">()</span>
+<span class="w">      </span><span class="k">call </span><span class="n">alpha_table</span><span class="p">%</span><span class="n">destroy</span><span class="p">()</span>
+<span class="w">      </span><span class="k">call </span><span class="n">beta_table</span><span class="p">%</span><span class="n">destroy</span><span class="p">()</span>
+<span class="w">   </span><span class="k">end subroutine </span><span class="n">ormas_solve</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              metalquicha
+ was developed by Jorge Luis Galvez Vallejo<br>              &copy; 2026 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+ on 2026-09-07 09:10 +0000             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

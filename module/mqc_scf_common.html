@@ -1,0 +1,1640 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="A demonstration of PIC as a framework for scientific applications targetting quantum chemistry">
+    <meta name="author" content="Jorge Luis Galvez Vallejo" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>mqc_scf_common &ndash; metalquicha</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">metalquicha </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../program/main.html">Program</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>mqc_scf_common
+      <small>Module</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 0.8% of total for modules and submodules.">218 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/mqc_scf_common.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/mqc_scf_common.f90.html'>mqc_scf_common.f90</a></li>
+            <li class="breadcrumb-item active" aria-current="page">mqc_scf_common</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+        <div id="sidebar">
+      <h3>Contents</h3>
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#vars-0"
+         aria-expanded="false" aria-controls="vars-0">
+         <h4 class="card-header bg-primary text-white">Variables</h4>
+      </a>
+      <div id="vars-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/mqc_scf_common.html#variable-gwh_k">GWH_K</a>
+            <a class="list-group-item" href="../module/mqc_scf_common.html#variable-linear_dependence_tol">LINEAR_DEPENDENCE_TOL</a>
+            <a class="list-group-item" href="../module/mqc_scf_common.html#variable-linear_dependence_warn_tol">LINEAR_DEPENDENCE_WARN_TOL</a>
+            <a class="list-group-item" href="../module/mqc_scf_common.html#variable-collect_depth">collect_depth</a>
+            <a class="list-group-item" href="../module/mqc_scf_common.html#variable-tally~2">tally</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#types-0"
+         aria-expanded="false" aria-controls="types-0">
+         <h4 class="card-header bg-primary text-white">Derived Types</h4>
+      </a>
+      <div id="types-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/mqc_scf_common.html#type-lindep_tally_t">lindep_tally_t</a>
+        </div>
+      </div>
+    </div>
+
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#funcs-0"
+         aria-expanded="false" aria-controls="funcs-0">
+         <h4 class="card-header bg-primary text-white">Functions</h4>
+      </a>
+      <div id="funcs-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/mqc_scf_common.html#proc-spin_contamination">spin_contamination</a>
+            <a class="list-group-item" href="../module/mqc_scf_common.html#proc-int_text">int_text</a>
+        </div>
+      </div>
+    </div>
+
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#subs-0"
+         aria-expanded="false" aria-controls="subs-0">
+         <h4 class="card-header bg-primary text-white">Subroutines</h4>
+      </a>
+      <div id="subs-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/mqc_scf_common.html#proc-build_density_closed_shell">build_density_closed_shell</a>
+            <a class="list-group-item" href="../module/mqc_scf_common.html#proc-build_density_spin">build_density_spin</a>
+            <a class="list-group-item" href="../module/mqc_scf_common.html#proc-build_orthogonalizer">build_orthogonalizer</a>
+            <a class="list-group-item" href="../module/mqc_scf_common.html#proc-lindep_collect_begin">lindep_collect_begin</a>
+            <a class="list-group-item" href="../module/mqc_scf_common.html#proc-lindep_collect_end">lindep_collect_end</a>
+            <a class="list-group-item" href="../module/mqc_scf_common.html#proc-report_linear_dependence">report_linear_dependence</a>
+            <a class="list-group-item" href="../module/mqc_scf_common.html#proc-report_linear_dependence_tally">report_linear_dependence_tally</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+
+
+  </div>
+
+    </div>
+
+    <div class="col-md-9" id='text'>
+      <p>The parts of an SCF that do not depend on how the integrals were made.</p>
+<p>Orthogonalising the overlap, forming a density from occupied orbitals and
+measuring spin contamination are pure linear algebra, and live here so
+the cenzontle and cuEST paths cannot drift apart on the numerics.</p>
+<p>Nothing here touches integrals, DIIS or the iteration itself.</p>
+<br>          <div class="card mb-4">
+      <h3 class="card-header card-title bg-light">Uses</h3>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <ul class="list-inline">
+                  <li class="list-inline-item">pic_blas_interfaces</li>
+                  <li class="list-inline-item"><a href='mqc_error.html'>mqc_error</a></li>
+                  <li class="list-inline-item">pic_lapack_interfaces</li>
+                  <li class="list-inline-item">pic_types</li>
+                  <li class="list-inline-item">pic_logger</li>
+              </ul>
+            </li>
+            <li class="list-group-item">
+              <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: module~~mqc_scf_common~~UsesGraph Pages: 1 -->
+<svg id="modulemqc_scf_commonUsesGraph" width="280pt" height="200pt"
+ viewBox="0.00 0.00 280.00 200.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="module~~mqc_scf_common~~UsesGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 196)">
+<title>module~~mqc_scf_common~~UsesGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-196 276,-196 276,4 -4,4"/>
+<!-- module~mqc_scf_common -->
+<g id="module~~mqc_scf_common~~UsesGraph_node1" class="node">
+<title>module~mqc_scf_common</title>
+<polygon fill="none" stroke="black" points="272,-108 163,-108 163,-84 272,-84 272,-108"/>
+<text text-anchor="middle" x="217.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50">mqc_scf_common</text>
+</g>
+<!-- module~mqc_error -->
+<g id="module~~mqc_scf_common~~UsesGraph_node2" class="node">
+<title>module~mqc_error</title>
+<g id="a_module~~mqc_scf_common~~UsesGraph_node2"><a xlink:href="../module/mqc_error.html" xlink:title="mqc_error">
+<polygon fill="#337ab7" stroke="#337ab7" points="97,-192 30,-192 30,-168 97,-168 97,-192"/>
+<text text-anchor="middle" x="63.5" y="-177.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_error</text>
+</a>
+</g>
+</g>
+<!-- module~mqc_scf_common&#45;&gt;module~mqc_error -->
+<g id="module~~mqc_scf_common~~UsesGraph_edge1" class="edge">
+<title>module~mqc_scf_common&#45;&gt;module~mqc_error</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M202.14,-108.1C185.12,-121.95 155.48,-144.58 127,-159 120.69,-162.2 113.78,-165.07 106.93,-167.6"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="105.32,-164.46 97.02,-171.04 107.61,-171.07 105.32,-164.46"/>
+</g>
+<!-- pic_blas_interfaces -->
+<g id="module~~mqc_scf_common~~UsesGraph_node3" class="node">
+<title>pic_blas_interfaces</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="120.5,-150 6.5,-150 6.5,-126 120.5,-126 120.5,-150"/>
+<text text-anchor="middle" x="63.5" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">pic_blas_interfaces</text>
+</g>
+<!-- module~mqc_scf_common&#45;&gt;pic_blas_interfaces -->
+<g id="module~~mqc_scf_common~~UsesGraph_edge2" class="edge">
+<title>module~mqc_scf_common&#45;&gt;pic_blas_interfaces</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M172.94,-108.04C155.77,-112.78 135.88,-118.28 117.85,-123.26"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="116.77,-119.93 108.06,-125.96 118.63,-126.67 116.77,-119.93"/>
+</g>
+<!-- pic_lapack_interfaces -->
+<g id="module~~mqc_scf_common~~UsesGraph_node4" class="node">
+<title>pic_lapack_interfaces</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="127,-108 0,-108 0,-84 127,-84 127,-108"/>
+<text text-anchor="middle" x="63.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">pic_lapack_interfaces</text>
+</g>
+<!-- module~mqc_scf_common&#45;&gt;pic_lapack_interfaces -->
+<g id="module~~mqc_scf_common~~UsesGraph_edge3" class="edge">
+<title>module~mqc_scf_common&#45;&gt;pic_lapack_interfaces</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M162.91,-96C154.62,-96 145.93,-96 137.3,-96"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="137.22,-92.5 127.22,-96 137.22,-99.5 137.22,-92.5"/>
+</g>
+<!-- pic_logger -->
+<g id="module~~mqc_scf_common~~UsesGraph_node5" class="node">
+<title>pic_logger</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="97.5,-66 29.5,-66 29.5,-42 97.5,-42 97.5,-66"/>
+<text text-anchor="middle" x="63.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">pic_logger</text>
+</g>
+<!-- module~mqc_scf_common&#45;&gt;pic_logger -->
+<g id="module~~mqc_scf_common~~UsesGraph_edge4" class="edge">
+<title>module~mqc_scf_common&#45;&gt;pic_logger</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M172.94,-83.96C152.44,-78.3 128.05,-71.56 107.6,-65.91"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="108.49,-62.52 97.92,-63.23 106.62,-69.27 108.49,-62.52"/>
+</g>
+<!-- pic_types -->
+<g id="module~~mqc_scf_common~~UsesGraph_node6" class="node">
+<title>pic_types</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="94.5,-24 32.5,-24 32.5,0 94.5,0 94.5,-24"/>
+<text text-anchor="middle" x="63.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">pic_types</text>
+</g>
+<!-- module~mqc_scf_common&#45;&gt;pic_types -->
+<g id="module~~mqc_scf_common~~UsesGraph_edge5" class="edge">
+<title>module~mqc_scf_common&#45;&gt;pic_types</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M202.14,-83.9C185.12,-70.05 155.48,-47.42 127,-33 119.89,-29.4 112.03,-26.21 104.34,-23.46"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="105.38,-20.12 94.78,-20.23 103.13,-26.75 105.38,-20.12"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#UsesGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="UsesGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="518pt" height="32pt"
+ viewBox="0.00 0.00 517.50 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 513.5,-28 513.5,4 -4,4"/>
+<!-- Module -->
+<g id="node1" class="node">
+<title>Module</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="54,-24 0,-24 0,0 54,0 54,-24"/>
+<text text-anchor="middle" x="27" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Module</text>
+</g>
+<!-- Submodule -->
+<g id="node2" class="node">
+<title>Submodule</title>
+<polygon fill="#5bc0de" stroke="#5bc0de" points="145.5,-24 72.5,-24 72.5,0 145.5,0 145.5,-24"/>
+<text text-anchor="middle" x="109" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Submodule</text>
+</g>
+<!-- Subroutine -->
+<g id="node3" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="234,-24 164,-24 164,0 234,0 234,-24"/>
+<text text-anchor="middle" x="199" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node4" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="310,-24 252,-24 252,0 310,0 310,-24"/>
+<text text-anchor="middle" x="281" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Program -->
+<g id="node5" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="386,-24 328,-24 328,0 386,0 386,-24"/>
+<text text-anchor="middle" x="357" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node6" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="509.5,-24 404.5,-24 404.5,0 509.5,0 509.5,-24"/>
+<text text-anchor="middle" x="457" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a submodule to the (sub)module which it is
+descended from. Dashed arrows point from a module or program unit to 
+modules which it uses.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+            </li>
+        </ul>
+      </div>
+    </div>
+
+          <div class="card">
+      <h3 class="card-header card-title bg-light">Used by</h3>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: module~~mqc_scf_common~~UsedByGraph Pages: 1 -->
+<svg id="modulemqc_scf_commonUsedByGraph" width="641pt" height="236pt"
+ viewBox="0.00 0.00 641.00 236.42" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="module~~mqc_scf_common~~UsedByGraph" class="graph" transform="scale(0.83 0.83) rotate(0) translate(4 280)">
+<title>module~~mqc_scf_common~~UsedByGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-280 766,-280 766,4 -4,4"/>
+<!-- module~mqc_scf_common -->
+<g id="module~~mqc_scf_common~~UsedByGraph_node1" class="node">
+<title>module~mqc_scf_common</title>
+<polygon fill="none" stroke="black" points="109,-66 0,-66 0,-42 109,-42 109,-66"/>
+<text text-anchor="middle" x="54.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50">mqc_scf_common</text>
+</g>
+<!-- module~mqc_driver -->
+<g id="module~~mqc_scf_common~~UsedByGraph_node2" class="node">
+<title>module~mqc_driver</title>
+<g id="a_module~~mqc_scf_common~~UsedByGraph_node2"><a xlink:href="../module/mqc_driver.html" xlink:title="mqc_driver">
+<polygon fill="#337ab7" stroke="#337ab7" points="255.5,-129 182.5,-129 182.5,-105 255.5,-105 255.5,-129"/>
+<text text-anchor="middle" x="219" y="-114.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_driver</text>
+</a>
+</g>
+</g>
+<!-- module~mqc_driver&#45;&gt;module~mqc_scf_common -->
+<g id="module~~mqc_scf_common~~UsedByGraph_edge1" class="edge">
+<title>module~mqc_driver&#45;&gt;module~mqc_scf_common</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M186.67,-104.85C160.85,-94.84 124.04,-80.57 95.99,-69.7"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="97.05,-66.35 86.46,-66 94.52,-72.88 97.05,-66.35"/>
+</g>
+<!-- module~mqc_fock_projector -->
+<g id="module~~mqc_scf_common~~UsedByGraph_node3" class="node">
+<title>module~mqc_fock_projector</title>
+<g id="a_module~~mqc_scf_common~~UsedByGraph_node3"><a xlink:href="../module/mqc_fock_projector.html" xlink:title="mqc_fock_projector">
+<polygon fill="#337ab7" stroke="#337ab7" points="277.5,-24 160.5,-24 160.5,0 277.5,0 277.5,-24"/>
+<text text-anchor="middle" x="219" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_fock_projector</text>
+</a>
+</g>
+</g>
+<!-- module~mqc_fock_projector&#45;&gt;module~mqc_scf_common -->
+<g id="module~~mqc_scf_common~~UsedByGraph_edge2" class="edge">
+<title>module~mqc_fock_projector&#45;&gt;module~mqc_scf_common</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M171.43,-24.04C152.91,-28.82 131.41,-34.38 112.01,-39.4"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="110.88,-36.07 102.07,-41.96 112.63,-42.85 110.88,-36.07"/>
+</g>
+<!-- module~mqc_geometry_optimizer -->
+<g id="module~~mqc_scf_common~~UsedByGraph_node4" class="node">
+<title>module~mqc_geometry_optimizer</title>
+<g id="a_module~~mqc_scf_common~~UsedByGraph_node4"><a xlink:href="../module/mqc_geometry_optimizer.html" xlink:title="mqc_geometry_optimizer">
+<polygon fill="#337ab7" stroke="#337ab7" points="293,-66 145,-66 145,-42 293,-42 293,-66"/>
+<text text-anchor="middle" x="219" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_geometry_optimizer</text>
+</a>
+</g>
+</g>
+<!-- module~mqc_geometry_optimizer&#45;&gt;module~mqc_scf_common -->
+<g id="module~~mqc_scf_common~~UsedByGraph_edge3" class="edge">
+<title>module~mqc_geometry_optimizer&#45;&gt;module~mqc_scf_common</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M144.83,-54C136.33,-54 127.7,-54 119.34,-54"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="119.29,-50.5 109.29,-54 119.29,-57.5 119.29,-50.5"/>
+</g>
+<!-- module~mqc_session -->
+<g id="module~~mqc_scf_common~~UsedByGraph_node5" class="node">
+<title>module~mqc_session</title>
+<g id="a_module~~mqc_scf_common~~UsedByGraph_node5"><a xlink:href="../module/mqc_session.html" xlink:title="mqc_session">
+<polygon fill="#337ab7" stroke="#337ab7" points="452,-276 372,-276 372,-252 452,-252 452,-276"/>
+<text text-anchor="middle" x="412" y="-261.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_session</text>
+</a>
+</g>
+</g>
+<!-- module~mqc_session&#45;&gt;module~mqc_driver -->
+<g id="module~~mqc_scf_common~~UsedByGraph_edge4" class="edge">
+<title>module~mqc_session&#45;&gt;module~mqc_driver</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M371.93,-259C357.66,-255.92 341.87,-250.97 329,-243 285.47,-216.06 250.03,-166.14 232.3,-137.9"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="235.19,-135.91 226.98,-129.21 229.22,-139.57 235.19,-135.91"/>
+</g>
+<!-- proc~compute_energy_and_forces -->
+<g id="module~~mqc_scf_common~~UsedByGraph_node6" class="node">
+<title>proc~compute_energy_and_forces</title>
+<g id="a_module~~mqc_scf_common~~UsedByGraph_node6"><a xlink:href="../proc/compute_energy_and_forces.html" xlink:title="compute_energy_and_forces">
+<polygon fill="#d9534f" stroke="#d9534f" points="495,-234 329,-234 329,-210 495,-210 495,-234"/>
+<text text-anchor="middle" x="412" y="-219.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_energy_and_forces</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_energy_and_forces&#45;&gt;module~mqc_driver -->
+<g id="module~~mqc_scf_common~~UsedByGraph_edge5" class="edge">
+<title>proc~compute_energy_and_forces&#45;&gt;module~mqc_driver</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M351.73,-209.9C343.91,-207.42 336.13,-204.48 329,-201 294.5,-184.18 260.37,-155.38 239.73,-136.27"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="241.94,-133.54 232.26,-129.22 237.13,-138.63 241.94,-133.54"/>
+</g>
+<!-- proc~evaluate_energy_gradient -->
+<g id="module~~mqc_scf_common~~UsedByGraph_node7" class="node">
+<title>proc~evaluate_energy_gradient</title>
+<g id="a_module~~mqc_scf_common~~UsedByGraph_node7"><a xlink:href="../proc/evaluate_energy_gradient.html" xlink:title="evaluate_energy_gradient">
+<polygon fill="#d9534f" stroke="#d9534f" points="488,-192 336,-192 336,-168 488,-168 488,-192"/>
+<text text-anchor="middle" x="412" y="-177.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">evaluate_energy_gradient</text>
+</a>
+</g>
+</g>
+<!-- proc~evaluate_energy_gradient&#45;&gt;module~mqc_driver -->
+<g id="module~~mqc_scf_common~~UsedByGraph_edge6" class="edge">
+<title>proc~evaluate_energy_gradient&#45;&gt;module~mqc_driver</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M359.99,-167.92C349.67,-165.2 338.94,-162.18 329,-159 305.15,-151.38 278.96,-141.34 258.23,-132.99"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="259.4,-129.69 248.82,-129.17 256.76,-136.17 259.4,-129.69"/>
+</g>
+<!-- proc~run_step -->
+<g id="module~~mqc_scf_common~~UsedByGraph_node8" class="node">
+<title>proc~run_step</title>
+<g id="a_module~~mqc_scf_common~~UsedByGraph_node8"><a xlink:href="../proc/run_step.html" xlink:title="run_step">
+<polygon fill="#d9534f" stroke="#d9534f" points="441,-150 383,-150 383,-126 441,-126 441,-150"/>
+<text text-anchor="middle" x="412" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">run_step</text>
+</a>
+</g>
+</g>
+<!-- proc~run_step&#45;&gt;module~mqc_driver -->
+<g id="module~~mqc_scf_common~~UsedByGraph_edge7" class="edge">
+<title>proc~run_step&#45;&gt;module~mqc_driver</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M382.82,-134.9C352.12,-131.53 302.55,-126.08 266.16,-122.07"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="266.12,-118.55 255.8,-120.94 265.35,-125.51 266.12,-118.55"/>
+</g>
+<!-- proc~worker_loop~2 -->
+<g id="module~~mqc_scf_common~~UsedByGraph_node9" class="node">
+<title>proc~worker_loop~2</title>
+<g id="a_module~~mqc_scf_common~~UsedByGraph_node9"><a xlink:href="../proc/worker_loop~2.html" xlink:title="worker_loop">
+<polygon fill="#d9534f" stroke="#d9534f" points="451,-108 373,-108 373,-84 451,-84 451,-108"/>
+<text text-anchor="middle" x="412" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">worker_loop</text>
+</a>
+</g>
+</g>
+<!-- proc~worker_loop~2&#45;&gt;module~mqc_driver -->
+<g id="module~~mqc_scf_common~~UsedByGraph_edge8" class="edge">
+<title>proc~worker_loop~2&#45;&gt;module~mqc_driver</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M372.81,-100.2C341.96,-103.59 298.46,-108.37 265.76,-111.97"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="265.1,-108.52 255.55,-113.09 265.87,-115.48 265.1,-108.52"/>
+</g>
+<!-- proc~write_final_single_point -->
+<g id="module~~mqc_scf_common~~UsedByGraph_node10" class="node">
+<title>proc~write_final_single_point</title>
+<g id="a_module~~mqc_scf_common~~UsedByGraph_node10"><a xlink:href="../proc/write_final_single_point.html" xlink:title="write_final_single_point">
+<polygon fill="#d9534f" stroke="#d9534f" points="480,-66 344,-66 344,-42 480,-42 480,-66"/>
+<text text-anchor="middle" x="412" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">write_final_single_point</text>
+</a>
+</g>
+</g>
+<!-- proc~write_final_single_point&#45;&gt;module~mqc_driver -->
+<g id="module~~mqc_scf_common~~UsedByGraph_edge9" class="edge">
+<title>proc~write_final_single_point&#45;&gt;module~mqc_driver</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M359.99,-66.08C349.67,-68.8 338.94,-71.82 329,-75 305.15,-82.62 278.96,-92.66 258.23,-101.01"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="256.76,-97.83 248.82,-104.83 259.4,-104.31 256.76,-97.83"/>
+</g>
+<!-- program~main -->
+<g id="module~~mqc_scf_common~~UsedByGraph_node11" class="node">
+<title>program~main</title>
+<g id="a_module~~mqc_scf_common~~UsedByGraph_node11"><a xlink:href="../program/main.html" xlink:title="main">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="439,-24 385,-24 385,0 439,0 439,-24"/>
+<text text-anchor="middle" x="412" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">main</text>
+</a>
+</g>
+</g>
+<!-- program~main&#45;&gt;module~mqc_driver -->
+<g id="module~~mqc_scf_common~~UsedByGraph_edge10" class="edge">
+<title>program~main&#45;&gt;module~mqc_driver</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M384.65,-14.62C367.73,-17.25 345.85,-22.52 329,-33 308.12,-45.99 311.93,-59.31 293,-75 281.41,-84.61 267.32,-93.29 254.63,-100.22"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="252.89,-97.19 245.69,-104.96 256.17,-103.37 252.89,-97.19"/>
+</g>
+<!-- program~main&#45;&gt;module~mqc_geometry_optimizer -->
+<g id="module~~mqc_scf_common~~UsedByGraph_edge11" class="edge">
+<title>program~main&#45;&gt;module~mqc_geometry_optimizer</title>
+<path fill="none" stroke="#0000ff" stroke-dasharray="5,2" d="M384.84,-17.75C359.18,-23.4 319.02,-32.23 284.76,-39.76"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="283.82,-36.38 274.81,-41.95 285.33,-43.22 283.82,-36.38"/>
+</g>
+<!-- module~mqc_capi_run -->
+<g id="module~~mqc_scf_common~~UsedByGraph_node12" class="node">
+<title>module~mqc_capi_run</title>
+<g id="a_module~~mqc_scf_common~~UsedByGraph_node12"><a xlink:href="../module/mqc_capi_run.html" xlink:title="mqc_capi_run">
+<polygon fill="#337ab7" stroke="#337ab7" points="762,-276 675,-276 675,-252 762,-252 762,-276"/>
+<text text-anchor="middle" x="718.5" y="-261.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_capi_run</text>
+</a>
+</g>
+</g>
+<!-- module~mqc_capi_run&#45;&gt;module~mqc_session -->
+<g id="module~~mqc_scf_common~~UsedByGraph_edge12" class="edge">
+<title>module~mqc_capi_run&#45;&gt;module~mqc_session</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M674.72,-264.64C663.13,-264.79 650.58,-264.93 639,-265 578.21,-265.39 508.22,-264.94 462.44,-264.53"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="462.23,-261.02 452.2,-264.43 462.16,-268.02 462.23,-261.02"/>
+</g>
+<!-- module~mqc_capi_session -->
+<g id="module~~mqc_scf_common~~UsedByGraph_node13" class="node">
+<title>module~mqc_capi_session</title>
+<g id="a_module~~mqc_scf_common~~UsedByGraph_node13"><a xlink:href="../module/mqc_capi_session.html" xlink:title="mqc_capi_session">
+<polygon fill="#337ab7" stroke="#337ab7" points="639,-256 531,-256 531,-232 639,-232 639,-256"/>
+<text text-anchor="middle" x="585" y="-241.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_capi_session</text>
+</a>
+</g>
+</g>
+<!-- module~mqc_capi_run&#45;&gt;module~mqc_capi_session -->
+<g id="module~~mqc_scf_common~~UsedByGraph_edge14" class="edge">
+<title>module~mqc_capi_run&#45;&gt;module~mqc_capi_session</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M674.81,-257.51C666.61,-256.26 657.87,-254.93 649.19,-253.61"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="649.48,-250.11 639.07,-252.07 648.43,-257.03 649.48,-250.11"/>
+</g>
+<!-- module~mqc_capi_session&#45;&gt;module~mqc_session -->
+<g id="module~~mqc_scf_common~~UsedByGraph_edge13" class="edge">
+<title>module~mqc_capi_session&#45;&gt;module~mqc_session</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M530.83,-250.22C508.93,-252.78 483.7,-255.73 462.22,-258.24"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="461.54,-254.8 452.01,-259.44 462.35,-261.75 461.54,-254.8"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panmodulemqc_scf_commonUsedByGraph = svgPanZoom('#modulemqc_scf_commonUsedByGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#UsedByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="UsedByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="518pt" height="32pt"
+ viewBox="0.00 0.00 517.50 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 513.5,-28 513.5,4 -4,4"/>
+<!-- Module -->
+<g id="node1" class="node">
+<title>Module</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="54,-24 0,-24 0,0 54,0 54,-24"/>
+<text text-anchor="middle" x="27" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Module</text>
+</g>
+<!-- Submodule -->
+<g id="node2" class="node">
+<title>Submodule</title>
+<polygon fill="#5bc0de" stroke="#5bc0de" points="145.5,-24 72.5,-24 72.5,0 145.5,0 145.5,-24"/>
+<text text-anchor="middle" x="109" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Submodule</text>
+</g>
+<!-- Subroutine -->
+<g id="node3" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="234,-24 164,-24 164,0 234,0 234,-24"/>
+<text text-anchor="middle" x="199" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node4" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="310,-24 252,-24 252,0 310,0 310,-24"/>
+<text text-anchor="middle" x="281" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Program -->
+<g id="node5" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="386,-24 328,-24 328,0 386,0 386,-24"/>
+<text text-anchor="middle" x="357" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node6" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="509.5,-24 404.5,-24 404.5,0 509.5,0 509.5,-24"/>
+<text text-anchor="middle" x="457" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a submodule to the (sub)module which it is
+descended from. Dashed arrows point from a module or program unit to 
+modules which it uses.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+            </li>
+        </ul>
+      </div>
+    </div>
+
+      <br>
+
+
+        <section>
+          <h2>Variables</h2>
+            <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+<th></th><th scope="col">Initial</th>        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-gwh_k"></span>
+              real(kind=dp),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>GWH_K</strong></td>
+<td> =</td>
+                <td>1.75_dp</td>
+            <td>
+                <p>The empirical scale on the GWH off-diagonal, 1.75 in universal use.
+One constant, so both backends start from the same matrix.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-linear_dependence_tol"></span>
+              real(kind=dp),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>LINEAR_DEPENDENCE_TOL</strong></td>
+<td> =</td>
+                <td>1.0e-7_dp</td>
+            <td>
+                <p>Overlap eigenvalues at or below this are dropped as linearly
+dependent. One number for both backends.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-linear_dependence_warn_tol"></span>
+              real(kind=dp),
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>LINEAR_DEPENDENCE_WARN_TOL</strong></td>
+<td> =</td>
+                <td>1.0e-5_dp</td>
+            <td>
+                <p>Overlap eigenvalues above the drop threshold but below this one are
+kept and said out loud.</p>
+<p>The zone between the two is the one that hurts: a mode just above
+<code>LINEAR_DEPENDENCE_TOL</code> is <em>retained</em>, and X carries a <code>1/sqrt(s)</code> of
+ten thousand or more into every iteration. Nothing fails. DIIS
+extrapolates along a direction that is mostly noise, convergence slows
+or stalls, and two runs of the same molecule in slightly different
+orientations can settle on different solutions.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-collect_depth"></span>
+              integer,
+            </td>
+              <td>private,</td>
+            <td>
+              save
+            </td>
+            <td>::</td>
+            <td><strong>collect_depth</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+                <p>Nesting depth of open collect windows, not a flag: a fragmented
+calculation opens one per <code>run_calculation</code>, and a geometry
+optimization opens one around every step &ndash; so optimizing a fragmented
+system nests them. A plain logical let the inner <code>end</code> close the outer
+window at the first step, after which every later SCF reported
+individually and the outer tally came back empty. The outermost window
+owns the tally; inner ones fold into it and report nothing of their own.
+Set while a caller is running many SCFs and wants one report, not
+many. Module state because the report is raised deep inside
+<code>run_czt_rhf</code>, which is reached from the fragment bridge, SAPT,
+AFO, Fukui and the atomic guess.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-tally~2"></span>
+              type(<a href='../type/lindep_tally_t.html'>lindep_tally_t</a>),
+            </td>
+              <td>private,</td>
+            <td>
+              save
+            </td>
+            <td>::</td>
+            <td><strong>tally</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                <p>What the open window has accumulated so far</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+        </section>
+        <br>
+
+
+
+
+        <section>
+          <h2>Derived Types</h2>
+              <div class="card">
+    <div class="card-header codesum">
+      <span class="anchor" id="type-lindep_tally_t"></span>
+      <h3>
+        type, public&nbsp;::&nbsp;
+        <a href='../type/lindep_tally_t.html'>lindep_tally_t</a>
+        
+      </h3>
+    </div>
+    <div class="card-body">
+      <p>What a run of many SCFs saw, instead of what each one saw</p>
+
+        <h4>Components</h4>
+          <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+<th></th><th scope="col">Initial</th>        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_dropped_scf"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_dropped_scf</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+<p>of those, ones that lost basis functions</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_near_scf"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_near_scf</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+<p>of those, ones merely ill-conditioned</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_reports"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_reports</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+<p>SCFs that had anything to say</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-total_dropped"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>total_dropped</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+<p>functions dropped, summed over SCFs</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-worst_kept"></span>
+              real(kind=dp),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>worst_kept</strong></td>
+<td> =</td>
+                <td>0.0_dp</td>
+            <td>
+<p>smallest surviving eigenvalue seen</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-worst_overlap"></span>
+              real(kind=dp),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>worst_overlap</strong></td>
+<td> =</td>
+                <td>0.0_dp</td>
+            <td>
+<p>smallest eigenvalue behind a drop</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+
+    </div>
+  </div>
+
+        </section>
+        <br>
+
+        <section>
+          <h2>Functions</h2>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-spin_contamination"></span> <h3>public  function <a href='../proc/spin_contamination.html'>spin_contamination</a>(occ_alpha, occ_beta, overlap, n_alpha, n_beta) result(s_squared)  
+</h3></div>
+    <div class="card-body">
+          
+  <p><S^2> for a UHF/UKS determinant</p><a href="../proc/spin_contamination.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-occ_alpha"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>occ_alpha</strong>(:,:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-occ_beta"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>occ_beta</strong>(:,:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-overlap~10"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>overlap</strong>(:,:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_alpha~3"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_alpha</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_beta~3"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_beta</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>real(kind=dp)</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-int_text"></span> <h3>private pure function <a href='../proc/int_text.html'>int_text</a>(value) result(text)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>An integer as a trimmed string, for the messages above</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-value~22"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>value</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>character(len=:), allocatable</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
+        </section>
+        <br>
+
+        <section>
+          <h2>Subroutines</h2>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-build_density_closed_shell"></span> <h3>public  subroutine <a href='../proc/build_density_closed_shell.html'>build_density_closed_shell</a>(coeff, n_occ, density)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>D = 2 C_occ C_occ^T, the closed-shell density</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-coeff~5"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>coeff</strong>(:,:)</td>
+            <td>
+<p>C, (n_ao, n_mo)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_occ"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_occ</strong></td>
+            <td>
+<p>Doubly occupied orbitals</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-density~2"></span>
+              real(kind=dp),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>density</strong>(:,:)</td>
+            <td>
+<p>D, (n_ao, n_ao)</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-build_density_spin"></span> <h3>public  subroutine <a href='../proc/build_density_spin.html'>build_density_spin</a>(coeff, n_occ, density)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>D_sigma = C_occ C_occ^T, one electron per occupied orbital</p><a href="../proc/build_density_spin.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-coeff~6"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>coeff</strong>(:,:)</td>
+            <td>
+<p>C_sigma, (n_ao, n_mo)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_occ~2"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_occ</strong></td>
+            <td>
+<p>Occupied orbitals of this spin</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-density~3"></span>
+              real(kind=dp),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>density</strong>(:,:)</td>
+            <td>
+<p>D_sigma, (n_ao, n_ao)</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-build_orthogonalizer"></span> <h3>public  subroutine <a href='../proc/build_orthogonalizer.html'>build_orthogonalizer</a>(overlap, transform, n_mo, error, smallest_overlap, smallest_kept, threshold)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Canonical orthogonaliser X = U s^(-1/2), near-null modes dropped</p><a href="../proc/build_orthogonalizer.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-overlap~9"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>overlap</strong>(:,:)</td>
+            <td>
+<p>S, (n_ao, n_ao)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-transform"></span>
+              real(kind=dp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>transform</strong>(:,:)</td>
+            <td>
+<p>X, (n_ao, n_mo)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_mo~4"></span>
+              integer,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_mo</strong></td>
+            <td>
+<p>Surviving orbitals</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-error~179"></span>
+              type(<a href='../type/error_t.html'>error_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>error</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-smallest_overlap"></span>
+              real(kind=dp),
+            </td>
+<td>intent(out),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>smallest_overlap</strong></td>
+            <td>
+<p>The smallest eigenvalue of S, dropped or not &ndash; the conditioning of
+the basis as given, before this routine does anything about it.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-smallest_kept"></span>
+              real(kind=dp),
+            </td>
+<td>intent(out),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>smallest_kept</strong></td>
+            <td>
+<p>The smallest eigenvalue that survived, which is what X actually
+divides by and therefore what the SCF has to live with.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-threshold"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>threshold</strong></td>
+            <td>
+<p>Overlap eigenvalues at or below this are dropped. Defaults to
+<code>LINEAR_DEPENDENCE_TOL</code>, and
+<code>keywords.scf.linear_dependence_threshold</code> is how a deck overrides
+it. A non-positive value is ignored rather than obeyed.</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-lindep_collect_begin"></span> <h3>public  subroutine <a href='../proc/lindep_collect_begin.html'>lindep_collect_begin</a>()  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Start folding linear-dependence reports into a tally</p><a href="../proc/lindep_collect_begin.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+    <em>None</em>
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-lindep_collect_end"></span> <h3>public  subroutine <a href='../proc/lindep_collect_end.html'>lindep_collect_end</a>(result)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Close one window and hand back what it saw</p><a href="../proc/lindep_collect_end.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-result~51"></span>
+              type(<a href='../type/lindep_tally_t.html'>lindep_tally_t</a>),
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>result</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-report_linear_dependence"></span> <h3>public  subroutine <a href='../proc/report_linear_dependence.html'>report_linear_dependence</a>(n_ao, n_mo, smallest_overlap, smallest_kept, verbose, threshold)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Say what the orthogonaliser did to the basis, and whether to worry</p><a href="../proc/report_linear_dependence.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_ao~6"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_ao</strong></td>
+            <td>
+<p>Basis functions the basis set defines</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_mo~5"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_mo</strong></td>
+            <td>
+<p>Orbitals that survived orthogonalisation</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-smallest_overlap~2"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>smallest_overlap</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-smallest_kept~2"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>smallest_kept</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-verbose~12"></span>
+              logical,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>verbose</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-threshold~2"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>threshold</strong></td>
+            <td>
+<p>The cutoff actually applied, which the message quotes. Passed
+rather than read from the parameter because a deck can move it.</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-report_linear_dependence_tally"></span> <h3>public  subroutine <a href='../proc/report_linear_dependence_tally.html'>report_linear_dependence_tally</a>(result, context)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>One report for many SCFs, in place of one report each</p><a href="../proc/report_linear_dependence_tally.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-result~52"></span>
+              type(<a href='../type/lindep_tally_t.html'>lindep_tally_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>result</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-context"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>context</strong></td>
+            <td>
+<p>What the SCFs were, for the message: &ldquo;fragment SCFs&rdquo; and so on.</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+        </section>
+        <br>
+
+
+
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              metalquicha
+ was developed by Jorge Luis Galvez Vallejo<br>              &copy; 2026 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+ on 2026-09-07 09:10 +0000             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

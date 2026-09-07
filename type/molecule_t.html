@@ -94,20 +94,20 @@
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
-                 title="<p> 2.2% of total for derived types.</p>Including implementation: 26 statements,  1.4% of total for derived types.">13 statements</a>
+                 title="<p> 1.0% of total for derived types.</p>Including implementation: 27 statements,  0.7% of total for derived types.">14 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
               <i class="fa fa-code"></i>
-              <a href="../src/mqc_config_parser.F90"> Source File</a>
+              <a href="../src/mqc_config_types.f90"> Source File</a>
             </li>
         </ul>
       </div>
       <div class="col">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
-                <li class="breadcrumb-item"><a href='../sourcefile/mqc_config_parser.f90.html'>mqc_config_parser.F90</a></li>
-                <li class="breadcrumb-item"><a href='../module/mqc_config_parser.html'>mqc_config_parser</a></li>
+                <li class="breadcrumb-item"><a href='../sourcefile/mqc_config_types.f90.html'>mqc_config_types.f90</a></li>
+                <li class="breadcrumb-item"><a href='../module/mqc_config_types.html'>mqc_config_types</a></li>
             <li class="breadcrumb-item active" aria-current="page">molecule_t</li>
           </ol>
         </nav>
@@ -136,15 +136,16 @@
       </a>
       <div id="vars-0" class="collapse">
         <div class="list-group list-group-flush">
-            <a class="list-group-item" href="../type/molecule_t.html#variable-bonds">bonds</a>
-            <a class="list-group-item" href="../type/molecule_t.html#variable-charge~2">charge</a>
-            <a class="list-group-item" href="../type/molecule_t.html#variable-fragments">fragments</a>
-            <a class="list-group-item" href="../type/molecule_t.html#variable-geometry">geometry</a>
-            <a class="list-group-item" href="../type/molecule_t.html#variable-multiplicity~2">multiplicity</a>
-            <a class="list-group-item" href="../type/molecule_t.html#variable-name">name</a>
-            <a class="list-group-item" href="../type/molecule_t.html#variable-nbonds">nbonds</a>
-            <a class="list-group-item" href="../type/molecule_t.html#variable-nbroken">nbroken</a>
-            <a class="list-group-item" href="../type/molecule_t.html#variable-nfrag">nfrag</a>
+            <a class="list-group-item" href="../type/molecule_t.html#variable-bonds~20">bonds</a>
+            <a class="list-group-item" href="../type/molecule_t.html#variable-charge~10">charge</a>
+            <a class="list-group-item" href="../type/molecule_t.html#variable-fragments~8">fragments</a>
+            <a class="list-group-item" href="../type/molecule_t.html#variable-geometry~2">geometry</a>
+            <a class="list-group-item" href="../type/molecule_t.html#variable-multiplicity~9">multiplicity</a>
+            <a class="list-group-item" href="../type/molecule_t.html#variable-name~37">name</a>
+            <a class="list-group-item" href="../type/molecule_t.html#variable-nbonds~3">nbonds</a>
+            <a class="list-group-item" href="../type/molecule_t.html#variable-nbroken~3">nbroken</a>
+            <a class="list-group-item" href="../type/molecule_t.html#variable-nfrag~7">nfrag</a>
+            <a class="list-group-item" href="../type/molecule_t.html#variable-uniform_system">uniform_system</a>
         </div>
       </div>
     </div>
@@ -171,7 +172,7 @@
       </a>
       <div id="boundprocs-0" class="collapse">
         <div class="list-group list-group-flush">
-            <a class="list-group-item" href="../type/molecule_t.html#boundprocedure-destroy~2">destroy</a>
+            <a class="list-group-item" href="../type/molecule_t.html#boundprocedure-destroy~27">destroy</a>
         </div>
       </div>
     </div>
@@ -424,7 +425,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-bonds"></span>
+              <span class="anchor" id="variable-bonds~20"></span>
               type(<a href='bond_t.html'>bond_t</a>),
             </td>
               <td>public,</td>
@@ -441,7 +442,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-charge~2"></span>
+              <span class="anchor" id="variable-charge~10"></span>
               integer,
             </td>
               <td>public</td>
@@ -458,7 +459,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-fragments"></span>
+              <span class="anchor" id="variable-fragments~8"></span>
               type(<a href='input_fragment_t.html'>input_fragment_t</a>),
             </td>
               <td>public,</td>
@@ -475,7 +476,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-geometry"></span>
+              <span class="anchor" id="variable-geometry~2"></span>
               type(<a href='geometry_type.html'>geometry_type</a>),
             </td>
               <td>public</td>
@@ -492,7 +493,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-multiplicity~2"></span>
+              <span class="anchor" id="variable-multiplicity~9"></span>
               integer,
             </td>
               <td>public</td>
@@ -509,7 +510,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-name"></span>
+              <span class="anchor" id="variable-name~37"></span>
               character(len=:),
             </td>
               <td>public,</td>
@@ -526,7 +527,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-nbonds"></span>
+              <span class="anchor" id="variable-nbonds~3"></span>
               integer,
             </td>
               <td>public</td>
@@ -543,7 +544,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-nbroken"></span>
+              <span class="anchor" id="variable-nbroken~3"></span>
               integer,
             </td>
               <td>public</td>
@@ -560,7 +561,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-nfrag"></span>
+              <span class="anchor" id="variable-nfrag~7"></span>
               integer,
             </td>
               <td>public</td>
@@ -573,6 +574,26 @@ large graphs.</div>
                 <td>0</td>
             <td>
                 
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-uniform_system"></span>
+              logical,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>uniform_system</strong></td>
+<td> =</td>
+                <td>.false.</td>
+            <td>
+                <p>Every fragment is the same species, so one potential describes all
+of them, which is what lets <code>fragment_potentials</code> be a single name.
+Checked rather than taken on trust: the fragments must agree in
+size, so a deck claiming uniformity without it is refused.</p>
             </td>
         </tr>
     </tbody>
@@ -588,7 +609,7 @@ large graphs.</div>
           <div class="row">
               <div class="card mt-3">
     <div class="card-header codesum">
-      <span class="anchor" id="boundprocedure-destroy~2"></span>
+      <span class="anchor" id="boundprocedure-destroy~27"></span>
       <h3>
           procedure, public ::
   <strong>destroy</strong> => <a href='/home/runner/work/metalquicha/metalquicha/docs/fpm-ford/proc/molecule_destroy.html'>molecule_destroy</a>
@@ -657,6 +678,11 @@ large graphs.</div>
 <span class="w">      </span><span class="c">! Fragments</span>
 <span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">nfrag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
 <span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">input_fragment_t</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">fragments</span><span class="p">(:)</span>
+<span class="w">      </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">uniform_system</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<span class="w">         </span><span class="c">!! Every fragment is the same species, so one potential describes all</span>
+<span class="w">         </span><span class="c">!! of them, which is what lets `fragment_potentials` be a single name.</span>
+<span class="w">         </span><span class="c">!! Checked rather than taken on trust: the fragments must agree in</span>
+<span class="w">         </span><span class="c">!! size, so a deck claiming uniformity without it is refused.</span>
 
 <span class="w">      </span><span class="c">! Connectivity</span>
 <span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">nbonds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
@@ -688,7 +714,7 @@ large graphs.</div>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-02-20 06:49 +0000             </p>
+ on 2026-09-07 09:10 +0000             </p>
           </div>
         </div>
         <br>

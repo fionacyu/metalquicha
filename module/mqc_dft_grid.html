@@ -1,0 +1,1779 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="A demonstration of PIC as a framework for scientific applications targetting quantum chemistry">
+    <meta name="author" content="Jorge Luis Galvez Vallejo" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>mqc_dft_grid &ndash; metalquicha</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">metalquicha </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../program/main.html">Program</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>mqc_dft_grid
+      <small>Module</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 0.8% of total for modules and submodules.">218 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/mqc_dft_grid.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/mqc_dft_grid.f90.html'>mqc_dft_grid.f90</a></li>
+            <li class="breadcrumb-item active" aria-current="page">mqc_dft_grid</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+        <div id="sidebar">
+      <h3>Contents</h3>
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#vars-0"
+         aria-expanded="false" aria-controls="vars-0">
+         <h4 class="card-header bg-primary text-white">Variables</h4>
+      </a>
+      <div id="vars-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/mqc_dft_grid.html#variable-default_grid_level">DEFAULT_GRID_LEVEL</a>
+            <a class="list-group-item" href="../module/mqc_dft_grid.html#variable-default_prune">DEFAULT_PRUNE</a>
+            <a class="list-group-item" href="../module/mqc_dft_grid.html#variable-max_grid_level">MAX_GRID_LEVEL</a>
+            <a class="list-group-item" href="../module/mqc_dft_grid.html#variable-min_grid_level">MIN_GRID_LEVEL</a>
+            <a class="list-group-item" href="../module/mqc_dft_grid.html#variable-ang_points">ANG_POINTS</a>
+            <a class="list-group-item" href="../module/mqc_dft_grid.html#variable-grid_sort_cell">GRID_SORT_CELL</a>
+            <a class="list-group-item" href="../module/mqc_dft_grid.html#variable-n_dim~3">N_DIM</a>
+            <a class="list-group-item" href="../module/mqc_dft_grid.html#variable-n_periods">N_PERIODS</a>
+            <a class="list-group-item" href="../module/mqc_dft_grid.html#variable-period_last_z">PERIOD_LAST_Z</a>
+            <a class="list-group-item" href="../module/mqc_dft_grid.html#variable-rad_grids">RAD_GRIDS</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#types-0"
+         aria-expanded="false" aria-controls="types-0">
+         <h4 class="card-header bg-primary text-white">Derived Types</h4>
+      </a>
+      <div id="types-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/mqc_dft_grid.html#type-dft_grid_t">dft_grid_t</a>
+        </div>
+      </div>
+    </div>
+
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#funcs-0"
+         aria-expanded="false" aria-controls="funcs-0">
+         <h4 class="card-header bg-primary text-white">Functions</h4>
+      </a>
+      <div id="funcs-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/mqc_dft_grid.html#proc-grid_level_angular">grid_level_angular</a>
+            <a class="list-group-item" href="../module/mqc_dft_grid.html#proc-grid_level_radial">grid_level_radial</a>
+            <a class="list-group-item" href="../module/mqc_dft_grid.html#proc-clamp_level">clamp_level</a>
+            <a class="list-group-item" href="../module/mqc_dft_grid.html#proc-element_period">element_period</a>
+            <a class="list-group-item" href="../module/mqc_dft_grid.html#proc-morton_key">morton_key</a>
+        </div>
+      </div>
+    </div>
+
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#subs-0"
+         aria-expanded="false" aria-controls="subs-0">
+         <h4 class="card-header bg-primary text-white">Subroutines</h4>
+      </a>
+      <div id="subs-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/mqc_dft_grid.html#proc-build_dft_grid">build_dft_grid</a>
+            <a class="list-group-item" href="../module/mqc_dft_grid.html#proc-apply_partition">apply_partition</a>
+            <a class="list-group-item" href="../module/mqc_dft_grid.html#proc-atom_sizes">atom_sizes</a>
+            <a class="list-group-item" href="../module/mqc_dft_grid.html#proc-dft_grid_destroy">dft_grid_destroy</a>
+            <a class="list-group-item" href="../module/mqc_dft_grid.html#proc-sort_grid_spatially">sort_grid_spatially</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+
+
+  </div>
+
+    </div>
+
+    <div class="col-md-9" id='text'>
+      <p>Molecular integration grid for DFT</p>
+<p>Assembles the three pieces into one quadrature. Each atom gets a spherical
+product grid &ndash; a Treutler-Ahlrichs radial mesh times a Lebedev sphere &ndash;
+and the Becke partition then decides how much of each point belongs to the
+atom that produced it, so the atomic grids together cover space once.</p>
+<p>The weight of a point is</p>
+<p>w = 4*pi * r^2 * dr * w_lebedev * w_becke</p>
+<p>where w_lebedev sums to 1 over the sphere. The 4*pi therefore appears
+exactly once, here; <code>mqc_dft_radial</code> deliberately leaves it out of its
+weights so it cannot be applied twice.</p>
+<p>Grid size follows a <code>level</code> from 0 to 9, with radial and angular counts
+chosen per element period. Level 3 is the default.</p>
+<br>          <div class="card mb-4">
+      <h3 class="card-header card-title bg-light">Uses</h3>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <ul class="list-inline">
+                  <li class="list-inline-item"><a href='mqc_dft_partition.html'>mqc_dft_partition</a></li>
+                  <li class="list-inline-item"><a href='mqc_lebedev.html'>mqc_lebedev</a></li>
+                  <li class="list-inline-item"><a href='mqc_error.html'>mqc_error</a></li>
+                  <li class="list-inline-item"><a href='mqc_physical_constants.html'>mqc_physical_constants</a></li>
+                  <li class="list-inline-item">pic_types</li>
+                  <li class="list-inline-item"><a href='mqc_dft_prune.html'>mqc_dft_prune</a></li>
+                  <li class="list-inline-item">pic_sorting</li>
+                  <li class="list-inline-item"><a href='mqc_dft_radial.html'>mqc_dft_radial</a></li>
+              </ul>
+            </li>
+            <li class="list-group-item">
+              <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: module~~mqc_dft_grid~~UsesGraph Pages: 1 -->
+<svg id="modulemqc_dft_gridUsesGraph" width="641pt" height="289pt"
+ viewBox="0.00 0.00 641.00 288.85" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="module~~mqc_dft_grid~~UsesGraph" class="graph" transform="scale(0.84 0.84) rotate(0) translate(4 339.38)">
+<title>module~~mqc_dft_grid~~UsesGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-339.38 758,-339.38 758,4 -4,4"/>
+<!-- module~mqc_dft_grid -->
+<g id="module~~mqc_dft_grid~~UsesGraph_node1" class="node">
+<title>module~mqc_dft_grid</title>
+<polygon fill="none" stroke="black" points="754,-124 672,-124 672,-100 754,-100 754,-124"/>
+<text text-anchor="middle" x="713" y="-109.6" font-family="Helvetica,sans-Serif" font-size="10.50">mqc_dft_grid</text>
+</g>
+<!-- module~mqc_dft_partition -->
+<g id="module~~mqc_dft_grid~~UsesGraph_node2" class="node">
+<title>module~mqc_dft_partition</title>
+<g id="a_module~~mqc_dft_grid~~UsesGraph_node2"><a xlink:href="../module/mqc_dft_partition.html" xlink:title="mqc_dft_partition">
+<polygon fill="#337ab7" stroke="#337ab7" points="508,-172 402,-172 402,-148 508,-148 508,-172"/>
+<text text-anchor="middle" x="455" y="-157.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_dft_partition</text>
+</a>
+</g>
+</g>
+<!-- module~mqc_dft_grid&#45;&gt;module~mqc_dft_partition -->
+<g id="module~~mqc_dft_grid~~UsesGraph_edge1" class="edge">
+<title>module~mqc_dft_grid&#45;&gt;module~mqc_dft_partition</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M589,-92C545.87,-93.09 502.62,-121.49 477.63,-141.23"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="475.11,-138.77 469.58,-147.8 479.54,-144.19 475.11,-138.77"/>
+</g>
+<!-- module~mqc_dft_prune -->
+<g id="module~~mqc_dft_grid~~UsesGraph_node3" class="node">
+<title>module~mqc_dft_prune</title>
+<g id="a_module~~mqc_dft_grid~~UsesGraph_node3"><a xlink:href="../module/mqc_dft_prune.html" xlink:title="mqc_dft_prune">
+<polygon fill="#337ab7" stroke="#337ab7" points="636,-153 544,-153 544,-129 636,-129 636,-153"/>
+<text text-anchor="middle" x="590" y="-138.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_dft_prune</text>
+</a>
+</g>
+</g>
+<!-- module~mqc_dft_grid&#45;&gt;module~mqc_dft_prune -->
+<g id="module~~mqc_dft_grid~~UsesGraph_edge2" class="edge">
+<title>module~mqc_dft_grid&#45;&gt;module~mqc_dft_prune</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M671.71,-121.66C663.51,-123.62 654.74,-125.72 646.13,-127.79"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="645.03,-124.45 636.12,-130.19 646.66,-131.26 645.03,-124.45"/>
+</g>
+<!-- module~mqc_dft_radial -->
+<g id="module~~mqc_dft_grid~~UsesGraph_node4" class="node">
+<title>module~mqc_dft_radial</title>
+<g id="a_module~~mqc_dft_grid~~UsesGraph_node4"><a xlink:href="../module/mqc_dft_radial.html" xlink:title="mqc_dft_radial">
+<polygon fill="#337ab7" stroke="#337ab7" points="366,-94 275,-94 275,-70 366,-70 366,-94"/>
+<text text-anchor="middle" x="320.5" y="-79.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_dft_radial</text>
+</a>
+</g>
+</g>
+<!-- module~mqc_dft_grid&#45;&gt;module~mqc_dft_radial -->
+<g id="module~~mqc_dft_grid~~UsesGraph_edge3" class="edge">
+<title>module~mqc_dft_grid&#45;&gt;module~mqc_dft_radial</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M454,-82C428.61,-79.18 400.31,-78.8 376.4,-79.28"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="376.01,-75.79 366.1,-79.55 376.19,-82.79 376.01,-75.79"/>
+</g>
+<!-- module~mqc_error -->
+<g id="module~~mqc_dft_grid~~UsesGraph_node5" class="node">
+<title>module~mqc_error</title>
+<g id="a_module~~mqc_dft_grid~~UsesGraph_node5"><a xlink:href="../module/mqc_error.html" xlink:title="mqc_error">
+<polygon fill="#337ab7" stroke="#337ab7" points="202,-184 135,-184 135,-160 202,-160 202,-184"/>
+<text text-anchor="middle" x="168.5" y="-169.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_error</text>
+</a>
+</g>
+</g>
+<!-- module~mqc_dft_grid&#45;&gt;module~mqc_error -->
+<g id="module~~mqc_dft_grid~~UsesGraph_edge4" class="edge">
+<title>module~mqc_dft_grid&#45;&gt;module~mqc_error</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M702.76,-124.01C672.15,-162.3 569.56,-279 456,-279"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M454,-279C412.52,-286.99 314.04,-231.15 275,-215 258.65,-208.24 255.3,-204.88 239,-198 230.28,-194.32 220.85,-190.61 211.83,-187.19"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="212.84,-183.84 202.25,-183.61 210.39,-190.39 212.84,-183.84"/>
+</g>
+<!-- module~mqc_lebedev -->
+<g id="module~~mqc_dft_grid~~UsesGraph_node6" class="node">
+<title>module~mqc_lebedev</title>
+<g id="a_module~~mqc_dft_grid~~UsesGraph_node6"><a xlink:href="../module/mqc_lebedev.html" xlink:title="mqc_lebedev">
+<polygon fill="#337ab7" stroke="#337ab7" points="362.5,-291 278.5,-291 278.5,-267 362.5,-267 362.5,-291"/>
+<text text-anchor="middle" x="320.5" y="-276.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_lebedev</text>
+</a>
+</g>
+</g>
+<!-- module~mqc_dft_grid&#45;&gt;module~mqc_lebedev -->
+<g id="module~~mqc_dft_grid~~UsesGraph_edge5" class="edge">
+<title>module~mqc_dft_grid&#45;&gt;module~mqc_lebedev</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M454,-279C427.23,-279 397.42,-279 372.86,-279"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="372.68,-275.5 362.68,-279 372.68,-282.5 372.68,-275.5"/>
+</g>
+<!-- module~mqc_physical_constants -->
+<g id="module~~mqc_dft_grid~~UsesGraph_node7" class="node">
+<title>module~mqc_physical_constants</title>
+<g id="a_module~~mqc_dft_grid~~UsesGraph_node7"><a xlink:href="../module/mqc_physical_constants.html" xlink:title="mqc_physical_constants">
+<polygon fill="#337ab7" stroke="#337ab7" points="239,-24 98,-24 98,0 239,0 239,-24"/>
+<text text-anchor="middle" x="168.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_physical_constants</text>
+</a>
+</g>
+</g>
+<!-- module~mqc_dft_grid&#45;&gt;module~mqc_physical_constants -->
+<g id="module~~mqc_dft_grid~~UsesGraph_edge6" class="edge">
+<title>module~mqc_dft_grid&#45;&gt;module~mqc_physical_constants</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M671.93,-101.48C648.5,-96.31 618.25,-91.31 591,-92"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M589,-92C529.74,-93.49 514.91,-88.55 456,-82"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M454,-82C448.3,-81.37 309.53,-46.91 227.94,-26.58"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="228.35,-23.08 217.8,-24.05 226.66,-29.87 228.35,-23.08"/>
+</g>
+<!-- pic_sorting -->
+<g id="module~~mqc_dft_grid~~UsesGraph_node8" class="node">
+<title>pic_sorting</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="625,-64 555,-64 555,-40 625,-40 625,-64"/>
+<text text-anchor="middle" x="590" y="-49.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">pic_sorting</text>
+</g>
+<!-- module~mqc_dft_grid&#45;&gt;pic_sorting -->
+<g id="module~~mqc_dft_grid~~UsesGraph_edge7" class="edge">
+<title>module~mqc_dft_grid&#45;&gt;pic_sorting</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M687.51,-99.86C669.39,-90.87 644.49,-78.52 624.52,-68.62"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="625.96,-65.43 615.45,-64.12 622.85,-71.7 625.96,-65.43"/>
+</g>
+<!-- pic_types -->
+<g id="module~~mqc_dft_grid~~UsesGraph_node9" class="node">
+<title>pic_types</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="62,-144 0,-144 0,-120 62,-120 62,-144"/>
+<text text-anchor="middle" x="31" y="-129.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">pic_types</text>
+</g>
+<!-- module~mqc_dft_grid&#45;&gt;pic_types -->
+<g id="module~~mqc_dft_grid~~UsesGraph_edge8" class="edge">
+<title>module~mqc_dft_grid&#45;&gt;pic_types</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M454,-279C298.4,-308.17 227.39,-382.22 98,-291 52.81,-259.14 38.47,-190.31 33.99,-154.57"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="37.42,-153.77 32.85,-144.21 30.46,-154.54 37.42,-153.77"/>
+</g>
+<!-- module~mqc_dft_partition&#45;&gt;module~mqc_dft_radial -->
+<g id="module~~mqc_dft_grid~~UsesGraph_edge9" class="edge">
+<title>module~mqc_dft_partition&#45;&gt;module~mqc_dft_radial</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M428.58,-147.99C420.03,-143.76 410.5,-138.85 402,-134 383.4,-123.38 363.15,-110.29 347.61,-99.91"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="349.3,-96.83 339.06,-94.14 345.39,-102.63 349.3,-96.83"/>
+</g>
+<!-- module~mqc_dft_partition&#45;&gt;module~mqc_error -->
+<g id="module~~mqc_dft_grid~~UsesGraph_edge10" class="edge">
+<title>module~mqc_dft_partition&#45;&gt;module~mqc_error</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M319.5,-132C298.76,-131.23 248.68,-145.86 212.07,-157.65"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="210.57,-154.46 202.14,-160.88 212.73,-161.11 210.57,-154.46"/>
+</g>
+<!-- module~mqc_dft_partition&#45;&gt;pic_types -->
+<g id="module~~mqc_dft_grid~~UsesGraph_edge11" class="edge">
+<title>module~mqc_dft_partition&#45;&gt;pic_types</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M414.44,-147.94C388.33,-140.9 353.22,-133.18 321.5,-132"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M319.5,-132C231.41,-128.72 128.02,-129.97 72.38,-131.05"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="72.16,-127.56 62.23,-131.26 72.3,-134.56 72.16,-127.56"/>
+</g>
+<!-- module~mqc_dft_prune&#45;&gt;module~mqc_dft_partition -->
+<g id="module~~mqc_dft_grid~~UsesGraph_edge12" class="edge">
+<title>module~mqc_dft_prune&#45;&gt;module~mqc_dft_partition</title>
+<path fill="none" stroke="#ffbf00" stroke-dasharray="5,2" d="M543.97,-147.43C535.74,-148.61 527.01,-149.86 518.38,-151.09"/>
+<polygon fill="#ffbf00" stroke="#ffbf00" points="517.73,-147.65 508.33,-152.52 518.72,-154.58 517.73,-147.65"/>
+</g>
+<!-- module~mqc_dft_prune&#45;&gt;module~mqc_dft_radial -->
+<g id="module~~mqc_dft_grid~~UsesGraph_edge13" class="edge">
+<title>module~mqc_dft_prune&#45;&gt;module~mqc_dft_radial</title>
+<path fill="none" stroke="#ffbf00" stroke-dasharray="5,2" d="M543.92,-131.06C497.68,-120.86 425.69,-104.98 376.2,-94.07"/>
+<polygon fill="#ffbf00" stroke="#ffbf00" points="376.83,-90.62 366.31,-91.88 375.32,-97.46 376.83,-90.62"/>
+</g>
+<!-- module~mqc_dft_prune&#45;&gt;module~mqc_error -->
+<g id="module~~mqc_dft_grid~~UsesGraph_edge14" class="edge">
+<title>module~mqc_dft_prune&#45;&gt;module~mqc_error</title>
+<path fill="none" stroke="#ffbf00" stroke-dasharray="5,2" d="M569.49,-153.08C553.56,-162.33 530.14,-174.57 508,-181 427.95,-204.26 404.83,-203.46 321.5,-201"/>
+<path fill="none" stroke="#ffbf00" stroke-dasharray="5,2" d="M319.5,-201C282.68,-201.28 241.69,-192.73 211.88,-184.84"/>
+<polygon fill="#ffbf00" stroke="#ffbf00" points="212.79,-181.46 202.22,-182.21 210.94,-188.22 212.79,-181.46"/>
+</g>
+<!-- module~mqc_dft_prune&#45;&gt;pic_types -->
+<g id="module~~mqc_dft_grid~~UsesGraph_edge15" class="edge">
+<title>module~mqc_dft_prune&#45;&gt;pic_types</title>
+<path fill="none" stroke="#ffbf00" stroke-dasharray="5,2" d="M319.5,-201C252.66,-201.5 232.19,-235.21 169.5,-212"/>
+<path fill="none" stroke="#ffbf00" stroke-dasharray="5,2" d="M167.5,-212C137.47,-200.88 126,-208.53 98,-193 79.02,-182.47 61.17,-165.37 48.84,-151.95"/>
+<polygon fill="#ffbf00" stroke="#ffbf00" points="51.17,-149.31 41.91,-144.16 45.94,-153.96 51.17,-149.31"/>
+</g>
+<!-- module~mqc_dft_radial&#45;&gt;module~mqc_error -->
+<g id="module~~mqc_dft_grid~~UsesGraph_edge17" class="edge">
+<title>module~mqc_dft_radial&#45;&gt;module~mqc_error</title>
+<path fill="none" stroke="#7fff00" stroke-dasharray="5,2" d="M299.27,-94.14C273.33,-109.7 228.15,-136.81 198.54,-154.58"/>
+<polygon fill="#7fff00" stroke="#7fff00" points="196.66,-151.62 189.89,-159.77 200.26,-157.62 196.66,-151.62"/>
+</g>
+<!-- module~mqc_dft_radial&#45;&gt;module~mqc_physical_constants -->
+<g id="module~~mqc_dft_grid~~UsesGraph_edge18" class="edge">
+<title>module~mqc_dft_radial&#45;&gt;module~mqc_physical_constants</title>
+<path fill="none" stroke="#7fff00" stroke-dasharray="5,2" d="M299.4,-69.97C283.35,-60.63 260.15,-47.67 239,-38 231.09,-34.38 222.51,-30.86 214.17,-27.64"/>
+<polygon fill="#7fff00" stroke="#7fff00" points="215.13,-24.26 204.54,-24.01 212.66,-30.81 215.13,-24.26"/>
+</g>
+<!-- module~mqc_dft_radial&#45;&gt;pic_types -->
+<g id="module~~mqc_dft_grid~~UsesGraph_edge19" class="edge">
+<title>module~mqc_dft_radial&#45;&gt;pic_types</title>
+<path fill="none" stroke="#7fff00" stroke-dasharray="5,2" d="M277.44,-69.94C231.62,-59.04 156.98,-47.92 98,-71 77.11,-79.18 58.87,-97.41 46.89,-111.82"/>
+<polygon fill="#7fff00" stroke="#7fff00" points="44.06,-109.76 40.58,-119.77 49.54,-114.11 44.06,-109.76"/>
+</g>
+<!-- module~mqc_dft_radial_data -->
+<g id="module~~mqc_dft_grid~~UsesGraph_node10" class="node">
+<title>module~mqc_dft_radial_data</title>
+<g id="a_module~~mqc_dft_grid~~UsesGraph_node10"><a xlink:href="../module/mqc_dft_radial_data.html" xlink:title="mqc_dft_radial_data">
+<polygon fill="#337ab7" stroke="#337ab7" points="229,-104 108,-104 108,-80 229,-80 229,-104"/>
+<text text-anchor="middle" x="168.5" y="-89.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_dft_radial_data</text>
+</a>
+</g>
+</g>
+<!-- module~mqc_dft_radial&#45;&gt;module~mqc_dft_radial_data -->
+<g id="module~~mqc_dft_grid~~UsesGraph_edge16" class="edge">
+<title>module~mqc_dft_radial&#45;&gt;module~mqc_dft_radial_data</title>
+<path fill="none" stroke="#7fff00" stroke-dasharray="5,2" d="M274.9,-84.97C263.7,-85.72 251.41,-86.54 239.31,-87.35"/>
+<polygon fill="#7fff00" stroke="#7fff00" points="238.95,-83.86 229.21,-88.02 239.42,-90.85 238.95,-83.86"/>
+</g>
+<!-- module~mqc_lebedev&#45;&gt;module~mqc_error -->
+<g id="module~~mqc_dft_grid~~UsesGraph_edge20" class="edge">
+<title>module~mqc_lebedev&#45;&gt;module~mqc_error</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M294.07,-266.84C287.43,-262.97 280.58,-258.3 275,-253 253.82,-232.87 261.82,-216.25 239,-198 231,-191.6 221.27,-186.67 211.65,-182.91"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="212.73,-179.58 202.14,-179.53 210.39,-186.18 212.73,-179.58"/>
+</g>
+<!-- module~mqc_lebedev&#45;&gt;pic_types -->
+<g id="module~~mqc_dft_grid~~UsesGraph_edge22" class="edge">
+<title>module~mqc_lebedev&#45;&gt;pic_types</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M295.22,-266.97C265.9,-252.71 214.84,-228.78 169.5,-212"/>
+</g>
+<!-- module~mqc_lebedev_data -->
+<g id="module~~mqc_dft_grid~~UsesGraph_node11" class="node">
+<title>module~mqc_lebedev_data</title>
+<g id="a_module~~mqc_dft_grid~~UsesGraph_node11"><a xlink:href="../module/mqc_lebedev_data.html" xlink:title="mqc_lebedev_data">
+<polygon fill="#337ab7" stroke="#337ab7" points="225,-282 112,-282 112,-258 225,-258 225,-282"/>
+<text text-anchor="middle" x="168.5" y="-267.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_lebedev_data</text>
+</a>
+</g>
+</g>
+<!-- module~mqc_lebedev&#45;&gt;module~mqc_lebedev_data -->
+<g id="module~~mqc_dft_grid~~UsesGraph_edge21" class="edge">
+<title>module~mqc_lebedev&#45;&gt;module~mqc_lebedev_data</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M278.11,-276.52C264.8,-275.72 249.7,-274.81 235.08,-273.94"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="235.26,-270.44 225.07,-273.33 234.84,-277.43 235.26,-270.44"/>
+</g>
+<!-- module~mqc_physical_constants&#45;&gt;pic_types -->
+<g id="module~~mqc_dft_grid~~UsesGraph_edge23" class="edge">
+<title>module~mqc_physical_constants&#45;&gt;pic_types</title>
+<path fill="none" stroke="#003fff" stroke-dasharray="5,2" d="M123.14,-24.04C114.29,-27.66 105.44,-32.25 98,-38 72.67,-57.59 53.15,-89.58 42.12,-110.72"/>
+<polygon fill="#003fff" stroke="#003fff" points="38.89,-109.34 37.52,-119.85 45.15,-112.49 38.89,-109.34"/>
+</g>
+<!-- module~mqc_dft_radial_data&#45;&gt;pic_types -->
+<g id="module~~mqc_dft_grid~~UsesGraph_edge24" class="edge">
+<title>module~mqc_dft_radial_data&#45;&gt;pic_types</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M126.85,-104C109.51,-109.12 89.34,-115.07 72.08,-120.17"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="70.88,-116.87 62.28,-123.06 72.87,-123.59 70.88,-116.87"/>
+</g>
+<!-- module~mqc_lebedev_data&#45;&gt;pic_types -->
+<g id="module~~mqc_dft_grid~~UsesGraph_edge25" class="edge">
+<title>module~mqc_lebedev_data&#45;&gt;pic_types</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M143.33,-257.83C129.15,-249.96 111.44,-238.81 98,-226 75.07,-204.14 55.19,-173.22 43.4,-152.9"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="46.4,-151.09 38.42,-144.12 40.31,-154.54 46.4,-151.09"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panmodulemqc_dft_gridUsesGraph = svgPanZoom('#modulemqc_dft_gridUsesGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#UsesGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="UsesGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="518pt" height="32pt"
+ viewBox="0.00 0.00 517.50 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 513.5,-28 513.5,4 -4,4"/>
+<!-- Module -->
+<g id="node1" class="node">
+<title>Module</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="54,-24 0,-24 0,0 54,0 54,-24"/>
+<text text-anchor="middle" x="27" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Module</text>
+</g>
+<!-- Submodule -->
+<g id="node2" class="node">
+<title>Submodule</title>
+<polygon fill="#5bc0de" stroke="#5bc0de" points="145.5,-24 72.5,-24 72.5,0 145.5,0 145.5,-24"/>
+<text text-anchor="middle" x="109" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Submodule</text>
+</g>
+<!-- Subroutine -->
+<g id="node3" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="234,-24 164,-24 164,0 234,0 234,-24"/>
+<text text-anchor="middle" x="199" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node4" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="310,-24 252,-24 252,0 310,0 310,-24"/>
+<text text-anchor="middle" x="281" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Program -->
+<g id="node5" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="386,-24 328,-24 328,0 386,0 386,-24"/>
+<text text-anchor="middle" x="357" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node6" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="509.5,-24 404.5,-24 404.5,0 509.5,0 509.5,-24"/>
+<text text-anchor="middle" x="457" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a submodule to the (sub)module which it is
+descended from. Dashed arrows point from a module or program unit to 
+modules which it uses.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+            </li>
+        </ul>
+      </div>
+    </div>
+
+      
+      <br>
+
+
+        <section>
+          <h2>Variables</h2>
+            <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+<th></th><th scope="col">Initial</th>        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-default_grid_level"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>DEFAULT_GRID_LEVEL</strong></td>
+<td> =</td>
+                <td>3</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-default_prune"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>DEFAULT_PRUNE</strong></td>
+<td> =</td>
+                <td>PRUNE_NWCHEM</td>
+            <td>
+                <p>Angular pruning is on unless a caller asks for <code>PRUNE_NONE</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-max_grid_level"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>MAX_GRID_LEVEL</strong></td>
+<td> =</td>
+                <td>9</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-min_grid_level"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>MIN_GRID_LEVEL</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ang_points"></span>
+              integer,
+            </td>
+              <td>private,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>ANG_POINTS</strong>(MIN_GRID_LEVEL:MAX_GRID_LEVEL,N_PERIODS)</td>
+<td> =</td>
+                <td>transpose(reshape([50, 86, 110, 110, 110, 110, 110, 110, 194, 194, 194, 194, 194, 194, 194, 302, 302, 302, 302, 302, 302, 302, 302, 434, 434, 434, 434, 434, 434, 590, 590, 590, 590, 590, 590, 590, 770, 770, 770, 770, 770, 770, 770, 974, 974, 974, 974, 974, 974, 974, 1202, 1202, 1202, 1202, 1202, 1202, 1202, 1202, 1202, 1202, 1202, 1202, 1202, 1454, 1454, 1454, 1454, 1454, 1454, 1454], [N_PERIODS, MAX_GRID_LEVEL+1]))</td>
+            <td>
+                <p>Lebedev points per (level, period), as point counts rather than the
+degrees the standard tables list, since that is what <code>lebedev_grid</code>
+takes.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-grid_sort_cell"></span>
+              real(kind=dp),
+            </td>
+              <td>private,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>GRID_SORT_CELL</strong></td>
+<td> =</td>
+                <td>3.0_dp</td>
+            <td>
+                <p>Side of the cubes the points are binned into before blocking, Bohr.
+About the spacing of bonded heavy atoms: a block of a few hundred
+points then sits within one or two cubes.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_dim~3"></span>
+              integer,
+            </td>
+              <td>private,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>N_DIM</strong></td>
+<td> =</td>
+                <td>3</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_periods"></span>
+              integer,
+            </td>
+              <td>private,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>N_PERIODS</strong></td>
+<td> =</td>
+                <td>7</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-period_last_z"></span>
+              integer,
+            </td>
+              <td>private,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>PERIOD_LAST_Z</strong>(N_PERIODS)</td>
+<td> =</td>
+                <td>[2, 10, 18, 36, 54, 86, 118]</td>
+            <td>
+                <p>Highest Z in each period, used to place an element in the level tables</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-rad_grids"></span>
+              integer,
+            </td>
+              <td>private,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>RAD_GRIDS</strong>(MIN_GRID_LEVEL:MAX_GRID_LEVEL,N_PERIODS)</td>
+<td> =</td>
+                <td>transpose(reshape([10, 15, 20, 30, 35, 40, 50, 30, 40, 50, 60, 65, 70, 75, 40, 60, 65, 75, 80, 85, 90, 50, 75, 80, 90, 95, 100, 105, 60, 90, 95, 105, 110, 115, 120, 70, 105, 110, 120, 125, 130, 135, 80, 120, 125, 135, 140, 145, 150, 90, 135, 140, 150, 155, 160, 165, 100, 150, 155, 165, 170, 175, 180, 200, 200, 200, 200, 200, 200, 200], [N_PERIODS, MAX_GRID_LEVEL+1]))</td>
+            <td>
+                <p>Radial shells per (level, period)</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+        </section>
+        <br>
+
+
+
+
+        <section>
+          <h2>Derived Types</h2>
+              <div class="card">
+    <div class="card-header codesum">
+      <span class="anchor" id="type-dft_grid_t"></span>
+      <h3>
+        type, public&nbsp;::&nbsp;
+        <a href='../type/dft_grid_t.html'>dft_grid_t</a>
+        
+      </h3>
+    </div>
+    <div class="card-body">
+      <p>A molecular quadrature: points, weights, and which atom made each point</p>
+
+        <h4>Components</h4>
+          <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+<th></th><th scope="col">Initial</th>        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-adjust~4"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>adjust</strong></td>
+<td> =</td>
+                <td>ADJUST_TREUTLER</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-atom~6"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>atom</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+<p>(n_points), owning atom</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-coords~9"></span>
+              real(kind=dp),
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>coords</strong>(:,:)</td>
+                <td></td>
+                <td></td>
+            <td>
+<p>(3, n_points), Bohr</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_points~8"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_points</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-numbers"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>numbers</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+<p>(n_atoms), Z, for the partition radii</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-quad_weights"></span>
+              real(kind=dp),
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>quad_weights</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+<p>(n_points), the radial times angular weight <em>before</em> the Becke
+partition multiplies it in. Only the partition carries a nuclear
+derivative, so a gradient needs the two factors apart, and
+recovering this by dividing <code>weights</code> by the partition would divide
+by zero exactly where the partition underflows.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-scheme~6"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>scheme</strong></td>
+<td> =</td>
+                <td>PARTITION_BECKE</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-weights~3"></span>
+              real(kind=dp),
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>weights</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+<p>(n_points), full volume weight</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+
+        <h4>Type-Bound Procedures</h4>
+        <table class="table table-striped varlist">
+          <tbody>
+              <tr>
+                <td>  procedure, public ::
+  <strong><a href='../type/dft_grid_t.html#boundprocedure-destroy~19'>destroy</a></strong> => <a href='/home/runner/work/metalquicha/metalquicha/docs/fpm-ford/proc/dft_grid_destroy.html'>dft_grid_destroy</a></td>
+                  <td></td>
+              </tr>
+          </tbody>
+        </table>
+    </div>
+  </div>
+
+        </section>
+        <br>
+
+        <section>
+          <h2>Functions</h2>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-grid_level_angular"></span> <h3>public pure function <a href='../proc/grid_level_angular.html'>grid_level_angular</a>(atomic_number, level) result(n_angular)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Lebedev points this element gets at this level</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-atomic_number~13"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>atomic_number</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-level~11"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>level</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>integer</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-grid_level_radial"></span> <h3>public pure function <a href='../proc/grid_level_radial.html'>grid_level_radial</a>(atomic_number, level) result(n_radial)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Radial shells this element gets at this level</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-atomic_number~12"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>atomic_number</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-level~10"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>level</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>integer</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-clamp_level"></span> <h3>private pure function <a href='../proc/clamp_level.html'>clamp_level</a>(level) result(clamped)  
+</h3></div>
+    <div class="card-body">
+          
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-level~12"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>level</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>integer</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-element_period"></span> <h3>private pure function <a href='../proc/element_period.html'>element_period</a>(atomic_number) result(period)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Period of an element, 1 to 7, for indexing the level tables</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-atomic_number~11"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>atomic_number</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>integer</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-morton_key"></span> <h3>private pure function <a href='../proc/morton_key.html'>morton_key</a>(ix, iy, iz) result(key)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>The three cell indices interleaved bit by bit, ten bits each</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ix~2"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ix</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-iy"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>iy</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-iz"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>iz</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>integer(kind=int64)</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
+        </section>
+        <br>
+
+        <section>
+          <h2>Subroutines</h2>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-build_dft_grid"></span> <h3>public  subroutine <a href='../proc/build_dft_grid.html'>build_dft_grid</a>(atom_coords, atomic_numbers, grid, error, level, scheme, adjust, n_radial, n_angular, prune)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Build the molecular grid</p><a href="../proc/build_dft_grid.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-atom_coords~3"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>atom_coords</strong>(:,:)</td>
+            <td>
+<p>(3, n_atoms), Bohr</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-atomic_numbers~7"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>atomic_numbers</strong>(:)</td>
+            <td>
+<p>Z per atom</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-grid~2"></span>
+              type(<a href='../type/dft_grid_t.html'>dft_grid_t</a>),
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>grid</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-error~102"></span>
+              type(<a href='../type/error_t.html'>error_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>error</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-level~13"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>level</strong></td>
+            <td>
+<p>0 to 9, default 3</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-scheme~7"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>scheme</strong></td>
+            <td>
+<p>Partition cutoff</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-adjust~5"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>adjust</strong></td>
+            <td>
+<p>Size adjustment</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_radial~2"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_radial</strong></td>
+            <td>
+<p>Override, all atoms</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_angular~2"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_angular</strong></td>
+            <td>
+<p>Override, all atoms</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-prune"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>prune</strong></td>
+            <td>
+<p>PRUNE_NONE or PRUNE_NWCHEM</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-apply_partition"></span> <h3>private  subroutine <a href='../proc/apply_partition.html'>apply_partition</a>(grid, atom_coords, atomic_numbers, scheme, adjust, error)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Multiply the product weights by the Becke cell weights</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-grid~4"></span>
+              type(<a href='../type/dft_grid_t.html'>dft_grid_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>grid</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-atom_coords~4"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>atom_coords</strong>(:,:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-atomic_numbers~8"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>atomic_numbers</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-scheme~8"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>scheme</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-adjust~6"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>adjust</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-error~103"></span>
+              type(<a href='../type/error_t.html'>error_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>error</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-atom_sizes"></span> <h3>private pure subroutine <a href='../proc/atom_sizes.html'>atom_sizes</a>(atomic_number, level, n_radial, n_angular, nr, na)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Radial and angular counts for one atom, honouring any override</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-atomic_number~14"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>atomic_number</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-level~14"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>level</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_radial~3"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_radial</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_angular~3"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_angular</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-nr~2"></span>
+              integer,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>nr</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-na~3"></span>
+              integer,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>na</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-dft_grid_destroy"></span> <h3>private pure subroutine <a href='../proc/dft_grid_destroy.html'>dft_grid_destroy</a>(this)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Release the grid</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-this~108"></span>
+              class(<a href='../type/dft_grid_t.html'>dft_grid_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>this</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-sort_grid_spatially"></span> <h3>private  subroutine <a href='../proc/sort_grid_spatially.html'>sort_grid_spatially</a>(grid)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Reorder the points so that consecutive ones are close in space</p><a href="../proc/sort_grid_spatially.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-grid~3"></span>
+              type(<a href='../type/dft_grid_t.html'>dft_grid_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>grid</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+        </section>
+        <br>
+
+
+
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              metalquicha
+ was developed by Jorge Luis Galvez Vallejo<br>              &copy; 2026 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+ on 2026-09-07 09:10 +0000             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

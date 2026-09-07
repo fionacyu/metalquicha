@@ -2,13 +2,12 @@
 module mqc_thermochemistry
    !! Computes thermodynamic properties from vibrational frequencies and molecular geometry.
    !!
-   !! This module implements standard RRHO thermochemistry calculations including:
-   !! - Zero-point vibrational energy (ZPE)
-   !! - Translational, rotational, vibrational, and electronic contributions
-   !! - Thermal corrections to energy, enthalpy, and Gibbs free energy
+   !! Zero-point energy, the translational, rotational, vibrational and
+   !! electronic contributions, and the thermal corrections to energy, enthalpy
+   !! and Gibbs free energy.
    !!
-   !! Default conditions: T = 298.15 K, P = 1 atm
-   !! Output follows Gaussian-style formatting for compatibility.
+   !! Default conditions: T = 298.15 K, P = 1 atm. Output follows Gaussian-style
+   !! formatting.
    use pic_types, only: dp
    use pic_logger, only: logger => global_logger
    use pic_io, only: to_char
@@ -20,6 +19,7 @@ module mqc_thermochemistry
                                      HARTREE_TO_KCALMOL, HARTREE_TO_JMOL, HARTREE_TO_CALMOL
    use mqc_elements, only: element_mass
    use pic_lapack_interfaces, only: pic_syev
+   use mqc_calculation_defaults, only: DEFAULT_TEMPERATURE, DEFAULT_PRESSURE
    implicit none
    private
 
@@ -34,23 +34,18 @@ module mqc_thermochemistry
    public :: compute_thermochemistry
    public :: print_thermochemistry
 
-   !> Default temperature in Kelvin
-   real(dp), parameter, public :: DEFAULT_TEMPERATURE = 298.15_dp
-
-   !> Default pressure in atm
-   real(dp), parameter, public :: DEFAULT_PRESSURE = 1.0_dp
-
-   !> Default symmetry number
    integer, parameter, public :: DEFAULT_SYMMETRY_NUMBER = 1
+      !! Default rotational symmetry number
 
-   !> Default spin multiplicity (singlet)
    integer, parameter, public :: DEFAULT_SPIN_MULTIPLICITY = 1
+      !! Default spin multiplicity, a singlet
 
-   !> Threshold for considering a moment of inertia as zero (linear molecule detection)
    real(dp), parameter :: LINEAR_THRESHOLD = 1.0e-6_dp
+      !! A moment of inertia below this counts as zero, which is how a linear
+      !! molecule is detected. In amu*Angstrom^2.
 
-   !> Threshold for considering a frequency as imaginary
    real(dp), parameter :: IMAG_FREQ_THRESHOLD = 0.0_dp
+      !! A frequency below this is imaginary. In cm^-1.
 
    type :: thermochemistry_result_t
       !! Container for thermochemistry calculation results
@@ -174,7 +169,7 @@ contains
 
       ! Diagonalize to get principal moments
       principal_axes = inertia_tensor
-      call pic_syev(principal_axes, moments, 'V', 'U', info)
+      call pic_syev(principal_axes, moments, "V", "U", info)
 
       if (info /= 0) then
          call logger%warning("Failed to diagonalize inertia tensor, info = "// &
@@ -239,6 +234,11 @@ contains
       n_real = 0
       n_imag = 0
 
+      ! TODO(mqc): every positive frequency counts here, where
+      ! `compute_vibrational_thermo` and `compute_partition_functions` both
+      ! drop everything below 10 cm^-1. The ZPE and `n_real_freqs` therefore
+      ! include the near-zero translation and rotation residuals that the
+      ! thermal terms exclude.
       do i = 1, n_freqs
          if (frequencies(i) > IMAG_FREQ_THRESHOLD) then
             freq_sum = freq_sum + frequencies(i)
@@ -401,6 +401,9 @@ contains
 
          ! Skip imaginary and near-zero frequencies
          if (freq <= IMAG_FREQ_THRESHOLD) cycle
+         ! TODO(mqc): 10 cm^-1 is spelled as a literal here, again in
+         ! `compute_partition_functions`, and a third time in
+         ! `print_vibrational_analysis`. One named constant, three copies.
          if (freq < 10.0_dp) cycle  ! Skip very low frequencies (likely trans/rot residuals)
 
          ! Vibrational temperature: theta_v = h*c*nu / k = 1.4388 * nu (cm^-1)
@@ -411,7 +414,7 @@ contains
 
          ! Avoid numerical issues for very large u (very low T or high freq)
          if (u > VIB_CLASSICAL_LIMIT) then
-            ! Classical limit: modes are frozen out
+            ! theta_v far above T: the mode is frozen out and contributes nothing
             cycle
          end if
 
@@ -465,7 +468,8 @@ contains
 
       real(dp) :: mass_kg, T, P_pa
       real(dp) :: lambda, V_molar
-      real(dp) :: theta_rot(3), u
+      real(dp) ::  u
+      real(dp) :: theta_rot(3)
       integer :: i
 
       T = temperature
@@ -480,6 +484,9 @@ contains
 
       ! Rotational partition function
       ! theta_rot = h^2 / (8*pi^2*I*k_B) = ROTTEMP_AMUA2_TO_K / I (for I in amu*Angstrom^2)
+      ! TODO(mqc): `1.0e-6_dp` here and `100.0_dp` below are `LINEAR_THRESHOLD`
+      ! and `VIB_CLASSICAL_LIMIT` written out again, both of which this module
+      ! already has in scope.
       do i = 1, 3
          if (moments(i) > 1.0e-6_dp) then
             theta_rot(i) = ROTTEMP_AMUA2_TO_K/moments(i)
@@ -523,7 +530,7 @@ contains
                                       result, temperature, pressure, symmetry_number, spin_multiplicity)
       !! Main driver for thermochemistry calculations.
       !!
-      !! Computes all thermodynamic quantities from molecular geometry and vibrational frequencies.
+      !! Every thermodynamic quantity, from a geometry and its frequencies.
       real(dp), intent(in) :: coords(:, :)           !! Coordinates (3, n_atoms) in Bohr
       integer, intent(in) :: atomic_numbers(:)       !! Atomic numbers
       real(dp), intent(in) :: frequencies(:)         !! Frequencies in cm^-1
@@ -651,92 +658,92 @@ contains
       total_free_energy = electronic_energy + result%thermal_correction_gibbs
 
       ! Print header
-      call logger%info(" ")
-      call logger%info("Thermochemistry (RRHO)")
-      call logger%info("======================")
-      call logger%info(" ")
+      call logger%large_info(" ")
+      call logger%large_info("Thermochemistry (RRHO)")
+      call logger%large_info("======================")
+      call logger%large_info(" ")
 
       ! Setup section - simple list
-      write (line, '(A,F10.4,A)') "  Temperature:       ", result%temperature, " K"
-      call logger%info(trim(line))
-      write (line, '(A,F10.4,A)') "  Pressure:          ", result%pressure, " atm"
-      call logger%info(trim(line))
-      write (line, '(A,F10.4,A)') "  Molecular mass:    ", result%total_mass, " amu"
-      call logger%info(trim(line))
-      write (line, '(A,I6)') "  Vibrational modes: ", result%n_real_freqs
-      call logger%info(trim(line))
+      write (line, "(A,F10.4,A)") "  Temperature:       ", result%temperature, " K"
+      call logger%large_info(trim(line))
+      write (line, "(A,F10.4,A)") "  Pressure:          ", result%pressure, " atm"
+      call logger%large_info(trim(line))
+      write (line, "(A,F10.4,A)") "  Molecular mass:    ", result%total_mass, " amu"
+      call logger%large_info(trim(line))
+      write (line, "(A,I6)") "  Vibrational modes: ", result%n_real_freqs
+      call logger%large_info(trim(line))
       if (result%n_imag_freqs > 0) then
-         write (line, '(A,I6,A)') "  Imaginary freqs:   ", result%n_imag_freqs, " (skipped)"
-         call logger%info(trim(line))
+         write (line, "(A,I6,A)") "  Imaginary freqs:   ", result%n_imag_freqs, " (skipped)"
+         call logger%large_info(trim(line))
       end if
       if (result%is_linear) then
-         call logger%info("  Linear molecule:   yes")
+         call logger%large_info("  Linear molecule:   yes")
       else
-         call logger%info("  Linear molecule:   no")
+         call logger%large_info("  Linear molecule:   no")
       end if
-      write (line, '(A,I6)') "  Symmetry number:   ", result%symmetry_number
-      call logger%info(trim(line))
-      call logger%info(" ")
+      write (line, "(A,I6)") "  Symmetry number:   ", result%symmetry_number
+      call logger%large_info(trim(line))
+      call logger%large_info(" ")
 
       ! Contribution table
-      call logger%info("  temp (K)       q        H(cal/mol)  Cp(cal/K/mol)  S(cal/K/mol)  S(J/K/mol)")
-      call logger%info("  -------------------------------------------------------------------------")
+      call logger%large_info("  temp (K)       q        H(cal/mol)  Cp(cal/K/mol)  S(cal/K/mol)  S(J/K/mol)")
+      call logger%large_info("  -------------------------------------------------------------------------")
 
-      write (line, '(F8.2,A,ES10.3,F12.3,F14.3,F14.3,F12.3)') &
+      write (line, "(F8.2,A,ES10.3,F12.3,F14.3,F14.3,F12.3)") &
          result%temperature, "  VIB", result%q_vib, H_vib_cal, result%Cv_vib, &
          result%S_vib, result%S_vib*CAL_TO_J
-      call logger%info(trim(line))
+      call logger%large_info(trim(line))
 
-      write (line, '(A,ES10.3,F12.3,F14.3,F14.3,F12.3)') &
+      write (line, "(A,ES10.3,F12.3,F14.3,F14.3,F12.3)") &
          "          ROT", result%q_rot, H_rot_cal, result%Cv_rot, &
          result%S_rot, result%S_rot*CAL_TO_J
-      call logger%info(trim(line))
+      call logger%large_info(trim(line))
 
-      write (line, '(A,ES10.3,F12.3,F14.3,F14.3,F12.3)') &
+      write (line, "(A,ES10.3,F12.3,F14.3,F14.3,F12.3)") &
          "          INT", result%q_rot*result%q_vib, H_vib_cal + H_rot_cal, &
          result%Cv_vib + result%Cv_rot, result%S_vib + result%S_rot, &
          (result%S_vib + result%S_rot)*CAL_TO_J
-      call logger%info(trim(line))
+      call logger%large_info(trim(line))
 
       ! For TR, report Cp = Cv + R (constant pressure heat capacity for ideal gas)
-      write (line, '(A,ES10.3,F12.3,F14.3,F14.3,F12.3)') &
+      write (line, "(A,ES10.3,F12.3,F14.3,F14.3,F12.3)") &
          "          TR ", result%q_trans, H_trans_cal, result%Cv_trans + R_CALMOLK, &
          result%S_trans, result%S_trans*CAL_TO_J
-      call logger%info(trim(line))
+      call logger%large_info(trim(line))
 
-      call logger%info("  -------------------------------------------------------------------------")
-      write (line, '(A,F12.3,F14.3,F14.3,F12.3)') &
+      call logger%large_info("  -------------------------------------------------------------------------")
+      write (line, "(A,F12.3,F14.3,F14.3,F12.3)") &
          "          TOT           ", H_total_cal, Cv_total, S_total, S_total_J
-      call logger%info(trim(line))
+      call logger%large_info(trim(line))
 
-      call logger%info(" ")
+      call logger%large_info(" ")
 
       ! Thermal corrections table
       call logger%info(" ")
       call logger%info("Thermal Corrections (Hartree)")
       call logger%info("-----------------------------")
-      write (line, '(A,F18.12)') "  Zero-point energy:              ", result%zpe_hartree
+      write (line, "(A,F18.12)") "  Zero-point energy:              ", result%zpe_hartree
       call logger%info(trim(line))
-      write (line, '(A,F18.12)') "  Thermal correction to Energy:   ", result%thermal_correction_energy
+      write (line, "(A,F18.12)") "  Thermal correction to Energy:   ", result%thermal_correction_energy
       call logger%info(trim(line))
-      write (line, '(A,F18.12)') "  Thermal correction to Enthalpy: ", result%thermal_correction_enthalpy
+      write (line, "(A,F18.12)") "  Thermal correction to Enthalpy: ", result%thermal_correction_enthalpy
       call logger%info(trim(line))
-      write (line, '(A,F18.12)') "  Thermal correction to Gibbs:    ", result%thermal_correction_gibbs
+      write (line, "(A,F18.12)") "  Thermal correction to Gibbs:    ", result%thermal_correction_gibbs
       call logger%info(trim(line))
       call logger%info(" ")
 
       ! Final totals
       call logger%info("Total Energies (Hartree)")
       call logger%info("------------------------")
-      write (line, '(A,F20.12)') "  Electronic energy:            ", total_energy
+      write (line, "(A,F20.12)") "  Electronic energy:            ", total_energy
       call logger%info(trim(line))
-      write (line, '(A,F20.12)') "  Electronic + ZPE:             ", total_energy + result%zpe_hartree
+      write (line, "(A,F20.12)") "  Electronic + ZPE:             ", total_energy + result%zpe_hartree
       call logger%info(trim(line))
-      write (line, '(A,F20.12)') "  Electronic + thermal (E):     ", total_energy + result%thermal_correction_energy
+      write (line, "(A,F20.12)") "  Electronic + thermal (E):     ", total_energy + result%thermal_correction_energy
       call logger%info(trim(line))
-      write (line, '(A,F20.12)') "  Electronic + thermal (H):     ", total_enthalpy
+      write (line, "(A,F20.12)") "  Electronic + thermal (H):     ", total_enthalpy
       call logger%info(trim(line))
-      write (line, '(A,F20.12)') "  Electronic + thermal (G):     ", total_free_energy
+      write (line, "(A,F20.12)") "  Electronic + thermal (G):     ", total_free_energy
       call logger%info(trim(line))
       call logger%info(" ")
 

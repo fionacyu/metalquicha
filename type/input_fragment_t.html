@@ -94,20 +94,20 @@
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
-                 title="<p> 1.2% of total for derived types.</p>Including implementation: 11 statements,  0.6% of total for derived types.">7 statements</a>
+                 title="<p> 0.6% of total for derived types.</p>Including implementation: 12 statements,  0.3% of total for derived types.">8 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
               <i class="fa fa-code"></i>
-              <a href="../src/mqc_config_parser.F90"> Source File</a>
+              <a href="../src/mqc_config_types.f90"> Source File</a>
             </li>
         </ul>
       </div>
       <div class="col">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
-                <li class="breadcrumb-item"><a href='../sourcefile/mqc_config_parser.f90.html'>mqc_config_parser.F90</a></li>
-                <li class="breadcrumb-item"><a href='../module/mqc_config_parser.html'>mqc_config_parser</a></li>
+                <li class="breadcrumb-item"><a href='../sourcefile/mqc_config_types.f90.html'>mqc_config_types.f90</a></li>
+                <li class="breadcrumb-item"><a href='../module/mqc_config_types.html'>mqc_config_types</a></li>
             <li class="breadcrumb-item active" aria-current="page">input_fragment_t</li>
           </ol>
         </nav>
@@ -136,9 +136,10 @@
       </a>
       <div id="vars-0" class="collapse">
         <div class="list-group list-group-flush">
-            <a class="list-group-item" href="../type/input_fragment_t.html#variable-charge">charge</a>
-            <a class="list-group-item" href="../type/input_fragment_t.html#variable-indices">indices</a>
-            <a class="list-group-item" href="../type/input_fragment_t.html#variable-multiplicity">multiplicity</a>
+            <a class="list-group-item" href="../type/input_fragment_t.html#variable-charge~9">charge</a>
+            <a class="list-group-item" href="../type/input_fragment_t.html#variable-indices~10">indices</a>
+            <a class="list-group-item" href="../type/input_fragment_t.html#variable-multiplicity~8">multiplicity</a>
+            <a class="list-group-item" href="../type/input_fragment_t.html#variable-potential">potential</a>
         </div>
       </div>
     </div>
@@ -165,7 +166,7 @@
       </a>
       <div id="boundprocs-0" class="collapse">
         <div class="list-group list-group-flush">
-            <a class="list-group-item" href="../type/input_fragment_t.html#boundprocedure-destroy">destroy</a>
+            <a class="list-group-item" href="../type/input_fragment_t.html#boundprocedure-destroy~26">destroy</a>
         </div>
       </div>
     </div>
@@ -187,8 +188,9 @@
     <div class="col-md-9" id='text'>
       <h2 id="type-def-statement">
         type, public :: input_fragment_t</h2>
-    <p>Input fragment definition with charge, multiplicity, and atom indices
-This is the parsed representation from the input file, not the computational fragment</p>
+    <p>One fragment as the input file declares it: charge, multiplicity and
+atom indices</p>
+<p>The parsed representation, not the computational fragment.</p>
 <br>      <div class="card">
         <div class="card-header">
           <h3 class="card-title">Inherited by</h3>
@@ -319,7 +321,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-charge"></span>
+              <span class="anchor" id="variable-charge~9"></span>
               integer,
             </td>
               <td>public</td>
@@ -336,7 +338,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-indices"></span>
+              <span class="anchor" id="variable-indices~10"></span>
               integer,
             </td>
               <td>public,</td>
@@ -353,7 +355,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-multiplicity"></span>
+              <span class="anchor" id="variable-multiplicity~8"></span>
               integer,
             </td>
               <td>public</td>
@@ -366,6 +368,29 @@ large graphs.</div>
                 <td>1</td>
             <td>
                 
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-potential"></span>
+              character(len=:),
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>potential</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                <p>The effective fragment potential describing this fragment, if it has
+one. A fragment carrying one is an EFP fragment, one without stays
+quantum, which is how a mixed calculation is spelled. The path is
+resolved relative to the deck, like <code>xyz</code>.</p>
+<p><strong>A path, not a format.</strong> Nothing here may require an extension or
+infer a format from one; whoever loads it dispatches on what the
+file actually is.</p>
             </td>
         </tr>
     </tbody>
@@ -381,7 +406,7 @@ large graphs.</div>
           <div class="row">
               <div class="card mt-3">
     <div class="card-header codesum">
-      <span class="anchor" id="boundprocedure-destroy"></span>
+      <span class="anchor" id="boundprocedure-destroy~26"></span>
       <h3>
           procedure, public ::
   <strong>destroy</strong> => <a href='/home/runner/work/metalquicha/metalquicha/docs/fpm-ford/proc/input_fragment_destroy.html'>input_fragment_destroy</a>
@@ -437,11 +462,22 @@ large graphs.</div>
     <section>
     <h3><span class="anchor" id="src"></span>Source Code</h3>
     <div class="hl codehilite"><pre><span></span><span class="w">   </span><span class="k">type</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">input_fragment_t</span>
-<span class="w">      </span><span class="c">!! Input fragment definition with charge, multiplicity, and atom indices</span>
-<span class="w">      </span><span class="c">!! This is the parsed representation from the input file, not the computational fragment</span>
+<span class="w">      </span><span class="c">!! One fragment as the input file declares it: charge, multiplicity and</span>
+<span class="w">      </span><span class="c">!! atom indices</span>
+<span class="w">      </span><span class="c">!!</span>
+<span class="w">      </span><span class="c">!! The parsed representation, not the computational fragment.</span>
 <span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">charge</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
 <span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">multiplicity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
 <span class="w">      </span><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">indices</span><span class="p">(:)</span><span class="w">  </span><span class="c">!! Atom indices in this fragment</span>
+<span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">potential</span>
+<span class="w">         </span><span class="c">!! The effective fragment potential describing this fragment, if it has</span>
+<span class="w">         </span><span class="c">!! one. A fragment carrying one is an EFP fragment, one without stays</span>
+<span class="w">         </span><span class="c">!! quantum, which is how a mixed calculation is spelled. The path is</span>
+<span class="w">         </span><span class="c">!! resolved relative to the deck, like `xyz`.</span>
+<span class="w">         </span><span class="c">!!</span>
+<span class="w">         </span><span class="c">!! **A path, not a format.** Nothing here may require an extension or</span>
+<span class="w">         </span><span class="c">!! infer a format from one; whoever loads it dispatches on what the</span>
+<span class="w">         </span><span class="c">!! file actually is.</span>
 <span class="w">   </span><span class="k">contains</span>
 <span class="k">      procedure</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">destroy</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">input_fragment_destroy</span>
 <span class="w">   </span><span class="k">end type </span><span class="n">input_fragment_t</span>
@@ -467,7 +503,7 @@ large graphs.</div>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-02-20 06:49 +0000             </p>
+ on 2026-09-07 09:10 +0000             </p>
           </div>
         </div>
         <br>

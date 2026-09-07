@@ -1,0 +1,783 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="A demonstration of PIC as a framework for scientific applications targetting quantum chemistry">
+    <meta name="author" content="Jorge Luis Galvez Vallejo" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>xc_spec_from_name &ndash; metalquicha</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">metalquicha </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../program/main.html">Program</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>xc_spec_from_name
+      <small>Subroutine</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 0.6% of total for procedures.">136 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/mqc_xc_spec.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/mqc_xc_spec.f90.html'>mqc_xc_spec.f90</a></li>
+                <li class="breadcrumb-item"><a href='../module/mqc_xc_spec.html'>mqc_xc_spec</a></li>
+            <li class="breadcrumb-item active" aria-current="page">xc_spec_from_name</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#vars-0"
+         aria-expanded="false" aria-controls="vars-0">
+         <h4 class="card-header bg-primary text-white">Variables</h4>
+      </a>
+      <div id="vars-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../proc/xc_spec_from_name.html#variable-i~198">i</a>
+            <a class="list-group-item" href="../proc/xc_spec_from_name.html#variable-lower~5">lower</a>
+            <a class="list-group-item" href="../proc/xc_spec_from_name.html#variable-whole_only">whole_only</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/xc_spec_from_name.html#src">xc_spec_from_name</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>public  subroutine xc_spec_from_name(name, spec, error, allow_half)  
+</h2>
+    
+
+    <p>A functional name to its composition</p>
+<p>Anything not named here is passed through as a single libxc component;
+a name libxc also does not know fails at resolution, with libxc&rsquo;s own
+error. The one thing checked before that pass-through is that the name
+is a <em>whole</em> functional and not one half of one &ndash; see
+<code>check_name_is_whole</code>.</p>
+
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-name~40"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>name</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-spec"></span>
+              type(<a href='../type/xc_spec_t.html'>xc_spec_t</a>),
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>spec</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-error~186"></span>
+              type(<a href='../type/error_t.html'>error_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>error</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-allow_half"></span>
+              logical,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>allow_half</strong></td>
+            <td>
+                <p>Accept a libxc name that is only exchange or only correlation.
+Default false, and a deck must never set it: half a functional
+converges silently. It exists for the derivative tests, which want
+one rung&rsquo;s kernel in isolation &ndash; <code>lda_x</code> before <code>svwn</code>,
+<code>gga_x_pbe</code> before <code>pbe</code>.</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <br>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Calls</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~xc_spec_from_name~~CallsGraph Pages: 1 -->
+<svg id="procxc_spec_from_nameCallsGraph" width="535pt" height="94pt"
+ viewBox="0.00 0.00 535.00 94.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~xc_spec_from_name~~CallsGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 90)">
+<title>proc~~xc_spec_from_name~~CallsGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-90 531,-90 531,4 -4,4"/>
+<!-- proc~xc_spec_from_name -->
+<g id="proc~~xc_spec_from_name~~CallsGraph_node1" class="node">
+<title>proc~xc_spec_from_name</title>
+<polygon fill="none" stroke="black" points="121,-44 0,-44 0,-20 121,-20 121,-44"/>
+<text text-anchor="middle" x="60.5" y="-29.6" font-family="Helvetica,sans-Serif" font-size="10.50">xc_spec_from_name</text>
+</g>
+<!-- proc~check_name_is_whole -->
+<g id="proc~~xc_spec_from_name~~CallsGraph_node2" class="node">
+<title>proc~check_name_is_whole</title>
+<g id="a_proc~~xc_spec_from_name~~CallsGraph_node2"><a xlink:href="../proc/check_name_is_whole.html" xlink:title="check_name_is_whole">
+<polygon fill="#d9534f" stroke="#d9534f" points="291.5,-86 161.5,-86 161.5,-62 291.5,-62 291.5,-86"/>
+<text text-anchor="middle" x="226.5" y="-71.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">check_name_is_whole</text>
+</a>
+</g>
+</g>
+<!-- proc~xc_spec_from_name&#45;&gt;proc~check_name_is_whole -->
+<g id="proc~~xc_spec_from_name~~CallsGraph_edge1" class="edge">
+<title>proc~xc_spec_from_name&#45;&gt;proc~check_name_is_whole</title>
+<path fill="none" stroke="#ff0000" d="M108.5,-44.04C127.28,-48.85 149.08,-54.43 168.74,-59.46"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="167.94,-62.87 178.5,-61.96 169.68,-56.09 167.94,-62.87"/>
+</g>
+<!-- proc~error_has_error -->
+<g id="proc~~xc_spec_from_name~~CallsGraph_node3" class="node">
+<title>proc~error_has_error</title>
+<g id="a_proc~~xc_spec_from_name~~CallsGraph_node3"><a xlink:href="../proc/error_has_error.html" xlink:title="error_t%error_has_error">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="296,-44 157,-44 157,-20 296,-20 296,-44"/>
+<text text-anchor="middle" x="226.5" y="-29.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">error_t%error_has_error</text>
+</a>
+</g>
+</g>
+<!-- proc~xc_spec_from_name&#45;&gt;proc~error_has_error -->
+<g id="proc~~xc_spec_from_name~~CallsGraph_edge2" class="edge">
+<title>proc~xc_spec_from_name&#45;&gt;proc~error_has_error</title>
+<path fill="none" stroke="#ff0000" d="M121.17,-32C129.53,-32 138.23,-32 146.87,-32"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="146.97,-35.5 156.97,-32 146.97,-28.5 146.97,-35.5"/>
+</g>
+<!-- proc~error_set -->
+<g id="proc~~xc_spec_from_name~~CallsGraph_node4" class="node">
+<title>proc~error_set</title>
+<g id="a_proc~~xc_spec_from_name~~CallsGraph_node4"><a xlink:href="../proc/error_set.html" xlink:title="error_t%error_set">
+<polygon fill="#d9534f" stroke="#d9534f" points="437,-24 332,-24 332,0 437,0 437,-24"/>
+<text text-anchor="middle" x="384.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">error_t%error_set</text>
+</a>
+</g>
+</g>
+<!-- proc~xc_spec_from_name&#45;&gt;proc~error_set -->
+<g id="proc~~xc_spec_from_name~~CallsGraph_edge3" class="edge">
+<title>proc~xc_spec_from_name&#45;&gt;proc~error_set</title>
+<path fill="none" stroke="#ff0000" d="M106.83,-19.93C122.59,-16.3 140.46,-12.8 157,-11 212.43,-4.98 275.93,-5.93 321.57,-7.98"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="321.45,-11.48 331.6,-8.47 321.78,-4.49 321.45,-11.48"/>
+</g>
+<!-- proc~check_name_is_whole&#45;&gt;proc~error_set -->
+<g id="proc~~xc_spec_from_name~~CallsGraph_edge4" class="edge">
+<title>proc~check_name_is_whole&#45;&gt;proc~error_set</title>
+<path fill="none" stroke="#ff0000" d="M270.2,-61.93C278.82,-59.21 287.76,-56.18 296,-53 314.58,-45.84 334.74,-36.5 351.03,-28.55"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="352.71,-31.62 360.12,-24.05 349.61,-25.35 352.71,-31.62"/>
+</g>
+<!-- proc~libxc_role -->
+<g id="proc~~xc_spec_from_name~~CallsGraph_node5" class="node">
+<title>proc~libxc_role</title>
+<g id="a_proc~~xc_spec_from_name~~CallsGraph_node5"><a xlink:href="../proc/libxc_role.html" xlink:title="libxc_role">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="416,-86 353,-86 353,-62 416,-62 416,-86"/>
+<text text-anchor="middle" x="384.5" y="-71.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">libxc_role</text>
+</a>
+</g>
+</g>
+<!-- proc~check_name_is_whole&#45;&gt;proc~libxc_role -->
+<g id="proc~~xc_spec_from_name~~CallsGraph_edge5" class="edge">
+<title>proc~check_name_is_whole&#45;&gt;proc~libxc_role</title>
+<path fill="none" stroke="#ff0000" d="M291.85,-74C309.04,-74 327.13,-74 342.66,-74"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="342.96,-77.5 352.96,-74 342.96,-70.5 342.96,-77.5"/>
+</g>
+<!-- proc~is_role -->
+<g id="proc~~xc_spec_from_name~~CallsGraph_node6" class="node">
+<title>proc~is_role</title>
+<g id="a_proc~~xc_spec_from_name~~CallsGraph_node6"><a xlink:href="../proc/is_role.html" xlink:title="is_role">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="527,-86 473,-86 473,-62 527,-62 527,-86"/>
+<text text-anchor="middle" x="500" y="-71.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_role</text>
+</a>
+</g>
+</g>
+<!-- proc~libxc_role&#45;&gt;proc~is_role -->
+<g id="proc~~xc_spec_from_name~~CallsGraph_edge6" class="edge">
+<title>proc~libxc_role&#45;&gt;proc~is_role</title>
+<path fill="none" stroke="#ff0000" d="M416.21,-74C430.48,-74 447.54,-74 462.46,-74"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="462.88,-77.5 472.88,-74 462.88,-70.5 462.88,-77.5"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CallsGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CallsGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="374,-24 244,-24 244,0 374,0 374,-24"/>
+<text text-anchor="middle" x="309" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="537.5,-24 392.5,-24 392.5,0 537.5,0 537.5,-24"/>
+<text text-anchor="middle" x="465" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="614,-24 556,-24 556,0 614,0 614,-24"/>
+<text text-anchor="middle" x="585" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="737.5,-24 632.5,-24 632.5,0 737.5,0 737.5,-24"/>
+<text text-anchor="middle" x="685" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+
+    <section>    
+      <h2>Variables</h2>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+<th></th><th scope="col">Initial</th>        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-i~198"></span>
+              integer,
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>i</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-lower~5"></span>
+              character(len=:),
+            </td>
+              <td>private,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>lower</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-whole_only"></span>
+              logical,
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>whole_only</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    </section>
+    <br>
+    
+    
+
+    
+    
+
+
+
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="hl codehilite"><pre><span></span><span class="w">   </span><span class="k">subroutine </span><span class="n">xc_spec_from_name</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">spec</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="p">,</span><span class="w"> </span><span class="n">allow_half</span><span class="p">)</span>
+<span class="w">      </span><span class="c">!! A functional name to its composition</span>
+<span class="w">      </span><span class="c">!!</span>
+<span class="w">      </span><span class="c">!! Anything not named here is passed through as a single libxc component;</span>
+<span class="w">      </span><span class="c">!! a name libxc also does not know fails at resolution, with libxc's own</span>
+<span class="w">      </span><span class="c">!! error. The one thing checked before that pass-through is that the name</span>
+<span class="w">      </span><span class="c">!! is a *whole* functional and not one half of one -- see</span>
+<span class="w">      </span><span class="c">!! `check_name_is_whole`.</span>
+<span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">name</span>
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">xc_spec_t</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">spec</span>
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">error_t</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">error</span>
+<span class="w">      </span><span class="kt">logical</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="w"> </span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">allow_half</span>
+<span class="w">         </span><span class="c">!! Accept a libxc name that is only exchange or only correlation.</span>
+<span class="w">         </span><span class="c">!! Default false, and a deck must never set it: half a functional</span>
+<span class="w">         </span><span class="c">!! converges silently. It exists for the derivative tests, which want</span>
+<span class="w">         </span><span class="c">!! one rung's kernel in isolation -- `lda_x` before `svwn`,</span>
+<span class="w">         </span><span class="c">!! `gga_x_pbe` before `pbe`.</span>
+
+<span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">lower</span>
+<span class="w">      </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">whole_only</span>
+<span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span>
+
+<span class="w">      </span><span class="n">whole_only</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">allow_half</span><span class="p">))</span><span class="w"> </span><span class="n">whole_only</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="n">allow_half</span>
+
+<span class="w">      </span><span class="n">lower</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">trim</span><span class="p">(</span><span class="nb">adjustl</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+<span class="w">      </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">lower</span><span class="p">)</span>
+<span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">lower</span><span class="p">(</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="s2">"A"</span><span class="w"> </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="n">lower</span><span class="p">(</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="s2">"Z"</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            </span><span class="n">lower</span><span class="p">(</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">achar</span><span class="p">(</span><span class="nb">iachar</span><span class="p">(</span><span class="n">lower</span><span class="p">(</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">32</span><span class="p">)</span>
+<span class="w">         </span><span class="k">end if</span>
+<span class="k">      end do</span>
+
+<span class="k">      if</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lower</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         call </span><span class="n">error</span><span class="p">%</span><span class="n">set</span><span class="p">(</span><span class="n">ERROR_VALIDATION</span><span class="p">,</span><span class="w"> </span><span class="s2">"no exchange-correlation functional was named"</span><span class="p">)</span>
+<span class="w">         </span><span class="k">return</span>
+<span class="k">      end if</span>
+
+<span class="k">      </span><span class="n">spec</span><span class="p">%</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lower</span>
+
+<span class="w">      </span><span class="k">select case</span><span class="w"> </span><span class="p">(</span><span class="n">lower</span><span class="p">)</span>
+
+<span class="w">         </span><span class="c">! ---- double hybrids, which libxc does not carry ---------------------</span>
+<span class="w">         </span><span class="c">!</span>
+<span class="w">         </span><span class="c">! B2PLYP: Grimme, J. Chem. Phys. 124, 034108 (2006). Half-and-half in</span>
+<span class="w">         </span><span class="c">! spirit: a fraction a_x of exact exchange with the complement from B88,</span>
+<span class="w">         </span><span class="c">! and a fraction a_c of MP2 correlation with the complement from LYP.</span>
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">"b2plyp"</span><span class="p">)</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">from_libxc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">exx_fraction</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.53_dp</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">pt2_fraction</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.27_dp</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">n_components</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">component</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xc_component_t</span><span class="p">(</span><span class="s2">"gga_x_b88"</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0_dp</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">spec</span><span class="p">%</span><span class="n">exx_fraction</span><span class="p">)</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">component</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xc_component_t</span><span class="p">(</span><span class="s2">"gga_c_lyp"</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0_dp</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">spec</span><span class="p">%</span><span class="n">pt2_fraction</span><span class="p">)</span>
+
+<span class="w">         </span><span class="c">! B2GP-PLYP: Karton et al., J. Phys. Chem. A 112, 12868 (2008).</span>
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">"b2gp-plyp"</span><span class="p">,</span><span class="w"> </span><span class="s2">"b2gpplyp"</span><span class="p">)</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">from_libxc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">exx_fraction</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.65_dp</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">pt2_fraction</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.36_dp</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">n_components</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">component</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xc_component_t</span><span class="p">(</span><span class="s2">"gga_x_b88"</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0_dp</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">spec</span><span class="p">%</span><span class="n">exx_fraction</span><span class="p">)</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">component</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xc_component_t</span><span class="p">(</span><span class="s2">"gga_c_lyp"</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0_dp</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">spec</span><span class="p">%</span><span class="n">pt2_fraction</span><span class="p">)</span>
+
+<span class="w">         </span><span class="c">! mPW2-PLYP: Schwabe and Grimme, PCCP 8, 4398 (2006).</span>
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">"mpw2plyp"</span><span class="p">,</span><span class="w"> </span><span class="s2">"mpw2-plyp"</span><span class="p">)</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">from_libxc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">exx_fraction</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.55_dp</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">pt2_fraction</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.25_dp</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">n_components</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">component</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xc_component_t</span><span class="p">(</span><span class="s2">"gga_x_mpw91"</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0_dp</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">spec</span><span class="p">%</span><span class="n">exx_fraction</span><span class="p">)</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">component</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xc_component_t</span><span class="p">(</span><span class="s2">"gga_c_lyp"</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0_dp</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">spec</span><span class="p">%</span><span class="n">pt2_fraction</span><span class="p">)</span>
+
+<span class="w">         </span><span class="c">! ---- compositions libxc has the parts for but not the name ----------</span>
+<span class="w">         </span><span class="c">!</span>
+<span class="w">         </span><span class="c">! Hybrid aliases. libxc spells these hyb_gga_xc_b3lyp and hyb_gga_xc_pbeh</span>
+<span class="w">         </span><span class="c">! and carries the exact-exchange fraction itself, so these rows are pure</span>
+<span class="w">         </span><span class="c">! renames and state no fraction of their own.</span>
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">"b3lyp"</span><span class="p">)</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">from_libxc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">n_components</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">component</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xc_component_t</span><span class="p">(</span><span class="s2">"hyb_gga_xc_b3lyp"</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0_dp</span><span class="p">)</span>
+
+<span class="w">         </span><span class="c">! Range-separated hybrids, by their libxc names.</span>
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">"wb97x"</span><span class="p">)</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">from_libxc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">n_components</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">component</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xc_component_t</span><span class="p">(</span><span class="s2">"hyb_gga_xc_wb97x"</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0_dp</span><span class="p">)</span>
+
+<span class="w">         </span><span class="c">! The -V family. Named here so an unsupported one is refused for the</span>
+<span class="w">         </span><span class="c">! reason it is actually unsupported -- the non-local correlation check</span>
+<span class="w">         </span><span class="c">! in `mqc_czt_xc`, or the meta-GGA one.</span>
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">"wb97x-v"</span><span class="p">,</span><span class="w"> </span><span class="s2">"wb97xv"</span><span class="p">)</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">from_libxc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">n_components</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">component</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xc_component_t</span><span class="p">(</span><span class="s2">"hyb_gga_xc_wb97x_v"</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0_dp</span><span class="p">)</span>
+
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">"wb97m-v"</span><span class="p">,</span><span class="w"> </span><span class="s2">"wb97mv"</span><span class="p">)</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">from_libxc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">n_components</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">component</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xc_component_t</span><span class="p">(</span><span class="s2">"hyb_mgga_xc_wb97m_v"</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0_dp</span><span class="p">)</span>
+
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">"b97m-v"</span><span class="p">,</span><span class="w"> </span><span class="s2">"b97mv"</span><span class="p">)</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">from_libxc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">n_components</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">component</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xc_component_t</span><span class="p">(</span><span class="s2">"mgga_xc_b97m_v"</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0_dp</span><span class="p">)</span>
+
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">"cam-b3lyp"</span><span class="p">,</span><span class="w"> </span><span class="s2">"camb3lyp"</span><span class="p">)</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">from_libxc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">n_components</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">component</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xc_component_t</span><span class="p">(</span><span class="s2">"hyb_gga_xc_cam_b3lyp"</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0_dp</span><span class="p">)</span>
+
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">"pbe0"</span><span class="p">,</span><span class="w"> </span><span class="s2">"pbeh"</span><span class="p">)</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">from_libxc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">n_components</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">component</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xc_component_t</span><span class="p">(</span><span class="s2">"hyb_gga_xc_pbeh"</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0_dp</span><span class="p">)</span>
+
+<span class="w">         </span><span class="c">! Meta-GGAs, same pattern: libxc carries the halves, not the pair.</span>
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">"tpss"</span><span class="p">)</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">from_libxc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">n_components</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">component</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xc_component_t</span><span class="p">(</span><span class="s2">"mgga_x_tpss"</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0_dp</span><span class="p">)</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">component</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xc_component_t</span><span class="p">(</span><span class="s2">"mgga_c_tpss"</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0_dp</span><span class="p">)</span>
+
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">"m06-l"</span><span class="p">,</span><span class="w"> </span><span class="s2">"m06l"</span><span class="p">)</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">from_libxc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">n_components</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">component</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xc_component_t</span><span class="p">(</span><span class="s2">"mgga_x_m06_l"</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0_dp</span><span class="p">)</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">component</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xc_component_t</span><span class="p">(</span><span class="s2">"mgga_c_m06_l"</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0_dp</span><span class="p">)</span>
+
+<span class="w">         </span><span class="c">! ---- the SCAN family ------------------------------------------------</span>
+<span class="w">         </span><span class="c">!</span>
+<span class="w">         </span><span class="c">! SCAN: Sun, Ruzsinszky and Perdew, Phys. Rev. Lett. 115, 036402 (2015).</span>
+<span class="w">         </span><span class="c">! r2SCAN: Furness, Kaplan, Ning, Perdew and Sun, J. Phys. Chem. Lett. 11,</span>
+<span class="w">         </span><span class="c">! 8208 (2020) -- SCAN re-regularised to remove the numerical sensitivity</span>
+<span class="w">         </span><span class="c">! that made the original need an unusually fine grid.</span>
+<span class="w">         </span><span class="c">!</span>
+<span class="w">         </span><span class="c">! The semilocal members follow TPSS and M06-L above: libxc carries the</span>
+<span class="w">         </span><span class="c">! two halves and no name for the pair.</span>
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">"r2scan"</span><span class="p">)</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">from_libxc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">n_components</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">component</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xc_component_t</span><span class="p">(</span><span class="s2">"mgga_x_r2scan"</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0_dp</span><span class="p">)</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">component</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xc_component_t</span><span class="p">(</span><span class="s2">"mgga_c_r2scan"</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0_dp</span><span class="p">)</span>
+
+<span class="w">         </span><span class="c">! The same construction at the larger regularisation parameter. libxc</span>
+<span class="w">         </span><span class="c">! labels both halves "with larger value for eta", which is what says</span>
+<span class="w">         </span><span class="c">! they are a pair; there is no published name pairing them.</span>
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">"r2scan01"</span><span class="p">)</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">from_libxc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">n_components</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">component</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xc_component_t</span><span class="p">(</span><span class="s2">"mgga_x_r2scan01"</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0_dp</span><span class="p">)</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">component</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xc_component_t</span><span class="p">(</span><span class="s2">"mgga_c_r2scan01"</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0_dp</span><span class="p">)</span>
+
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">"scan"</span><span class="p">)</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">from_libxc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">n_components</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">component</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xc_component_t</span><span class="p">(</span><span class="s2">"mgga_x_scan"</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0_dp</span><span class="p">)</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">component</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xc_component_t</span><span class="p">(</span><span class="s2">"mgga_c_scan"</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0_dp</span><span class="p">)</span>
+
+<span class="w">         </span><span class="c">! The hybrids split two ways, and the split is libxc's. r2SCAN0,</span>
+<span class="w">         </span><span class="c">! r2SCANh and r2SCAN50 it carries whole, one `hyb_mgga_xc_` name each,</span>
+<span class="w">         </span><span class="c">! so those rows are renames and state no fraction of their own. SCAN0</span>
+<span class="w">         </span><span class="c">! it does not: `hyb_mgga_x_scan0` is the hybridised exchange by itself,</span>
+<span class="w">         </span><span class="c">! so SCAN0 is that plus SCAN correlation, with the exact-exchange</span>
+<span class="w">         </span><span class="c">! fraction still libxc's to report from the component.</span>
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">"scan0"</span><span class="p">)</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">from_libxc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">n_components</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">component</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xc_component_t</span><span class="p">(</span><span class="s2">"hyb_mgga_x_scan0"</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0_dp</span><span class="p">)</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">component</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xc_component_t</span><span class="p">(</span><span class="s2">"mgga_c_scan"</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0_dp</span><span class="p">)</span>
+
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">"r2scan0"</span><span class="p">)</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">from_libxc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">n_components</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">component</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xc_component_t</span><span class="p">(</span><span class="s2">"hyb_mgga_xc_r2scan0"</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0_dp</span><span class="p">)</span>
+
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">"r2scanh"</span><span class="p">)</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">from_libxc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">n_components</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">component</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xc_component_t</span><span class="p">(</span><span class="s2">"hyb_mgga_xc_r2scanh"</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0_dp</span><span class="p">)</span>
+
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">"r2scan50"</span><span class="p">)</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">from_libxc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">n_components</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">component</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xc_component_t</span><span class="p">(</span><span class="s2">"hyb_mgga_xc_r2scan50"</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0_dp</span><span class="p">)</span>
+
+<span class="w">         </span><span class="c">! BLYP, which libxc also leaves as two halves. It is B2PLYP's semilocal</span>
+<span class="w">         </span><span class="c">! part at full weight, so it is the functional a double hybrid's kernel</span>
+<span class="w">         </span><span class="c">! and gradient are checked against.</span>
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">"blyp"</span><span class="p">)</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">from_libxc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">n_components</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">component</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xc_component_t</span><span class="p">(</span><span class="s2">"gga_x_b88"</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0_dp</span><span class="p">)</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">component</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xc_component_t</span><span class="p">(</span><span class="s2">"gga_c_lyp"</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0_dp</span><span class="p">)</span>
+
+<span class="w">         </span><span class="c">! PBE is exchange plus correlation under one name libxc does not pair.</span>
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">"pbe"</span><span class="p">)</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">from_libxc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">n_components</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">component</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xc_component_t</span><span class="p">(</span><span class="s2">"gga_x_pbe"</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0_dp</span><span class="p">)</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">component</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xc_component_t</span><span class="p">(</span><span class="s2">"gga_c_pbe"</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0_dp</span><span class="p">)</span>
+
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="s2">"svwn"</span><span class="p">,</span><span class="w"> </span><span class="s2">"svwn5"</span><span class="p">,</span><span class="w"> </span><span class="s2">"lda"</span><span class="p">,</span><span class="w"> </span><span class="s2">"lsda"</span><span class="p">)</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">from_libxc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">n_components</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">component</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xc_component_t</span><span class="p">(</span><span class="s2">"lda_x"</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0_dp</span><span class="p">)</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">component</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xc_component_t</span><span class="p">(</span><span class="s2">"lda_c_vwn"</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0_dp</span><span class="p">)</span>
+
+<span class="w">         </span><span class="c">! ---- everything else is libxc's ------------------------------------</span>
+<span class="w">      </span><span class="k">case </span><span class="n">default</span>
+<span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">whole_only</span><span class="p">)</span><span class="w"> </span><span class="k">call </span><span class="n">check_name_is_whole</span><span class="p">(</span><span class="n">lower</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="p">)</span>
+<span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="p">%</span><span class="n">has_error</span><span class="p">())</span><span class="w"> </span><span class="k">return</span>
+<span class="k">         </span><span class="n">spec</span><span class="p">%</span><span class="n">from_libxc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">n_components</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">         </span><span class="n">spec</span><span class="p">%</span><span class="n">component</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xc_component_t</span><span class="p">(</span><span class="n">lower</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0_dp</span><span class="p">)</span>
+<span class="w">      </span><span class="k">end select</span>
+<span class="k">   end subroutine </span><span class="n">xc_spec_from_name</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              metalquicha
+ was developed by Jorge Luis Galvez Vallejo<br>              &copy; 2026 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+ on 2026-09-07 09:10 +0000             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

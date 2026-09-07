@@ -1,33 +1,167 @@
 !! Unified configuration type for quantum chemistry method creation
 module mqc_method_config
-   !! Provides configuration types for all quantum chemistry methods.
-   !! Uses composition pattern: method_config_t contains nested config types
-   !! for each method family. The factory reads from the appropriate nested type.
+   !! Configuration types for every quantum chemistry method.
+   !!
+   !! `method_config_t` holds one nested config per method family, and the
+   !! factory reads from whichever one the method type names.
    use pic_types, only: int32, dp
+   use mqc_program_limits, only: MAX_ORBITAL_LABEL_LEN
+   use mqc_scf_types, only: guess_step_t, scf_numerics_t, deltascf_options_t
    use mqc_method_types, only: METHOD_TYPE_UNKNOWN
+   use mqc_calculation_defaults, only: DEFAULT_DISPLACEMENT, DEFAULT_VDW_SCALE, DEFAULT_DYNAMIC_TOL, &
+                                       DEFAULT_DYNAMIC_MAXITER, EFP_RESPONSE_AUTO, &
+                                       DEFAULT_RESPONSE_BATCH, DEFAULT_RESPONSE_TOL, &
+                                       DEFAULT_RESPONSE_MAX_ITER
    implicit none
    private
 
    public :: method_config_t
    public :: scf_config_t, xtb_config_t, dft_config_t, mcscf_config_t
+   public :: scf_options_t
+   public :: scf_numerics_t, deltascf_options_t  !! Re-exported from mqc_config_types
    public :: correlation_config_t, cc_config_t, f12_config_t
+   public :: efp_config_t
+   public :: pcm_config_t
+   public :: properties_config_t
 
    !============================================================================
    ! SCF Configuration (shared by HF and DFT)
    !============================================================================
    type :: scf_config_t
       !! Shared SCF settings for HF and DFT methods
+      logical :: cartesian = .false.
+         !! `model.cartesian`; see `mqc_config_t`.
       integer :: max_iter = 100
          !! Maximum SCF iterations
       real(dp) :: energy_convergence = 1.0e-8_dp
          !! Energy convergence threshold (Hartree)
       real(dp) :: density_convergence = 1.0e-6_dp
          !! Density matrix convergence threshold
+      real(dp) :: gradient_convergence = 0.0_dp
+         !! `keywords.scf.gradient_tolerance` -- pyscf's `conv_tol_grad`.
+         !!
+         !! Zero means "not set", and the SCF then derives `sqrt(tolerance)`,
+         !! pyscf's own default. Set it when what you want from the run is the
+         !! *density* rather than the energy: the energy's error goes as the
+         !! commutator squared and the density's only as the commutator, so the
+         !! derived value bounds the second far more loosely than the first.
+      real(dp) :: linear_dependence = 0.0_dp
+         !! `keywords.scf.linear_dependence_threshold`. Overlap eigenvalues at
+         !! or below this are dropped as linearly dependent. Raise it to shed
+         !! more of a diffuse basis, lower it to keep modes the default would
+         !! discard.
+         !!
+         !! Zero means "not set", and the orthogonaliser then uses
+         !! `LINEAR_DEPENDENCE_TOL` in `mqc_scf_common`. A sentinel rather than
+         !! a second copy of that constant.
+      logical :: max_iter_set = .false.
+         !! Whether the deck named `keywords.scf.maxiter`. A path whose own
+         !! default differs from the shared one -- MAKEFP, at 200 iterations --
+         !! needs to tell "the deck asked for 100" from "the deck said nothing".
+      logical :: energy_convergence_set = .false.
+      logical :: density_convergence_set = .false.
+         !! Whether the deck named these, as opposed to inheriting them. A
+         !! caller with a stricter default of its own -- MAKEFP -- keeps that
+         !! default when they are false and honours the deck when they are true.
+      real(dp) :: level_shift = 0.0_dp
+         !! Hartree added to the virtual block of the Fock matrix before each
+         !! diagonalisation, to widen the gap the next density is built through.
+         !! Zero is off. Tapered to zero as the SCF converges, so that the
+         !! orbitals and orbital energies reported at exit belong to the
+         !! unshifted operator -- see `mqc_czt_rhf`, where that matters more
+         !! than it looks.
       logical :: use_diis = .true.
          !! Use DIIS acceleration
       integer :: diis_size = 8
          !! Number of Fock matrices for DIIS
+      logical :: incremental_fock = .true.
+         !! Build each iteration's Fock matrix from the density *change* since
+         !! the last full build, rather than from the density.
+         !!
+         !! On by default: exact to the convergence threshold and several times
+         !! cheaper late in an SCF. False forces a full build every iteration,
+         !! which is what to reach for when an SCF stalls or wanders, since the
+         !! incremental path accumulates a correction. It is also the honest
+         !! setting for timing a Fock build.
+      character(len=32) :: accelerator = "diis"
+         !! `keywords.scf.accelerator`: 'diis' (the default), 'adiis' or
+         !! 'ediis'. The energy-based pair runs only while the error is large
+         !! and hands over to DIIS below `ACCEL_SWITCH`, so naming one chooses a
+         !! different opening, not a different endgame.
+      character(len=32) :: convergence_metric = "standard"
+         !! `keywords.scf.convergence_metric`; see `mqc_scf_convergence`.
+      character(len=32) :: guess = "auto"
+         !! Initial guess: 'core', 'gwh', 'sac', 'sad', 'basis_set_projection',
+         !! or 'auto'
+         !!
+         !! 'auto' lets the backend pick: the CPU path resolves it to 'sad'
+         !! and cuEST to 'gwh'. An explicit spelling wins over both.
+      type(guess_step_t), allocatable :: guess_steps(:)
+         !! The basis ladder for 'basis_set_projection', one entry per
+         !! preliminary SCF in order. The target basis is the model's and is not
+         !! repeated here.
+      logical :: allow_crap_scf = .false.
+         !! Accept a non-converged SCF rather than stopping. See mqc_config_types.
+      logical :: unrestricted = .false.
+         !! Force an unrestricted (UHF/UKS) treatment even for a closed shell.
+         !! Needed for broken-symmetry singlets, and the cleanest check that
+         !! the unrestricted code reduces to the restricted result.
+      character(len=32) :: aux_basis_set = "def2-universal-jkfit"
+         !! Auxiliary (JKFIT) basis for the density-fitted J and K. Required,
+         !! not optional, for the cuEST backend, which exposes no conventional
+         !! four-index ERI path and so always fits.
+      logical :: aux_basis_named = .false.
+         !! Whether a deck actually asked for the set above, as opposed to
+         !! inheriting the default.
+         !!
+         !! **`len_trim(aux_basis_set) > 0` cannot answer that**, because the
+         !! default is not optional: it is true whether or not anyone asked. A
+         !! double hybrid's perturbative term used it that way and so fitted
+         !! itself with a JKFIT set nobody named -- exactly the kind of
+         !! auxiliary `correlation_aux_basis` warns against for an (ia|jb) block.
+      logical :: density_fitting = .false.
+         !! Fit J and K against `aux_basis_set` on the CPU backend.
+         !!
+         !! Off by default, and only the CPU backend reads it: cuEST has no
+         !! four-index path and fits whether or not this is set. libcint has
+         !! both, and `aux_basis_set` carries a default, so which one runs has
+         !! to be asked for rather than inferred from an auxiliary being present.
    end type scf_config_t
+
+   !============================================================================
+   ! EFP Configuration (MAKEFP)
+   !============================================================================
+   type :: efp_config_t
+      !! What `keywords.efp` carries into a MAKEFP run
+      !!
+      !! None of it is an SCF setting: the SCF a potential runs is configured by
+      !! `keywords.scf`, and what is here belongs to the stages after it -- the
+      !! response solve and the screening fit.
+      real(dp) :: dynamic_tolerance = DEFAULT_DYNAMIC_TOL
+         !! Residual target for the frequency-dependent response solve. The one
+         !! setting in this group that changes the numbers written: the dynamic
+         !! polarizabilities, and every dispersion energy computed from them
+         !! downstream, are converged to this and no further.
+      integer :: dynamic_maxiter = DEFAULT_DYNAMIC_MAXITER
+         !! Iterations that solve gets per system before it declines to converge.
+      integer :: response_batch = DEFAULT_RESPONSE_BATCH
+         !! Densities per integral pass in the matrix-free response. A tuning
+         !! knob, not physics -- the answer does not change, only how long it
+         !! takes. See `DEFAULT_RESPONSE_BATCH`.
+      logical :: allow_crap_response = .false.
+         !! Take whatever the response solve reached when it runs out of
+         !! iterations, instead of refusing.
+         !!
+         !! Named after `allow_crap_scf` and meant as literally: the potential
+         !! that comes out is wrong, and how wrong is not bounded by anything.
+         !! `dynamic_maxiter: 1` with this on is one pass through the whole
+         !! pipeline, which is what profiling wants.
+      integer :: response = EFP_RESPONSE_AUTO
+         !! Build the response operator, never build it, or decide on size.
+      real(dp) :: vdw_scale = DEFAULT_VDW_SCALE
+         !! Innermost layer of the charge-penetration screening grid, as a
+         !! fraction of a van der Waals radius. GAMESS's `VDWSCL`.
+   end type efp_config_t
 
    !============================================================================
    ! XTB Configuration (GFN1, GFN2)
@@ -40,9 +174,9 @@ module mqc_method_config
          !! Electronic temperature in Kelvin (Fermi smearing)
 
       ! Solvation
-      character(len=32) :: solvent = ''
+      character(len=32) :: solvent = ""
          !! Solvent name: "water", "ethanol", etc. Empty for gas phase
-      character(len=16) :: solvation_model = ''
+      character(len=16) :: solvation_model = ""
          !! Solvation model: "alpb", "gbsa", "cpcm"
       logical :: use_cds = .true.
          !! Include non-polar CDS terms
@@ -64,14 +198,24 @@ module mqc_method_config
    ! DFT Configuration (uses scf_config_t for SCF settings)
    !============================================================================
    type :: dft_config_t
-      !! Configuration for Kohn-Sham DFT method
-      !! Note: SCF settings (convergence, DIIS) come from scf_config_t
-      character(len=32) :: functional = 'b3lyp'
+      !! Configuration for Kohn-Sham DFT. SCF settings come from `scf_config_t`.
+      character(len=32) :: functional = "b3lyp"
          !! XC functional: "lda", "pbe", "b3lyp", "m06-2x", etc.
 
       ! Integration grid
-      character(len=16) :: grid_type = 'medium'
+      character(len=16) :: grid_type = "medium"
          !! Grid quality: "coarse", "medium", "fine", "ultrafine"
+      integer :: grid_level = 3
+         !! Standard grid tables, 0 to 9. Three is the usual production default.
+      integer :: nlc_grid_level = -1
+         !! `keywords.dft.nlc_grid_level`, the quadrature VV10's double integral
+         !! uses. Separate from `grid_level` because the non-local term costs
+         !! the *product* of two grid sizes while everything else costs one.
+         !! Negative means the backend's own default.
+      real(dp) :: screening_tolerance = 1.0e-12_dp
+         !! AO value below which a shell is dropped from a grid block.
+      integer :: block_size = -1
+         !! Grid points per block; -1 keeps the backend default.
       integer :: radial_points = 75
          !! Radial grid points per atom
       integer :: angular_points = 302
@@ -80,29 +224,163 @@ module mqc_method_config
       ! Density fitting
       logical :: use_density_fitting = .false.
          !! Use RI-J approximation
-      character(len=32) :: aux_basis_set = ''
+      character(len=32) :: aux_basis_set = ""
          !! Auxiliary basis for density fitting
 
       ! Dispersion correction
       logical :: use_dispersion = .false.
          !! Add empirical dispersion
-      character(len=8) :: dispersion_type = 'd3bj'
+      character(len=8) :: dispersion_type = "d3bj"
          !! Dispersion type: "d3", "d3bj", "d4"
    end type dft_config_t
 
    !============================================================================
    ! MCSCF/CASSCF Configuration
    !============================================================================
+   type :: pcm_config_t
+      !! A polarizable continuum: the cavity, the solvent, and the charge solve
+      !!
+      !! Backend-neutral in shape. The cuEST path hands the cavity and the charge
+      !! solve to the library; the CPU path builds both itself in
+      !! `mqc_czt_pcm`. tblite's CPCM is configured through `xtb_config_t`
+      !! and builds its own cavity; the two are separate models and share no
+      !! settings.
+      logical :: enabled = .false.
+      character(len=16) :: method = "cpcm"
+         !! Which continuum model the surface charges solve: "cpcm"
+         !! (conductor-like, scale factor (eps-1)/eps) or "iefpcm" (the integral
+         !! equation formalism, scale (eps-1)/(eps+1) with the D-matrix terms).
+         !! Two different models with different energies, so the choice is
+         !! named, not defaulted per backend. Only the CPU path reads it;
+         !! cuEST's solver is fixed and refuses "iefpcm" rather than
+         !! substituting.
+      real(dp) :: dielectric = -1.0_dp
+         !! Solvent dielectric. No solvent-name table on this path, on purpose:
+         !! see `mqc_config_types`.
+      integer :: angular_points = 110
+         !! Lebedev points per atom on the cavity surface.
+      real(dp) :: radii_scale = 1.2_dp
+         !! Scaling from van der Waals radii, per `mqc_pcm_radii`.
+      real(dp) :: zeta = 2.0_dp
+         !! Gaussian switching prefactor for the smooth surface. Unverified
+         !! against cuEST's convention -- see `DEFAULT_PCM_ZETA`.
+      real(dp) :: tolerance = 1.0e-8_dp
+         !! Residual the surface-charge solve must reach.
+      integer :: max_iter = 100
+         !! Iterations that solve is allowed.
+   end type pcm_config_t
+
+   type :: properties_config_t
+      !! Analyses to run once the wave function exists
+      character(len=32) :: bonding_analysis = "none"
+      character(len=:), allocatable :: fukui_population
+      character(len=:), allocatable :: fukui_guess
+         !! "neutral" (default) or "independent". See `mqc_config_t`.
+      type(deltascf_options_t) :: fukui_scf
+         !! How the ion SCFs converge. Already resolved against `keywords.scf`
+         !! by the time it reaches here, so a consumer reads these fields
+         !! directly and never tests a sentinel.
+      character(len=:), allocatable :: charges_scheme
+         !! Allocated when `properties.charges` asked for partial charges;
+         !! "mulliken" or "chelpg". Unallocated means no charges, which is why
+         !! this is allocatable rather than a "none" sentinel like
+         !! `bonding_analysis` -- there is no scheme that means "do not".
+      logical :: bonding_energy = .false.
+      logical :: bonding_no_sharing = .false.
+      logical :: bonding_restrict_localization = .false.
+      character(len=32) :: bonding_no_sharing_ci = "transform"
+      real(dp) :: bonding_threshold = 1.0_dp
+   end type properties_config_t
+
+   type, extends(scf_numerics_t) :: scf_options_t
+      !! What every self-consistent-field method carries, defined once
+      !!
+      !! **The convergence knobs live one level down, in `scf_numerics_t`.**
+      !! `max_iter`, the tolerances, the level shift, DIIS and the accelerator
+      !! are inherited from there rather than declared here, so that a second
+      !! SCF in the same run -- the deltaSCF ions behind a Fukui analysis --
+      !! can carry them without also carrying a basis, a `pcm` and a
+      !! `properties` block it has no use for. Reading `options%max_iter` is
+      !! unchanged by that; the field is inherited, not moved away.
+      !!
+      !! Method options **extend** this rather than holding it as a component,
+      !! so a method cannot forget a field it does not own. Anything specific to
+      !! one reference -- a functional, a grid, coupled-cluster settings --
+      !! belongs in the extending type.
+      !!
+      !! **Adding a field here means adding it in two more places**:
+      !! `configure_scf` in `mqc_method_factory`, which fills it from the deck,
+      !! and `apply_scf_settings` in `mqc_cuest_iface`, which hands it to the
+      !! backend. `test/test_mqc_scf_options.f90` asserts the second for every
+      !! field, so add it there too.
+      character(len=32) :: basis_set = "sto-3g"
+         !! Orbital basis set name
+      character(len=32) :: ecp_set = ""
+         !! Effective core potential set, empty for an all-electron run
+      character(len=32) :: aux_basis_set = "def2-universal-jkfit"
+         !! Auxiliary (JKFIT) basis for the density-fitted J and K
+      logical :: aux_basis_named = .false.
+         !! Whether the deck asked for `aux_basis_set`. See `scf_config_t`.
+      logical :: cartesian = .false.
+         !! `model.cartesian`; see `mqc_config_t`.
+      logical :: spherical = .true.
+         !! Use spherical (true) or Cartesian (false) basis
+      logical :: unrestricted = .false.
+         !! Force UHF/UKS even for a closed shell
+      logical :: density_fitting = .false.
+         !! Fit J and K rather than computing exact integrals
+      logical :: freeze_core = .true.
+         !! Exclude core orbitals from a post-SCF correlation treatment. Always
+         !! filled from `correlation_config_t`, whose default this must match:
+         !! a mismatch bites whenever this type is constructed directly, in a
+         !! test or a new call path.
+      integer :: n_frozen_core = -1
+         !! Core orbitals to freeze; -1 counts them from the elements
+      character(len=16) :: backend = "auto"
+         !! Which backend evaluates the integrals
+      integer :: device_rank = 0
+         !! Node-local MPI rank, for spreading ranks across a node's GPUs
+      logical :: verbose = .false.
+         !! Print SCF iterations
+      real(dp) :: hessian_displacement = DEFAULT_DISPLACEMENT
+         !! Step for a finite-difference Hessian, in Bohr.
+         !!
+         !! Here because the method is what runs the displacements.
+      real(dp) :: hessian_response_tol = DEFAULT_RESPONSE_TOL
+      integer :: hessian_response_max_iter = DEFAULT_RESPONSE_MAX_ITER
+      integer :: hessian_response_batch = DEFAULT_RESPONSE_BATCH
+         !! The analytic Hessian's coupled-perturbed solve: where it stops, how
+         !! long it may take, and how many perturbations share a pass.
+      type(pcm_config_t) :: pcm
+         !! Continuum solvation. A property of the reference rather than of the
+         !! functional, so every extending type inherits it.
+      type(properties_config_t) :: properties
+         !! Population analysis and other post-SCF properties
+   end type scf_options_t
+
    type :: mcscf_config_t
       !! Configuration for MCSCF/CASSCF method
 
       ! Active space definition
+      character(len=MAX_ORBITAL_LABEL_LEN), allocatable :: avas_orbitals(:)
+         !! Atomic orbital labels the active space should be built from, e.g.
+         !! "N 2p". Unallocated means the space was given by counts instead.
+      logical :: full_valence = .false.
+         !! Take the whole valence shell as the active space
+      real(dp) :: avas_threshold = 0.2_dp
       integer :: n_active_electrons = 0
          !! Number of active electrons
       integer :: n_active_orbitals = 0
          !! Number of active orbitals
       integer :: n_inactive_orbitals = -1
          !! Inactive orbitals (-1 = auto from nelec)
+      logical :: optimize_orbitals = .true.
+         !! Move the orbitals as well as the CI coefficients.
+         !!
+         !! True is CASSCF, false is CASCI on whatever the reference SCF
+         !! produced. Both spellings parse to `METHOD_TYPE_MCSCF`, so the
+         !! distinction is carried here instead: defaulted from the method name
+         !! by the reader and overridable by `keywords.mcscf.optimize_orbitals`.
 
       ! State averaging
       integer :: n_states = 1
@@ -123,12 +401,18 @@ module mqc_method_config
       ! Perturbative corrections
       logical :: use_pt2 = .false.
          !! Apply CASPT2/NEVPT2 after CASSCF
-      character(len=16) :: pt2_type = 'nevpt2'
+      character(len=16) :: pt2_type = "nevpt2"
          !! PT2 flavor: "caspt2", "nevpt2"
       real(dp) :: ipea_shift = 0.25_dp
          !! IPEA shift for CASPT2
       real(dp) :: imaginary_shift = 0.0_dp
          !! Imaginary shift for intruder states
+      integer, allocatable :: ormas_subspaces(:)
+         !! Active orbital each subspace starts at, from
+         !! `keywords.mcscf.ormas`. Unallocated is a complete active space.
+      integer, allocatable :: ormas_min_electrons(:)
+      integer, allocatable :: ormas_max_electrons(:)
+         !! Electrons allowed in each subspace, both spins together
    end type mcscf_config_t
 
    !============================================================================
@@ -148,13 +432,11 @@ module mqc_method_config
       ! Density fitting for correlation
       logical :: use_df = .true.
          !! Use density fitting (RI) for correlation integrals
-      character(len=32) :: aux_basis = ''
-         !! Auxiliary basis for RI (e.g., "cc-pvdz-ri", "cc-pvtz-ri")
 
       ! Local correlation
       logical :: use_local = .false.
          !! Use local correlation approximation
-      character(len=16) :: local_type = 'dlpno'
+      character(len=16) :: local_type = "dlpno"
          !! Local correlation type: "pno", "dlpno", "lmp2", "lno"
       real(dp) :: pno_threshold = 1.0e-7_dp
          !! PNO occupation threshold for truncation
@@ -175,7 +457,7 @@ module mqc_method_config
       !! Coupled-cluster specific settings (CCSD, CCSD(T), CC2, CC3, etc.)
       integer :: max_iter = 100
          !! Maximum CC iterations
-      real(dp) :: amplitude_convergence = 1.0e-7_dp
+      real(dp) :: amplitude_convergence = 1.0e-8_dp
          !! T-amplitude convergence threshold
 
       ! Excitation level
@@ -189,11 +471,14 @@ module mqc_method_config
          !! Use DIIS for amplitude equations
       integer :: diis_size = 8
          !! DIIS subspace size
+      logical :: spin_adapted = .true.
+         !! Spatial-orbital (spin-adapted) formulation rather than spin orbitals.
+         !! See mqc_config_types for why this is the default.
 
       ! EOM-CC for excited states
       integer :: n_roots = 0
          !! Number of EOM-CC roots (0 = ground state only)
-      character(len=8) :: eom_type = 'ee'
+      character(len=8) :: eom_type = "ee"
          !! EOM type: "ee" (excitation), "ip" (ionization), "ea" (attachment)
    end type cc_config_t
 
@@ -204,13 +489,13 @@ module mqc_method_config
       !! Settings for explicitly correlated F12 methods (MP2-F12, CCSD-F12, etc.)
       real(dp) :: geminal_exponent = 1.0_dp
          !! Slater-type geminal exponent (beta)
-      character(len=8) :: ansatz = '3c'
+      character(len=8) :: ansatz = "3c"
          !! F12 ansatz: "3c", "3c(fix)", "2b", "2a"
 
       ! Auxiliary basis sets for F12
-      character(len=32) :: cabs_basis = ''
+      character(len=32) :: cabs_basis = ""
          !! Complementary auxiliary basis (CABS) for RI
-      character(len=32) :: optri_basis = ''
+      character(len=32) :: optri_basis = ""
          !! Optional RI basis for F12 intermediates
 
       ! Approximations
@@ -225,26 +510,38 @@ module mqc_method_config
    !============================================================================
    type :: method_config_t
       !! Master configuration containing all method-specific configs
-      !!
-      !! Usage:
-      !!   config%method_type = METHOD_TYPE_DFT
-      !!   config%basis_set = 'cc-pvdz'
-      !!   config%dft%functional = 'pbe0'
-      !!   config%dft%use_dispersion = .true.
 
       !----- Common settings (all ab-initio methods) -----
       integer(int32) :: method_type = METHOD_TYPE_UNKNOWN
          !! Method type constant
       logical :: verbose = .false.
          !! Enable verbose output
-      character(len=32) :: basis_set = 'sto-3g'
+      real(dp) :: hessian_displacement = DEFAULT_DISPLACEMENT
+         !! Step for a finite-difference Hessian, in Bohr
+      real(dp) :: hessian_response_tol = DEFAULT_RESPONSE_TOL
+      integer :: hessian_response_max_iter = DEFAULT_RESPONSE_MAX_ITER
+      integer :: hessian_response_batch = DEFAULT_RESPONSE_BATCH
+         !! The analytic Hessian's coupled-perturbed solve
+      character(len=32) :: basis_set = "sto-3g"
          !! Basis set name (HF, DFT, MCSCF)
+      character(len=32) :: ecp_set = ""
+         !! Effective core potential set, empty for an all-electron run
       logical :: use_spherical = .true.
          !! Spherical vs Cartesian basis functions
+      character(len=16) :: backend = "auto"
+         !! Integral backend request; see `parse_backend_name`.
+      integer :: device_rank = 0
+         !! Node-local MPI rank, used to spread ranks across the GPUs on a
+         !! node. Zero is correct for a serial run; a fragmented run must set
+         !! the real value or every rank binds to device 0.
 
       !----- Shared configurations -----
       type(scf_config_t) :: scf
-         !! Shared SCF settings (used by HF and DFT)
+         !! Shared SCF settings, used by HF, DFT and MCSCF
+      type(pcm_config_t) :: pcm
+         !! Continuum solvation
+      type(properties_config_t) :: properties
+         !! Analyses to run once the wave function exists
       type(correlation_config_t) :: corr
          !! Shared correlation settings (used by MP2, CC, etc.)
 
@@ -259,6 +556,8 @@ module mqc_method_config
          !! Coupled-cluster specific settings (CCSD, CCSD(T), etc.)
       type(f12_config_t) :: f12
          !! F12 explicitly correlated settings
+      type(efp_config_t) :: efp
+         !! MAKEFP settings: the response solve and the screening grid
 
    contains
       procedure :: reset => config_reset
@@ -267,17 +566,16 @@ module mqc_method_config
 
 contains
 
-   pure logical function xtb_has_solvation(this)
+   pure function xtb_has_solvation(this) result(has_solvation)
       !! Check if solvation is configured for XTB
       class(xtb_config_t), intent(in) :: this
-      xtb_has_solvation = len_trim(this%solvent) > 0 .or. this%dielectric > 0.0_dp
+      logical :: has_solvation
+      has_solvation = len_trim(this%solvent) > 0 .or. this%dielectric > 0.0_dp
    end function xtb_has_solvation
 
    subroutine xtb_configure(this, use_cds, use_shift, dielectric, cpcm_nang, cpcm_rscale, solvent, solvation_model)
-      !! Configure XTB solvation settings from driver configuration
-      !!
-      !! Sets up all XTB-specific parameters and applies default solvation model
-      !! logic (alpb if solvent or dielectric is specified but no model given).
+      !! Set the XTB solvation parameters, defaulting the model to "alpb" when
+      !! a solvent or dielectric was given without one
       class(xtb_config_t), intent(inout) :: this
       logical, intent(in) :: use_cds             !! Include CDS non-polar terms
       logical, intent(in) :: use_shift           !! Include solution state shift
@@ -297,27 +595,24 @@ contains
       if (present(solvation_model)) then
          this%solvation_model = solvation_model
       else if (len_trim(this%solvent) > 0 .or. dielectric > 0.0_dp) then
-         this%solvation_model = 'alpb'  ! Default solvation model
+         this%solvation_model = "alpb"  ! Default solvation model
       end if
    end subroutine xtb_configure
 
    subroutine xtb_get_solvation_info(this, info_lines, n_lines)
-      !! Get solvation configuration info for logging
-      !!
-      !! Returns array of info strings describing the solvation setup.
-      !! If no solvation is configured, n_lines = 0.
+      !! Describe the solvation setup for the log; `n_lines` is 0 for gas phase
       use pic_io, only: to_char
       class(xtb_config_t), intent(in) :: this
       character(len=128), intent(out) :: info_lines(4)  !! Up to 4 lines of info
       integer, intent(out) :: n_lines                    !! Number of lines populated
 
       n_lines = 0
-      info_lines = ''
+      info_lines = ""
 
       if (.not. this%has_solvation()) return
 
       n_lines = 1
-      if (trim(this%solvation_model) == 'cpcm') then
+      if (trim(this%solvation_model) == "cpcm") then
          if (this%dielectric > 0.0_dp) then
             info_lines(1) = "XTB solvation enabled: cpcm with dielectric = "//to_char(this%dielectric)
          else
@@ -340,20 +635,31 @@ contains
    end subroutine xtb_get_solvation_info
 
    subroutine config_reset(this)
-      !! Reset all configuration values to defaults
+      !! Reset configuration values to defaults
+      ! TODO(mqc): partial, despite the name. `ecp_set`, `backend`,
+      ! `device_rank`, most of `scf` (cartesian, guess, level_shift,
+      ! linear_dependence, unrestricted, allow_crap_scf, density_fitting,
+      ! accelerator, convergence_metric, incremental_fock,
+      ! gradient_convergence), `dft%grid_level` and its neighbours, `cc`'s
+      ! `spin_adapted`, and the whole of `pcm`, `properties` and `efp` are
+      ! never touched, so a reused `method_config_t` keeps them.
       class(method_config_t), intent(inout) :: this
 
       ! Common settings
       this%method_type = METHOD_TYPE_UNKNOWN
       this%verbose = .false.
-      this%basis_set = 'sto-3g'
+      this%hessian_displacement = DEFAULT_DISPLACEMENT
+      this%hessian_response_tol = DEFAULT_RESPONSE_TOL
+      this%hessian_response_max_iter = DEFAULT_RESPONSE_MAX_ITER
+      this%hessian_response_batch = DEFAULT_RESPONSE_BATCH
+      this%basis_set = "sto-3g"
       this%use_spherical = .true.
 
       ! XTB defaults
       this%xtb%accuracy = 0.01_dp
       this%xtb%electronic_temp = 300.0_dp
-      this%xtb%solvent = ''
-      this%xtb%solvation_model = ''
+      this%xtb%solvent = ""
+      this%xtb%solvation_model = ""
       this%xtb%use_cds = .true.
       this%xtb%use_shift = .true.
       this%xtb%dielectric = -1.0_dp
@@ -368,19 +674,29 @@ contains
       this%scf%diis_size = 8
 
       ! DFT-specific defaults
-      this%dft%functional = 'b3lyp'
-      this%dft%grid_type = 'medium'
+      this%dft%functional = "b3lyp"
+      this%dft%grid_type = "medium"
       this%dft%radial_points = 75
       this%dft%angular_points = 302
       this%dft%use_density_fitting = .false.
-      this%dft%aux_basis_set = ''
+      this%dft%aux_basis_set = ""
+      this%scf%aux_basis_named = .false.
       this%dft%use_dispersion = .false.
-      this%dft%dispersion_type = 'd3bj'
+      this%dft%dispersion_type = "d3bj"
 
       ! MCSCF defaults
+      if (allocated(this%mcscf%ormas_subspaces)) deallocate (this%mcscf%ormas_subspaces)
+      if (allocated(this%mcscf%ormas_min_electrons)) then
+         deallocate (this%mcscf%ormas_min_electrons)
+      end if
+      if (allocated(this%mcscf%ormas_max_electrons)) then
+         deallocate (this%mcscf%ormas_max_electrons)
+      end if
+      this%mcscf%full_valence = .false.
       this%mcscf%n_active_electrons = 0
       this%mcscf%n_active_orbitals = 0
       this%mcscf%n_inactive_orbitals = -1
+      this%mcscf%optimize_orbitals = .true.
       this%mcscf%n_states = 1
       if (allocated(this%mcscf%state_weights)) deallocate (this%mcscf%state_weights)
       this%mcscf%max_macro_iter = 100
@@ -388,7 +704,7 @@ contains
       this%mcscf%orbital_convergence = 1.0e-6_dp
       this%mcscf%ci_convergence = 1.0e-8_dp
       this%mcscf%use_pt2 = .false.
-      this%mcscf%pt2_type = 'nevpt2'
+      this%mcscf%pt2_type = "nevpt2"
       this%mcscf%ipea_shift = 0.25_dp
       this%mcscf%imaginary_shift = 0.0_dp
 
@@ -397,9 +713,8 @@ contains
       this%corr%n_frozen_core = -1
       this%corr%freeze_core = .true.
       this%corr%use_df = .true.
-      this%corr%aux_basis = ''
       this%corr%use_local = .false.
-      this%corr%local_type = 'dlpno'
+      this%corr%local_type = "dlpno"
       this%corr%pno_threshold = 1.0e-7_dp
       this%corr%use_scs = .false.
       this%corr%scs_ss = 1.0_dp/3.0_dp
@@ -407,42 +722,80 @@ contains
 
       ! Coupled-cluster defaults
       this%cc%max_iter = 100
-      this%cc%amplitude_convergence = 1.0e-7_dp
+      this%cc%amplitude_convergence = 1.0e-8_dp
       this%cc%include_triples = .false.
       this%cc%perturbative_triples = .true.
       this%cc%use_diis = .true.
       this%cc%diis_size = 8
       this%cc%n_roots = 0
-      this%cc%eom_type = 'ee'
+      this%cc%eom_type = "ee"
 
       ! F12 defaults
       this%f12%geminal_exponent = 1.0_dp
-      this%f12%ansatz = '3c'
-      this%f12%cabs_basis = ''
-      this%f12%optri_basis = ''
+      this%f12%ansatz = "3c"
+      this%f12%cabs_basis = ""
+      this%f12%optri_basis = ""
       this%f12%use_exponent_fit = .false.
       this%f12%scale_triples = .true.
    end subroutine config_reset
 
    subroutine config_log_settings(this)
-      !! Log method-specific settings based on method type
-      !!
-      !! Dispatches to appropriate logging based on the configured method.
-      !! This allows the driver to log settings without knowing method details.
-      use mqc_method_types, only: METHOD_TYPE_GFN1, METHOD_TYPE_GFN2
+      !! Log method-specific settings, so the driver need not know the details
+      use mqc_method_types, only: METHOD_TYPE_GFN1, METHOD_TYPE_GFN2, METHOD_TYPE_HF, &
+                                  METHOD_TYPE_DFT, METHOD_TYPE_MCSCF, method_type_to_string
       use pic_logger, only: logger => global_logger
       class(method_config_t), intent(in) :: this
 
       character(len=128) :: info_lines(4)
       integer :: n_lines, i
 
-      ! Log XTB solvation settings if using XTB method
       select case (this%method_type)
       case (METHOD_TYPE_GFN1, METHOD_TYPE_GFN2)
+         ! Semi-empirical: no basis to report, but solvation matters
          call this%xtb%get_solvation_info(info_lines, n_lines)
          do i = 1, n_lines
             call logger%info(trim(info_lines(i)))
          end do
+
+      case (METHOD_TYPE_HF, METHOD_TYPE_DFT, METHOD_TYPE_MCSCF)
+         ! Which basis a run actually used is the first thing anyone needs when
+         ! comparing two energies, so report it rather than leaving it implicit.
+         call logger%info("Method settings:")
+         call logger%info("  Method:          "//trim(method_type_to_string(this%method_type)))
+         if (this%method_type == METHOD_TYPE_DFT) then
+            call logger%info("  Functional:      "//trim(this%dft%functional))
+         end if
+         call logger%info("  Basis set:       "//trim(this%basis_set))
+         ! Only when it is actually fitting something: the aux basis has a
+         ! non-empty default, so printing it unconditionally reads as "this is
+         ! density-fitted" on a run that is not.
+         if (this%scf%density_fitting) then
+            call logger%info("  Density fitting: "//trim(this%scf%aux_basis_set))
+         end if
+         ! The angular form is deliberately not reported here. `use_spherical`
+         ! is the flag cuEST builds its AO shells with, not a statement about
+         ! the basis: the basis file decides through its `function_type`
+         ! entries, and 6-31G* is Cartesian whatever this says. The SCF prints
+         ! the form it actually used, with the function count that
+         ! distinguishes the two.
+         if (this%method_type == METHOD_TYPE_DFT) then
+            block
+               character(len=80) :: grid_line
+               ! The level unless a deck overrode it with explicit counts,
+               ! because the level is what the CPU path actually uses. The
+               ! counts appear only when they are the thing in force.
+               if (this%dft%radial_points > 0 .and. this%dft%angular_points > 0 &
+                   .and. this%dft%grid_level < 0) then
+                  write (grid_line, "(a,i0,a,i0)") "  XC grid:         ", &
+                     this%dft%radial_points, " radial x ", this%dft%angular_points
+               else
+                  write (grid_line, "(a,i0)") "  XC grid:         level ", &
+                     this%dft%grid_level
+               end if
+               call logger%info(trim(grid_line))
+            end block
+         end if
+
       case default
          return
       end select

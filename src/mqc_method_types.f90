@@ -1,11 +1,11 @@
 !! Method type constants for quantum chemistry methods
 module mqc_method_types
-   !! Defines integer constants for quantum chemistry methods to avoid string comparisons
-   !! throughout the codebase. Provides conversion utilities between string
-   !! representations and integer constants.
-   use pic_types, only: int32
+   !! The `METHOD_TYPE_*` constants, and what an input-file spelling parses to.
+   use pic_types, only: int32, dp
    implicit none
    private
+
+   public :: needs_serial_execution
 
    ! Public constants - Semi-empirical
    public :: METHOD_TYPE_GFN1, METHOD_TYPE_GFN2
@@ -13,6 +13,11 @@ module mqc_method_types
    public :: METHOD_TYPE_HF, METHOD_TYPE_DFT
    ! Public constants - Multi-reference
    public :: METHOD_TYPE_MCSCF
+   ! Public constants - Classical, solving no wavefunction of its own
+   public :: METHOD_TYPE_EFP2
+   ! Public constants - Interaction energies, decomposed
+   public :: METHOD_TYPE_SAPT0
+   public :: METHOD_TYPE_SAPT2
    ! Public constants - Correlation methods
    public :: METHOD_TYPE_MP2, METHOD_TYPE_CCSD, METHOD_TYPE_CCSD_T
    public :: METHOD_TYPE_MP2_F12, METHOD_TYPE_CCSD_F12, METHOD_TYPE_CCSD_T_F12
@@ -20,6 +25,14 @@ module mqc_method_types
 
    ! Public functions
    public :: method_type_from_string, method_type_to_string
+   public :: parse_method_string
+   !! Input-file spelling -> method type
+   public :: method_spin_scaling
+   !! Spin-component scaling a spelling implies
+   public :: method_wants_density_fitting
+   !! Whether a spelling asks for RI
+   public :: method_is_casci
+   !! Whether a spelling asks for fixed orbitals
 
    ! Method type constants
    integer(int32), parameter :: METHOD_TYPE_UNKNOWN = 0
@@ -35,6 +48,11 @@ module mqc_method_types
    ! Multi-reference (20-29)
    integer(int32), parameter :: METHOD_TYPE_MCSCF = 20
 
+   integer(int32), parameter :: METHOD_TYPE_EFP2 = 60
+   !! Effective fragment potentials (60-69). Solves no wavefunction of its own:
+   !! each fragment carries one already, computed when its potential was made,
+   !! and what is evaluated is the interaction between them.
+
    ! Perturbation theory (30-39)
    integer(int32), parameter :: METHOD_TYPE_MP2 = 30
    integer(int32), parameter :: METHOD_TYPE_MP2_F12 = 31
@@ -45,15 +63,38 @@ module mqc_method_types
    integer(int32), parameter :: METHOD_TYPE_CCSD_F12 = 42
    integer(int32), parameter :: METHOD_TYPE_CCSD_T_F12 = 43  !! CCSD(T)-F12
 
+   integer(int32), parameter :: METHOD_TYPE_SAPT0 = 61
+   integer(int32), parameter :: METHOD_TYPE_SAPT2 = 62
+   !! Interaction energies that come out decomposed. Unlike the entries above,
+   !! these do not return the energy of *a* system: they return the interaction
+   !! between two of them, broken into named physical terms.
+   ! TODO(mqc): 61 and 62 sit inside the 60-69 block `METHOD_TYPE_EFP2`
+   ! documents as its own, so the next member of either family has no
+   ! unambiguous number to take.
+
 contains
 
+   pure function needs_serial_execution(method_type) result(serial)
+      !! Whether this method has to be run on one thread
+      integer, intent(in) :: method_type
+      logical :: serial
+
+      ! tblite. Threaded it corrupts a result rather than stopping, which is
+      ! why this is not merely a performance choice.
+      ! TODO(mqc): revisit once tblite is thread-safe.
+      serial = (method_type == METHOD_TYPE_GFN1 .or. method_type == METHOD_TYPE_GFN2)
+   end function needs_serial_execution
+
+   ! TODO(mqc): the same lowercasing loop is open-coded in five routines below,
+   ! one of which allocates `lower_str` before an assignment that reallocates it.
    pure function method_type_from_string(method_str) result(method_type)
-      !! Convert method type string to integer constant
+      !! Method type for an input-file spelling
       !!
-      !! Performs case-insensitive comparison and returns appropriate constant.
-      !! Returns METHOD_TYPE_UNKNOWN for unrecognized strings.
-      character(len=*), intent(in) :: method_str  !! Input string (e.g., "gfn1", "gfn2", "hf")
-      integer(int32) :: method_type                !! Output integer constant
+      !! Case-insensitive. `METHOD_TYPE_UNKNOWN` for anything unrecognized.
+      character(len=*), intent(in) :: method_str
+      !! Input string (e.g., "gfn1", "gfn2", "hf")
+      integer(int32) :: method_type
+      !! Output integer constant
 
       character(len=len_trim(method_str)) :: lower_str
       integer :: i
@@ -61,7 +102,7 @@ contains
       ! Convert to lowercase for case-insensitive comparison
       lower_str = trim(adjustl(method_str))
       do i = 1, len(lower_str)
-         if (lower_str(i:i) >= 'A' .and. lower_str(i:i) <= 'Z') then
+         if (lower_str(i:i) >= "A" .and. lower_str(i:i) <= "Z") then
             lower_str(i:i) = achar(iachar(lower_str(i:i)) + 32)
          end if
       end do
@@ -69,35 +110,44 @@ contains
       ! Match against known types
       select case (lower_str)
          ! Semi-empirical
-      case ('gfn1', 'gfn1-xtb')
+      case ("gfn1", "gfn1-xtb")
          method_type = METHOD_TYPE_GFN1
-      case ('gfn2', 'gfn2-xtb')
+      case ("gfn2", "gfn2-xtb")
          method_type = METHOD_TYPE_GFN2
 
          ! SCF methods
-      case ('hf', 'rhf', 'uhf', 'hartree-fock')
+      case ("hf", "rhf", "uhf", "hartree-fock")
          method_type = METHOD_TYPE_HF
-      case ('dft', 'ks', 'kohn-sham')
+      case ("dft", "ks", "kohn-sham")
          method_type = METHOD_TYPE_DFT
 
          ! Multi-reference
-      case ('mcscf', 'casscf', 'casci')
+      case ("mcscf", "casscf", "casci")
          method_type = METHOD_TYPE_MCSCF
 
+         ! Effective fragment potentials. "efp" alone means EFP2
+      case ("efp2", "efp")
+         method_type = METHOD_TYPE_EFP2
+         ! Interaction energies. "sapt" alone means SAPT0.
+      case ("sapt0", "sapt")
+         method_type = METHOD_TYPE_SAPT0
+      case ("sapt2")
+         method_type = METHOD_TYPE_SAPT2
+
          ! Perturbation theory
-      case ('mp2', 'ri-mp2', 'df-mp2', 'scs-mp2', 'sos-mp2')
+      case ("mp2", "ri-mp2", "df-mp2", "scs-mp2", "sos-mp2")
          method_type = METHOD_TYPE_MP2
-      case ('mp2-f12', 'ri-mp2-f12', 'df-mp2-f12')
+      case ("mp2-f12", "ri-mp2-f12", "df-mp2-f12")
          method_type = METHOD_TYPE_MP2_F12
 
          ! Coupled cluster
-      case ('ccsd', 'ri-ccsd', 'df-ccsd')
+      case ("ccsd", "ri-ccsd", "df-ccsd")
          method_type = METHOD_TYPE_CCSD
-      case ('ccsd(t)', 'ri-ccsd(t)', 'df-ccsd(t)')
+      case ("ccsd(t)", "ri-ccsd(t)", "df-ccsd(t)")
          method_type = METHOD_TYPE_CCSD_T
-      case ('ccsd-f12', 'ri-ccsd-f12')
+      case ("ccsd-f12", "ri-ccsd-f12")
          method_type = METHOD_TYPE_CCSD_F12
-      case ('ccsd(t)-f12', 'ri-ccsd(t)-f12')
+      case ("ccsd(t)-f12", "ri-ccsd(t)-f12")
          method_type = METHOD_TYPE_CCSD_T_F12
 
       case default
@@ -107,9 +157,7 @@ contains
    end function method_type_from_string
 
    pure function method_type_to_string(method_type) result(method_str)
-      !! Convert method type integer constant to string
-      !!
-      !! Provides human-readable string representation of method type.
+      !! The canonical spelling of a method type constant
       integer(int32), intent(in) :: method_type         !! Input integer constant
       character(len=:), allocatable :: method_str       !! Output string representation
 
@@ -129,6 +177,15 @@ contains
          ! Multi-reference
       case (METHOD_TYPE_MCSCF)
          method_str = "mcscf"
+
+         ! Effective fragment potentials
+      case (METHOD_TYPE_EFP2)
+         method_str = "efp2"
+         ! Interaction energies
+      case (METHOD_TYPE_SAPT0)
+         method_str = "sapt0"
+      case (METHOD_TYPE_SAPT2)
+         method_str = "sapt2"
 
          ! Perturbation theory
       case (METHOD_TYPE_MP2)
@@ -151,5 +208,115 @@ contains
       end select
 
    end function method_type_to_string
+
+   subroutine method_spin_scaling(method_str, use_scs, ss_scale, os_scale)
+      !! The spin-component scaling a method name implies, if any
+      !!
+      !! SCS-MP2 is Grimme: 1.2 opposite-spin, one third same-spin. SOS-MP2 is
+      !! Head-Gordon: 1.3 opposite-spin with the same-spin term dropped, which
+      !! is what makes it cheaper rather than merely different.
+      character(len=*), intent(in) :: method_str
+      logical, intent(out) :: use_scs
+      real(dp), intent(out) :: ss_scale, os_scale
+
+      character(len=:), allocatable :: lower_str
+      integer :: i
+
+      lower_str = trim(adjustl(method_str))
+      do i = 1, len(lower_str)
+         if (lower_str(i:i) >= "A" .and. lower_str(i:i) <= "Z") then
+            lower_str(i:i) = achar(iachar(lower_str(i:i)) + 32)
+         end if
+      end do
+
+      use_scs = .false.
+      ss_scale = 1.0_dp
+      os_scale = 1.0_dp
+      select case (lower_str)
+      case ("scs-mp2")
+         use_scs = .true.
+         os_scale = 1.2_dp
+         ss_scale = 1.0_dp/3.0_dp
+      case ("sos-mp2")
+         use_scs = .true.
+         os_scale = 1.3_dp
+         ss_scale = 0.0_dp
+      case default
+         ! Every other spelling, including plain "mp2", is unscaled.
+      end select
+   end subroutine method_spin_scaling
+
+   function method_wants_density_fitting(method_str) result(wants_df)
+      !! Whether a method name asks for the fitted route
+      character(len=*), intent(in) :: method_str
+      logical :: wants_df
+
+      character(len=:), allocatable :: lower_str
+      integer :: i
+
+      lower_str = trim(adjustl(method_str))
+      do i = 1, len(lower_str)
+         if (lower_str(i:i) >= "A" .and. lower_str(i:i) <= "Z") then
+            lower_str(i:i) = achar(iachar(lower_str(i:i)) + 32)
+         end if
+      end do
+
+      wants_df = (index(lower_str, "ri-") == 1) .or. (index(lower_str, "df-") == 1)
+   end function method_wants_density_fitting
+
+   function method_is_casci(method_str) result(is_casci)
+      !! Whether a method name asks for fixed orbitals
+      !!
+      !! "casci" and "casscf" are the same wavefunction ansatz -- a full CI in a
+      !! chosen active space -- and differ only in whether the orbitals are
+      !! optimised alongside the CI coefficients.
+      character(len=*), intent(in) :: method_str
+      logical :: is_casci
+
+      character(len=:), allocatable :: lower_str
+      integer :: i
+
+      lower_str = trim(adjustl(method_str))
+      do i = 1, len(lower_str)
+         if (lower_str(i:i) >= "A" .and. lower_str(i:i) <= "Z") then
+            lower_str(i:i) = achar(iachar(lower_str(i:i)) + 32)
+         end if
+      end do
+
+      is_casci = (lower_str == "casci")
+   end function method_is_casci
+
+   function parse_method_string(method_str) result(method_type)
+      !! Parse method string from input file (e.g., "XTB-GFN1" -> gfn1)
+      character(len=*), intent(in) :: method_str
+      integer(int32) :: method_type
+
+      character(len=:), allocatable :: lower_str, method_part
+      integer :: dash_pos, i
+
+      ! Convert to lowercase
+      allocate (character(len=len_trim(method_str)) :: lower_str)
+      lower_str = trim(adjustl(method_str))
+      do i = 1, len(lower_str)
+         if (lower_str(i:i) >= "A" .and. lower_str(i:i) <= "Z") then
+            lower_str(i:i) = achar(iachar(lower_str(i:i)) + 32)
+         end if
+      end do
+
+      ! Handle "XTB-GFN1" format -> extract "gfn1"
+      if (index(lower_str, "xtb") > 0) then
+         dash_pos = index(lower_str, "-")
+         if (dash_pos > 0) then
+            method_part = lower_str(dash_pos + 1:)
+         else
+            method_part = lower_str
+         end if
+      else
+         method_part = lower_str
+      end if
+
+      method_type = method_type_from_string(method_part)
+
+   end function parse_method_string
 
 end module mqc_method_types

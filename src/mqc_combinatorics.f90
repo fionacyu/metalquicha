@@ -3,9 +3,17 @@ module mqc_combinatorics
    !! Provides pure combinatorial functions for generating molecular fragments
    !! including binomial coefficients, combinations, and fragment counting
    use pic_types, only: default_int, int32, int64
+   use pic_logger, only: logger => global_logger
+   use pic_io, only: to_char
+   use mqc_program_limits, only: MAX_LINE_LENGTH
+   use mqc_math_utils, only: binomial
    implicit none
    private
 
+   public :: fragment_size_of      !! How many monomers a polymer row names
+   public :: vmfc_subset_key       !! Counterpoise subset key: chosen real, rest ghosted
+   public :: is_auxiliary_row      !! A ghosted row: subtracted, never summed
+   public :: real_count_of         !! Real (non-ghosted) monomers in a row
    public :: binomial              !! Binomial coefficient calculation
    public :: get_nfrags            !! Calculate total number of fragments
    public :: create_monomer_list   !! Generate sequential monomer indices
@@ -20,11 +28,9 @@ module mqc_combinatorics
 contains
 
    pure function get_nfrags(n_monomers, max_level) result(n_expected_fragments)
-      !! Calculate total number of fragments for given system size and max level
+      !! Total number of fragments for a system size and a maximum level
       !!
-      !! Computes the sum of binomial coefficients C(n,k) for k=1 to max_level,
-      !! representing all possible fragments from monomers to max_level-mers.
-      !! Uses int64 to handle large fragment counts that overflow int32.
+      !! The sum of `C(n, k)` for `k = 1` to `max_level`.
       integer(default_int), intent(in) :: n_monomers  !! Number of monomers in system
       integer(default_int), intent(in) :: max_level   !! Maximum fragment size
       integer(int64) :: n_expected_fragments     !! Total fragment count
@@ -35,29 +41,6 @@ contains
          n_expected_fragments = n_expected_fragments + binomial(n_monomers, i)
       end do
    end function get_nfrags
-
-   pure function binomial(n, r) result(c)
-      !! Compute binomial coefficient C(n,r) = n! / (r! * (n-r)!)
-      !!
-      !! Calculates "n choose r" using iterative algorithm to avoid
-      !! factorial overflow for large numbers.
-      !! Uses int64 to handle large combinatorial values that overflow int32.
-      integer(default_int), intent(in) :: n  !! Total number of items
-      integer(default_int), intent(in) :: r  !! Number of items to choose
-      integer(int64) :: c              !! Binomial coefficient result
-      integer(default_int) :: i              !! Loop counter
-
-      if (r == 0 .or. r == n) then
-         c = 1_int64
-      else if (r > n) then
-         c = 0_int64
-      else
-         c = 1_int64
-         do i = 1, r
-            c = c*int(n - i + 1, int64)/int(i, int64)
-         end do
-      end if
-   end function binomial
 
    pure subroutine create_monomer_list(monomers)
       !! Generate a list of monomer indices from 1 to N
@@ -72,10 +55,91 @@ contains
 
    end subroutine create_monomer_list
 
+   pure function is_auxiliary_row(row) result(aux)
+      !! Whether a row exists only to be subtracted, not to be summed
+      !!
+      !! A counterpoise expansion computes monomer A in the basis of the pair
+      !! AB. That energy belongs inside the pair's correction and nowhere else:
+      !!
+      !!     E = sum_i E_i(i)  +  sum_ij [ E_ij - E_i(ij) - E_j(ij) ]
+      !!
+      !! The one-body term uses each monomer in its *own* basis, so the ghosted
+      !! rows are auxiliary -- adding their deltas to the total as well would
+      !! count them twice. A negative entry is what marks them.
+      integer(default_int), intent(in) :: row(:)
+      logical :: aux
+
+      aux = any(row < 0)
+   end function is_auxiliary_row
+
+   pure function real_count_of(row) result(n)
+      !! How many of a row's monomers are real rather than ghosted
+      !!
+      !! The subset recursion works over these: `[1,-2]` contains one real
+      !! monomer, so it has no proper subsets and its delta is its energy.
+      integer(default_int), intent(in) :: row(:)
+      integer(default_int) :: n
+
+      n = count(row > 0)
+   end function real_count_of
+
+   pure subroutine vmfc_subset_key(fragment, n, chosen, k, key)
+      !! The subset key a counterpoise-corrected expansion looks up
+      !!
+      !! Ordinary MBE subtracts the subset {A} from the pair {A,B}. VMFC
+      !! subtracts {A in the basis of AB} instead -- the same monomers, solved
+      !! in the parent's basis -- so the superposition error that inflates the
+      !! parent stands on both sides of the difference and cancels rather than
+      !! surviving into the total.
+      !!
+      !! So the key is the chosen monomers positive and *everything else in the
+      !! parent* negative. For the pair `[1,2]` choosing `[1]`, that is
+      !! `[1,-2]`.
+      integer, intent(in) :: fragment(:)   !! The parent's monomers, all positive
+      integer, intent(in) :: n             !! How many of them
+      integer, intent(in) :: chosen(:)     !! Positions within `fragment`, size k
+      integer, intent(in) :: k
+      integer, intent(out) :: key(:)       !! Size n: k real, then n-k ghosted
+
+      integer :: i, j, next
+      logical :: taken(n)
+
+      taken = .false.
+      do i = 1, k
+         taken(chosen(i)) = .true.
+         key(i) = fragment(chosen(i))
+      end do
+
+      next = k
+      do j = 1, n
+         if (.not. taken(j)) then
+            next = next + 1
+            key(next) = -fragment(j)
+         end if
+      end do
+   end subroutine vmfc_subset_key
+
+   pure function fragment_size_of(row) result(n)
+      !! How many monomers a polymer row names, padding excluded
+      !!
+      !! Rows are zero-padded to the widest fragment, so the size is the count
+      !! of non-zero entries. Non-zero and not positive: a negative entry is a
+      !! monomer present as *ghost centres* -- its atoms and basis functions
+      !! without its nucleus -- which the fragment contains and must be sized
+      !! for.
+      integer(default_int), intent(in) :: row(:)
+      integer(default_int) :: n
+
+      n = count(row /= 0)
+   end function fragment_size_of
+
    recursive subroutine generate_fragment_list(monomers, max_level, polymers, count)
-      !! Generate all possible fragments (combinations of monomers) up to max_level
-      !! Uses int64 for count to handle large numbers of fragments that overflow int32.
-      integer(default_int), intent(in) :: monomers(:), max_level
+      !! Append every combination of 2 to `max_level` monomers to `polymers`
+      !!
+      !! Monomers are not generated here -- the caller writes those rows first
+      !! and passes their number in `count`, which this advances.
+      integer(default_int), intent(in) ::  max_level
+      integer(default_int), intent(in) :: monomers(:)
       integer(default_int), intent(inout) :: polymers(:, :)
       integer(int64), intent(inout) :: count
       integer(default_int) :: r, n
@@ -87,8 +151,7 @@ contains
    end subroutine generate_fragment_list
 
    recursive subroutine combine(arr, n, r, out_array, count)
-      !! Generate all combinations of size r from array arr of size n
-      !! Uses int64 for count to handle large numbers of combinations that overflow int32.
+      !! Generate all combinations of size `r` from the first `n` of `arr`
       integer(default_int), intent(in) :: arr(:)
       integer(default_int), intent(in) :: n, r
       integer(default_int), intent(inout) :: out_array(:, :)
@@ -98,9 +161,9 @@ contains
    end subroutine combine
 
    recursive subroutine combine_util(arr, n, r, index, data, i, out_array, count)
-      !! Utility for generating combinations recursively
-      !! Uses int64 for count to handle large numbers of combinations that overflow int32.
-      integer(default_int), intent(in) :: arr(:), n, r, index, i
+      !! One level of the combination recursion
+      integer(default_int), intent(in) ::  n, r, index, i
+      integer(default_int), intent(in) :: arr(:)
       integer(default_int), intent(inout) :: data(:), out_array(:, :)
       integer(int64), intent(inout) :: count
       integer(default_int) :: j
@@ -118,22 +181,27 @@ contains
    end subroutine combine_util
 
    subroutine print_combos(out_array, count, max_len)
-      !! Print combinations stored in out_array
-      !! Uses int64 for count to handle large numbers of combinations that overflow int32.
-      integer(default_int), intent(in) :: out_array(:, :), max_len
+      !! Print the combinations held in `out_array`, one line each
+      integer(default_int), intent(in) ::  max_len
+      integer(default_int), intent(in) :: out_array(:, :)
       integer(int64), intent(in) :: count
       integer(int64) :: i
       integer(default_int) :: j
 
+      character(len=MAX_LINE_LENGTH) :: line
+
+      ! Assembled in `line` and emitted once per combination: a log record is a
+      ! whole line or it is nothing.
       do i = 1_int64, count
+         line = ""
          do j = 1, max_len
             if (out_array(i, j) == 0) exit
-            write (*, '(I0)', advance='no') out_array(i, j)
+            line = trim(line)//to_char(out_array(i, j))
             if (j < max_len .and. out_array(i, j + 1) /= 0) then
-               write (*, '(A)', advance='no') ":"
+               line = trim(line)//":"
             end if
          end do
-         write (*, *)  ! newline
+         call logger%info(trim(line))
       end do
    end subroutine print_combos
 
@@ -204,10 +272,9 @@ contains
    end function next_combination
 
    subroutine calculate_fragment_distances(polymers, fragment_count, sys_geom, distances)
-      !! Calculate minimal atomic distance for each fragment
-      !! For monomers (1-body), distance is 0.0
-      !! For n-mers (n >= 2), distance is the minimum distance between atoms
-      !! in different constituent monomers
+      !! Closest approach between different monomers, per fragment, in Angstrom
+      !!
+      !! Zero for a monomer row.
       use pic_types, only: dp
       use mqc_physical_fragment, only: system_geometry_t, to_angstrom
       integer(default_int), intent(in) :: polymers(:, :)
@@ -228,7 +295,7 @@ contains
       is_variable_size = allocated(sys_geom%fragment_sizes)
 
       do ifrag = 1_int64, fragment_count
-         fragment_size = count(polymers(ifrag, :) > 0)
+         fragment_size = fragment_size_of(polymers(ifrag, :))
 
          if (fragment_size == 1) then
             ! Monomers have distance 0

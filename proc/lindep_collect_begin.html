@@ -1,0 +1,644 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="A demonstration of PIC as a framework for scientific applications targetting quantum chemistry">
+    <meta name="author" content="Jorge Luis Galvez Vallejo" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>lindep_collect_begin &ndash; metalquicha</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">metalquicha </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../program/main.html">Program</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>lindep_collect_begin
+      <small>Subroutine</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 0.0% of total for procedures.">4 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/mqc_scf_common.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/mqc_scf_common.f90.html'>mqc_scf_common.f90</a></li>
+                <li class="breadcrumb-item"><a href='../module/mqc_scf_common.html'>mqc_scf_common</a></li>
+            <li class="breadcrumb-item active" aria-current="page">lindep_collect_begin</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/lindep_collect_begin.html#src">lindep_collect_begin</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>public  subroutine lindep_collect_begin()  
+</h2>
+    
+
+    <p>Start folding linear-dependence reports into a tally</p>
+<p>Nests: only the outermost window resets the tally, so an inner one
+cannot discard what an outer one has already gathered.</p>
+
+
+    <h3>Arguments</h3>
+    <em>None</em>
+    <br>
+    <br>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Called by</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~lindep_collect_begin~~CalledByGraph Pages: 1 -->
+<svg id="proclindep_collect_beginCalledByGraph" width="641pt" height="247pt"
+ viewBox="0.00 0.00 641.00 247.39" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~lindep_collect_begin~~CalledByGraph" class="graph" transform="scale(0.55 0.55) rotate(0) translate(4 447.94)">
+<title>proc~~lindep_collect_begin~~CalledByGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-447.94 1167,-447.94 1167,4 -4,4"/>
+<!-- proc~lindep_collect_begin -->
+<g id="proc~~lindep_collect_begin~~CalledByGraph_node1" class="node">
+<title>proc~lindep_collect_begin</title>
+<polygon fill="none" stroke="black" points="1163,-154 1042,-154 1042,-130 1163,-130 1163,-154"/>
+<text text-anchor="middle" x="1102.5" y="-139.6" font-family="Helvetica,sans-Serif" font-size="10.50">lindep_collect_begin</text>
+</g>
+<!-- proc~run_calculation -->
+<g id="proc~~lindep_collect_begin~~CalledByGraph_node2" class="node">
+<title>proc~run_calculation</title>
+<g id="a_proc~~lindep_collect_begin~~CalledByGraph_node2"><a xlink:href="../proc/run_calculation.html" xlink:title="run_calculation">
+<polygon fill="#d9534f" stroke="#d9534f" points="1006,-296 912,-296 912,-272 1006,-272 1006,-296"/>
+<text text-anchor="middle" x="959" y="-281.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">run_calculation</text>
+</a>
+</g>
+</g>
+<!-- proc~run_calculation&#45;&gt;proc~lindep_collect_begin -->
+<g id="proc~~lindep_collect_begin~~CalledByGraph_edge1" class="edge">
+<title>proc~run_calculation&#45;&gt;proc~lindep_collect_begin</title>
+<path fill="none" stroke="#ff0000" d="M972.06,-271.89C996.6,-247.27 1052.52,-191.16 1082.18,-161.38"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="1084.89,-163.63 1089.47,-154.08 1079.93,-158.69 1084.89,-163.63"/>
+</g>
+<!-- proc~run_geometry_optimization -->
+<g id="proc~~lindep_collect_begin~~CalledByGraph_node3" class="node">
+<title>proc~run_geometry_optimization</title>
+<g id="a_proc~~lindep_collect_begin~~CalledByGraph_node3"><a xlink:href="../proc/run_geometry_optimization.html" xlink:title="run_geometry_optimization">
+<polygon fill="#d9534f" stroke="#d9534f" points="263,-183 104,-183 104,-159 263,-159 263,-183"/>
+<text text-anchor="middle" x="183.5" y="-168.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">run_geometry_optimization</text>
+</a>
+</g>
+</g>
+<!-- proc~run_geometry_optimization&#45;&gt;proc~lindep_collect_begin -->
+<g id="proc~~lindep_collect_begin~~CalledByGraph_edge2" class="edge">
+<title>proc~run_geometry_optimization&#45;&gt;proc~lindep_collect_begin</title>
+<path fill="none" stroke="#ff0000" d="M195.2,-158.9C215.72,-136.51 263.01,-88.65 313,-64 429.05,-6.79 467.61,0 597,0 597,0 597,0 794,0 910.49,0 1030.83,-85.04 1079.31,-123.5"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="1077.26,-126.34 1087.24,-129.89 1081.65,-120.89 1077.26,-126.34"/>
+</g>
+<!-- proc~run_final_hessian -->
+<g id="proc~~lindep_collect_begin~~CalledByGraph_node13" class="node">
+<title>proc~run_final_hessian</title>
+<g id="a_proc~~lindep_collect_begin~~CalledByGraph_node13"><a xlink:href="../proc/run_final_hessian.html" xlink:title="run_final_hessian">
+<polygon fill="#d9534f" stroke="#d9534f" points="650.5,-216 545.5,-216 545.5,-192 650.5,-192 650.5,-216"/>
+<text text-anchor="middle" x="598" y="-201.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">run_final_hessian</text>
+</a>
+</g>
+</g>
+<!-- proc~run_geometry_optimization&#45;&gt;proc~run_final_hessian -->
+<g id="proc~~lindep_collect_begin~~CalledByGraph_edge19" class="edge">
+<title>proc~run_geometry_optimization&#45;&gt;proc~run_final_hessian</title>
+<path fill="none" stroke="#00ff91" d="M263.06,-177.28C342.15,-183.61 462.55,-193.24 535.12,-199.05"/>
+<polygon fill="#00ff91" stroke="#00ff91" points="535.22,-202.57 545.47,-199.88 535.78,-195.59 535.22,-202.57"/>
+</g>
+<!-- proc~worker_loop~2 -->
+<g id="proc~~lindep_collect_begin~~CalledByGraph_node15" class="node">
+<title>proc~worker_loop~2</title>
+<g id="a_proc~~lindep_collect_begin~~CalledByGraph_node15"><a xlink:href="../proc/worker_loop~2.html" xlink:title="worker_loop">
+<polygon fill="#d9534f" stroke="#d9534f" points="438.5,-252 360.5,-252 360.5,-228 438.5,-228 438.5,-252"/>
+<text text-anchor="middle" x="399.5" y="-237.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">worker_loop</text>
+</a>
+</g>
+</g>
+<!-- proc~run_geometry_optimization&#45;&gt;proc~worker_loop~2 -->
+<g id="proc~~lindep_collect_begin~~CalledByGraph_edge21" class="edge">
+<title>proc~run_geometry_optimization&#45;&gt;proc~worker_loop~2</title>
+<path fill="none" stroke="#4800ff" d="M221.78,-183.02C257.76,-194.62 312.39,-212.24 351.38,-224.81"/>
+<polygon fill="#4800ff" stroke="#4800ff" points="350.34,-228.15 360.93,-227.89 352.49,-221.49 350.34,-228.15"/>
+</g>
+<!-- proc~write_final_single_point -->
+<g id="proc~~lindep_collect_begin~~CalledByGraph_node16" class="node">
+<title>proc~write_final_single_point</title>
+<g id="a_proc~~lindep_collect_begin~~CalledByGraph_node16"><a xlink:href="../proc/write_final_single_point.html" xlink:title="write_final_single_point">
+<polygon fill="#d9534f" stroke="#d9534f" points="467.5,-158 331.5,-158 331.5,-134 467.5,-134 467.5,-158"/>
+<text text-anchor="middle" x="399.5" y="-143.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">write_final_single_point</text>
+</a>
+</g>
+</g>
+<!-- proc~run_geometry_optimization&#45;&gt;proc~write_final_single_point -->
+<g id="proc~~lindep_collect_begin~~CalledByGraph_edge22" class="edge">
+<title>proc~run_geometry_optimization&#45;&gt;proc~write_final_single_point</title>
+<path fill="none" stroke="#ff00da" d="M263.27,-161.8C282.27,-159.58 302.54,-157.21 321.45,-155"/>
+<polygon fill="#ff00da" stroke="#ff00da" points="321.97,-158.46 331.5,-153.83 321.16,-151.51 321.97,-158.46"/>
+</g>
+<!-- proc~probe_gradient -->
+<g id="proc~~lindep_collect_begin~~CalledByGraph_node17" class="node">
+<title>proc~probe_gradient</title>
+<g id="a_proc~~lindep_collect_begin~~CalledByGraph_node17"><a xlink:href="../proc/probe_gradient.html" xlink:title="probe_gradient">
+<polygon fill="#d9534f" stroke="#d9534f" points="446.5,-97 352.5,-97 352.5,-73 446.5,-73 446.5,-97"/>
+<text text-anchor="middle" x="399.5" y="-82.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">probe_gradient</text>
+</a>
+</g>
+</g>
+<!-- proc~run_geometry_optimization&#45;&gt;proc~probe_gradient -->
+<g id="proc~~lindep_collect_begin~~CalledByGraph_edge23" class="edge">
+<title>proc~run_geometry_optimization&#45;&gt;proc~probe_gradient</title>
+<path fill="none" stroke="#ff0000" d="M214.71,-158.86C252.55,-143.65 317.46,-117.57 359.15,-100.81"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="360.47,-104.05 368.45,-97.08 357.86,-97.56 360.47,-104.05"/>
+</g>
+<!-- proc~compute_energy_and_forces -->
+<g id="proc~~lindep_collect_begin~~CalledByGraph_node4" class="node">
+<title>proc~compute_energy_and_forces</title>
+<g id="a_proc~~lindep_collect_begin~~CalledByGraph_node4"><a xlink:href="../proc/compute_energy_and_forces.html" xlink:title="compute_energy_and_forces">
+<polygon fill="#d9534f" stroke="#d9534f" points="876,-376 710,-376 710,-352 876,-352 876,-376"/>
+<text text-anchor="middle" x="793" y="-361.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">compute_energy_and_forces</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_energy_and_forces&#45;&gt;proc~run_calculation -->
+<g id="proc~~lindep_collect_begin~~CalledByGraph_edge3" class="edge">
+<title>proc~compute_energy_and_forces&#45;&gt;proc~run_calculation</title>
+<path fill="none" stroke="#ff0000" d="M839.97,-351.87C851.95,-348.05 864.68,-343.4 876,-338 896.77,-328.1 918.44,-313.63 934.28,-302.15"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="936.47,-304.89 942.44,-296.14 932.32,-299.25 936.47,-304.89"/>
+</g>
+<!-- proc~run_multi_molecule_calculations -->
+<g id="proc~~lindep_collect_begin~~CalledByGraph_node5" class="node">
+<title>proc~run_multi_molecule_calculations</title>
+<g id="a_proc~~lindep_collect_begin~~CalledByGraph_node5"><a xlink:href="../proc/run_multi_molecule_calculations.html" xlink:title="run_multi_molecule_calculations">
+<polygon fill="#d9534f" stroke="#d9534f" points="277,-396 90,-396 90,-372 277,-372 277,-396"/>
+<text text-anchor="middle" x="183.5" y="-381.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">run_multi_molecule_calculations</text>
+</a>
+</g>
+</g>
+<!-- proc~run_multi_molecule_calculations&#45;&gt;proc~run_calculation -->
+<g id="proc~~lindep_collect_begin~~CalledByGraph_edge4" class="edge">
+<title>proc~run_multi_molecule_calculations&#45;&gt;proc~run_calculation</title>
+<path fill="none" stroke="#ff0000" d="M226.96,-396.05C339.5,-425.57 652.17,-491.59 876,-385 910.41,-368.61 935.09,-329.94 947.91,-305.49"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="951.17,-306.79 952.53,-296.29 944.91,-303.65 951.17,-306.79"/>
+</g>
+<!-- proc~run_step -->
+<g id="proc~~lindep_collect_begin~~CalledByGraph_node6" class="node">
+<title>proc~run_step</title>
+<g id="a_proc~~lindep_collect_begin~~CalledByGraph_node6"><a xlink:href="../proc/run_step.html" xlink:title="run_step">
+<polygon fill="#d9534f" stroke="#d9534f" points="822,-195 764,-195 764,-171 822,-171 822,-195"/>
+<text text-anchor="middle" x="793" y="-180.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">run_step</text>
+</a>
+</g>
+</g>
+<!-- proc~run_step&#45;&gt;proc~run_calculation -->
+<g id="proc~~lindep_collect_begin~~CalledByGraph_edge5" class="edge">
+<title>proc~run_step&#45;&gt;proc~run_calculation</title>
+<path fill="none" stroke="#ff0000" d="M813.78,-195.18C842.67,-212.98 896.56,-246.16 929.66,-266.54"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="928.05,-269.67 938.4,-271.93 931.72,-263.71 928.05,-269.67"/>
+</g>
+<!-- proc~session_run -->
+<g id="proc~~lindep_collect_begin~~CalledByGraph_node7" class="node">
+<title>proc~session_run</title>
+<g id="a_proc~~lindep_collect_begin~~CalledByGraph_node7"><a xlink:href="../proc/session_run.html" xlink:title="mqc_session_t%session_run">
+<polygon fill="#d9534f" stroke="#d9534f" points="873.5,-92 712.5,-92 712.5,-68 873.5,-68 873.5,-92"/>
+<text text-anchor="middle" x="793" y="-77.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_session_t%session_run</text>
+</a>
+</g>
+</g>
+<!-- proc~session_run&#45;&gt;proc~run_calculation -->
+<g id="proc~~lindep_collect_begin~~CalledByGraph_edge6" class="edge">
+<title>proc~session_run&#45;&gt;proc~run_calculation</title>
+<path fill="none" stroke="#ff0000" d="M807.58,-92.06C824.54,-107.44 854,-135.26 876,-162 903.47,-195.37 930.48,-237.99 945.62,-263.01"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="942.67,-264.9 950.82,-271.68 948.68,-261.3 942.67,-264.9"/>
+</g>
+<!-- proc~worker_run -->
+<g id="proc~~lindep_collect_begin~~CalledByGraph_node8" class="node">
+<title>proc~worker_run</title>
+<g id="a_proc~~lindep_collect_begin~~CalledByGraph_node8"><a xlink:href="../proc/worker_run.html" xlink:title="worker_run">
+<polygon fill="#d9534f" stroke="#d9534f" points="829.5,-296 756.5,-296 756.5,-272 829.5,-272 829.5,-296"/>
+<text text-anchor="middle" x="793" y="-281.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">worker_run</text>
+</a>
+</g>
+</g>
+<!-- proc~worker_run&#45;&gt;proc~run_calculation -->
+<g id="proc~~lindep_collect_begin~~CalledByGraph_edge7" class="edge">
+<title>proc~worker_run&#45;&gt;proc~run_calculation</title>
+<path fill="none" stroke="#ff0000" d="M829.59,-284C850.69,-284 877.9,-284 901.85,-284"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="901.88,-287.5 911.88,-284 901.88,-280.5 901.88,-287.5"/>
+</g>
+<!-- program~main -->
+<g id="proc~~lindep_collect_begin~~CalledByGraph_node9" class="node">
+<title>program~main</title>
+<g id="a_proc~~lindep_collect_begin~~CalledByGraph_node9"><a xlink:href="../program/main.html" xlink:title="main">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="54,-336 0,-336 0,-312 54,-312 54,-336"/>
+<text text-anchor="middle" x="27" y="-321.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">main</text>
+</a>
+</g>
+</g>
+<!-- program~main&#45;&gt;proc~run_calculation -->
+<g id="proc~~lindep_collect_begin~~CalledByGraph_edge8" class="edge">
+<title>program~main&#45;&gt;proc~run_calculation</title>
+<path fill="none" stroke="#ff0000" d="M54.05,-324C114.54,-324 269.21,-324 398.5,-324 398.5,-324 398.5,-324 599,-324 722.4,-324 754.17,-324.61 876,-305 886.12,-303.37 896.81,-301.07 907.01,-298.59"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="908.18,-301.9 917.01,-296.06 906.46,-295.12 908.18,-301.9"/>
+</g>
+<!-- program~main&#45;&gt;proc~run_geometry_optimization -->
+<g id="proc~~lindep_collect_begin~~CalledByGraph_edge9" class="edge">
+<title>program~main&#45;&gt;proc~run_geometry_optimization</title>
+<path fill="none" stroke="#00ffff" d="M40.12,-311.99C66.73,-285.65 130.44,-222.55 162.85,-190.46"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="165.36,-192.9 170,-183.37 160.44,-187.92 165.36,-192.9"/>
+</g>
+<!-- program~main&#45;&gt;proc~run_multi_molecule_calculations -->
+<g id="proc~~lindep_collect_begin~~CalledByGraph_edge10" class="edge">
+<title>program~main&#45;&gt;proc~run_multi_molecule_calculations</title>
+<path fill="none" stroke="#ffff00" d="M54.21,-334.18C78.24,-343.51 114.19,-357.47 141.93,-368.24"/>
+<polygon fill="#ffff00" stroke="#ffff00" points="140.77,-371.55 151.36,-371.91 143.31,-365.02 140.77,-371.55"/>
+</g>
+<!-- proc~evaluate_energy_gradient -->
+<g id="proc~~lindep_collect_begin~~CalledByGraph_node10" class="node">
+<title>proc~evaluate_energy_gradient</title>
+<g id="a_proc~~lindep_collect_begin~~CalledByGraph_node10"><a xlink:href="../proc/evaluate_energy_gradient.html" xlink:title="evaluate_energy_gradient">
+<polygon fill="#d9534f" stroke="#d9534f" points="674,-94 522,-94 522,-70 674,-70 674,-94"/>
+<text text-anchor="middle" x="598" y="-79.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">evaluate_energy_gradient</text>
+</a>
+</g>
+</g>
+<!-- proc~evaluate_energy_gradient&#45;&gt;proc~run_step -->
+<g id="proc~~lindep_collect_begin~~CalledByGraph_edge11" class="edge">
+<title>proc~evaluate_energy_gradient&#45;&gt;proc~run_step</title>
+<path fill="none" stroke="#00ff00" d="M639.4,-94.08C650.8,-98.01 663.08,-102.73 674,-108 707.92,-124.38 744.07,-148.46 767.29,-164.89"/>
+<polygon fill="#00ff00" stroke="#00ff00" points="765.35,-167.8 775.52,-170.77 769.43,-162.11 765.35,-167.8"/>
+</g>
+<!-- proc~evaluate_hessian -->
+<g id="proc~~lindep_collect_begin~~CalledByGraph_node11" class="node">
+<title>proc~evaluate_hessian</title>
+<g id="a_proc~~lindep_collect_begin~~CalledByGraph_node11"><a xlink:href="../proc/evaluate_hessian.html" xlink:title="evaluate_hessian">
+<polygon fill="#d9534f" stroke="#d9534f" points="650.5,-174 545.5,-174 545.5,-150 650.5,-150 650.5,-174"/>
+<text text-anchor="middle" x="598" y="-159.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">evaluate_hessian</text>
+</a>
+</g>
+</g>
+<!-- proc~evaluate_hessian&#45;&gt;proc~run_step -->
+<g id="proc~~lindep_collect_begin~~CalledByGraph_edge12" class="edge">
+<title>proc~evaluate_hessian&#45;&gt;proc~run_step</title>
+<path fill="none" stroke="#00ff00" d="M650.72,-167.63C683.04,-171.14 723.97,-175.6 753.45,-178.81"/>
+<polygon fill="#00ff00" stroke="#00ff00" points="753.43,-182.32 763.75,-179.93 754.19,-175.36 753.43,-182.32"/>
+</g>
+<!-- proc~mqc_run -->
+<g id="proc~~lindep_collect_begin~~CalledByGraph_node12" class="node">
+<title>proc~mqc_run</title>
+<g id="a_proc~~lindep_collect_begin~~CalledByGraph_node12"><a xlink:href="../proc/mqc_run.html" xlink:title="mqc_run">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="627.5,-52 568.5,-52 568.5,-28 627.5,-28 627.5,-52"/>
+<text text-anchor="middle" x="598" y="-37.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_run</text>
+</a>
+</g>
+</g>
+<!-- proc~mqc_run&#45;&gt;proc~session_run -->
+<g id="proc~~lindep_collect_begin~~CalledByGraph_edge16" class="edge">
+<title>proc~mqc_run&#45;&gt;proc~session_run</title>
+<path fill="none" stroke="#00ffff" d="M627.89,-45.99C653.15,-51.22 690.82,-59.03 723.7,-65.84"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="723.23,-69.32 733.73,-67.92 724.65,-62.47 723.23,-69.32"/>
+</g>
+<!-- proc~run_final_hessian&#45;&gt;proc~run_step -->
+<g id="proc~~lindep_collect_begin~~CalledByGraph_edge13" class="edge">
+<title>proc~run_final_hessian&#45;&gt;proc~run_step</title>
+<path fill="none" stroke="#00ff00" d="M650.72,-198.37C683.04,-194.86 723.97,-190.4 753.45,-187.19"/>
+<polygon fill="#00ff00" stroke="#00ff00" points="754.19,-190.64 763.75,-186.07 753.43,-183.68 754.19,-190.64"/>
+</g>
+<!-- proc~worker_loop -->
+<g id="proc~~lindep_collect_begin~~CalledByGraph_node14" class="node">
+<title>proc~worker_loop</title>
+<g id="a_proc~~lindep_collect_begin~~CalledByGraph_node14"><a xlink:href="../proc/worker_loop.html" xlink:title="worker_loop">
+<polygon fill="#d9534f" stroke="#d9534f" points="637,-296 559,-296 559,-272 637,-272 637,-296"/>
+<text text-anchor="middle" x="598" y="-281.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">worker_loop</text>
+</a>
+</g>
+</g>
+<!-- proc~worker_loop&#45;&gt;proc~worker_run -->
+<g id="proc~~lindep_collect_begin~~CalledByGraph_edge17" class="edge">
+<title>proc~worker_loop&#45;&gt;proc~worker_run</title>
+<path fill="none" stroke="#0000ff" d="M637.13,-284C668.36,-284 712.64,-284 745.86,-284"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="746.23,-287.5 756.23,-284 746.23,-280.5 746.23,-287.5"/>
+</g>
+<!-- proc~worker_loop~2&#45;&gt;proc~run_step -->
+<g id="proc~~lindep_collect_begin~~CalledByGraph_edge14" class="edge">
+<title>proc~worker_loop~2&#45;&gt;proc~run_step</title>
+<path fill="none" stroke="#00ff00" d="M438.54,-241.33C491.76,-242.41 591.25,-241.63 674,-225 702.17,-219.34 732.69,-208.33 755.64,-199.01"/>
+<polygon fill="#00ff00" stroke="#00ff00" points="757.08,-202.2 764.98,-195.14 754.4,-195.73 757.08,-202.2"/>
+</g>
+<!-- proc~write_final_single_point&#45;&gt;proc~run_step -->
+<g id="proc~~lindep_collect_begin~~CalledByGraph_edge15" class="edge">
+<title>proc~write_final_single_point&#45;&gt;proc~run_step</title>
+<path fill="none" stroke="#00ff00" d="M467.63,-137.77C523.33,-132.62 604.39,-128.98 674,-141 702.69,-145.95 733.64,-157.21 756.64,-166.83"/>
+<polygon fill="#00ff00" stroke="#00ff00" points="755.42,-170.11 765.99,-170.82 758.17,-163.67 755.42,-170.11"/>
+</g>
+<!-- proc~probe_gradient&#45;&gt;proc~evaluate_energy_gradient -->
+<g id="proc~~lindep_collect_begin~~CalledByGraph_edge18" class="edge">
+<title>proc~probe_gradient&#45;&gt;proc~evaluate_energy_gradient</title>
+<path fill="none" stroke="#ff0000" d="M446.57,-84.3C465.95,-84 489.14,-83.65 511.45,-83.31"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="511.67,-86.8 521.62,-83.15 511.57,-79.8 511.67,-86.8"/>
+</g>
+<!-- proc~session_begin -->
+<g id="proc~~lindep_collect_begin~~CalledByGraph_node18" class="node">
+<title>proc~session_begin</title>
+<g id="a_proc~~lindep_collect_begin~~CalledByGraph_node18"><a xlink:href="../proc/session_begin.html" xlink:title="mqc_session_t%session_begin">
+<polygon fill="#d9534f" stroke="#d9534f" points="486,-296 313,-296 313,-272 486,-272 486,-296"/>
+<text text-anchor="middle" x="399.5" y="-281.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_session_t%session_begin</text>
+</a>
+</g>
+</g>
+<!-- proc~session_begin&#45;&gt;proc~worker_loop -->
+<g id="proc~~lindep_collect_begin~~CalledByGraph_edge20" class="edge">
+<title>proc~session_begin&#45;&gt;proc~worker_loop</title>
+<path fill="none" stroke="#0091ff" d="M486.12,-284C507.58,-284 529.87,-284 548.78,-284"/>
+<polygon fill="#0091ff" stroke="#0091ff" points="548.91,-287.5 558.91,-284 548.91,-280.5 548.91,-287.5"/>
+</g>
+<!-- proc~mqc_session_begin -->
+<g id="proc~~lindep_collect_begin~~CalledByGraph_node19" class="node">
+<title>proc~mqc_session_begin</title>
+<g id="a_proc~~lindep_collect_begin~~CalledByGraph_node19"><a xlink:href="../proc/mqc_session_begin.html" xlink:title="mqc_session_begin">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="241,-296 126,-296 126,-272 241,-272 241,-296"/>
+<text text-anchor="middle" x="183.5" y="-281.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_session_begin</text>
+</a>
+</g>
+</g>
+<!-- proc~mqc_session_begin&#45;&gt;proc~session_begin -->
+<g id="proc~~lindep_collect_begin~~CalledByGraph_edge24" class="edge">
+<title>proc~mqc_session_begin&#45;&gt;proc~session_begin</title>
+<path fill="none" stroke="#00ffff" d="M241.01,-284C259.84,-284 281.39,-284 302.37,-284"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="302.61,-287.5 312.61,-284 302.61,-280.5 302.61,-287.5"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panproclindep_collect_beginCalledByGraph = svgPanZoom('#proclindep_collect_beginCalledByGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CalledByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CalledByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="374,-24 244,-24 244,0 374,0 374,-24"/>
+<text text-anchor="middle" x="309" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="537.5,-24 392.5,-24 392.5,0 537.5,0 537.5,-24"/>
+<text text-anchor="middle" x="465" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="614,-24 556,-24 556,0 614,0 614,-24"/>
+<text text-anchor="middle" x="585" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="737.5,-24 632.5,-24 632.5,0 737.5,0 737.5,-24"/>
+<text text-anchor="middle" x="685" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+
+    
+    
+
+    
+    
+
+
+
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="hl codehilite"><pre><span></span><span class="w">   </span><span class="k">subroutine </span><span class="n">lindep_collect_begin</span><span class="p">()</span>
+<span class="w">      </span><span class="c">!! Start folding linear-dependence reports into a tally</span>
+<span class="w">      </span><span class="c">!!</span>
+<span class="w">      </span><span class="c">!! Nests: only the outermost window resets the tally, so an inner one</span>
+<span class="w">      </span><span class="c">!! cannot discard what an outer one has already gathered.</span>
+<span class="w">      </span><span class="n">collect_depth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">collect_depth</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">collect_depth</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">tally</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lindep_tally_t</span><span class="p">()</span>
+<span class="w">   </span><span class="k">end subroutine </span><span class="n">lindep_collect_begin</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              metalquicha
+ was developed by Jorge Luis Galvez Vallejo<br>              &copy; 2026 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+ on 2026-09-07 09:10 +0000             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

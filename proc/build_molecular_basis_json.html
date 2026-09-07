@@ -1,0 +1,1084 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="A demonstration of PIC as a framework for scientific applications targetting quantum chemistry">
+    <meta name="author" content="Jorge Luis Galvez Vallejo" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>build_molecular_basis_json &ndash; metalquicha</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">metalquicha </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../program/main.html">Program</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>build_molecular_basis_json
+      <small>Subroutine</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 0.3% of total for procedures.">61 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/mqc_json_basis_reader.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/mqc_json_basis_reader.f90.html'>mqc_json_basis_reader.f90</a></li>
+                <li class="breadcrumb-item"><a href='../module/mqc_json_basis_reader.html'>mqc_json_basis_reader</a></li>
+            <li class="breadcrumb-item active" aria-current="page">build_molecular_basis_json</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#vars-0"
+         aria-expanded="false" aria-controls="vars-0">
+         <h4 class="card-header bg-primary text-white">Variables</h4>
+      </a>
+      <div id="vars-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../proc/build_molecular_basis_json.html#variable-iatom~30">iatom</a>
+            <a class="list-group-item" href="../proc/build_molecular_basis_json.html#variable-is_new">is_new</a>
+            <a class="list-group-item" href="../proc/build_molecular_basis_json.html#variable-iunique">iunique</a>
+            <a class="list-group-item" href="../proc/build_molecular_basis_json.html#variable-match">match</a>
+            <a class="list-group-item" href="../proc/build_molecular_basis_json.html#variable-molecule_form">molecule_form</a>
+            <a class="list-group-item" href="../proc/build_molecular_basis_json.html#variable-n_atoms~37">n_atoms</a>
+            <a class="list-group-item" href="../proc/build_molecular_basis_json.html#variable-n_unique">n_unique</a>
+            <a class="list-group-item" href="../proc/build_molecular_basis_json.html#variable-unique_bases">unique_bases</a>
+            <a class="list-group-item" href="../proc/build_molecular_basis_json.html#variable-unique_z">unique_z</a>
+            <a class="list-group-item" href="../proc/build_molecular_basis_json.html#variable-z~7">z</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/build_molecular_basis_json.html#src">build_molecular_basis_json</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>public  subroutine build_molecular_basis_json(json_path, element_symbols, mol_basis, error)  
+</h2>
+    
+
+    <p>Build a molecular basis from a BSE JSON file for a list of atoms</p>
+
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-json_path~3"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>json_path</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-element_symbols~5"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>element_symbols</strong>(:)</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-mol_basis"></span>
+              type(<a href='../type/molecular_basis_type.html'>molecular_basis_type</a>),
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>mol_basis</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-error~147"></span>
+              type(<a href='../type/error_t.html'>error_t</a>),
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>error</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <br>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Calls</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~build_molecular_basis_json~~CallsGraph Pages: 1 -->
+<svg id="procbuild_molecular_basis_jsonCallsGraph" width="641pt" height="464pt"
+ viewBox="0.00 0.00 641.00 463.58" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~build_molecular_basis_json~~CallsGraph" class="graph" transform="scale(0.72 0.72) rotate(0) translate(4 644)">
+<title>proc~~build_molecular_basis_json~~CallsGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-644 892,-644 892,4 -4,4"/>
+<!-- proc~build_molecular_basis_json -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_node1" class="node">
+<title>proc~build_molecular_basis_json</title>
+<polygon fill="none" stroke="black" points="157,-493 0,-493 0,-469 157,-469 157,-493"/>
+<text text-anchor="middle" x="78.5" y="-478.6" font-family="Helvetica,sans-Serif" font-size="10.50">build_molecular_basis_json</text>
+</g>
+<!-- proc~atomic_basis_destroy -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_node2" class="node">
+<title>proc~atomic_basis_destroy</title>
+<g id="a_proc~~build_molecular_basis_json~~CallsGraph_node2"><a xlink:href="../proc/atomic_basis_destroy.html" xlink:title="atomic_basis_type%atomic_basis_destroy">
+<polygon fill="#d9534f" stroke="#d9534f" points="453.5,-639 220.5,-639 220.5,-615 453.5,-615 453.5,-639"/>
+<text text-anchor="middle" x="337" y="-624.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">atomic_basis_type%atomic_basis_destroy</text>
+</a>
+</g>
+</g>
+<!-- proc~build_molecular_basis_json&#45;&gt;proc~atomic_basis_destroy -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_edge1" class="edge">
+<title>proc~build_molecular_basis_json&#45;&gt;proc~atomic_basis_destroy</title>
+<path fill="none" stroke="#ff0000" d="M86.49,-493.01C102.01,-518.47 142.04,-577.75 193,-605 198.6,-607.99 204.48,-610.61 210.54,-612.89"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="209.6,-616.27 220.2,-616.22 211.88,-609.65 209.6,-616.27"/>
+</g>
+<!-- proc~basis_set_allocate_elements -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_node3" class="node">
+<title>proc~basis_set_allocate_elements</title>
+<g id="a_proc~~build_molecular_basis_json~~CallsGraph_node3"><a xlink:href="../proc/basis_set_allocate_elements.html" xlink:title="molecular_basis_type%basis_set_allocate_elements">
+<polygon fill="#d9534f" stroke="#d9534f" points="481,-596 193,-596 193,-572 481,-572 481,-596"/>
+<text text-anchor="middle" x="337" y="-581.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">molecular_basis_type%basis_set_allocate_elements</text>
+</a>
+</g>
+</g>
+<!-- proc~build_molecular_basis_json&#45;&gt;proc~basis_set_allocate_elements -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_edge2" class="edge">
+<title>proc~build_molecular_basis_json&#45;&gt;proc~basis_set_allocate_elements</title>
+<path fill="none" stroke="#ff0000" d="M91.87,-493.12C111.49,-511.55 151.78,-546.26 193,-563 198.72,-565.32 204.66,-567.39 210.73,-569.24"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="209.79,-572.61 220.36,-571.96 211.69,-565.87 209.79,-572.61"/>
+</g>
+<!-- proc~copy_atomic_basis -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_node4" class="node">
+<title>proc~copy_atomic_basis</title>
+<g id="a_proc~~build_molecular_basis_json~~CallsGraph_node4"><a xlink:href="../proc/copy_atomic_basis.html" xlink:title="copy_atomic_basis">
+<polygon fill="#d9534f" stroke="#d9534f" points="393,-554 281,-554 281,-530 393,-530 393,-554"/>
+<text text-anchor="middle" x="337" y="-539.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">copy_atomic_basis</text>
+</a>
+</g>
+</g>
+<!-- proc~build_molecular_basis_json&#45;&gt;proc~copy_atomic_basis -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_edge3" class="edge">
+<title>proc~build_molecular_basis_json&#45;&gt;proc~copy_atomic_basis</title>
+<path fill="none" stroke="#ff0000" d="M116.04,-493C138.16,-500.01 167.02,-508.67 193,-515 218.24,-521.15 246.28,-526.71 270.79,-531.17"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="270.25,-534.63 280.71,-532.95 271.48,-527.74 270.25,-534.63"/>
+</g>
+<!-- proc~element_symbol_to_number -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_node5" class="node">
+<title>proc~element_symbol_to_number</title>
+<g id="a_proc~~build_molecular_basis_json~~CallsGraph_node5"><a xlink:href="../proc/element_symbol_to_number.html" xlink:title="element_symbol_to_number">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="713.5,-514 550.5,-514 550.5,-490 713.5,-490 713.5,-514"/>
+<text text-anchor="middle" x="632" y="-499.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">element_symbol_to_number</text>
+</a>
+</g>
+</g>
+<!-- proc~build_molecular_basis_json&#45;&gt;proc~element_symbol_to_number -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_edge4" class="edge">
+<title>proc~build_molecular_basis_json&#45;&gt;proc~element_symbol_to_number</title>
+<path fill="none" stroke="#ff0000" d="M157.06,-483.95C257.79,-487.79 433.36,-494.47 540.2,-498.54"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="540.19,-502.04 550.32,-498.93 540.46,-495.05 540.19,-502.04"/>
+</g>
+<!-- proc~error_add_context -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_node6" class="node">
+<title>proc~error_add_context</title>
+<g id="a_proc~~build_molecular_basis_json~~CallsGraph_node6"><a xlink:href="../proc/error_add_context.html" xlink:title="error_t%error_add_context">
+<polygon fill="#d9534f" stroke="#d9534f" points="414,-114 260,-114 260,-90 414,-90 414,-114"/>
+<text text-anchor="middle" x="337" y="-99.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">error_t%error_add_context</text>
+</a>
+</g>
+</g>
+<!-- proc~build_molecular_basis_json&#45;&gt;proc~error_add_context -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_edge5" class="edge">
+<title>proc~build_molecular_basis_json&#45;&gt;proc~error_add_context</title>
+<path fill="none" stroke="#ff0000" d="M79.29,-468.96C79.1,-418.49 85.54,-222.21 193,-128 208.74,-114.21 229.28,-106.62 249.87,-102.67"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="250.66,-106.08 259.96,-101.01 249.53,-99.18 250.66,-106.08"/>
+</g>
+<!-- proc~error_has_error -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_node7" class="node">
+<title>proc~error_has_error</title>
+<g id="a_proc~~build_molecular_basis_json~~CallsGraph_node7"><a xlink:href="../proc/error_has_error.html" xlink:title="error_t%error_has_error">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="701.5,-472 562.5,-472 562.5,-448 701.5,-448 701.5,-472"/>
+<text text-anchor="middle" x="632" y="-457.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">error_t%error_has_error</text>
+</a>
+</g>
+</g>
+<!-- proc~build_molecular_basis_json&#45;&gt;proc~error_has_error -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_edge6" class="edge">
+<title>proc~build_molecular_basis_json&#45;&gt;proc~error_has_error</title>
+<path fill="none" stroke="#ff0000" d="M157.06,-478.05C261.57,-474.07 446.62,-467.02 551.91,-463.01"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="552.3,-466.5 562.16,-462.62 552.03,-459.5 552.3,-466.5"/>
+</g>
+<!-- proc~error_set -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_node8" class="node">
+<title>proc~error_set</title>
+<g id="a_proc~~build_molecular_basis_json~~CallsGraph_node8"><a xlink:href="../proc/error_set.html" xlink:title="error_t%error_set">
+<polygon fill="#d9534f" stroke="#d9534f" points="888,-192 783,-192 783,-168 888,-168 888,-192"/>
+<text text-anchor="middle" x="835.5" y="-177.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">error_t%error_set</text>
+</a>
+</g>
+</g>
+<!-- proc~build_molecular_basis_json&#45;&gt;proc~error_set -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_edge7" class="edge">
+<title>proc~build_molecular_basis_json&#45;&gt;proc~error_set</title>
+<path fill="none" stroke="#ff0000" d="M88.82,-468.82C107.05,-445.53 149.44,-393.93 193,-359 323.23,-254.56 355.9,-212.75 517,-169 603.4,-145.54 707.87,-156.25 772.77,-167.23"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="772.39,-170.72 782.84,-168.99 773.59,-163.82 772.39,-170.72"/>
+</g>
+<!-- proc~read_json_basis_element -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_node9" class="node">
+<title>proc~read_json_basis_element</title>
+<g id="a_proc~~build_molecular_basis_json~~CallsGraph_node9"><a xlink:href="../proc/read_json_basis_element.html" xlink:title="read_json_basis_element">
+<polygon fill="#d9534f" stroke="#d9534f" points="409.5,-392 264.5,-392 264.5,-368 409.5,-368 409.5,-392"/>
+<text text-anchor="middle" x="337" y="-377.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">read_json_basis_element</text>
+</a>
+</g>
+</g>
+<!-- proc~build_molecular_basis_json&#45;&gt;proc~read_json_basis_element -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_edge8" class="edge">
+<title>proc~build_molecular_basis_json&#45;&gt;proc~read_json_basis_element</title>
+<path fill="none" stroke="#ff0000" d="M110.19,-468.92C156.53,-450.67 244.42,-416.06 295.82,-395.82"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="297.26,-399.02 305.28,-392.1 294.69,-392.5 297.26,-399.02"/>
+</g>
+<!-- proc~cgto_destroy -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_node15" class="node">
+<title>proc~cgto_destroy</title>
+<g id="a_proc~~build_molecular_basis_json~~CallsGraph_node15"><a xlink:href="../proc/cgto_destroy.html" xlink:title="cgto_type%cgto_destroy">
+<polygon fill="#d9534f" stroke="#d9534f" points="703,-640 561,-640 561,-616 703,-616 703,-640"/>
+<text text-anchor="middle" x="632" y="-625.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">cgto_type%cgto_destroy</text>
+</a>
+</g>
+</g>
+<!-- proc~atomic_basis_destroy&#45;&gt;proc~cgto_destroy -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_edge9" class="edge">
+<title>proc~atomic_basis_destroy&#45;&gt;proc~cgto_destroy</title>
+<path fill="none" stroke="#ff0000" d="M453.8,-627.4C486.14,-627.51 520.57,-627.62 550.39,-627.72"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="550.73,-631.23 560.74,-627.76 550.75,-624.23 550.73,-631.23"/>
+</g>
+<!-- proc~allocate_basis_shells -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_node12" class="node">
+<title>proc~allocate_basis_shells</title>
+<g id="a_proc~~build_molecular_basis_json~~CallsGraph_node12"><a xlink:href="../proc/allocate_basis_shells.html" xlink:title="atomic_basis_type%allocate_basis_shells">
+<polygon fill="#d9534f" stroke="#d9534f" points="747,-556 517,-556 517,-532 747,-532 747,-556"/>
+<text text-anchor="middle" x="632" y="-541.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">atomic_basis_type%allocate_basis_shells</text>
+</a>
+</g>
+</g>
+<!-- proc~copy_atomic_basis&#45;&gt;proc~allocate_basis_shells -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_edge10" class="edge">
+<title>proc~copy_atomic_basis&#45;&gt;proc~allocate_basis_shells</title>
+<path fill="none" stroke="#7fff00" d="M393.11,-542.38C425.28,-542.6 467.24,-542.88 506.94,-543.15"/>
+<polygon fill="#7fff00" stroke="#7fff00" points="506.96,-546.65 516.98,-543.22 507,-539.65 506.96,-546.65"/>
+</g>
+<!-- proc~cgto_allocate_arrays -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_node14" class="node">
+<title>proc~cgto_allocate_arrays</title>
+<g id="a_proc~~build_molecular_basis_json~~CallsGraph_node14"><a xlink:href="../proc/cgto_allocate_arrays.html" xlink:title="cgto_type%cgto_allocate_arrays">
+<polygon fill="#d9534f" stroke="#d9534f" points="724,-598 540,-598 540,-574 724,-574 724,-598"/>
+<text text-anchor="middle" x="632" y="-583.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">cgto_type%cgto_allocate_arrays</text>
+</a>
+</g>
+</g>
+<!-- proc~copy_atomic_basis&#45;&gt;proc~cgto_allocate_arrays -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_edge11" class="edge">
+<title>proc~copy_atomic_basis&#45;&gt;proc~cgto_allocate_arrays</title>
+<path fill="none" stroke="#7fff00" d="M393.02,-550C419.6,-553.88 451.97,-558.64 481,-563 501.15,-566.02 522.82,-569.32 543.25,-572.45"/>
+<polygon fill="#7fff00" stroke="#7fff00" points="542.75,-575.91 553.16,-573.97 543.81,-568.99 542.75,-575.91"/>
+</g>
+<!-- to_lower -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_node20" class="node">
+<title>to_lower</title>
+<polygon fill="#777777" stroke="#777777" points="864.5,-535 806.5,-535 806.5,-511 864.5,-511 864.5,-535"/>
+<text text-anchor="middle" x="835.5" y="-520.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">to_lower</text>
+</g>
+<!-- proc~element_symbol_to_number&#45;&gt;to_lower -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_edge12" class="edge">
+<title>proc~element_symbol_to_number&#45;&gt;to_lower</title>
+<path fill="none" stroke="#00ff3f" d="M713.51,-510.39C742.03,-513.36 772.8,-516.57 796.18,-519.01"/>
+<polygon fill="#00ff3f" stroke="#00ff3f" points="796.05,-522.51 806.36,-520.07 796.78,-515.55 796.05,-522.51"/>
+</g>
+<!-- to_upper -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_node21" class="node">
+<title>to_upper</title>
+<polygon fill="#777777" stroke="#777777" points="865.5,-493 805.5,-493 805.5,-469 865.5,-469 865.5,-493"/>
+<text text-anchor="middle" x="835.5" y="-478.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">to_upper</text>
+</g>
+<!-- proc~element_symbol_to_number&#45;&gt;to_upper -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_edge13" class="edge">
+<title>proc~element_symbol_to_number&#45;&gt;to_upper</title>
+<path fill="none" stroke="#00ff3f" d="M713.51,-493.61C741.65,-490.68 771.98,-487.52 795.24,-485.09"/>
+<polygon fill="#00ff3f" stroke="#00ff3f" points="795.81,-488.55 805.39,-484.03 795.08,-481.59 795.81,-488.55"/>
+</g>
+<!-- proc~read_json_basis_element&#45;&gt;proc~element_symbol_to_number -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_edge19" class="edge">
+<title>proc~read_json_basis_element&#45;&gt;proc~element_symbol_to_number</title>
+<path fill="none" stroke="#ff00bf" d="M354.85,-392.07C385.54,-413.45 453.27,-457.88 517,-481 524.53,-483.73 532.48,-486.12 540.53,-488.21"/>
+<polygon fill="#ff00bf" stroke="#ff00bf" points="539.83,-491.64 550.38,-490.61 541.49,-484.84 539.83,-491.64"/>
+</g>
+<!-- proc~read_json_basis_element&#45;&gt;proc~error_has_error -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_edge20" class="edge">
+<title>proc~read_json_basis_element&#45;&gt;proc~error_has_error</title>
+<path fill="none" stroke="#ff00bf" d="M375.16,-392.02C411.21,-403.5 467.58,-420.93 517,-434 532.29,-438.05 548.84,-442.04 564.46,-445.63"/>
+<polygon fill="#ff00bf" stroke="#ff00bf" points="564.04,-449.13 574.57,-447.94 565.59,-442.3 564.04,-449.13"/>
+</g>
+<!-- proc~read_json_basis_element&#45;&gt;proc~error_set -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_edge21" class="edge">
+<title>proc~read_json_basis_element&#45;&gt;proc~error_set</title>
+<path fill="none" stroke="#ff00bf" d="M346.34,-367.91C369.23,-335.83 436.7,-248.54 517,-212 599.57,-174.43 706.4,-171.83 772.68,-174.83"/>
+<polygon fill="#ff00bf" stroke="#ff00bf" points="772.8,-178.34 782.96,-175.36 773.15,-171.35 772.8,-178.34"/>
+</g>
+<!-- get -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_node10" class="node">
+<title>get</title>
+<polygon fill="#777777" stroke="#777777" points="862.5,-392 808.5,-392 808.5,-368 862.5,-368 862.5,-392"/>
+<text text-anchor="middle" x="835.5" y="-377.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">get</text>
+</g>
+<!-- proc~read_json_basis_element&#45;&gt;get -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_edge14" class="edge">
+<title>proc~read_json_basis_element&#45;&gt;get</title>
+<path fill="none" stroke="#ff00bf" d="M409.54,-390.96C491.37,-401.8 629.26,-414.93 747,-401 764.18,-398.97 782.87,-394.76 798.55,-390.65"/>
+<polygon fill="#ff00bf" stroke="#ff00bf" points="799.64,-393.98 808.37,-387.98 797.8,-387.22 799.64,-393.98"/>
+</g>
+<!-- info -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_node11" class="node">
+<title>info</title>
+<polygon fill="#777777" stroke="#777777" points="862.5,-251 808.5,-251 808.5,-227 862.5,-227 862.5,-251"/>
+<text text-anchor="middle" x="835.5" y="-236.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">info</text>
+</g>
+<!-- proc~read_json_basis_element&#45;&gt;info -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_edge15" class="edge">
+<title>proc~read_json_basis_element&#45;&gt;info</title>
+<path fill="none" stroke="#ff00bf" d="M348.04,-367.58C372.89,-337.97 440.8,-263.7 517,-237 613.92,-203.04 737.94,-219.57 798.27,-231.09"/>
+<polygon fill="#ff00bf" stroke="#ff00bf" points="797.94,-234.59 808.43,-233.09 799.3,-227.72 797.94,-234.59"/>
+</g>
+<!-- proc~read_json_basis_element&#45;&gt;proc~allocate_basis_shells -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_edge16" class="edge">
+<title>proc~read_json_basis_element&#45;&gt;proc~allocate_basis_shells</title>
+<path fill="none" stroke="#ff00bf" d="M349.16,-392.37C375.4,-420.58 444.27,-489.81 517,-523 521.74,-525.16 526.69,-527.1 531.76,-528.85"/>
+<polygon fill="#ff00bf" stroke="#ff00bf" points="531.03,-532.29 541.62,-531.95 533.13,-525.61 531.03,-532.29"/>
+</g>
+<!-- proc~cached_basis_json -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_node13" class="node">
+<title>proc~cached_basis_json</title>
+<g id="a_proc~~build_molecular_basis_json~~CallsGraph_node13"><a xlink:href="../proc/cached_basis_json.html" xlink:title="cached_basis_json">
+<polygon fill="#d9534f" stroke="#d9534f" points="687.5,-111 576.5,-111 576.5,-87 687.5,-87 687.5,-111"/>
+<text text-anchor="middle" x="632" y="-96.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">cached_basis_json</text>
+</a>
+</g>
+</g>
+<!-- proc~read_json_basis_element&#45;&gt;proc~cached_basis_json -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_edge17" class="edge">
+<title>proc~read_json_basis_element&#45;&gt;proc~cached_basis_json</title>
+<path fill="none" stroke="#ff00bf" d="M346.07,-367.63C369.33,-332.66 439.76,-231.43 517,-166 541.12,-145.57 572.28,-127.73 595.93,-115.6"/>
+<polygon fill="#ff00bf" stroke="#ff00bf" points="597.55,-118.71 604.91,-111.09 594.41,-112.45 597.55,-118.71"/>
+</g>
+<!-- proc~read_json_basis_element&#45;&gt;proc~cgto_allocate_arrays -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_edge18" class="edge">
+<title>proc~read_json_basis_element&#45;&gt;proc~cgto_allocate_arrays</title>
+<path fill="none" stroke="#ff00bf" d="M351.08,-392.01C376.81,-415.81 435.44,-471.01 481,-521 498.02,-539.67 495.25,-552.15 517,-565 521.22,-567.49 525.66,-569.7 530.26,-571.66"/>
+<polygon fill="#ff00bf" stroke="#ff00bf" points="529.28,-575.03 539.87,-575.32 531.77,-568.49 529.28,-575.03"/>
+</g>
+<!-- proc~int_to_text -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_node16" class="node">
+<title>proc~int_to_text</title>
+<g id="a_proc~~build_molecular_basis_json~~CallsGraph_node16"><a xlink:href="../proc/int_to_text.html" xlink:title="int_to_text">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="869,-310 802,-310 802,-286 869,-286 869,-310"/>
+<text text-anchor="middle" x="835.5" y="-295.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">int_to_text</text>
+</a>
+</g>
+</g>
+<!-- proc~read_json_basis_element&#45;&gt;proc~int_to_text -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_edge22" class="edge">
+<title>proc~read_json_basis_element&#45;&gt;proc~int_to_text</title>
+<path fill="none" stroke="#ff00bf" d="M364.63,-367.98C399.03,-353.08 461.13,-328.27 517,-317 613.71,-297.49 730.08,-295.96 791.56,-296.81"/>
+<polygon fill="#ff00bf" stroke="#ff00bf" points="791.61,-300.31 801.66,-296.98 791.72,-293.31 791.61,-300.31"/>
+</g>
+<!-- proc~shell_angular_form -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_node17" class="node">
+<title>proc~shell_angular_form</title>
+<g id="a_proc~~build_molecular_basis_json~~CallsGraph_node17"><a xlink:href="../proc/shell_angular_form.html" xlink:title="shell_angular_form">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="689.5,-350 574.5,-350 574.5,-326 689.5,-326 689.5,-350"/>
+<text text-anchor="middle" x="632" y="-335.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">shell_angular_form</text>
+</a>
+</g>
+</g>
+<!-- proc~read_json_basis_element&#45;&gt;proc~shell_angular_form -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_edge23" class="edge">
+<title>proc~read_json_basis_element&#45;&gt;proc~shell_angular_form</title>
+<path fill="none" stroke="#ff00bf" d="M409.68,-369.73C456.77,-362.97 517.97,-354.2 564.07,-347.59"/>
+<polygon fill="#ff00bf" stroke="#ff00bf" points="564.86,-351.02 574.26,-346.13 563.86,-344.09 564.86,-351.02"/>
+</g>
+<!-- proc~shell_angular_momenta -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_node18" class="node">
+<title>proc~shell_angular_momenta</title>
+<g id="a_proc~~build_molecular_basis_json~~CallsGraph_node18"><a xlink:href="../proc/shell_angular_momenta.html" xlink:title="shell_angular_momenta">
+<polygon fill="#d9534f" stroke="#d9534f" points="702.5,-392 561.5,-392 561.5,-368 702.5,-368 702.5,-392"/>
+<text text-anchor="middle" x="632" y="-377.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">shell_angular_momenta</text>
+</a>
+</g>
+</g>
+<!-- proc~read_json_basis_element&#45;&gt;proc~shell_angular_momenta -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_edge24" class="edge">
+<title>proc~read_json_basis_element&#45;&gt;proc~shell_angular_momenta</title>
+<path fill="none" stroke="#ff00bf" d="M409.68,-380C452.51,-380 507,-380 551.2,-380"/>
+<polygon fill="#ff00bf" stroke="#ff00bf" points="551.33,-383.5 561.33,-380 551.33,-376.5 551.33,-383.5"/>
+</g>
+<!-- proc~shell_contractions -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_node19" class="node">
+<title>proc~shell_contractions</title>
+<g id="a_proc~~build_molecular_basis_json~~CallsGraph_node19"><a xlink:href="../proc/shell_contractions.html" xlink:title="shell_contractions">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="686.5,-270 577.5,-270 577.5,-246 686.5,-246 686.5,-270"/>
+<text text-anchor="middle" x="632" y="-255.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">shell_contractions</text>
+</a>
+</g>
+</g>
+<!-- proc~read_json_basis_element&#45;&gt;proc~shell_contractions -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_edge25" class="edge">
+<title>proc~read_json_basis_element&#45;&gt;proc~shell_contractions</title>
+<path fill="none" stroke="#ff00bf" d="M356.54,-367.88C388.2,-347.69 455.24,-307.12 517,-284 532.9,-278.05 550.58,-273.21 567.18,-269.39"/>
+<polygon fill="#ff00bf" stroke="#ff00bf" points="568.34,-272.72 577.35,-267.15 566.83,-265.88 568.34,-272.72"/>
+</g>
+<!-- proc~cached_basis_json&#45;&gt;proc~error_set -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_edge30" class="edge">
+<title>proc~cached_basis_json&#45;&gt;proc~error_set</title>
+<path fill="none" stroke="#7fff00" d="M687.65,-107.54C707.1,-111.95 728.7,-118.48 747,-128 765.73,-137.75 764.99,-147.98 783,-159 785.63,-160.61 788.41,-162.15 791.26,-163.6"/>
+<polygon fill="#7fff00" stroke="#7fff00" points="789.95,-166.85 800.49,-167.96 792.94,-160.53 789.95,-166.85"/>
+</g>
+<!-- clear_exceptions -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_node22" class="node">
+<title>clear_exceptions</title>
+<polygon fill="#777777" stroke="#777777" points="886.5,-24 784.5,-24 784.5,0 886.5,0 886.5,-24"/>
+<text text-anchor="middle" x="835.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">clear_exceptions</text>
+</g>
+<!-- proc~cached_basis_json&#45;&gt;clear_exceptions -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_edge26" class="edge">
+<title>proc~cached_basis_json&#45;&gt;clear_exceptions</title>
+<path fill="none" stroke="#7fff00" d="M659.73,-86.98C689.66,-73.57 739.65,-51.37 783,-33 786.9,-31.35 790.98,-29.64 795.05,-27.96"/>
+<polygon fill="#7fff00" stroke="#7fff00" points="796.57,-31.12 804.49,-24.08 793.91,-24.64 796.57,-31.12"/>
+</g>
+<!-- failed -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_node23" class="node">
+<title>failed</title>
+<polygon fill="#777777" stroke="#777777" points="862.5,-150 808.5,-150 808.5,-126 862.5,-126 862.5,-150"/>
+<text text-anchor="middle" x="835.5" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">failed</text>
+</g>
+<!-- proc~cached_basis_json&#45;&gt;failed -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_edge27" class="edge">
+<title>proc~cached_basis_json&#45;&gt;failed</title>
+<path fill="none" stroke="#7fff00" d="M687.53,-109.55C722.82,-116.38 767.77,-125.08 798.61,-131.05"/>
+<polygon fill="#7fff00" stroke="#7fff00" points="798.01,-134.5 808.49,-132.97 799.34,-127.63 798.01,-134.5"/>
+</g>
+<!-- initialize -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_node24" class="node">
+<title>initialize</title>
+<polygon fill="#777777" stroke="#777777" points="864,-108 807,-108 807,-84 864,-84 864,-108"/>
+<text text-anchor="middle" x="835.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">initialize</text>
+</g>
+<!-- proc~cached_basis_json&#45;&gt;initialize -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_edge28" class="edge">
+<title>proc~cached_basis_json&#45;&gt;initialize</title>
+<path fill="none" stroke="#7fff00" d="M687.53,-98.19C722.04,-97.67 765.79,-97.02 796.55,-96.57"/>
+<polygon fill="#7fff00" stroke="#7fff00" points="796.9,-100.06 806.85,-96.41 796.8,-93.06 796.9,-100.06"/>
+</g>
+<!-- load -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_node25" class="node">
+<title>load</title>
+<polygon fill="#777777" stroke="#777777" points="862.5,-66 808.5,-66 808.5,-42 862.5,-42 862.5,-66"/>
+<text text-anchor="middle" x="835.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">load</text>
+</g>
+<!-- proc~cached_basis_json&#45;&gt;load -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_edge29" class="edge">
+<title>proc~cached_basis_json&#45;&gt;load</title>
+<path fill="none" stroke="#7fff00" d="M686.73,-87C722.03,-79.12 767.26,-69.02 798.32,-62.08"/>
+<polygon fill="#7fff00" stroke="#7fff00" points="799.29,-65.45 808.28,-59.86 797.76,-58.62 799.29,-65.45"/>
+</g>
+<!-- proc~shell_angular_form&#45;&gt;get -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_edge31" class="edge">
+<title>proc~shell_angular_form&#45;&gt;get</title>
+<path fill="none" stroke="#007fff" d="M689.65,-347.82C707.99,-351.16 728.4,-355.06 747,-359 763.92,-362.59 782.58,-367 798.3,-370.85"/>
+<polygon fill="#007fff" stroke="#007fff" points="797.62,-374.29 808.16,-373.29 799.29,-367.49 797.62,-374.29"/>
+</g>
+<!-- proc~shell_angular_form&#45;&gt;proc~int_to_text -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_edge32" class="edge">
+<title>proc~shell_angular_form&#45;&gt;proc~int_to_text</title>
+<path fill="none" stroke="#007fff" d="M689.67,-326.75C722.05,-320.32 762,-312.39 791.74,-306.49"/>
+<polygon fill="#007fff" stroke="#007fff" points="792.67,-309.87 801.8,-304.49 791.31,-303.01 792.67,-309.87"/>
+</g>
+<!-- proc~shell_angular_momenta&#45;&gt;get -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_edge33" class="edge">
+<title>proc~shell_angular_momenta&#45;&gt;get</title>
+<path fill="none" stroke="#0000ff" d="M702.63,-380C734.62,-380 771.26,-380 797.78,-380"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="798.13,-383.5 808.13,-380 798.13,-376.5 798.13,-383.5"/>
+</g>
+<!-- proc~shell_contractions&#45;&gt;info -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_edge34" class="edge">
+<title>proc~shell_contractions&#45;&gt;info</title>
+<path fill="none" stroke="#7f00ff" d="M686.73,-252.93C722.03,-249.6 767.26,-245.34 798.32,-242.41"/>
+<polygon fill="#7f00ff" stroke="#7f00ff" points="798.65,-245.9 808.28,-241.47 798,-238.93 798.65,-245.9"/>
+</g>
+<!-- proc~shell_contractions&#45;&gt;proc~int_to_text -->
+<g id="proc~~build_molecular_basis_json~~CallsGraph_edge35" class="edge">
+<title>proc~shell_contractions&#45;&gt;proc~int_to_text</title>
+<path fill="none" stroke="#7f00ff" d="M686.73,-268.67C719.62,-275.2 761.13,-283.44 791.77,-289.52"/>
+<polygon fill="#7f00ff" stroke="#7f00ff" points="791.23,-292.98 801.72,-291.49 792.59,-286.11 791.23,-292.98"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panprocbuild_molecular_basis_jsonCallsGraph = svgPanZoom('#procbuild_molecular_basis_jsonCallsGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CallsGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CallsGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="374,-24 244,-24 244,0 374,0 374,-24"/>
+<text text-anchor="middle" x="309" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="537.5,-24 392.5,-24 392.5,0 537.5,0 537.5,-24"/>
+<text text-anchor="middle" x="465" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="614,-24 556,-24 556,0 614,0 614,-24"/>
+<text text-anchor="middle" x="585" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="737.5,-24 632.5,-24 632.5,0 737.5,0 737.5,-24"/>
+<text text-anchor="middle" x="685" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+
+    <section>    
+      <h2>Variables</h2>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+<th></th><th scope="col">Initial</th>        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-iatom~30"></span>
+              integer,
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>iatom</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-is_new"></span>
+              logical,
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>is_new</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-iunique"></span>
+              integer,
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>iunique</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-match"></span>
+              integer,
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>match</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-molecule_form"></span>
+              integer,
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>molecule_form</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_atoms~37"></span>
+              integer,
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_atoms</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_unique"></span>
+              integer,
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_unique</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-unique_bases"></span>
+              type(<a href='../type/atomic_basis_type.html'>atomic_basis_type</a>),
+            </td>
+              <td>private,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>unique_bases</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-unique_z"></span>
+              integer,
+            </td>
+              <td>private,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>unique_z</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-z~7"></span>
+              integer,
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>z</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    </section>
+    <br>
+    
+    
+
+    
+    
+
+
+
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="hl codehilite"><pre><span></span><span class="w">   </span><span class="k">subroutine </span><span class="n">build_molecular_basis_json</span><span class="p">(</span><span class="n">json_path</span><span class="p">,</span><span class="w"> </span><span class="n">element_symbols</span><span class="p">,</span><span class="w"> </span><span class="n">mol_basis</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="p">)</span>
+<span class="w">      </span><span class="c">!! Build a molecular basis from a BSE JSON file for a list of atoms</span>
+<span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">json_path</span>
+<span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">element_symbols</span><span class="p">(:)</span>
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">molecular_basis_type</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">mol_basis</span>
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">error_t</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">error</span>
+
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">atomic_basis_type</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">unique_bases</span><span class="p">(:)</span>
+<span class="w">      </span><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">unique_z</span><span class="p">(:)</span>
+<span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">n_atoms</span><span class="p">,</span><span class="w"> </span><span class="n">n_unique</span><span class="p">,</span><span class="w"> </span><span class="n">iatom</span><span class="p">,</span><span class="w"> </span><span class="n">iunique</span><span class="p">,</span><span class="w"> </span><span class="n">match</span><span class="p">,</span><span class="w"> </span><span class="n">z</span>
+<span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">molecule_form</span>
+<span class="w">      </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">is_new</span>
+
+<span class="w">      </span><span class="n">n_atoms</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="n">element_symbols</span><span class="p">)</span>
+<span class="w">      </span><span class="k">allocate</span><span class="w"> </span><span class="p">(</span><span class="n">unique_z</span><span class="p">(</span><span class="n">n_atoms</span><span class="p">),</span><span class="w"> </span><span class="n">unique_bases</span><span class="p">(</span><span class="n">n_atoms</span><span class="p">))</span>
+
+<span class="w">      </span><span class="n">n_unique</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">      </span><span class="k">do </span><span class="n">iatom</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">n_atoms</span>
+<span class="w">         </span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_symbol_to_number</span><span class="p">(</span><span class="nb">trim</span><span class="p">(</span><span class="nb">adjustl</span><span class="p">(</span><span class="n">element_symbols</span><span class="p">(</span><span class="n">iatom</span><span class="p">))))</span>
+<span class="w">         </span><span class="n">is_new</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="w">         </span><span class="k">do </span><span class="n">iunique</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">n_unique</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">unique_z</span><span class="p">(</span><span class="n">iunique</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">z</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">               </span><span class="n">is_new</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<span class="w">               </span><span class="k">exit</span>
+<span class="k">            end if</span>
+<span class="k">         end do</span>
+<span class="k">         if</span><span class="w"> </span><span class="p">(</span><span class="n">is_new</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            </span><span class="n">n_unique</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n_unique</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">            </span><span class="n">unique_z</span><span class="p">(</span><span class="n">n_unique</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">z</span>
+<span class="w">            </span><span class="k">call </span><span class="n">read_json_basis_element</span><span class="p">(</span><span class="n">json_path</span><span class="p">,</span><span class="w"> </span><span class="n">element_symbols</span><span class="p">(</span><span class="n">iatom</span><span class="p">),</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">                                         </span><span class="n">unique_bases</span><span class="p">(</span><span class="n">n_unique</span><span class="p">),</span><span class="w"> </span><span class="n">error</span><span class="p">)</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="p">%</span><span class="n">has_error</span><span class="p">())</span><span class="w"> </span><span class="k">then</span>
+<span class="k">               call </span><span class="n">error</span><span class="p">%</span><span class="n">add_context</span><span class="p">(</span><span class="s2">"mqc_json_basis_reader:build_molecular_basis_json"</span><span class="p">)</span>
+<span class="w">               </span><span class="k">return</span>
+<span class="k">            end if</span>
+<span class="k">         end if</span>
+<span class="k">      end do</span>
+
+<span class="w">      </span><span class="c">! One convention for the molecule, from the atoms actually in it: an</span>
+<span class="w">      </span><span class="c">! element with no shell above p votes for nothing. Two that genuinely</span>
+<span class="w">      </span><span class="c">! disagree are refused rather than resolved.</span>
+<span class="w">      </span><span class="n">molecule_form</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ANGULAR_FORM_UNSET</span>
+<span class="w">      </span><span class="k">do </span><span class="n">iunique</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">n_unique</span>
+<span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">unique_bases</span><span class="p">(</span><span class="n">iunique</span><span class="p">)%</span><span class="n">angular_form</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">ANGULAR_FORM_UNSET</span><span class="p">)</span><span class="w"> </span><span class="k">cycle</span>
+<span class="k">         if</span><span class="w"> </span><span class="p">(</span><span class="n">molecule_form</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">ANGULAR_FORM_UNSET</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            </span><span class="n">molecule_form</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unique_bases</span><span class="p">(</span><span class="n">iunique</span><span class="p">)%</span><span class="n">angular_form</span>
+<span class="w">         </span><span class="k">else if</span><span class="w"> </span><span class="p">(</span><span class="n">molecule_form</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="n">unique_bases</span><span class="p">(</span><span class="n">iunique</span><span class="p">)%</span><span class="n">angular_form</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            call </span><span class="n">error</span><span class="p">%</span><span class="n">set</span><span class="p">(</span><span class="n">ERROR_PARSE</span><span class="p">,</span><span class="w"> </span><span class="s2">"the basis in "</span><span class="o">//</span><span class="nb">trim</span><span class="p">(</span><span class="n">json_path</span><span class="p">)</span><span class="o">//</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">                           </span><span class="s2">" is Cartesian for some of this molecule's elements and "</span><span class="o">//</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">                           </span><span class="s2">"spherical for others, and the integrals must be built in "</span><span class="o">//</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">                           </span><span class="s2">"one form for the whole molecule. Choose a basis that is "</span><span class="o">//</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">                           </span><span class="s2">"consistently one or the other."</span><span class="p">)</span>
+<span class="w">            </span><span class="k">call </span><span class="n">error</span><span class="p">%</span><span class="n">add_context</span><span class="p">(</span><span class="s2">"mqc_json_basis_reader:build_molecular_basis_json"</span><span class="p">)</span>
+<span class="w">            </span><span class="k">return</span>
+<span class="k">         end if</span>
+<span class="k">      end do</span>
+
+<span class="k">      call </span><span class="n">mol_basis</span><span class="p">%</span><span class="n">allocate_elements</span><span class="p">(</span><span class="n">n_atoms</span><span class="p">)</span>
+<span class="w">      </span><span class="n">mol_basis</span><span class="p">%</span><span class="n">angular_form</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">molecule_form</span>
+<span class="w">      </span><span class="k">do </span><span class="n">iatom</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">n_atoms</span>
+<span class="w">         </span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_symbol_to_number</span><span class="p">(</span><span class="nb">trim</span><span class="p">(</span><span class="nb">adjustl</span><span class="p">(</span><span class="n">element_symbols</span><span class="p">(</span><span class="n">iatom</span><span class="p">))))</span>
+<span class="w">         </span><span class="n">match</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">         </span><span class="k">do </span><span class="n">iunique</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">n_unique</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">unique_z</span><span class="p">(</span><span class="n">iunique</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">z</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">               </span><span class="n">match</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">iunique</span>
+<span class="w">               </span><span class="k">exit</span>
+<span class="k">            end if</span>
+<span class="k">         end do</span>
+<span class="k">         call </span><span class="n">copy_atomic_basis</span><span class="p">(</span><span class="n">unique_bases</span><span class="p">(</span><span class="n">match</span><span class="p">),</span><span class="w"> </span><span class="n">mol_basis</span><span class="p">%</span><span class="n">elements</span><span class="p">(</span><span class="n">iatom</span><span class="p">))</span>
+<span class="w">      </span><span class="k">end do</span>
+
+<span class="k">      do </span><span class="n">iunique</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">n_unique</span>
+<span class="w">         </span><span class="k">call </span><span class="n">unique_bases</span><span class="p">(</span><span class="n">iunique</span><span class="p">)%</span><span class="n">destroy</span><span class="p">()</span>
+<span class="w">      </span><span class="k">end do</span>
+<span class="k">      deallocate</span><span class="w"> </span><span class="p">(</span><span class="n">unique_bases</span><span class="p">,</span><span class="w"> </span><span class="n">unique_z</span><span class="p">)</span>
+<span class="w">   </span><span class="k">end subroutine </span><span class="n">build_molecular_basis_json</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              metalquicha
+ was developed by Jorge Luis Galvez Vallejo<br>              &copy; 2026 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+ on 2026-09-07 09:10 +0000             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

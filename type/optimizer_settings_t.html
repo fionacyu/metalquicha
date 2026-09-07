@@ -1,0 +1,1172 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="A demonstration of PIC as a framework for scientific applications targetting quantum chemistry">
+    <meta name="author" content="Jorge Luis Galvez Vallejo" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>optimizer_settings_t &ndash; metalquicha </title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">metalquicha </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../program/main.html">Program</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>optimizer_settings_t
+      <small>Derived Type</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title="<p> 2.4% of total for derived types.</p>Including implementation: 33 statements,  0.8% of total for derived types.">33 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/mqc_optimizer_types.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/mqc_optimizer_types.f90.html'>mqc_optimizer_types.f90</a></li>
+                <li class="breadcrumb-item"><a href='../module/mqc_optimizer_types.html'>mqc_optimizer_types</a></li>
+            <li class="breadcrumb-item active" aria-current="page">optimizer_settings_t</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#vars-0"
+         aria-expanded="false" aria-controls="vars-0">
+         <h4 class="card-header bg-primary text-white">Variables</h4>
+      </a>
+      <div id="vars-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../type/optimizer_settings_t.html#variable-algorithm~2">algorithm</a>
+            <a class="list-group-item" href="../type/optimizer_settings_t.html#variable-connect">connect</a>
+            <a class="list-group-item" href="../type/optimizer_settings_t.html#variable-connect_distort">connect_distort</a>
+            <a class="list-group-item" href="../type/optimizer_settings_t.html#variable-constraints">constraints</a>
+            <a class="list-group-item" href="../type/optimizer_settings_t.html#variable-coordinates~15">coordinates</a>
+            <a class="list-group-item" href="../type/optimizer_settings_t.html#variable-dimer_max_rotations">dimer_max_rotations</a>
+            <a class="list-group-item" href="../type/optimizer_settings_t.html#variable-dimer_rotation_tolerance">dimer_rotation_tolerance</a>
+            <a class="list-group-item" href="../type/optimizer_settings_t.html#variable-dimer_separation">dimer_separation</a>
+            <a class="list-group-item" href="../type/optimizer_settings_t.html#variable-endpoint~3">endpoint</a>
+            <a class="list-group-item" href="../type/optimizer_settings_t.html#variable-energy_tolerance">energy_tolerance</a>
+            <a class="list-group-item" href="../type/optimizer_settings_t.html#variable-freeze_terms">freeze_terms</a>
+            <a class="list-group-item" href="../type/optimizer_settings_t.html#variable-friction">friction</a>
+            <a class="list-group-item" href="../type/optimizer_settings_t.html#variable-friction_factor">friction_factor</a>
+            <a class="list-group-item" href="../type/optimizer_settings_t.html#variable-friction_rising">friction_rising</a>
+            <a class="list-group-item" href="../type/optimizer_settings_t.html#variable-frozen_atoms">frozen_atoms</a>
+            <a class="list-group-item" href="../type/optimizer_settings_t.html#variable-gradient_tolerance~3">gradient_tolerance</a>
+            <a class="list-group-item" href="../type/optimizer_settings_t.html#variable-hess_end">hess_end</a>
+            <a class="list-group-item" href="../type/optimizer_settings_t.html#variable-hessian_update">hessian_update</a>
+            <a class="list-group-item" href="../type/optimizer_settings_t.html#variable-lbfgs_memory">lbfgs_memory</a>
+            <a class="list-group-item" href="../type/optimizer_settings_t.html#variable-max_step">max_step</a>
+            <a class="list-group-item" href="../type/optimizer_settings_t.html#variable-max_steps">max_steps</a>
+            <a class="list-group-item" href="../type/optimizer_settings_t.html#variable-n_images">n_images</a>
+            <a class="list-group-item" href="../type/optimizer_settings_t.html#variable-neb_ends">neb_ends</a>
+            <a class="list-group-item" href="../type/optimizer_settings_t.html#variable-neb_spring">neb_spring</a>
+            <a class="list-group-item" href="../type/optimizer_settings_t.html#variable-print_level">print_level</a>
+            <a class="list-group-item" href="../type/optimizer_settings_t.html#variable-saddle_method">saddle_method</a>
+            <a class="list-group-item" href="../type/optimizer_settings_t.html#variable-soft_mode_threshold">soft_mode_threshold</a>
+            <a class="list-group-item" href="../type/optimizer_settings_t.html#variable-target~2">target</a>
+            <a class="list-group-item" href="../type/optimizer_settings_t.html#variable-timestep">timestep</a>
+            <a class="list-group-item" href="../type/optimizer_settings_t.html#variable-trajectory~2">trajectory</a>
+            <a class="list-group-item" href="../type/optimizer_settings_t.html#variable-zero_modes">zero_modes</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../type/optimizer_settings_t.html#src">optimizer_settings_t</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+      <h2 id="type-def-statement">
+        type, public :: optimizer_settings_t</h2>
+    <p>One optimization&rsquo;s settings, as the deck asked for them</p>
+<p>A negative real or integer means &ldquo;leave the engine&rsquo;s own default
+alone&rdquo;. The step cap and the gradient threshold carry real defaults
+anyway, so a run that stops can say what it stopped on.</p>
+<br>      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Inherits</h3>
+        </div>
+        <div class="card-body">
+          <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: type~~optimizer_settings_t~~InheritsGraph Pages: 1 -->
+<svg id="typeoptimizer_settings_tInheritsGraph" width="314pt" height="32pt"
+ viewBox="0.00 0.00 314.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="type~~optimizer_settings_t~~InheritsGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>type~~optimizer_settings_t~~InheritsGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 310,-28 310,4 -4,4"/>
+<!-- type~optimizer_settings_t -->
+<g id="type~~optimizer_settings_t~~InheritsGraph_node1" class="node">
+<title>type~optimizer_settings_t</title>
+<polygon fill="none" stroke="black" points="306,-24 188,-24 188,0 306,0 306,-24"/>
+<text text-anchor="middle" x="247" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">optimizer_settings_t</text>
+</g>
+<!-- type~opt_constraint_t -->
+<g id="type~~optimizer_settings_t~~InheritsGraph_node2" class="node">
+<title>type~opt_constraint_t</title>
+<g id="a_type~~optimizer_settings_t~~InheritsGraph_node2"><a xlink:href="../type/opt_constraint_t.html" xlink:title="opt_constraint_t">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="97,-24 0,-24 0,0 97,0 97,-24"/>
+<text text-anchor="middle" x="48.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">opt_constraint_t</text>
+</a>
+</g>
+</g>
+<!-- type~optimizer_settings_t&#45;&gt;type~opt_constraint_t -->
+<g id="type~~optimizer_settings_t~~InheritsGraph_edge1" class="edge">
+<title>type~optimizer_settings_t&#45;&gt;type~opt_constraint_t</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M187.84,-12C162.48,-12 132.81,-12 107.47,-12"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="107.26,-8.5 97.26,-12 107.26,-15.5 107.26,-8.5"/>
+<text text-anchor="middle" x="142.5" y="-14.4" font-family="Helvetica,sans-Serif" font-size="9.50">constraints</text>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#InheritsGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="InheritsGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="186pt" height="32pt"
+ viewBox="0.00 0.00 185.50 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 181.5,-28 181.5,4 -4,4"/>
+<!-- Type -->
+<g id="node1" class="node">
+<title>Type</title>
+<polygon fill="#5cb85c" stroke="#5cb85c" points="54,-24 0,-24 0,0 54,0 54,-24"/>
+<text text-anchor="middle" x="27" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node2" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="177.5,-24 72.5,-24 72.5,0 177.5,0 177.5,-24"/>
+<text text-anchor="middle" x="125" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a derived type to the parent type which it
+extends. Dashed arrows point from a derived type to the other
+types it contains as a components, with a label listing the name(s) of
+said component(s).
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Inherited by</h3>
+        </div>
+        <div class="card-body">
+          <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: type~~optimizer_settings_t~~InheritedByGraph Pages: 1 -->
+<svg id="typeoptimizer_settings_tInheritedByGraph" width="641pt" height="108pt"
+ viewBox="0.00 0.00 641.00 108.08" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="type~~optimizer_settings_t~~InheritedByGraph" class="graph" transform="scale(0.93 0.93) rotate(0) translate(4 112)">
+<title>type~~optimizer_settings_t~~InheritedByGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-112 684,-112 684,4 -4,4"/>
+<!-- type~optimizer_settings_t -->
+<g id="type~~optimizer_settings_t~~InheritedByGraph_node1" class="node">
+<title>type~optimizer_settings_t</title>
+<polygon fill="none" stroke="black" points="118,-66 0,-66 0,-42 118,-42 118,-66"/>
+<text text-anchor="middle" x="59" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50">optimizer_settings_t</text>
+</g>
+<!-- type~driver_config_t -->
+<g id="type~~optimizer_settings_t~~InheritedByGraph_node2" class="node">
+<title>type~driver_config_t</title>
+<g id="a_type~~optimizer_settings_t~~InheritedByGraph_node2"><a xlink:href="../type/driver_config_t.html" xlink:title="driver_config_t">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="306,-66 215,-66 215,-42 306,-42 306,-66"/>
+<text text-anchor="middle" x="260.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">driver_config_t</text>
+</a>
+</g>
+</g>
+<!-- type~driver_config_t&#45;&gt;type~optimizer_settings_t -->
+<g id="type~~optimizer_settings_t~~InheritedByGraph_edge1" class="edge">
+<title>type~driver_config_t&#45;&gt;type~optimizer_settings_t</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M214.73,-54C189.35,-54 157.08,-54 128.58,-54"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="128.27,-50.5 118.27,-54 128.27,-57.5 128.27,-50.5"/>
+<text text-anchor="middle" x="166.5" y="-56.4" font-family="Helvetica,sans-Serif" font-size="9.50">optimization</text>
+</g>
+<!-- type~many_body_expansion_t -->
+<g id="type~~optimizer_settings_t~~InheritedByGraph_node3" class="node">
+<title>type~many_body_expansion_t</title>
+<g id="a_type~~optimizer_settings_t~~InheritedByGraph_node3"><a xlink:href="../type/many_body_expansion_t.html" xlink:title="many_body_expansion_t">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="546,-66 404,-66 404,-42 546,-42 546,-66"/>
+<text text-anchor="middle" x="475" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">many_body_expansion_t</text>
+</a>
+</g>
+</g>
+<!-- type~many_body_expansion_t&#45;&gt;type~driver_config_t -->
+<g id="type~~optimizer_settings_t~~InheritedByGraph_edge2" class="edge">
+<title>type~many_body_expansion_t&#45;&gt;type~driver_config_t</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M403.83,-54C375.44,-54 343.15,-54 316.51,-54"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="316.23,-50.5 306.23,-54 316.23,-57.5 316.23,-50.5"/>
+<text text-anchor="middle" x="355" y="-56.4" font-family="Helvetica,sans-Serif" font-size="9.50">driver_config</text>
+</g>
+<!-- type~fmo_context_t -->
+<g id="type~~optimizer_settings_t~~InheritedByGraph_node4" class="node">
+<title>type~fmo_context_t</title>
+<g id="a_type~~optimizer_settings_t~~InheritedByGraph_node4"><a xlink:href="../type/fmo_context_t.html" xlink:title="fmo_context_t">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="675,-108 588,-108 588,-84 675,-84 675,-108"/>
+<text text-anchor="middle" x="631.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fmo_context_t</text>
+</a>
+</g>
+</g>
+<!-- type~fmo_context_t&#45;&gt;type~many_body_expansion_t -->
+<g id="type~~optimizer_settings_t~~InheritedByGraph_edge4" class="edge">
+<title>type~fmo_context_t&#45;&gt;type~many_body_expansion_t</title>
+<path fill="none" stroke="#ff0000" d="M597.74,-83.84C592.59,-81.29 587.49,-78.33 583,-75 573.13,-67.67 577.29,-54 565,-54"/>
+</g>
+<!-- type~gmbe_context_t -->
+<g id="type~~optimizer_settings_t~~InheritedByGraph_node5" class="node">
+<title>type~gmbe_context_t</title>
+<g id="a_type~~optimizer_settings_t~~InheritedByGraph_node5"><a xlink:href="../type/gmbe_context_t.html" xlink:title="gmbe_context_t">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="680,-66 583,-66 583,-42 680,-42 680,-66"/>
+<text text-anchor="middle" x="631.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">gmbe_context_t</text>
+</a>
+</g>
+</g>
+<!-- type~gmbe_context_t&#45;&gt;type~many_body_expansion_t -->
+<g id="type~~optimizer_settings_t~~InheritedByGraph_edge3" class="edge">
+<title>type~gmbe_context_t&#45;&gt;type~many_body_expansion_t</title>
+<path fill="none" stroke="#ff0000" d="M582.92,-54C576.89,-54 570.8,-54 565,-54"/>
+</g>
+<!-- type~mbe_context_t -->
+<g id="type~~optimizer_settings_t~~InheritedByGraph_node6" class="node">
+<title>type~mbe_context_t</title>
+<g id="a_type~~optimizer_settings_t~~InheritedByGraph_node6"><a xlink:href="../type/mbe_context_t.html" xlink:title="mbe_context_t">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="676.5,-24 586.5,-24 586.5,0 676.5,0 676.5,-24"/>
+<text text-anchor="middle" x="631.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mbe_context_t</text>
+</a>
+</g>
+</g>
+<!-- type~mbe_context_t&#45;&gt;type~many_body_expansion_t -->
+<g id="type~~optimizer_settings_t~~InheritedByGraph_edge5" class="edge">
+<title>type~mbe_context_t&#45;&gt;type~many_body_expansion_t</title>
+<path fill="none" stroke="#ff0000" d="M597.74,-24.16C592.59,-26.71 587.49,-29.67 583,-33 573.13,-40.33 577.29,-54 565,-54"/>
+<path fill="none" stroke="#ff0000" d="M564,-54C561.46,-54 558.88,-54 556.27,-54"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="556.13,-50.5 546.13,-54 556.13,-57.5 556.13,-50.5"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var pantypeoptimizer_settings_tInheritedByGraph = svgPanZoom('#typeoptimizer_settings_tInheritedByGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#InheritedByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="InheritedByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="186pt" height="32pt"
+ viewBox="0.00 0.00 185.50 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 181.5,-28 181.5,4 -4,4"/>
+<!-- Type -->
+<g id="node1" class="node">
+<title>Type</title>
+<polygon fill="#5cb85c" stroke="#5cb85c" points="54,-24 0,-24 0,0 54,0 54,-24"/>
+<text text-anchor="middle" x="27" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node2" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="177.5,-24 72.5,-24 72.5,0 177.5,0 177.5,-24"/>
+<text text-anchor="middle" x="125" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a derived type to the parent type which it
+extends. Dashed arrows point from a derived type to the other
+types it contains as a components, with a label listing the name(s) of
+said component(s).
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+    <br>
+
+    <section>
+    <h2>Components</h2>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+<th></th><th scope="col">Initial</th>        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-algorithm~2"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>algorithm</strong></td>
+<td> =</td>
+                <td>OPT_ALGO_LBFGS</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-connect"></span>
+              logical,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>connect</strong></td>
+<td> =</td>
+                <td>.false.</td>
+            <td>
+                <p>After the saddle is found, follow its imaginary mode downhill in
+both directions and report the two minima it falls to &ndash; which is
+what says whether the saddle joins the structures anybody meant.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-connect_distort"></span>
+              real(kind=dp),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>connect_distort</strong></td>
+<td> =</td>
+                <td>-1.0_dp</td>
+            <td>
+                <p>How far to displace along the imaginary mode before relaxing.
+Negative is the engine default. Too small and both sides fall back
+to the saddle; too large and they skip past the adjacent minima.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-constraints"></span>
+              type(<a href='opt_constraint_t.html'>opt_constraint_t</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>constraints</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                <p>Internal coordinates held fixed. Needs an internal coordinate
+system to hold them in &ndash; see <code>mqc_dlfind_bridge</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-coordinates~15"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>coordinates</strong></td>
+<td> =</td>
+                <td>OPT_COORDS_CARTESIAN</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-dimer_max_rotations"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>dimer_max_rotations</strong></td>
+<td> =</td>
+                <td>-1</td>
+            <td>
+                <p>Rotation steps per translation step. Negative is the engine default.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-dimer_rotation_tolerance"></span>
+              real(kind=dp),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>dimer_rotation_tolerance</strong></td>
+<td> =</td>
+                <td>-1.0_dp</td>
+            <td>
+                <p>Stop rotating once the angle falls below this. Negative is the
+engine default.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-dimer_separation"></span>
+              real(kind=dp),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>dimer_separation</strong></td>
+<td> =</td>
+                <td>-1.0_dp</td>
+            <td>
+                <p>Distance between the two dimer images, Bohr. Negative is the engine
+default. Small enough to sample curvature, large enough that the
+gradient difference is not noise.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-endpoint~3"></span>
+              character(len=:),
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>endpoint</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                <p>Path to a second geometry: the product, for a chain-of-states run.
+Unallocated is the ordinary single-structure optimization.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-energy_tolerance"></span>
+              real(kind=dp),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>energy_tolerance</strong></td>
+<td> =</td>
+                <td>DEFAULT_OPT_ENERGY_TOLERANCE</td>
+            <td>
+                <p>Convergence on the energy change, Hartree. Negative: engine default</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-freeze_terms"></span>
+              logical,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>freeze_terms</strong></td>
+<td> =</td>
+                <td>.true.</td>
+            <td>
+                <p>Choose the MBE term list once, at the starting geometry, and keep
+it for every step. See <code>mqc_geometry_optimizer</code> for why an
+optimization on a re-screened list is optimizing a moving target.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-friction"></span>
+              real(kind=dp),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>friction</strong></td>
+<td> =</td>
+                <td>-1.0_dp</td>
+            <td>
+                <p>Damped dynamics only: the starting friction. Negative: engine default</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-friction_factor"></span>
+              real(kind=dp),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>friction_factor</strong></td>
+<td> =</td>
+                <td>-1.0_dp</td>
+            <td>
+                <p>Damped dynamics only: what the friction is multiplied by while the
+energy is falling, so the run coasts further the better it is
+going. Negative: engine default</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-friction_rising"></span>
+              real(kind=dp),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>friction_rising</strong></td>
+<td> =</td>
+                <td>-1.0_dp</td>
+            <td>
+                <p>Damped dynamics only: the friction used on a step where the energy
+went up. Negative: engine default</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-frozen_atoms"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>frozen_atoms</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                <p>Atoms held at their input position, 1-based. Frozen atoms are
+removed from the optimization&rsquo;s variables rather than restrained,
+so a frozen pair contributes no coordinates at all.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-gradient_tolerance~3"></span>
+              real(kind=dp),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>gradient_tolerance</strong></td>
+<td> =</td>
+                <td>DEFAULT_OPT_GRADIENT_TOLERANCE</td>
+            <td>
+                <p>Convergence on the largest gradient component, Hartree/Bohr</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-hess_end"></span>
+              logical,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>hess_end</strong></td>
+<td> =</td>
+                <td>.false.</td>
+            <td>
+                <p>Compute a Hessian at the converged geometry and say whether any
+frequency came back imaginary. A vanishing gradient is a stationary
+point and not necessarily a minimum, so this is what establishes
+what the run converged <em>to</em>.</p>
+<p>Off by default: one Hessian on top of the optimization, analytic
+for restricted Hartree-Fock and central differences of gradients
+otherwise.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-hessian_update"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>hessian_update</strong></td>
+<td> =</td>
+                <td>OPT_HESSIAN_UPDATE_ENGINE</td>
+            <td>
+                <p>How curvature is carried between steps once a Hessian exists.
+Ignored by the algorithms that never build one.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-lbfgs_memory"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>lbfgs_memory</strong></td>
+<td> =</td>
+                <td>DEFAULT_OPT_LBFGS_MEMORY</td>
+            <td>
+                <p>Steps of curvature history. Negative: engine default</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-max_step"></span>
+              real(kind=dp),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>max_step</strong></td>
+<td> =</td>
+                <td>DEFAULT_OPT_MAX_STEP</td>
+            <td>
+                <p>Longest step the engine may take, Bohr. Negative: engine default</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-max_steps"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>max_steps</strong></td>
+<td> =</td>
+                <td>DEFAULT_OPT_MAX_STEPS</td>
+            <td>
+                <p>Give up after this many steps without converging</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_images"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_images</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+                <p>Images along the path, endpoints included. Zero means the engine&rsquo;s
+own default; fewer than <code>MIN_NEB_IMAGES</code> is refused.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-neb_ends"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>neb_ends</strong></td>
+<td> =</td>
+                <td>NEB_ENDS_FROZEN</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-neb_spring"></span>
+              real(kind=dp),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>neb_spring</strong></td>
+<td> =</td>
+                <td>-1.0_dp</td>
+            <td>
+                <p>Spring constant holding neighbouring images apart. Negative means
+the engine default.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-print_level"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>print_level</strong></td>
+<td> =</td>
+                <td>DEFAULT_OPT_PRINT_LEVEL</td>
+            <td>
+                <p>How much the engine itself prints. Negative: engine default</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-saddle_method"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>saddle_method</strong></td>
+<td> =</td>
+                <td>SADDLE_METHOD_PRFO</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-soft_mode_threshold"></span>
+              real(kind=dp),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>soft_mode_threshold</strong></td>
+<td> =</td>
+                <td>-1.0_dp</td>
+            <td>
+                <p>Eigenvalues smaller than this in magnitude are soft: P-RFO steps
+along them are damped rather than trusted. Negative is the engine
+default.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-target~2"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>target</strong></td>
+<td> =</td>
+                <td>OPT_TARGET_MINIMUM</td>
+            <td>
+                <p>Whether this run is looking for a minimum or a first-order saddle.
+Independent of <code>algorithm</code> on purpose &ndash; see <code>OPT_TARGET_SADDLE</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-timestep"></span>
+              real(kind=dp),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>timestep</strong></td>
+<td> =</td>
+                <td>-1.0_dp</td>
+            <td>
+                <p>Damped dynamics only. Negative: engine default</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-trajectory~2"></span>
+              logical,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>trajectory</strong></td>
+<td> =</td>
+                <td>.true.</td>
+            <td>
+                <p>Record every accepted geometry, for analysing the path afterwards.
+The geometries are held until the run ends, 3N doubles per step, so
+this is worth turning off for a large system over many steps.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-zero_modes"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>zero_modes</strong></td>
+<td> =</td>
+                <td>-1</td>
+            <td>
+                <p>How many Hessian eigenvalues to treat as zero rather than as
+vibrations. Negative is the engine default. Six for a non-linear
+molecule in Cartesian coordinates &ndash; three translations and three
+rotations &ndash; and five for a linear one. Internal coordinates have
+none, which is why this is off by default.</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    </section>
+    <br>
+    
+
+
+
+    <section>
+    <h3><span class="anchor" id="src"></span>Source Code</h3>
+    <div class="hl codehilite"><pre><span></span><span class="w">   </span><span class="k">type</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">optimizer_settings_t</span>
+<span class="w">      </span><span class="c">!! One optimization's settings, as the deck asked for them</span>
+<span class="w">      </span><span class="c">!!</span>
+<span class="w">      </span><span class="c">!! A negative real or integer means "leave the engine's own default</span>
+<span class="w">      </span><span class="c">!! alone". The step cap and the gradient threshold carry real defaults</span>
+<span class="w">      </span><span class="c">!! anyway, so a run that stops can say what it stopped on.</span>
+<span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">max_steps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DEFAULT_OPT_MAX_STEPS</span>
+<span class="w">         </span><span class="c">!! Give up after this many steps without converging</span>
+<span class="w">      </span><span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">gradient_tolerance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DEFAULT_OPT_GRADIENT_TOLERANCE</span>
+<span class="w">         </span><span class="c">!! Convergence on the largest gradient component, Hartree/Bohr</span>
+<span class="w">      </span><span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">energy_tolerance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DEFAULT_OPT_ENERGY_TOLERANCE</span>
+<span class="w">         </span><span class="c">!! Convergence on the energy change, Hartree. Negative: engine default</span>
+<span class="w">      </span><span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">max_step</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DEFAULT_OPT_MAX_STEP</span>
+<span class="w">         </span><span class="c">!! Longest step the engine may take, Bohr. Negative: engine default</span>
+<span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">coordinates</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OPT_COORDS_CARTESIAN</span>
+<span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">algorithm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OPT_ALGO_LBFGS</span>
+<span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">lbfgs_memory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DEFAULT_OPT_LBFGS_MEMORY</span>
+<span class="w">         </span><span class="c">!! Steps of curvature history. Negative: engine default</span>
+<span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">print_level</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DEFAULT_OPT_PRINT_LEVEL</span>
+<span class="w">         </span><span class="c">!! How much the engine itself prints. Negative: engine default</span>
+<span class="w">      </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">freeze_terms</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="w">         </span><span class="c">!! Choose the MBE term list once, at the starting geometry, and keep</span>
+<span class="w">         </span><span class="c">!! it for every step. See `mqc_geometry_optimizer` for why an</span>
+<span class="w">         </span><span class="c">!! optimization on a re-screened list is optimizing a moving target.</span>
+<span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="k">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OPT_TARGET_MINIMUM</span>
+<span class="w">         </span><span class="c">!! Whether this run is looking for a minimum or a first-order saddle.</span>
+<span class="w">         </span><span class="c">!! Independent of `algorithm` on purpose -- see `OPT_TARGET_SADDLE`.</span>
+<span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">endpoint</span>
+<span class="w">         </span><span class="c">!! Path to a second geometry: the product, for a chain-of-states run.</span>
+<span class="w">         </span><span class="c">!! Unallocated is the ordinary single-structure optimization.</span>
+<span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">n_images</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">         </span><span class="c">!! Images along the path, endpoints included. Zero means the engine's</span>
+<span class="w">         </span><span class="c">!! own default; fewer than `MIN_NEB_IMAGES` is refused.</span>
+<span class="w">      </span><span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">neb_spring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mf">1.0_dp</span>
+<span class="w">         </span><span class="c">!! Spring constant holding neighbouring images apart. Negative means</span>
+<span class="w">         </span><span class="c">!! the engine default.</span>
+<span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">neb_ends</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NEB_ENDS_FROZEN</span>
+<span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">saddle_method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SADDLE_METHOD_PRFO</span>
+<span class="w">      </span><span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">dimer_separation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mf">1.0_dp</span>
+<span class="w">         </span><span class="c">!! Distance between the two dimer images, Bohr. Negative is the engine</span>
+<span class="w">         </span><span class="c">!! default. Small enough to sample curvature, large enough that the</span>
+<span class="w">         </span><span class="c">!! gradient difference is not noise.</span>
+<span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">dimer_max_rotations</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span>
+<span class="w">         </span><span class="c">!! Rotation steps per translation step. Negative is the engine default.</span>
+<span class="w">      </span><span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">dimer_rotation_tolerance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mf">1.0_dp</span>
+<span class="w">         </span><span class="c">!! Stop rotating once the angle falls below this. Negative is the</span>
+<span class="w">         </span><span class="c">!! engine default.</span>
+<span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">zero_modes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span>
+<span class="w">         </span><span class="c">!! How many Hessian eigenvalues to treat as zero rather than as</span>
+<span class="w">         </span><span class="c">!! vibrations. Negative is the engine default. Six for a non-linear</span>
+<span class="w">         </span><span class="c">!! molecule in Cartesian coordinates -- three translations and three</span>
+<span class="w">         </span><span class="c">!! rotations -- and five for a linear one. Internal coordinates have</span>
+<span class="w">         </span><span class="c">!! none, which is why this is off by default.</span>
+<span class="w">      </span><span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">soft_mode_threshold</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mf">1.0_dp</span>
+<span class="w">         </span><span class="c">!! Eigenvalues smaller than this in magnitude are soft: P-RFO steps</span>
+<span class="w">         </span><span class="c">!! along them are damped rather than trusted. Negative is the engine</span>
+<span class="w">         </span><span class="c">!! default.</span>
+<span class="w">      </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">connect</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<span class="w">         </span><span class="c">!! After the saddle is found, follow its imaginary mode downhill in</span>
+<span class="w">         </span><span class="c">!! both directions and report the two minima it falls to -- which is</span>
+<span class="w">         </span><span class="c">!! what says whether the saddle joins the structures anybody meant.</span>
+<span class="w">      </span><span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">connect_distort</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mf">1.0_dp</span>
+<span class="w">         </span><span class="c">!! How far to displace along the imaginary mode before relaxing.</span>
+<span class="w">         </span><span class="c">!! Negative is the engine default. Too small and both sides fall back</span>
+<span class="w">         </span><span class="c">!! to the saddle; too large and they skip past the adjacent minima.</span>
+<span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">hessian_update</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OPT_HESSIAN_UPDATE_ENGINE</span>
+<span class="w">         </span><span class="c">!! How curvature is carried between steps once a Hessian exists.</span>
+<span class="w">         </span><span class="c">!! Ignored by the algorithms that never build one.</span>
+<span class="w">      </span><span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">timestep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mf">1.0_dp</span>
+<span class="w">         </span><span class="c">!! Damped dynamics only. Negative: engine default</span>
+<span class="w">      </span><span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">friction</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mf">1.0_dp</span>
+<span class="w">         </span><span class="c">!! Damped dynamics only: the starting friction. Negative: engine default</span>
+<span class="w">      </span><span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">friction_factor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mf">1.0_dp</span>
+<span class="w">         </span><span class="c">!! Damped dynamics only: what the friction is multiplied by while the</span>
+<span class="w">         </span><span class="c">!! energy is falling, so the run coasts further the better it is</span>
+<span class="w">         </span><span class="c">!! going. Negative: engine default</span>
+<span class="w">      </span><span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">friction_rising</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mf">1.0_dp</span>
+<span class="w">         </span><span class="c">!! Damped dynamics only: the friction used on a step where the energy</span>
+<span class="w">         </span><span class="c">!! went up. Negative: engine default</span>
+<span class="w">      </span><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">frozen_atoms</span><span class="p">(:)</span>
+<span class="w">         </span><span class="c">!! Atoms held at their input position, 1-based. Frozen atoms are</span>
+<span class="w">         </span><span class="c">!! removed from the optimization's variables rather than restrained,</span>
+<span class="w">         </span><span class="c">!! so a frozen pair contributes no coordinates at all.</span>
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">opt_constraint_t</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">constraints</span><span class="p">(:)</span>
+<span class="w">         </span><span class="c">!! Internal coordinates held fixed. Needs an internal coordinate</span>
+<span class="w">         </span><span class="c">!! system to hold them in -- see `mqc_dlfind_bridge`.</span>
+<span class="w">      </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">hess_end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<span class="w">         </span><span class="c">!! Compute a Hessian at the converged geometry and say whether any</span>
+<span class="w">         </span><span class="c">!! frequency came back imaginary. A vanishing gradient is a stationary</span>
+<span class="w">         </span><span class="c">!! point and not necessarily a minimum, so this is what establishes</span>
+<span class="w">         </span><span class="c">!! what the run converged *to*.</span>
+<span class="w">         </span><span class="c">!!</span>
+<span class="w">         </span><span class="c">!! Off by default: one Hessian on top of the optimization, analytic</span>
+<span class="w">         </span><span class="c">!! for restricted Hartree-Fock and central differences of gradients</span>
+<span class="w">         </span><span class="c">!! otherwise.</span>
+<span class="w">      </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">trajectory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="w">         </span><span class="c">!! Record every accepted geometry, for analysing the path afterwards.</span>
+<span class="w">         </span><span class="c">!! The geometries are held until the run ends, 3N doubles per step, so</span>
+<span class="w">         </span><span class="c">!! this is worth turning off for a large system over many steps.</span>
+<span class="w">   </span><span class="k">end type </span><span class="n">optimizer_settings_t</span>
+</pre></div>
+
+    </section>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              metalquicha
+ was developed by Jorge Luis Galvez Vallejo<br>              &copy; 2026 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+ on 2026-09-07 09:10 +0000             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

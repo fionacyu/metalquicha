@@ -4,9 +4,8 @@ module mqc_vibrational_analysis
    !! Uses LAPACK eigenvalue decomposition via pic-blas interfaces.
    use pic_types, only: dp
    use pic_lapack_interfaces, only: pic_syev, pic_gesvd
-   use pic_logger, only:
    use mqc_elements, only: element_mass, element_number_to_symbol
-   use pic_logger, only: logger => global_logger
+   use pic_logger, only: logger => global_logger, verbose_level
    use mqc_physical_constants, only: AU_TO_CM1, AU_TO_MDYNE_ANG, AU_TO_KMMOL, AMU_TO_AU
    use mqc_thermochemistry, only: thermochemistry_result_t, compute_thermochemistry, print_thermochemistry
    implicit none
@@ -22,6 +21,19 @@ module mqc_vibrational_analysis
    public :: compute_ir_intensities
    public :: print_vibrational_analysis
 
+   real(dp), parameter :: TR_NULL_TOL = 1.0e-10_dp
+      !! A direction in the translation-rotation basis counts as real above
+      !! this and is discarded below it. Applied to a column norm before
+      !! normalising and to the singular values that follow: a linear molecule
+      !! has five such directions rather than six, and it is the vanishing
+      !! singular value that says so.
+
+   real(dp), parameter :: NORMALISE_FLOOR = 1.0e-14_dp
+      !! Denominators below this are left alone rather than divided by. Every
+      !! use is a normalisation whose scale is a sum of squares, so the guard
+      !! is against a mode that is identically zero, not against ordinary
+      !! smallness.
+
 contains
 
    subroutine compute_vibrational_frequencies(hessian, element_numbers, frequencies, &
@@ -30,20 +42,20 @@ contains
                                               projected_hessian_out)
       !! Compute vibrational frequencies from the Hessian matrix.
       !!
-      !! Algorithm:
-      !! 1. Mass-weight the Hessian: H_mw = M^{-1/2} * H * M^{-1/2}
-      !! 2. Optionally project out translation/rotation modes
-      !! 3. Diagonalize H_mw to get eigenvalues
-      !! 4. Convert eigenvalues to frequencies in cm⁻¹
+      !! The Hessian is mass-weighted, `H_mw = M^{-1/2} H M^{-1/2}`, optionally
+      !! projected free of translation and rotation, then diagonalized.
       !!
-      !! Negative eigenvalues produce negative frequencies (imaginary modes,
-      !! indicating transition states or saddle points).
+      !! A negative eigenvalue comes back as a negative frequency: an imaginary
+      !! mode, so a transition state or a saddle point.
       real(dp), intent(in) :: hessian(:, :)
          !! Hessian matrix in Hartree/Bohr² (3*N x 3*N)
       integer, intent(in) :: element_numbers(:)
          !! Atomic numbers for each atom (N atoms)
       real(dp), allocatable, intent(out) :: frequencies(:)
-         !! Vibrational frequencies in cm⁻¹ (3*N modes, or 3*N-6 if projected)
+         !! Vibrational frequencies in cm⁻¹. Always 3*N of them: projection
+         !! zeroes the translation and rotation modes rather than removing
+         !! them, so those come back at (or within rounding of) zero and the
+         !! array keeps its length either way.
       real(dp), allocatable, intent(out), optional :: eigenvalues_out(:)
          !! Raw eigenvalues from diagonalization (Hartree/Bohr²/amu)
       real(dp), allocatable, intent(out), optional :: eigenvectors(:, :)
@@ -98,7 +110,9 @@ contains
       call pic_syev(mw_hessian, eigenvalues, info=info)
 
       if (info /= 0) then
-         ! Eigenvalue decomposition failed
+         ! TODO(mqc): returns with `eigenvalues_out` and `eigenvectors`
+         ! unallocated, and `compute_vibrational_analysis` hands both straight
+         ! to `compute_reduced_masses` without checking.
          call logger%error("Eigenvalue decomposition in vibrational frequencies failed")
          allocate (frequencies(n_coords))
          frequencies = 0.0_dp
@@ -142,14 +156,9 @@ contains
                                            dipole_derivatives, ir_intensities)
       !! Perform complete vibrational analysis from Hessian matrix.
       !!
-      !! This is a convenience wrapper that computes:
-      !! - Vibrational frequencies in cm⁻¹
-      !! - Reduced masses in amu
-      !! - Force constants in Hartree/Bohr² (and optionally mdyne/Å)
-      !! - Cartesian displacement vectors (normalized)
-      !! - IR intensities in km/mol (if dipole_derivatives provided)
-      !!
-      !! Optionally projects out translation/rotation modes.
+      !! Frequencies, reduced masses, force constants, normalized Cartesian
+      !! displacements, and IR intensities where dipole derivatives are given.
+      !! Optionally projects out translation and rotation.
       real(dp), intent(in) :: hessian(:, :)
          !! Hessian matrix in Hartree/Bohr² (3*N x 3*N)
       integer, intent(in) :: element_numbers(:)
@@ -352,7 +361,7 @@ contains
       ! Normalize each column of D
       do k = 1, 6
          norm = sqrt(sum(D(:, k)**2))
-         if (norm > 1.0e-10_dp) then
+         if (norm > TR_NULL_TOL) then
             D(:, k) = D(:, k)/norm
          end if
       end do
@@ -369,14 +378,14 @@ contains
       ! Count non-zero singular values (determines number of modes to project)
       n_modes = 0
       do k = 1, 6
-         if (S(k) > 1.0e-10_dp) n_modes = n_modes + 1
+         if (S(k) > TR_NULL_TOL) n_modes = n_modes + 1
       end do
 
       ! Build orthonormalized D matrix from U (columns with non-zero singular values)
       allocate (D_orth(n_coords, n_modes))
       j = 0
       do k = 1, 6
-         if (S(k) > 1.0e-10_dp) then
+         if (S(k) > TR_NULL_TOL) then
             j = j + 1
             D_orth(:, j) = U(:, k)
          end if
@@ -429,12 +438,10 @@ contains
    subroutine compute_reduced_masses(eigenvectors, element_numbers, reduced_masses)
       !! Compute reduced masses for each normal mode.
       !!
-      !! The reduced mass μ_k for mode k is defined as:
+      !! The reduced mass μ_k for mode k is
       !!   μ_k = 1 / Σ_i (L_mw_{i,k}² / m_i)
       !!
-      !! where L_mw is the mass-weighted eigenvector (normalized to 1).
-      !! This formula arises from the relationship Q_k = Σ_i √m_i * x_i * L_mw_{i,k}
-      !! and ensures that the harmonic oscillator relation ω² = k/μ holds.
+      !! where L_mw is the mass-weighted eigenvector, normalized to 1.
       real(dp), intent(in) :: eigenvectors(:, :)
          !! Mass-weighted eigenvectors from diagonalization (3*N x 3*N)
          !! Columns are normal modes, assumed normalized (Σ_i L²_{i,k} = 1)
@@ -465,7 +472,7 @@ contains
          end do
 
          ! μ_k = 1 / Σ_i (L²_{i,k} / m_i)
-         if (sum_over_mass > 1.0e-14_dp) then
+         if (sum_over_mass > NORMALISE_FLOOR) then
             reduced_masses(k) = 1.0_dp/sum_over_mass
          else
             ! Near-zero contribution (e.g., trans/rot mode) - assign a large mass
@@ -564,13 +571,13 @@ contains
          if (use_max_norm) then
             ! Gaussian convention: normalize so max |displacement| = 1
             max_disp = maxval(abs(cartesian_displacements(:, k)))
-            if (max_disp > 1.0e-14_dp) then
+            if (max_disp > NORMALISE_FLOOR) then
                cartesian_displacements(:, k) = cartesian_displacements(:, k)/max_disp
             end if
          else
             ! Standard normalization: Σ_i x²_{i,k} = 1
             norm = sqrt(sum(cartesian_displacements(:, k)**2))
-            if (norm > 1.0e-14_dp) then
+            if (norm > NORMALISE_FLOOR) then
                cartesian_displacements(:, k) = cartesian_displacements(:, k)/norm
             end if
          end if
@@ -592,7 +599,6 @@ contains
       !!   dipd(k,j) = ∂μ_k/∂x_j (Cartesian dipole derivative)
       !!   L(j,i) = mass-weighted eigenvector component
       !!   m_j = atomic mass for coordinate j
-      !!
       real(dp), intent(in) :: dipole_derivatives(:, :)
          !! Cartesian dipole derivatives (3, 3*N) in atomic units
       real(dp), intent(in) :: eigenvectors(:, :)
@@ -603,7 +609,8 @@ contains
          !! IR intensities in km/mol (one per mode)
 
       integer :: n_atoms, n_coords, iatom, i, j, k
-      real(dp) :: mass, inv_sqrt_mass, trdip(3)
+      real(dp) :: mass, inv_sqrt_mass
+      real(dp) :: trdip(3)
 
       n_atoms = size(element_numbers)
       n_coords = 3*n_atoms
@@ -617,7 +624,6 @@ contains
          ! Transform dipole derivative from Cartesian to normal mode coordinates
          ! trdip(k) = Σ_j dipd(k,j) * L(j,i) * amass_au(j)
          ! where amass_au(j) = 1/√(m_j in atomic units) = 1/√(m_amu * AMU_TO_AU)
-         ! This matches xtb's formula in hessian.F90 lines 526-535
          do j = 1, n_coords
             iatom = (j - 1)/3 + 1
             mass = element_mass(element_numbers(iatom))
@@ -660,7 +666,10 @@ contains
       real(dp), intent(in), optional :: force_constants_mdyne(:)
          !! Force constants in mdyne/Å (if provided, these are printed instead)
       logical, intent(in), optional :: print_displacements
-         !! If true, print Cartesian displacement vectors (default: true)
+         !! Whether to print the Cartesian displacement vectors. Absent, they
+         !! are printed at the `verbose` logger level and above only: on a
+         !! 74-atom molecule they are 72 groups of 80 lines, and the JSON
+         !! output carries them regardless.
       integer, intent(in), optional :: n_atoms
          !! Number of atoms (if not provided, derived from size of element_numbers)
       real(dp), intent(in), optional :: ir_intensities(:)
@@ -690,7 +699,11 @@ contains
          n_at = size(element_numbers)
       end if
 
-      do_print_disp = .true.
+      block
+         integer :: current_log_level
+         call logger%configuration(level=current_log_level)
+         do_print_disp = current_log_level >= verbose_level
+      end block
       if (present(print_displacements)) do_print_disp = print_displacements
 
       call logger%info(" ")
@@ -710,7 +723,7 @@ contains
          ! Mode numbers header
          line = "                    "
          do k = mode_start, mode_end
-            write (freq_str, '(i12)') k
+            write (freq_str, "(i12)") k
             line = trim(line)//freq_str
          end do
          call logger%info(trim(line))
@@ -720,10 +733,10 @@ contains
          do k = mode_start, mode_end
             if (frequencies(k) < 0.0_dp .and. abs(frequencies(k)) > 10.0_dp) then
                ! Significant imaginary frequency - show with "i"
-               write (freq_str, '(f12.4,a)') abs(frequencies(k)), "i"
+               write (freq_str, "(f12.4,a)") abs(frequencies(k)), "i"
             else
                ! Real or near-zero frequency
-               write (freq_str, '(f12.4)') abs(frequencies(k))
+               write (freq_str, "(f12.4)") abs(frequencies(k))
             end if
             line = trim(line)//freq_str
          end do
@@ -732,7 +745,7 @@ contains
          ! Reduced masses
          line = " Red. masses --  "
          do k = mode_start, mode_end
-            write (mass_str, '(f12.4)') reduced_masses(k)
+            write (mass_str, "(f12.4)") reduced_masses(k)
             line = trim(line)//mass_str
          end do
          call logger%info(trim(line))
@@ -741,13 +754,13 @@ contains
          if (present(force_constants_mdyne)) then
             line = " Frc consts  --  "
             do k = mode_start, mode_end
-               write (fc_str, '(f12.4)') force_constants_mdyne(k)
+               write (fc_str, "(f12.4)") force_constants_mdyne(k)
                line = trim(line)//fc_str
             end do
          else
             line = " Frc consts  --  "
             do k = mode_start, mode_end
-               write (fc_str, '(f12.6)') force_constants(k)
+               write (fc_str, "(f12.6)") force_constants(k)
                line = trim(line)//fc_str
             end do
          end if
@@ -757,7 +770,7 @@ contains
          if (present(ir_intensities)) then
             line = " IR Intens  --  "
             do k = mode_start, mode_end
-               write (ir_str, '(f12.4)') ir_intensities(k)
+               write (ir_str, "(f12.4)") ir_intensities(k)
                line = trim(line)//ir_str
             end do
             call logger%info(trim(line))
@@ -771,11 +784,11 @@ contains
                elem_sym = element_number_to_symbol(element_numbers(iatom))
 
                ! Build line with atom info and displacements for each mode
-               write (line, '(i4,1x,a2)') iatom, elem_sym
+               write (line, "(i4,1x,a2)") iatom, elem_sym
 
                do k = mode_start, mode_end
                   do icoord = 1, 3
-                     write (freq_str, '(f10.5)') cartesian_displacements(3*(iatom - 1) + icoord, k)
+                     write (freq_str, "(f10.5)") cartesian_displacements(3*(iatom - 1) + icoord, k)
                      line = trim(line)//freq_str
                   end do
                end do
@@ -809,13 +822,13 @@ contains
             end if
          end do
 
-         write (line, '(a,i5)') "   Total modes:              ", n_modes
+         write (line, "(a,i5)") "   Total modes:              ", n_modes
          call logger%info(trim(line))
-         write (line, '(a,i5)') "   Real frequencies:         ", n_real
+         write (line, "(a,i5)") "   Real frequencies:         ", n_real
          call logger%info(trim(line))
-         write (line, '(a,i5)') "   Imaginary frequencies:    ", n_imag
+         write (line, "(a,i5)") "   Imaginary frequencies:    ", n_imag
          call logger%info(trim(line))
-         write (line, '(a,i5)') "   Near-zero (trans/rot):    ", n_zero
+         write (line, "(a,i5)") "   Near-zero (trans/rot):    ", n_zero
          call logger%info(trim(line))
 
          if (n_imag > 0) then

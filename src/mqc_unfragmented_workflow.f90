@@ -6,6 +6,7 @@ contains
       !! This is a simple single-process calculation without MPI distribution
       !! If result_out is present, returns result instead of writing JSON and destroying it
       !! If json_data is present, populates it for centralized JSON output
+      use mqc_physical_constants, only: HARTREE_TO_EV, AU_TO_DEBYE
       use mqc_error, only: error_t
       use mqc_vibrational_analysis, only: compute_vibrational_frequencies, &
                                           compute_vibrational_analysis, print_vibrational_analysis
@@ -53,7 +54,8 @@ contains
       end if
 
       ! Process the full system
-      call do_fragment_work(0_int64, result, config%method_config, phys_frag=full_system, calc_type=config%calc_type)
+      call do_fragment_work(0_int64, result, config%method_config, phys_frag=full_system, &
+                            calc_type=config%calc_type, sole_calculation=.true.)
 
       ! Check for calculation errors
       if (result%has_error) then
@@ -61,9 +63,9 @@ contains
          if (present(result_out)) then
             result_out = result
             return
-         else
-            error stop "Unfragmented calculation failed"
          end if
+
+         error stop "Unfragmented calculation failed"
       end if
 
       call logger%info("============================================")
@@ -73,18 +75,27 @@ contains
          integer :: current_log_level, iatom, i, j
          real(dp) :: hess_norm
 
-         write (result_line, '(a,f25.15)') "  Final energy: ", result%energy%total()
+         write (result_line, "(a,f25.15)") "  Final energy: ", result%energy%total()
          call logger%info(trim(result_line))
 
          if (result%has_dipole) then
-            write (result_line, '(a,3f15.8)') "  Dipole (e*Bohr): ", result%dipole
+            write (result_line, "(a,3f15.8)") "  Dipole (e*Bohr): ", result%dipole
             call logger%info(trim(result_line))
-            write (result_line, '(a,f15.8)') "  Dipole magnitude (Debye): ", norm2(result%dipole)*2.541746_dp
+            write (result_line, "(a,f15.8)") "  Dipole magnitude (Debye): ", norm2(result%dipole)*AU_TO_DEBYE
+            call logger%info(trim(result_line))
+         end if
+
+         if (result%has_orbitals) then
+            write (result_line, "(a,f15.8,a,f15.8)") "  HOMO (Hartree): ", result%homo, &
+               "   LUMO: ", result%lumo
+            call logger%info(trim(result_line))
+            write (result_line, "(a,f12.6)") "  HOMO-LUMO gap (eV): ", &
+               (result%lumo - result%homo)*HARTREE_TO_EV
             call logger%info(trim(result_line))
          end if
 
          if (result%has_gradient) then
-            write (result_line, '(a,f25.15)') "  Gradient norm: ", sqrt(sum(result%gradient**2))
+            write (result_line, "(a,f25.15)") "  Gradient norm: ", sqrt(sum(result%gradient**2))
             call logger%info(trim(result_line))
 
             ! Print full gradient if verbose and system is small
@@ -93,7 +104,7 @@ contains
                call logger%info(" ")
                call logger%info("Gradient (Hartree/Bohr):")
                do iatom = 1, total_atoms
-                  write (result_line, '(a,i5,a,3f20.12)') "  Atom ", iatom, ": ", &
+                  write (result_line, "(a,i5,a,3f20.12)") "  Atom ", iatom, ": ", &
                      result%gradient(1, iatom), result%gradient(2, iatom), result%gradient(3, iatom)
                   call logger%info(trim(result_line))
                end do
@@ -104,7 +115,7 @@ contains
          if (result%has_hessian) then
             ! Compute Frobenius norm of Hessian
             hess_norm = sqrt(sum(result%hessian**2))
-            write (result_line, '(a,f25.15)') "  Hessian Frobenius norm: ", hess_norm
+            write (result_line, "(a,f25.15)") "  Hessian Frobenius norm: ", hess_norm
             call logger%info(trim(result_line))
 
             ! Print full Hessian if verbose and system is small
@@ -113,7 +124,7 @@ contains
                call logger%info(" ")
                call logger%info("Hessian matrix (Hartree/Bohr^2):")
                do i = 1, 3*total_atoms
-                  write (result_line, '(a,i5,a,999f15.8)') "  Row ", i, ": ", (result%hessian(i, j), j=1, 3*total_atoms)
+                  write (result_line, "(a,i5,a,999f15.8)") "  Row ", i, ": ", (result%hessian(i, j), j=1, 3*total_atoms)
                   call logger%info(trim(result_line))
                end do
                call logger%info(" ")
@@ -138,7 +149,7 @@ contains
                      call logger%info(" ")
                      call logger%info("Mass-weighted Hessian after trans/rot projection (a.u.):")
                      do ii = 1, 3*total_atoms
-                        write (result_line, '(a,i5,a,999f15.8)') "  Row ", ii, ": ", &
+                        write (result_line, "(a,i5,a,999f15.8)") "  Row ", ii, ": ", &
                            (projected_hessian(ii, jj), jj=1, 3*total_atoms)
                         call logger%info(trim(result_line))
                      end do
@@ -198,6 +209,9 @@ contains
                      if (present(json_data)) then
                         json_data%output_mode = OUTPUT_MODE_UNFRAGMENTED
                         json_data%total_energy = result%energy%total()
+                        json_data%has_orbitals = result%has_orbitals
+                        json_data%homo = result%homo
+                        json_data%lumo = result%lumo
                         json_data%has_energy = result%has_energy
                         json_data%has_vibrational = .true.
 
@@ -250,16 +264,22 @@ contains
       end block
       call logger%info("============================================")
 
-      ! Return result to caller or handle json_data
-      if (present(result_out)) then
-         ! Transfer result to output (for dynamics/optimization)
-         result_out = result
-      else
+      ! Both, not either. These were exclusive, so asking for the result
+      ! silently suppressed the files -- and a session always asks for the
+      ! result, which meant an unfragmented run driven from Python wrote
+      ! nothing at all and its fingerprint and gap read back as absent. The
+      ! fragmented path was fixed for this; this one was not.
+      if (present(result_out)) result_out = result
+
+      block
          ! Populate json_data for non-Hessian case if present
          ! (Hessian case already handled above in the vibrational block)
          if (present(json_data) .and. .not. result%has_hessian) then
             json_data%output_mode = OUTPUT_MODE_UNFRAGMENTED
             json_data%total_energy = result%energy%total()
+            json_data%has_orbitals = result%has_orbitals
+            json_data%homo = result%homo
+            json_data%lumo = result%lumo
             json_data%has_energy = result%has_energy
 
             if (result%has_dipole) then
@@ -273,9 +293,58 @@ contains
                json_data%gradient = result%gradient
                json_data%has_gradient = .true.
             end if
+
+            ! The energy decomposition, when `properties.bonding_analysis`
+            ! asked for one. Carried whole rather than summarised: a caller
+            ! screening atoms or pairs by contribution needs the terms, and
+            ! there is no norm of this the way there is of a gradient.
+            if (result%has_ieda) then
+               json_data%ieda_atom = result%ieda_atom
+               if (allocated(result%ieda_free_atom)) then
+                  json_data%ieda_free_atom = result%ieda_free_atom
+               end if
+               if (allocated(result%ieda_pair)) then
+                  json_data%ieda_pair = result%ieda_pair
+               end if
+               if (allocated(result%ieda_classical)) then
+                  json_data%ieda_classical = result%ieda_classical
+               end if
+               json_data%ieda_formation = result%ieda_formation
+               json_data%has_ieda = .true.
+            end if
+
+            ! Partial charges, when `properties.charges` asked. Fragment-local
+            ! and caps included, exactly as the backend produced them -- for an
+            ! unfragmented run there are no caps, which is the only case that
+            ! reaches this writer.
+            if (result%has_charges) then
+               json_data%atomic_charges = result%atomic_charges
+               if (allocated(result%spin_populations)) then
+                  json_data%spin_populations = result%spin_populations
+               end if
+               json_data%charge_scheme = result%charge_scheme
+               json_data%has_charges = .true.
+            end if
+
+            ! Where the molecule reacts, when `properties.fukui` asked. Carried
+            ! per atom rather than reduced to "the most reactive site": ranking
+            ! sites is what the caller is doing, and which index to rank on
+            ! depends on the reaction being asked about.
+            if (result%has_fukui) then
+               json_data%fukui_plus = result%fukui_plus
+               json_data%fukui_minus = result%fukui_minus
+               json_data%fukui_dual = result%fukui_dual
+               json_data%fukui_ip = result%fukui_ip
+               json_data%fukui_ea = result%fukui_ea
+               json_data%fukui_hardness = result%fukui_hardness
+               json_data%fukui_electrophilicity = result%fukui_electrophilicity
+               json_data%fukui_anion_bound = result%fukui_anion_bound
+               json_data%fukui_scheme = result%fukui_scheme
+               json_data%has_fukui = .true.
+            end if
          end if
-         call result%destroy()
-      end if
+      end block
+      call result%destroy()
 
    end subroutine unfragmented_calculation
 

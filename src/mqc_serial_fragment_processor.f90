@@ -4,19 +4,27 @@ submodule(mqc_mbe_fragment_distribution_scheme) mqc_serial_fragment_processor
 contains
 
    module subroutine serial_fragment_processor(total_fragments, polymers, max_level, &
-                                               sys_geom, method_config, calc_type, json_data)
+                                               sys_geom, method_config, calc_type, json_data, &
+                                               checkpoint)
       !! Process all fragments serially in single-rank mode
       !! This is used when running with only 1 MPI rank
       !! Bond connectivity is accessed via sys_geom%bonds
       use mqc_error, only: error_t
+      use mqc_combinatorics, only: fragment_size_of
       use mqc_result_types, only: mbe_result_t
       use mqc_json_output_types, only: json_output_data_t
+      use mqc_checkpoint, only: checkpoint_t
+      use mqc_calculation_defaults, only: DISP_WHOLE_FRAGMENT
       integer(int64), intent(in) :: total_fragments
-      integer, intent(in) :: polymers(:, :), max_level
+      integer, intent(in) ::  max_level
+      integer, intent(in) :: polymers(:, :)
       type(system_geometry_t), intent(in) :: sys_geom
       type(method_config_t), intent(in) :: method_config  !! Method configuration
       integer(int32), intent(in) :: calc_type
       type(json_output_data_t), intent(out), optional :: json_data  !! JSON output data
+      type(checkpoint_t), intent(inout), optional :: checkpoint
+         !! Fragments already done are taken from here and not recomputed;
+         !! fragments computed here are appended to it as they finish.
 
       integer(int64) :: frag_idx
       integer :: fragment_size, current_log_level, iatom
@@ -27,20 +35,67 @@ contains
       type(timer_type) :: coord_timer
       integer(int32) :: calc_type_local
       type(error_t) :: error
+      logical :: known
+      real(dp) :: known_energy
+      integer :: known_status
+      integer :: known_atoms
+      real(dp), allocatable :: known_gradient(:, :), known_hessian(:, :)
+      real(dp) :: known_homo, known_lumo
+      logical :: known_orbitals
+      integer(int64) :: n_reused
 
       calc_type_local = calc_type
 
+      n_reused = 0_int64
       call logger%info("Processing "//to_char(total_fragments)//" fragments serially...")
       call logger%info("  Calculation type: "//calc_type_to_string(calc_type_local))
 
       allocate (results(total_fragments))
 
-      call omp_set_num_threads(1)
+      ! Fragments run one at a time here, so leave the thread count alone and
+      ! let each method's own threading use the whole machine -- the same
+      ! full-width path the unfragmented run takes. This used to pin to a
+      ! single thread, which left a density-fitted HF Fock build on one core
+      ! for the entire expansion.
       call coord_timer%start()
       do frag_idx = 1_int64, total_fragments
-         fragment_size = count(polymers(frag_idx, :) > 0)
+         fragment_size = fragment_size_of(polymers(frag_idx, :))
          allocate (fragment_indices(fragment_size))
          fragment_indices = polymers(frag_idx, 1:fragment_size)
+
+         ! Already done by an earlier run? Take it and move on. Keyed on the
+         ! monomers rather than the index, so a resumed list that is screened
+         ! differently still matches the right fragment.
+         if (present(checkpoint)) then
+            call checkpoint%lookup([polymers(frag_idx, :), DISP_WHOLE_FRAGMENT], &
+                                   known, known_energy, known_status, &
+                                   n_atoms=known_atoms, gradient=known_gradient, &
+                                   hessian=known_hessian, homo=known_homo, &
+                                   lumo=known_lumo, has_orbitals=known_orbitals)
+            if (known) then
+               results(frag_idx)%energy%scf = known_energy
+               results(frag_idx)%has_energy = .true.
+               results(frag_idx)%scf_status = known_status
+               results(frag_idx)%homo = known_homo
+               results(frag_idx)%lumo = known_lumo
+               results(frag_idx)%has_orbitals = known_orbitals
+               ! The assembly rebuilds the fragment from sys_geom and
+               ! redistributes cap gradients itself, so all it needs back is
+               ! an array of the right shape -- which is why the atom count
+               ! is stored alongside.
+               if (allocated(known_gradient)) then
+                  call move_alloc(known_gradient, results(frag_idx)%gradient)
+                  results(frag_idx)%has_gradient = .true.
+               end if
+               if (allocated(known_hessian)) then
+                  call move_alloc(known_hessian, results(frag_idx)%hessian)
+                  results(frag_idx)%has_hessian = .true.
+               end if
+               n_reused = n_reused + 1_int64
+               deallocate (fragment_indices)
+               cycle
+            end if
+         end if
 
          call build_fragment_from_indices(sys_geom, fragment_indices, phys_frag, error, sys_geom%bonds)
          if (error%has_error()) then
@@ -57,6 +112,35 @@ contains
             error stop "Fragment calculation failed in serial processing"
          end if
 
+         ! Recorded the moment it exists, so a kill on the next fragment does
+         ! not cost this one.
+         if (present(checkpoint)) then
+            if (results(frag_idx)%has_gradient .and. results(frag_idx)%has_hessian) then
+               call checkpoint%record([polymers(frag_idx, :), DISP_WHOLE_FRAGMENT], &
+                                      results(frag_idx)%energy%total(), &
+                                      results(frag_idx)%scf_status, phys_frag%n_atoms, &
+                                      results(frag_idx)%gradient, results(frag_idx)%hessian, &
+                                      homo=results(frag_idx)%homo, &
+                                      lumo=results(frag_idx)%lumo, &
+                                      has_orbitals=results(frag_idx)%has_orbitals)
+            else if (results(frag_idx)%has_gradient) then
+               call checkpoint%record([polymers(frag_idx, :), DISP_WHOLE_FRAGMENT], &
+                                      results(frag_idx)%energy%total(), &
+                                      results(frag_idx)%scf_status, phys_frag%n_atoms, &
+                                      gradient=results(frag_idx)%gradient, &
+                                      homo=results(frag_idx)%homo, &
+                                      lumo=results(frag_idx)%lumo, &
+                                      has_orbitals=results(frag_idx)%has_orbitals)
+            else
+               call checkpoint%record([polymers(frag_idx, :), DISP_WHOLE_FRAGMENT], &
+                                      results(frag_idx)%energy%total(), &
+                                      results(frag_idx)%scf_status, phys_frag%n_atoms, &
+                                      homo=results(frag_idx)%homo, &
+                                      lumo=results(frag_idx)%lumo, &
+                                      has_orbitals=results(frag_idx)%has_orbitals)
+            end if
+         end if
+
          ! Debug output for gradients
          if (calc_type_local == CALC_TYPE_GRADIENT .and. results(frag_idx)%has_gradient) then
             call logger%configuration(level=current_log_level)
@@ -64,16 +148,16 @@ contains
                block
                   character(len=512) :: debug_line
                   integer :: iatom_local
-                  write (debug_line, '(a,i0,a,*(i0,1x))') "Fragment ", frag_idx, " monomers: ", fragment_indices
+                  write (debug_line, "(a,i0,a,*(i0,1x))") "Fragment ", frag_idx, " monomers: ", fragment_indices
                   call logger%verbose(trim(debug_line))
-                  write (debug_line, '(a,f25.15)') "  Energy: ", results(frag_idx)%energy%total()
+                  write (debug_line, "(a,f25.15)") "  Energy: ", results(frag_idx)%energy%total()
                   call logger%verbose(trim(debug_line))
-                  write (debug_line, '(a,f25.15)') "  Gradient norm: ", sqrt(sum(results(frag_idx)%gradient**2))
+                  write (debug_line, "(a,f25.15)") "  Gradient norm: ", sqrt(sum(results(frag_idx)%gradient**2))
                   call logger%verbose(trim(debug_line))
                   if (size(results(frag_idx)%gradient, 2) <= 20) then
                      call logger%verbose("  Fragment gradient:")
                      do iatom_local = 1, size(results(frag_idx)%gradient, 2)
-                        write (debug_line, '(a,i3,a,3f20.12)') "    Atom ", iatom_local, ": ", &
+                        write (debug_line, "(a,i3,a,3f20.12)") "    Atom ", iatom_local, ": ", &
                            results(frag_idx)%gradient(1, iatom_local), &
                            results(frag_idx)%gradient(2, iatom_local), &
                            results(frag_idx)%gradient(3, iatom_local)
@@ -94,8 +178,11 @@ contains
       end do
       call coord_timer%stop()
       call logger%info("Time to evaluate all fragments "//to_char(coord_timer%get_elapsed_time())//" s")
-      call omp_set_num_threads(omp_get_max_threads())
 
+      if (n_reused > 0_int64) then
+         call logger%info("Reused "//to_char(n_reused)//" fragment(s) from the checkpoint; "// &
+                          "computed "//to_char(total_fragments - n_reused))
+      end if
       call logger%info("All fragments processed")
 
       call logger%info(" ")

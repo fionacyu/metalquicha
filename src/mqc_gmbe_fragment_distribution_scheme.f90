@@ -1,7 +1,7 @@
 !! Generalized Many-Body Expansion (GMBE) fragment distribution module
 module mqc_gmbe_fragment_distribution_scheme
-   !! Implements fragment distribution schemes for GMBE calculations with overlapping fragments
-   !! Handles both serial and MPI-parallelized distribution of monomers and intersection fragments
+   !! Serial and MPI-parallel evaluation of a GMBE PIE term list, and the
+   !! accumulation of the results back into one energy, gradient or Hessian.
    use pic_types, only: int32, int64, dp
    use pic_timer, only: timer_type
    use mqc_calc_types, only: CALC_TYPE_GRADIENT
@@ -23,14 +23,17 @@ module mqc_gmbe_fragment_distribution_scheme
    use mqc_json_output_types, only: json_output_data_t, OUTPUT_MODE_GMBE_PIE
    use mqc_vibrational_analysis, only: compute_vibrational_analysis, print_vibrational_analysis
    use mqc_thermochemistry, only: thermochemistry_result_t, compute_thermochemistry
-   use mqc_calculation_defaults, only: FRAGMENT_TYPE_ATOMS
+   use mqc_calculation_defaults, only: FRAGMENT_TYPE_ATOMS, DISP_WHOLE_FRAGMENT
    use mqc_program_limits, only: GROUP_RESULT_BATCH_SIZE
    use mqc_work_queue, only: queue_t, queue_init_from_list, queue_pop, queue_is_empty
    use mqc_group_shard_io, only: send_group_assignment_matrix, receive_group_assignment_matrix
    use mqc_group_batching, only: flush_group_results, handle_local_worker_results_to_batch, &
                                  handle_node_results_to_batch, handle_group_results
    implicit none
-   ! Error handling imported where needed
+
+   integer, parameter :: N_TERM_PAYLOAD_MSGS = 5
+      !! Messages in one term payload: term index, fragment type, atom count,
+      !! atom list, displacement code.
    private
 
    ! Public interface
@@ -42,11 +45,11 @@ contains
 
    subroutine serial_gmbe_pie_processor(pie_atom_sets, pie_coefficients, n_pie_terms, &
                                         sys_geom, method_config, calc_type, json_data)
-      !! Serial GMBE processor using PIE coefficients
-      !! Evaluates each unique atom set once and sums with PIE coefficients
-      !! Supports energy-only, energy+gradient, and energy+gradient+Hessian calculations
-      !! If json_data is present, populates it for centralized JSON output
-      !! Bond connectivity is accessed via sys_geom%bonds
+      !! Evaluate every PIE term on one rank and sum them with their coefficients
+      !!
+      !! Energy, gradient or Hessian, by `calc_type`. Bonds come from
+      !! `sys_geom%bonds`; `json_data`, when present, is filled for the caller
+      !! to write.
       use mqc_calc_types, only: CALC_TYPE_GRADIENT, CALC_TYPE_HESSIAN, CALC_TYPE_ENERGY, calc_type_to_string
       use mqc_physical_fragment, only: redistribute_cap_gradients, redistribute_cap_hessian, &
                                        redistribute_cap_dipole_derivatives
@@ -109,6 +112,9 @@ contains
          total_dipole_derivs = 0.0_dp
       end if
 
+      ! Terms run one at a time here, so leave the thread count alone and let
+      ! each method's own threading use the whole machine, the same way the
+      ! serial MBE processor and the unfragmented path do.
       do term_idx = 1_int64, n_pie_terms
          coeff = pie_coefficients(term_idx)
 
@@ -200,23 +206,23 @@ contains
 
       ! Print gradient info if computed
       if (calc_type == CALC_TYPE_GRADIENT .or. calc_type == CALC_TYPE_HESSIAN) then
-         call logger%info("GMBE PIE gradient computation completed")
+         call logger%large_info("GMBE PIE gradient computation completed")
          call logger%info("  Total gradient norm: "//to_char(sqrt(sum(total_gradient**2))))
 
          ! Print detailed gradient if info level and small system
          call logger%configuration(level=current_log_level)
-         if (current_log_level >= info_level .and. sys_geom%total_atoms < 100) then
-            call logger%info(" ")
-            call logger%info("Total GMBE PIE Gradient (Hartree/Bohr):")
+         if (sys_geom%total_atoms < 100) then
+            call logger%large_info(" ")
+            call logger%large_info("Total GMBE PIE Gradient (Hartree/Bohr):")
             do iatom = 1, sys_geom%total_atoms
                block
                   character(len=256) :: grad_line
-                  write (grad_line, '(a,i5,a,3f20.12)') "  Atom ", iatom, ": ", &
+                  write (grad_line, "(a,i5,a,3f20.12)") "  Atom ", iatom, ": ", &
                      total_gradient(1, iatom), total_gradient(2, iatom), total_gradient(3, iatom)
-                  call logger%info(trim(grad_line))
+                  call logger%large_info(trim(grad_line))
                end block
             end do
-            call logger%info(" ")
+            call logger%large_info(" ")
          end if
       end if
 
@@ -340,13 +346,239 @@ contains
 
    end subroutine serial_gmbe_pie_processor
 
+   subroutine build_gmbe_task_table(pie_atom_sets, n_pie_terms, sys_geom, expand, &
+                                    task_atom_sets, task_offset, term_natoms, total_tasks, world_comm)
+      !! Expand the PIE term list into the flat list of independent evaluations
+      !!
+      !! One task per term for an energy or gradient run; for a Hessian, one per
+      !! displacement, `6*n_atoms + 1` of them per term. GMBE typically has a
+      !! handful of big overlapping fragments, so one task per term would cap
+      !! strong scaling at a very small number.
+      !!
+      !! Atom sets are column-major (max_atoms, n_terms), so the displacement code
+      !! rides in one extra row appended to each column. Atom indices are >= 0 and
+      !! the list is terminated by a negative, so the payload builder bounds its
+      !! scan at max_atoms and reads the code from the row past it.
+      use mqc_error, only: error_t
+      integer, intent(in) :: pie_atom_sets(:, :)
+      integer(int64), intent(in) :: n_pie_terms
+      type(system_geometry_t), intent(in) :: sys_geom
+      logical, intent(in) :: expand
+      integer, allocatable, intent(out) :: task_atom_sets(:, :)   !! (max_atoms+1, total_tasks)
+      integer(int64), allocatable, intent(out) :: task_offset(:)  !! first task index of each term
+      integer, allocatable, intent(out) :: term_natoms(:)         !! capped atom count of each term
+      integer(int64), intent(out) :: total_tasks
+      type(comm_t), intent(in) :: world_comm
+
+      type(physical_fragment_t) :: frag
+      type(error_t) :: error
+      integer, allocatable :: atom_list(:)
+      integer(int64) :: t, base
+      integer :: max_atoms, n_atoms, k, n_disp
+
+      max_atoms = size(pie_atom_sets, 1)
+      allocate (term_natoms(n_pie_terms))
+      allocate (task_offset(n_pie_terms))
+      term_natoms = 0
+
+      total_tasks = 0_int64
+      do t = 1_int64, n_pie_terms
+         task_offset(t) = total_tasks + 1_int64
+         if (expand) then
+            n_atoms = 0
+            do while (n_atoms < max_atoms .and. pie_atom_sets(n_atoms + 1, t) >= 0)
+               n_atoms = n_atoms + 1
+            end do
+            if (n_atoms > 0) then
+               allocate (atom_list(n_atoms))
+               atom_list = pie_atom_sets(1:n_atoms, t)
+               call build_fragment_from_atom_list(sys_geom, atom_list, n_atoms, frag, error, sys_geom%bonds)
+               if (error%has_error()) then
+                  call logger%error("build_gmbe_task_table: "//error%get_full_trace())
+                  call abort_comm(world_comm, 1)
+               end if
+               term_natoms(t) = frag%n_atoms
+               call frag%destroy()
+               deallocate (atom_list)
+            end if
+            total_tasks = total_tasks + 1_int64 + 2_int64*3_int64*int(term_natoms(t), int64)
+         else
+            total_tasks = total_tasks + 1_int64
+         end if
+      end do
+
+      allocate (task_atom_sets(max_atoms + 1, total_tasks))
+      task_atom_sets = -1
+
+      do t = 1_int64, n_pie_terms
+         base = task_offset(t)
+
+         task_atom_sets(1:max_atoms, base) = pie_atom_sets(:, t)
+         if (.not. expand) then
+            task_atom_sets(max_atoms + 1, base) = DISP_WHOLE_FRAGMENT
+            cycle
+         end if
+         task_atom_sets(max_atoms + 1, base) = 0
+
+         n_disp = 3*term_natoms(t)
+         do k = 1, n_disp
+            task_atom_sets(1:max_atoms, base + 2*k - 1) = pie_atom_sets(:, t)
+            task_atom_sets(max_atoms + 1, base + 2*k - 1) = k
+
+            task_atom_sets(1:max_atoms, base + 2*k) = pie_atom_sets(:, t)
+            task_atom_sets(max_atoms + 1, base + 2*k) = -k
+         end do
+      end do
+
+   end subroutine build_gmbe_task_table
+
+   subroutine assemble_one_pie_term_hessian(t, pie_atom_sets, sys_geom, task_results, &
+                                            task_offset, term_natoms, term_result, world_comm)
+      !! Fold one PIE term's displacement results into its Hessian, then release them
+      use mqc_error, only: error_t
+      use mqc_finite_differences, only: finite_diff_hessian_from_gradients, &
+                                        finite_diff_dipole_derivatives, DEFAULT_DISPLACEMENT
+      integer(int64), intent(in) :: t
+      integer, intent(in) :: pie_atom_sets(:, :)
+      type(system_geometry_t), intent(in) :: sys_geom
+      type(calculation_result_t), intent(inout) :: task_results(:)
+      integer(int64), intent(in) :: task_offset(:)
+      integer, intent(in) :: term_natoms(:)
+      type(calculation_result_t), intent(inout) :: term_result
+      type(comm_t), intent(in) :: world_comm
+
+      type(physical_fragment_t) :: frag
+      type(error_t) :: error
+      integer, allocatable :: atom_list(:)
+      real(dp), allocatable :: fwd_grad(:, :, :), bwd_grad(:, :, :)
+      real(dp), allocatable :: fwd_dip(:, :), bwd_dip(:, :)
+      integer(int64) :: base
+      integer :: max_atoms, n_atoms_list, k, n_disp, n_atoms
+      logical :: have_dipoles
+
+      max_atoms = size(pie_atom_sets, 1)
+
+      n_atoms = term_natoms(t)
+      base = task_offset(t)
+
+      n_disp = 3*n_atoms
+
+      n_atoms_list = 0
+      do while (n_atoms_list < max_atoms .and. pie_atom_sets(n_atoms_list + 1, t) >= 0)
+         n_atoms_list = n_atoms_list + 1
+      end do
+      allocate (atom_list(n_atoms_list))
+      atom_list = pie_atom_sets(1:n_atoms_list, t)
+      call build_fragment_from_atom_list(sys_geom, atom_list, n_atoms_list, frag, error, sys_geom%bonds)
+      if (error%has_error()) then
+         call logger%error("assemble_pie_term_hessians: "//error%get_full_trace())
+         call abort_comm(world_comm, 1)
+      end if
+      deallocate (atom_list)
+
+      allocate (fwd_grad(n_disp, 3, n_atoms), bwd_grad(n_disp, 3, n_atoms))
+      allocate (fwd_dip(n_disp, 3), bwd_dip(n_disp, 3))
+      fwd_dip = 0.0_dp
+      bwd_dip = 0.0_dp
+      have_dipoles = .true.
+
+      do k = 1, n_disp
+         if (.not. task_results(base + 2*k - 1)%has_gradient .or. &
+             .not. task_results(base + 2*k)%has_gradient) then
+            call logger%error("Missing gradient for displacement "//to_char(k)// &
+                              " of PIE term "//to_char(t))
+            call abort_comm(world_comm, 1)
+         end if
+         fwd_grad(k, :, :) = task_results(base + 2*k - 1)%gradient
+         bwd_grad(k, :, :) = task_results(base + 2*k)%gradient
+
+         if (task_results(base + 2*k - 1)%has_dipole .and. task_results(base + 2*k)%has_dipole) then
+            fwd_dip(k, :) = task_results(base + 2*k - 1)%dipole
+            bwd_dip(k, :) = task_results(base + 2*k)%dipole
+         else
+            have_dipoles = .false.
+         end if
+      end do
+
+      call finite_diff_hessian_from_gradients(frag, fwd_grad, bwd_grad, DEFAULT_DISPLACEMENT, &
+                                              term_result%hessian)
+      term_result%has_hessian = .true.
+
+      term_result%energy = task_results(base)%energy
+      term_result%has_energy = task_results(base)%has_energy
+      term_result%distance = task_results(base)%distance
+      if (task_results(base)%has_gradient) then
+         term_result%gradient = task_results(base)%gradient
+         term_result%has_gradient = .true.
+      end if
+      if (task_results(base)%has_dipole) then
+         term_result%dipole = task_results(base)%dipole
+         term_result%has_dipole = .true.
+      end if
+
+      if (have_dipoles) then
+         call finite_diff_dipole_derivatives(n_atoms, fwd_dip, bwd_dip, DEFAULT_DISPLACEMENT, &
+                                             term_result%dipole_derivatives)
+         term_result%has_dipole_derivatives = .true.
+      end if
+
+      deallocate (fwd_grad, bwd_grad, fwd_dip, bwd_dip)
+      call frag%destroy()
+
+      do k = 0, 2*n_disp
+         call task_results(base + k)%destroy()
+      end do
+
+   end subroutine assemble_one_pie_term_hessian
+
+   subroutine fold_completed_pie_terms(pie_atom_sets, n_pie_terms, sys_geom, task_results, &
+                                       task_offset, term_natoms, term_results, &
+                                       next_term, scan_pos, world_comm)
+      !! Fold every PIE term whose displacement results have all landed
+      !!
+      !! A monotone scan from the oldest unfolded term, so bookkeeping is O(1)
+      !! amortised per task. Terms with no atoms carry no Hessian and are
+      !! stepped over rather than waited on.
+      integer, intent(in) :: pie_atom_sets(:, :)
+      integer(int64), intent(in) :: n_pie_terms
+      type(system_geometry_t), intent(in) :: sys_geom
+      type(calculation_result_t), intent(inout) :: task_results(:)
+      integer(int64), intent(in) :: task_offset(:)
+      integer, intent(in) :: term_natoms(:)
+      type(calculation_result_t), intent(inout) :: term_results(:)
+      integer(int64), intent(inout) :: next_term  !! Oldest term not yet folded
+      integer(int64), intent(inout) :: scan_pos   !! Next task of next_term to verify
+      type(comm_t), intent(in) :: world_comm
+
+      integer(int64) :: last_task
+
+      do while (next_term <= n_pie_terms)
+         if (term_natoms(next_term) > 0) then
+            last_task = task_offset(next_term) + 2_int64*3_int64*int(term_natoms(next_term), int64)
+
+            do while (scan_pos <= last_task)
+               if (.not. task_results(scan_pos)%has_gradient) return
+               scan_pos = scan_pos + 1_int64
+            end do
+
+            call assemble_one_pie_term_hessian(next_term, pie_atom_sets, sys_geom, task_results, &
+                                               task_offset, term_natoms, term_results(next_term), &
+                                               world_comm)
+         end if
+
+         next_term = next_term + 1_int64
+         if (next_term <= n_pie_terms) scan_pos = task_offset(next_term)
+      end do
+
+   end subroutine fold_completed_pie_terms
+
    subroutine gmbe_pie_coordinator(resources, pie_atom_sets, pie_coefficients, n_pie_terms, &
                                    node_leader_ranks, num_nodes, group_leader_ranks, group_ids, global_groups, &
                                    sys_geom, method_config, calc_type, json_data)
-      !! MPI coordinator for PIE-based GMBE calculations
-      !! Distributes PIE terms across MPI ranks and accumulates results
-      !! If json_data is present, populates it for centralized JSON output
-      !! Bond connectivity is accessed via sys_geom%bonds
+      !! Distribute the PIE terms across the ranks and accumulate the results
+      !!
+      !! Bonds come from `sys_geom%bonds`; `json_data`, when present, is filled
+      !! for the caller to write.
       use mqc_calc_types, only: CALC_TYPE_GRADIENT, CALC_TYPE_HESSIAN
       use mqc_physical_fragment, only: redistribute_cap_gradients, redistribute_cap_hessian, &
                                        redistribute_cap_dipole_derivatives
@@ -356,7 +588,8 @@ contains
       integer, intent(in) :: pie_atom_sets(:, :)  !! Unique atom sets (max_atoms, n_pie_terms)
       integer, intent(in) :: pie_coefficients(:)  !! PIE coefficient for each term
       integer(int64), intent(in) :: n_pie_terms
-      integer, intent(in) :: node_leader_ranks(:), num_nodes
+      integer, intent(in) ::  num_nodes
+      integer, intent(in) :: node_leader_ranks(:)
       integer, intent(in) :: group_leader_ranks(:)
       integer, intent(in) :: group_ids(:)
       integer, intent(in) :: global_groups
@@ -380,8 +613,17 @@ contains
       integer :: i
       integer :: local_node_done
 
-      ! Storage for results
+      ! Storage for results, indexed by flat task index
       type(calculation_result_t), allocatable :: results(:)
+      type(calculation_result_t), allocatable :: term_results(:)
+
+      ! Flat task list: one schedulable evaluation per entry
+      integer, allocatable :: task_atom_sets(:, :)
+      integer(int64), allocatable :: task_offset(:)
+      integer, allocatable :: term_natoms(:)
+      integer(int64) :: total_tasks
+      integer(int64) :: next_term, scan_pos
+      logical :: expand_displacements
       integer(int64) :: worker_term_map(resources%mpi_comms%node_comm%size())
       type(queue_t) :: group0_queue
       integer(int64), allocatable :: group0_term_ids(:)
@@ -414,10 +656,31 @@ contains
       results_received = 0_int64
       worker_term_map = 0
 
-      allocate (results(n_pie_terms))
+      ! A Hessian fans each PIE term out into its 6N+1 independent gradient
+      ! evaluations; energy and gradient runs stay one task per term.
+      expand_displacements = (calc_type == CALC_TYPE_HESSIAN)
+      call build_gmbe_task_table(pie_atom_sets, n_pie_terms, sys_geom, expand_displacements, &
+                                 task_atom_sets, task_offset, term_natoms, total_tasks, &
+                                 resources%mpi_comms%world_comm)
 
-      call logger%verbose("GMBE PIE coordinator starting with "//to_char(n_pie_terms)// &
-                          " PIE terms for "//to_char(num_nodes)//" nodes and "// &
+      allocate (results(total_tasks))
+
+      ! PIE term Hessians are folded in as their displacements land, so the targets
+      ! have to exist before the coordinator loop starts.
+      next_term = 1_int64
+      scan_pos = 1_int64
+      if (expand_displacements) allocate (term_results(n_pie_terms))
+
+      if (expand_displacements) then
+         call logger%info("Hessian displacements flattened into the PIE term queue:")
+         call logger%info("  PIE terms:            "//to_char(n_pie_terms))
+         call logger%info("  Schedulable tasks:    "//to_char(total_tasks))
+         call logger%info("  Max useful ranks:     "//to_char(total_tasks)//" (was "// &
+                          to_char(n_pie_terms)//")")
+      end if
+
+      call logger%verbose("GMBE PIE coordinator starting with "//to_char(total_tasks)// &
+                          " tasks for "//to_char(num_nodes)//" nodes and "// &
                           to_char(global_groups)//" groups")
 
       ! Build group leader map and node counts
@@ -438,16 +701,16 @@ contains
       ! Atom sets are stored as (max_atoms, n_terms) and sharded by columns.
       allocate (group_counts(global_groups))
       group_counts = 0_int64
-      if (n_pie_terms > 0_int64) then
-         chunk_size = max(1_int64, n_pie_terms/int(global_groups, int64))
-         do term_idx = 1_int64, n_pie_terms
+      if (total_tasks > 0_int64) then
+         chunk_size = max(1_int64, total_tasks/int(global_groups, int64))
+         do term_idx = 1_int64, total_tasks
             chunk_id = (term_idx - 1_int64)/chunk_size + 1_int64
             group_id = int(mod(chunk_id - 1_int64, int(global_groups, int64)) + 1_int64)
             group_counts(group_id) = group_counts(group_id) + 1_int64
          end do
       end if
 
-      max_atoms = size(pie_atom_sets, 1)
+      max_atoms = size(task_atom_sets, 1)
       allocate (group_shards(global_groups))
       allocate (group_fill(global_groups))
       group_fill = 0_int64
@@ -458,13 +721,13 @@ contains
          end if
       end do
 
-      if (n_pie_terms > 0_int64) then
-         do term_idx = 1_int64, n_pie_terms
+      if (total_tasks > 0_int64) then
+         do term_idx = 1_int64, total_tasks
             chunk_id = (term_idx - 1_int64)/chunk_size + 1_int64
             group_id = int(mod(chunk_id - 1_int64, int(global_groups, int64)) + 1_int64)
             group_fill(group_id) = group_fill(group_id) + 1_int64
             group_shards(group_id)%term_ids(group_fill(group_id)) = term_idx
-            group_shards(group_id)%atom_sets(:, group_fill(group_id)) = pie_atom_sets(:, term_idx)
+            group_shards(group_id)%atom_sets(:, group_fill(group_id)) = task_atom_sets(:, term_idx)
          end do
       end if
 
@@ -513,17 +776,25 @@ contains
       end block
 
       call coord_timer%start()
-      do while (group_done_count < global_groups .or. results_received < n_pie_terms)
+      do while (group_done_count < global_groups .or. results_received < total_tasks)
 
          ! PRIORITY 1: Receive batched results from group globals
          call handle_group_results(resources%mpi_comms%world_comm, results, results_received, &
-                                   n_pie_terms, coord_timer, group_done_count, "PIE term")
+                                   total_tasks, coord_timer, group_done_count, "task")
 
          ! PRIORITY 2: Check for incoming results from local workers
-         call handle_local_worker_results(resources, worker_term_map, results, results_received, coord_timer, n_pie_terms)
+         call handle_local_worker_results(resources, worker_term_map, results, results_received, coord_timer, total_tasks)
 
          ! PRIORITY 3: Check for incoming results from node coordinators (group 0 only)
-         call handle_node_results(resources, results, results_received, coord_timer, n_pie_terms)
+         call handle_node_results(resources, results, results_received, coord_timer, total_tasks)
+
+         ! Fold any PIE term whose displacements have all landed, releasing its
+         ! task gradients while the rest of the queue is still running.
+         if (expand_displacements) then
+            call fold_completed_pie_terms(pie_atom_sets, n_pie_terms, sys_geom, results, &
+                                          task_offset, term_natoms, term_results, next_term, scan_pos, &
+                                          resources%mpi_comms%world_comm)
+         end if
 
          ! PRIORITY 4: Remote node coordinator requests for group 0
         call handle_group_node_requests(resources, group0_queue, group0_term_ids, group0_atom_sets, group0_finished_nodes)
@@ -551,9 +822,31 @@ contains
          end if
       end do
 
-      call logger%verbose("GMBE PIE coordinator finished all terms")
+      call logger%verbose("GMBE PIE coordinator finished all tasks")
       call coord_timer%stop()
-      call logger%info("Time to evaluate all PIE terms "//to_char(coord_timer%get_elapsed_time())//" s")
+      call logger%info("Time to evaluate all tasks "//to_char(coord_timer%get_elapsed_time())//" s")
+
+      ! Fold the flat displacement results back into one Hessian per PIE term
+      ! Most terms were folded as their displacements landed; this only mops up
+      ! whatever a straggler at the head of the scan held back.
+      if (expand_displacements) then
+         call coord_timer%start()
+         if (next_term <= n_pie_terms) then
+            call logger%info("Assembling remaining PIE term Hessians ("// &
+                             to_char(n_pie_terms - next_term + 1_int64)//" of "// &
+                             to_char(n_pie_terms)//" deferred)...")
+            call fold_completed_pie_terms(pie_atom_sets, n_pie_terms, sys_geom, results, &
+                                          task_offset, term_natoms, term_results, next_term, scan_pos, &
+                                          resources%mpi_comms%world_comm)
+         end if
+         if (next_term <= n_pie_terms) then
+            call logger%error("PIE term "//to_char(next_term)//" never received all its displacements")
+            call abort_comm(resources%mpi_comms%world_comm, 1)
+         end if
+         call move_alloc(term_results, results)
+         call coord_timer%stop()
+         call logger%info("PIE term Hessians finalised in "//to_char(coord_timer%get_elapsed_time())//" s")
+      end if
 
       ! Accumulate results with PIE coefficients
       call logger%info(" ")
@@ -618,18 +911,18 @@ contains
             use pic_logger, only: info_level
             integer :: iatom, current_log_level
             call logger%configuration(level=current_log_level)
-            if (current_log_level >= info_level .and. sys_geom%total_atoms < 100) then
-               call logger%info(" ")
-               call logger%info("Total GMBE PIE Gradient (Hartree/Bohr):")
+            if (sys_geom%total_atoms < 100) then
+               call logger%large_info(" ")
+               call logger%large_info("Total GMBE PIE Gradient (Hartree/Bohr):")
                do iatom = 1, sys_geom%total_atoms
                   block
                      character(len=256) :: grad_line
-                     write (grad_line, '(a,i5,a,3f20.12)') "  Atom ", iatom, ": ", &
+                     write (grad_line, "(a,i5,a,3f20.12)") "  Atom ", iatom, ": ", &
                         total_gradient(1, iatom), total_gradient(2, iatom), total_gradient(3, iatom)
-                     call logger%info(trim(grad_line))
+                     call logger%large_info(trim(grad_line))
                   end block
                end do
-               call logger%info(" ")
+               call logger%large_info(" ")
             end if
          end block
 
@@ -841,6 +1134,9 @@ contains
          end block
       end if
 
+      if (allocated(task_atom_sets)) deallocate (task_atom_sets)
+      if (allocated(task_offset)) deallocate (task_offset)
+      if (allocated(term_natoms)) deallocate (term_natoms)
       deallocate (results)
       if (allocated(group0_term_ids)) deallocate (group0_term_ids)
       if (allocated(group0_atom_sets)) deallocate (group0_atom_sets)
@@ -862,11 +1158,15 @@ contains
       integer :: n_atoms, max_atoms
       integer, allocatable :: atom_list(:)
       integer(int32) :: fragment_type
-      type(request_t) :: req(4)
+      integer(int32) :: disp_code
+      type(request_t) :: req(N_TERM_PAYLOAD_MSGS)
 
+      ! PIE terms always use atom lists, and are always evaluated whole
       fragment_type = FRAGMENT_TYPE_ATOMS
 
-      max_atoms = size(atom_row)
+      ! Last element carries the displacement code; the atom scan stops before it
+      max_atoms = size(atom_row) - 1
+      disp_code = int(atom_row(max_atoms + 1), int32)
       n_atoms = 0
       do while (n_atoms < max_atoms .and. atom_row(n_atoms + 1) >= 0)
          n_atoms = n_atoms + 1
@@ -881,11 +1181,13 @@ contains
       call isend(comm, fragment_type, dest_rank, tag, req(2))
       call isend(comm, n_atoms, dest_rank, tag, req(3))
       call isend(comm, atom_list, dest_rank, tag, req(4))
+      call isend(comm, disp_code, dest_rank, tag, req(5))
 
       call wait(req(1))
       call wait(req(2))
       call wait(req(3))
       call wait(req(4))
+      call wait(req(5))
 
       deallocate (atom_list)
    end subroutine send_pie_term_payload
@@ -1147,81 +1449,5 @@ contains
       deallocate (batch_ids)
       deallocate (batch_results)
    end subroutine gmbe_group_global_coordinator
-
-   subroutine send_pie_term_to_node(world_comm, term_idx, pie_atom_sets, dest_rank)
-      !! Send PIE term (atom list) to remote node coordinator
-      type(comm_t), intent(in) :: world_comm
-      integer(int64), intent(in) :: term_idx
-      integer, intent(in) :: pie_atom_sets(:, :)
-      integer, intent(in) :: dest_rank
-
-      integer :: n_atoms, max_atoms
-      integer, allocatable :: atom_list(:)
-      integer(int32) :: fragment_type
-      type(request_t) :: req(4)
-
-      ! PIE terms always use atom lists
-      fragment_type = FRAGMENT_TYPE_ATOMS
-
-      ! Extract atom list for this term
-      max_atoms = size(pie_atom_sets, 1)
-      n_atoms = 0
-      do while (n_atoms < max_atoms .and. pie_atom_sets(n_atoms + 1, term_idx) >= 0)
-         n_atoms = n_atoms + 1
-      end do
-
-      allocate (atom_list(n_atoms))
-      atom_list = pie_atom_sets(1:n_atoms, term_idx)
-
-      call isend(world_comm, term_idx, dest_rank, TAG_NODE_FRAGMENT, req(1))
-      call isend(world_comm, fragment_type, dest_rank, TAG_NODE_FRAGMENT, req(2))
-      call isend(world_comm, n_atoms, dest_rank, TAG_NODE_FRAGMENT, req(3))
-      call isend(world_comm, atom_list, dest_rank, TAG_NODE_FRAGMENT, req(4))
-
-      call wait(req(1))
-      call wait(req(2))
-      call wait(req(3))
-      call wait(req(4))
-
-      deallocate (atom_list)
-   end subroutine send_pie_term_to_node
-
-   subroutine send_pie_term_to_worker(node_comm, term_idx, pie_atom_sets, dest_rank)
-      !! Send PIE term (atom list) to local worker
-      type(comm_t), intent(in) :: node_comm
-      integer(int64), intent(in) :: term_idx
-      integer, intent(in) :: pie_atom_sets(:, :)
-      integer, intent(in) :: dest_rank
-
-      integer :: n_atoms, max_atoms
-      integer, allocatable :: atom_list(:)
-      integer(int32) :: fragment_type
-      type(request_t) :: req(4)
-
-      ! PIE terms always use atom lists
-      fragment_type = FRAGMENT_TYPE_ATOMS
-
-      ! Extract atom list for this term
-      max_atoms = size(pie_atom_sets, 1)
-      n_atoms = 0
-      do while (n_atoms < max_atoms .and. pie_atom_sets(n_atoms + 1, term_idx) >= 0)
-         n_atoms = n_atoms + 1
-      end do
-
-      allocate (atom_list(n_atoms))
-      atom_list = pie_atom_sets(1:n_atoms, term_idx)
-
-      call isend(node_comm, term_idx, dest_rank, TAG_WORKER_FRAGMENT, req(1))
-      call isend(node_comm, fragment_type, dest_rank, TAG_WORKER_FRAGMENT, req(2))
-      call isend(node_comm, n_atoms, dest_rank, TAG_WORKER_FRAGMENT, req(3))
-      call isend(node_comm, atom_list, dest_rank, TAG_WORKER_FRAGMENT, req(4))
-
-      call wait(req(1))
-      call wait(req(2))
-      call wait(req(3))
-      call wait(req(4))
-
-      deallocate (atom_list)
-   end subroutine send_pie_term_to_worker
 
 end module mqc_gmbe_fragment_distribution_scheme

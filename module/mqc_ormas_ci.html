@@ -1,0 +1,2807 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="A demonstration of PIC as a framework for scientific applications targetting quantum chemistry">
+    <meta name="author" content="Jorge Luis Galvez Vallejo" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>mqc_ormas_ci &ndash; metalquicha</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">metalquicha </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../program/main.html">Program</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>mqc_ormas_ci
+      <small>Module</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 2.0% of total for modules and submodules.">535 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/mqc_ormas_ci.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/mqc_ormas_ci.f90.html'>mqc_ormas_ci.f90</a></li>
+            <li class="breadcrumb-item active" aria-current="page">mqc_ormas_ci</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+        <div id="sidebar">
+      <h3>Contents</h3>
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#vars-0"
+         aria-expanded="false" aria-controls="vars-0">
+         <h4 class="card-header bg-primary text-white">Variables</h4>
+      </a>
+      <div id="vars-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/mqc_ormas_ci.html#variable-gather_budget">GATHER_BUDGET</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#types-0"
+         aria-expanded="false" aria-controls="types-0">
+         <h4 class="card-header bg-primary text-white">Derived Types</h4>
+      </a>
+      <div id="types-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/mqc_ormas_ci.html#type-ormas_operator_t">ormas_operator_t</a>
+        </div>
+      </div>
+    </div>
+
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#funcs-0"
+         aria-expanded="false" aria-controls="funcs-0">
+         <h4 class="card-header bg-primary text-white">Functions</h4>
+      </a>
+      <div id="funcs-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/mqc_ormas_ci.html#proc-determinant_address_local">determinant_address_local</a>
+            <a class="list-group-item" href="../module/mqc_ormas_ci.html#proc-tile_columns">tile_columns</a>
+            <a class="list-group-item" href="../module/mqc_ormas_ci.html#proc-tile_end">tile_end</a>
+        </div>
+      </div>
+    </div>
+
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#subs-0"
+         aria-expanded="false" aria-controls="subs-0">
+         <h4 class="card-header bg-primary text-white">Subroutines</h4>
+      </a>
+      <div id="subs-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/mqc_ormas_ci.html#proc-build_ormas_links">build_ormas_links</a>
+            <a class="list-group-item" href="../module/mqc_ormas_ci.html#proc-full_space_index">full_space_index</a>
+            <a class="list-group-item" href="../module/mqc_ormas_ci.html#proc-ormas_density_matrices">ormas_density_matrices</a>
+            <a class="list-group-item" href="../module/mqc_ormas_ci.html#proc-ormas_diagonal">ormas_diagonal</a>
+            <a class="list-group-item" href="../module/mqc_ormas_ci.html#proc-ormas_gather">ormas_gather</a>
+            <a class="list-group-item" href="../module/mqc_ormas_ci.html#proc-ormas_lowest">ormas_lowest</a>
+            <a class="list-group-item" href="../module/mqc_ormas_ci.html#proc-ormas_sigma">ormas_sigma</a>
+            <a class="list-group-item" href="../module/mqc_ormas_ci.html#proc-ormas_sigma_direct">ormas_sigma_direct</a>
+            <a class="list-group-item" href="../module/mqc_ormas_ci.html#proc-ormas_solve">ormas_solve</a>
+            <a class="list-group-item" href="../module/mqc_ormas_ci.html#proc-occupied_orbitals">occupied_orbitals</a>
+            <a class="list-group-item" href="../module/mqc_ormas_ci.html#proc-ormas_apply">ormas_apply</a>
+            <a class="list-group-item" href="../module/mqc_ormas_ci.html#proc-string_terms">string_terms</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+
+
+  </div>
+
+    </div>
+
+    <div class="col-md-9" id='text'>
+      <p>What <code>mqc_ci</code> does for a complete active space, for a restricted one.</p>
+<p>ORMAS restricts which determinants exist, not what the Hamiltonian is, so
+every matrix element here is the same Slater rule it would be in a CAS.
+Only the bookkeeping differs: the determinants no longer form a rectangle,
+so a quantity indexed by one is a flat vector rather than a matrix, and
+reaching a determinant goes through <code>mqc_ormas_space</code>.</p>
+<br>          <div class="card mb-4">
+      <h3 class="card-header card-title bg-light">Uses</h3>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <ul class="list-inline">
+                  <li class="list-inline-item"><a href='mqc_ormas_space.html'>mqc_ormas_space</a></li>
+                  <li class="list-inline-item">pic_io</li>
+                  <li class="list-inline-item">pic_blas_interfaces</li>
+                  <li class="list-inline-item"><a href='mqc_error.html'>mqc_error</a></li>
+                  <li class="list-inline-item">pic_lapack_interfaces</li>
+                  <li class="list-inline-item">pic_types</li>
+                  <li class="list-inline-item"><a href='mqc_determinants.html'>mqc_determinants</a></li>
+                  <li class="list-inline-item"><a href='mqc_davidson.html'>mqc_davidson</a></li>
+                  <li class="list-inline-item"><a href='mqc_ci.html'>mqc_ci</a></li>
+              </ul>
+            </li>
+            <li class="list-group-item">
+              <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: module~~mqc_ormas_ci~~UsesGraph Pages: 1 -->
+<svg id="modulemqc_ormas_ciUsesGraph" width="641pt" height="339pt"
+ viewBox="0.00 0.00 641.00 339.15" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="module~~mqc_ormas_ci~~UsesGraph" class="graph" transform="scale(0.82 0.82) rotate(0) translate(4 411.87)">
+<title>module~~mqc_ormas_ci~~UsesGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-411.87 782,-411.87 782,4 -4,4"/>
+<!-- module~mqc_ormas_ci -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_node1" class="node">
+<title>module~mqc_ormas_ci</title>
+<polygon fill="none" stroke="black" points="778,-229.26 689,-229.26 689,-205.26 778,-205.26 778,-229.26"/>
+<text text-anchor="middle" x="733.5" y="-214.86" font-family="Helvetica,sans-Serif" font-size="10.50">mqc_ormas_ci</text>
+</g>
+<!-- module~mqc_ci -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_node2" class="node">
+<title>module~mqc_ci</title>
+<g id="a_module~~mqc_ormas_ci~~UsesGraph_node2"><a xlink:href="../module/mqc_ci.html" xlink:title="mqc_ci">
+<polygon fill="#337ab7" stroke="#337ab7" points="481,-299.26 427,-299.26 427,-275.26 481,-275.26 481,-299.26"/>
+<text text-anchor="middle" x="454" y="-284.86" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_ci</text>
+</a>
+</g>
+</g>
+<!-- module~mqc_ormas_ci&#45;&gt;module~mqc_ci -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_edge1" class="edge">
+<title>module~mqc_ormas_ci&#45;&gt;module~mqc_ci</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M729.55,-229.47C719.95,-265.89 685.71,-372.77 609.5,-397.26"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M607.5,-397.26C547.91,-416.41 492.03,-345.16 467.73,-308.19"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="470.59,-306.15 462.26,-299.61 464.68,-309.92 470.59,-306.15"/>
+</g>
+<!-- module~mqc_davidson -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_node3" class="node">
+<title>module~mqc_davidson</title>
+<g id="a_module~~mqc_ormas_ci~~UsesGraph_node3"><a xlink:href="../module/mqc_davidson.html" xlink:title="mqc_davidson">
+<polygon fill="#337ab7" stroke="#337ab7" points="653,-229.26 564,-229.26 564,-205.26 653,-205.26 653,-229.26"/>
+<text text-anchor="middle" x="608.5" y="-214.86" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_davidson</text>
+</a>
+</g>
+</g>
+<!-- module~mqc_ormas_ci&#45;&gt;module~mqc_davidson -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_edge2" class="edge">
+<title>module~mqc_ormas_ci&#45;&gt;module~mqc_davidson</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M688.79,-217.26C680.54,-217.26 671.83,-217.26 663.31,-217.26"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="663.07,-213.76 653.07,-217.26 663.07,-220.76 663.07,-213.76"/>
+</g>
+<!-- module~mqc_determinants -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_node4" class="node">
+<title>module~mqc_determinants</title>
+<g id="a_module~~mqc_ormas_ci~~UsesGraph_node4"><a xlink:href="../module/mqc_determinants.html" xlink:title="mqc_determinants">
+<polygon fill="#337ab7" stroke="#337ab7" points="343,-53.26 231,-53.26 231,-29.26 343,-29.26 343,-53.26"/>
+<text text-anchor="middle" x="287" y="-38.86" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_determinants</text>
+</a>
+</g>
+</g>
+<!-- module~mqc_ormas_ci&#45;&gt;module~mqc_determinants -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_edge3" class="edge">
+<title>module~mqc_ormas_ci&#45;&gt;module~mqc_determinants</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M607.5,-77.26C545.64,-49.57 522.7,-80.5 455,-77.26"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M453,-77.26C412.79,-75.34 368.25,-65.13 335.59,-56.07"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="336.43,-52.67 325.86,-53.3 334.52,-59.4 336.43,-52.67"/>
+</g>
+<!-- module~mqc_error -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_node5" class="node">
+<title>module~mqc_error</title>
+<g id="a_module~~mqc_ormas_ci~~UsesGraph_node5"><a xlink:href="../module/mqc_error.html" xlink:title="mqc_error">
+<polygon fill="#337ab7" stroke="#337ab7" points="179.5,-249.26 112.5,-249.26 112.5,-225.26 179.5,-225.26 179.5,-249.26"/>
+<text text-anchor="middle" x="146" y="-234.86" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_error</text>
+</a>
+</g>
+</g>
+<!-- module~mqc_ormas_ci&#45;&gt;module~mqc_error -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_edge4" class="edge">
+<title>module~mqc_ormas_ci&#45;&gt;module~mqc_error</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M453,-397.26C379.8,-392.9 358.91,-415.98 288,-397.26"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M286,-397.26C260.59,-390.56 250.39,-394.85 230,-378.26 190.58,-346.19 165.72,-290.08 154.32,-259.2"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="157.49,-257.66 150.85,-249.41 150.89,-260 157.49,-257.66"/>
+</g>
+<!-- module~mqc_ormas_space -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_node6" class="node">
+<title>module~mqc_ormas_space</title>
+<g id="a_module~~mqc_ormas_ci~~UsesGraph_node6"><a xlink:href="../module/mqc_ormas_space.html" xlink:title="mqc_ormas_space">
+<polygon fill="#337ab7" stroke="#337ab7" points="510,-49.26 398,-49.26 398,-25.26 510,-25.26 510,-49.26"/>
+<text text-anchor="middle" x="454" y="-34.86" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_ormas_space</text>
+</a>
+</g>
+</g>
+<!-- module~mqc_ormas_ci&#45;&gt;module~mqc_ormas_space -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_edge5" class="edge">
+<title>module~mqc_ormas_ci&#45;&gt;module~mqc_ormas_space</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M726.57,-205.2C711.66,-176.41 669.44,-104.1 609.5,-77.26"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M607.5,-77.26C579.91,-64.91 547.74,-55.77 520.09,-49.37"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="520.64,-45.91 510.12,-47.14 519.11,-52.74 520.64,-45.91"/>
+</g>
+<!-- pic_blas_interfaces -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_node7" class="node">
+<title>pic_blas_interfaces</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="344,-369.26 230,-369.26 230,-345.26 344,-345.26 344,-369.26"/>
+<text text-anchor="middle" x="287" y="-354.86" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">pic_blas_interfaces</text>
+</g>
+<!-- module~mqc_ormas_ci&#45;&gt;pic_blas_interfaces -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_edge6" class="edge">
+<title>module~mqc_ormas_ci&#45;&gt;pic_blas_interfaces</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M607.5,-397.26C542.97,-418 522.66,-401.3 455,-397.26"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M453,-397.26C411.14,-394.77 364.84,-382.69 331.97,-372.45"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="332.81,-369.05 322.22,-369.35 330.68,-375.72 332.81,-369.05"/>
+</g>
+<!-- pic_io -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_node8" class="node">
+<title>pic_io</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="173,-133.26 119,-133.26 119,-109.26 173,-109.26 173,-133.26"/>
+<text text-anchor="middle" x="146" y="-118.86" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">pic_io</text>
+</g>
+<!-- module~mqc_ormas_ci&#45;&gt;pic_io -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_edge7" class="edge">
+<title>module~mqc_ormas_ci&#45;&gt;pic_io</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M453,-77.26C379.73,-73.76 361.32,-78.91 288,-81.26"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M286,-81.26C249.79,-82.42 210.24,-94.98 182.62,-105.72"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="180.99,-102.6 173.01,-109.57 183.6,-109.1 180.99,-102.6"/>
+</g>
+<!-- pic_lapack_interfaces -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_node9" class="node">
+<title>pic_lapack_interfaces</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="517.5,-129.26 390.5,-129.26 390.5,-105.26 517.5,-105.26 517.5,-129.26"/>
+<text text-anchor="middle" x="454" y="-114.86" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">pic_lapack_interfaces</text>
+</g>
+<!-- module~mqc_ormas_ci&#45;&gt;pic_lapack_interfaces -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_edge8" class="edge">
+<title>module~mqc_ormas_ci&#45;&gt;pic_lapack_interfaces</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M607.5,-77.26C597.64,-72.85 541.96,-89.09 500.72,-102.18"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="499.56,-98.88 491.11,-105.26 501.7,-105.55 499.56,-98.88"/>
+</g>
+<!-- pic_types -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_node10" class="node">
+<title>pic_types</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="62,-93.26 0,-93.26 0,-69.26 62,-69.26 62,-93.26"/>
+<text text-anchor="middle" x="31" y="-78.86" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">pic_types</text>
+</g>
+<!-- module~mqc_ormas_ci&#45;&gt;pic_types -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_edge9" class="edge">
+<title>module~mqc_ormas_ci&#45;&gt;pic_types</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M286,-397.26C226.27,-381.5 202,-425.39 147,-397.26"/>
+</g>
+<!-- module~mqc_ci&#45;&gt;module~mqc_determinants -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_edge11" class="edge">
+<title>module~mqc_ci&#45;&gt;module~mqc_determinants</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M426.9,-280.78C410.97,-275.46 391.5,-266.3 380,-251.26 329.38,-185.07 395.4,-132.85 344,-67.26 341.51,-64.08 338.53,-61.27 335.27,-58.79"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="336.99,-55.74 326.69,-53.3 333.22,-61.64 336.99,-55.74"/>
+</g>
+<!-- module~mqc_ci&#45;&gt;module~mqc_error -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_edge12" class="edge">
+<title>module~mqc_ci&#45;&gt;module~mqc_error</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M286,-317.26C239.11,-311.22 193.27,-278 167.71,-256.31"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="169.69,-253.39 159.85,-249.45 165.09,-258.66 169.69,-253.39"/>
+</g>
+<!-- module~mqc_ci&#45;&gt;pic_blas_interfaces -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_edge13" class="edge">
+<title>module~mqc_ci&#45;&gt;pic_blas_interfaces</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M426.86,-298.35C399.71,-309.87 356.99,-328 326.09,-341.1"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="324.35,-338.04 316.51,-345.17 327.09,-344.48 324.35,-338.04"/>
+</g>
+<!-- module~mqc_ci&#45;&gt;pic_io -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_edge14" class="edge">
+<title>module~mqc_ci&#45;&gt;pic_io</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M426.79,-292.93C383.76,-302.1 301.54,-319.01 288,-317.26"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M286,-317.26C259.93,-313.91 249.37,-316.03 230,-298.26 200.66,-271.36 210.83,-252.33 194,-216.26 182.07,-190.7 167.58,-161.69 157.87,-142.53"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="160.92,-140.8 153.26,-133.47 154.68,-143.97 160.92,-140.8"/>
+</g>
+<!-- module~mqc_ci&#45;&gt;pic_types -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_edge15" class="edge">
+<title>module~mqc_ci&#45;&gt;pic_types</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M286,-317.26C259.93,-313.91 253.31,-324.12 230,-336.26 189.4,-357.42 187.76,-418.11 147,-397.26"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M145,-397.26C89.96,-369.12 48.53,-170.54 35.96,-103.39"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="39.38,-102.65 34.13,-93.45 32.5,-103.92 39.38,-102.65"/>
+</g>
+<!-- iso_fortran_env -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_node11" class="node">
+<title>iso_fortran_env</title>
+<g id="a_module~~mqc_ormas_ci~~UsesGraph_node11"><a xlink:href="http://fortranwiki.org/fortran/show/iso_fortran_env" xlink:title="iso_fortran_env">
+<polygon fill="#337ab7" stroke="#337ab7" points="334,-289.26 240,-289.26 240,-265.26 334,-265.26 334,-289.26"/>
+<text text-anchor="middle" x="287" y="-274.86" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">iso_fortran_env</text>
+</a>
+</g>
+</g>
+<!-- module~mqc_ci&#45;&gt;iso_fortran_env -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_edge10" class="edge">
+<title>module~mqc_ci&#45;&gt;iso_fortran_env</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M426.86,-285.68C404.76,-284.34 372.34,-282.37 344.38,-280.68"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="344.5,-277.18 334.31,-280.07 344.08,-284.17 344.5,-277.18"/>
+</g>
+<!-- module~mqc_davidson&#45;&gt;module~mqc_ci -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_edge17" class="edge">
+<title>module~mqc_davidson&#45;&gt;module~mqc_ci</title>
+<path fill="none" stroke="#ffaa00" stroke-dasharray="5,2" d="M581.28,-229.3C556.22,-240.8 518.25,-258.23 490.48,-270.98"/>
+<polygon fill="#ffaa00" stroke="#ffaa00" points="488.76,-267.92 481.13,-275.27 491.68,-274.28 488.76,-267.92"/>
+</g>
+<!-- module~mqc_davidson&#45;&gt;module~mqc_determinants -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_edge19" class="edge">
+<title>module~mqc_davidson&#45;&gt;module~mqc_determinants</title>
+<path fill="none" stroke="#ffaa00" stroke-dasharray="5,2" d="M587.16,-205.17C571.43,-196.23 548.89,-184.25 528,-176.26 496.69,-164.28 485.24,-171.73 455,-157.26"/>
+<path fill="none" stroke="#ffaa00" stroke-dasharray="5,2" d="M453,-157.26C422.76,-142.8 406.11,-159.29 380,-138.26 352.45,-116.07 369.45,-91.84 344,-67.26 340.52,-63.9 336.53,-60.92 332.31,-58.28"/>
+<polygon fill="#ffaa00" stroke="#ffaa00" points="333.88,-55.15 323.43,-53.35 330.48,-61.27 333.88,-55.15"/>
+</g>
+<!-- module~mqc_davidson&#45;&gt;module~mqc_error -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_edge20" class="edge">
+<title>module~mqc_davidson&#45;&gt;module~mqc_error</title>
+<path fill="none" stroke="#ffaa00" stroke-dasharray="5,2" d="M286,-237.26C253.77,-234.99 217.23,-235.09 189.7,-235.71"/>
+<polygon fill="#ffaa00" stroke="#ffaa00" points="189.53,-232.21 179.62,-235.97 189.71,-239.21 189.53,-232.21"/>
+</g>
+<!-- module~mqc_davidson&#45;&gt;pic_blas_interfaces -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_edge21" class="edge">
+<title>module~mqc_davidson&#45;&gt;pic_blas_interfaces</title>
+<path fill="none" stroke="#ffaa00" stroke-dasharray="5,2" d="M600.48,-229.55C588.41,-249.49 561.72,-288.64 528,-308.26 474.87,-339.18 405.23,-350.81 354.66,-355.07"/>
+<polygon fill="#ffaa00" stroke="#ffaa00" points="354.19,-351.59 344.49,-355.85 354.72,-358.57 354.19,-351.59"/>
+</g>
+<!-- module~mqc_davidson&#45;&gt;pic_io -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_edge22" class="edge">
+<title>module~mqc_davidson&#45;&gt;pic_io</title>
+<path fill="none" stroke="#ffaa00" stroke-dasharray="5,2" d="M453,-157.26C422.76,-142.8 410.82,-151.46 380,-138.26 335.78,-119.33 336.08,-79.72 288,-81.26"/>
+</g>
+<!-- module~mqc_davidson&#45;&gt;pic_lapack_interfaces -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_edge23" class="edge">
+<title>module~mqc_davidson&#45;&gt;pic_lapack_interfaces</title>
+<path fill="none" stroke="#ffaa00" stroke-dasharray="5,2" d="M597.37,-205.15C583.3,-189.01 556.36,-160.49 528,-143.26 521.68,-139.42 514.7,-136.03 507.64,-133.07"/>
+<polygon fill="#ffaa00" stroke="#ffaa00" points="508.61,-129.7 498.03,-129.31 506.06,-136.21 508.61,-129.7"/>
+</g>
+<!-- module~mqc_davidson&#45;&gt;pic_types -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_edge25" class="edge">
+<title>module~mqc_davidson&#45;&gt;pic_types</title>
+<path fill="none" stroke="#ffaa00" stroke-dasharray="5,2" d="M453,-237.26C379.82,-241.98 361.15,-242.43 288,-237.26"/>
+<path fill="none" stroke="#ffaa00" stroke-dasharray="5,2" d="M286,-237.26C183.89,-230.06 87.92,-140.84 49.58,-100.66"/>
+<polygon fill="#ffaa00" stroke="#ffaa00" points="52.08,-98.22 42.69,-93.32 46.98,-103.01 52.08,-98.22"/>
+</g>
+<!-- module~mqc_davidson&#45;&gt;iso_fortran_env -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_edge16" class="edge">
+<title>module~mqc_davidson&#45;&gt;iso_fortran_env</title>
+<path fill="none" stroke="#ffaa00" stroke-dasharray="5,2" d="M453,-237.26C411.28,-239.95 365.14,-251.94 332.29,-262.1"/>
+<polygon fill="#ffaa00" stroke="#ffaa00" points="331.02,-258.83 322.54,-265.18 333.13,-265.5 331.02,-258.83"/>
+</g>
+<!-- module~mqc_convergence_report -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_node12" class="node">
+<title>module~mqc_convergence_report</title>
+<g id="a_module~~mqc_ormas_ci~~UsesGraph_node12"><a xlink:href="../module/mqc_convergence_report.html" xlink:title="mqc_convergence_report">
+<polygon fill="#337ab7" stroke="#337ab7" points="528,-209.26 380,-209.26 380,-185.26 528,-185.26 528,-209.26"/>
+<text text-anchor="middle" x="454" y="-194.86" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_convergence_report</text>
+</a>
+</g>
+</g>
+<!-- module~mqc_davidson&#45;&gt;module~mqc_convergence_report -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_edge18" class="edge">
+<title>module~mqc_davidson&#45;&gt;module~mqc_convergence_report</title>
+<path fill="none" stroke="#ffaa00" stroke-dasharray="5,2" d="M563.8,-211.53C555.68,-210.47 546.95,-209.32 538.1,-208.16"/>
+<polygon fill="#ffaa00" stroke="#ffaa00" points="538.45,-204.68 528.08,-206.85 537.54,-211.62 538.45,-204.68"/>
+</g>
+<!-- pic_logger -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_node14" class="node">
+<title>pic_logger</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="321,-209.26 253,-209.26 253,-185.26 321,-185.26 321,-209.26"/>
+<text text-anchor="middle" x="287" y="-194.86" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">pic_logger</text>
+</g>
+<!-- module~mqc_davidson&#45;&gt;pic_logger -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_edge24" class="edge">
+<title>module~mqc_davidson&#45;&gt;pic_logger</title>
+<path fill="none" stroke="#ffaa00" stroke-dasharray="5,2" d="M563.94,-224.53C533.52,-229.23 491.91,-234.88 455,-237.26"/>
+<path fill="none" stroke="#ffaa00" stroke-dasharray="5,2" d="M453,-237.26C408.22,-240.15 358.34,-225.45 325.27,-213.07"/>
+<polygon fill="#ffaa00" stroke="#ffaa00" points="326.16,-209.66 315.57,-209.32 323.64,-216.19 326.16,-209.66"/>
+</g>
+<!-- module~mqc_determinants&#45;&gt;module~mqc_error -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_edge26" class="edge">
+<title>module~mqc_determinants&#45;&gt;module~mqc_error</title>
+<path fill="none" stroke="#aaff00" stroke-dasharray="5,2" d="M274.23,-53.52C262.46,-66.05 244.11,-86.32 230,-105.26 202.06,-142.78 174.03,-189.78 158.75,-216.38"/>
+<polygon fill="#aaff00" stroke="#aaff00" points="155.64,-214.78 153.73,-225.2 161.72,-218.24 155.64,-214.78"/>
+</g>
+<!-- module~mqc_determinants&#45;&gt;pic_io -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_edge28" class="edge">
+<title>module~mqc_determinants&#45;&gt;pic_io</title>
+<path fill="none" stroke="#aaff00" stroke-dasharray="5,2" d="M256.86,-53.28C248.02,-57.32 238.42,-62.13 230,-67.26 212.7,-77.82 210.92,-84.1 194,-95.26 189.54,-98.2 184.72,-101.13 179.93,-103.9"/>
+<polygon fill="#aaff00" stroke="#aaff00" points="177.86,-101.05 170.85,-109 181.29,-107.16 177.86,-101.05"/>
+</g>
+<!-- module~mqc_determinants&#45;&gt;pic_types -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_edge29" class="edge">
+<title>module~mqc_determinants&#45;&gt;pic_types</title>
+<path fill="none" stroke="#aaff00" stroke-dasharray="5,2" d="M237.5,-53.36C223.52,-56.57 208.21,-59.82 194,-62.26 152.83,-69.36 105.31,-74.58 72.43,-77.74"/>
+<polygon fill="#aaff00" stroke="#aaff00" points="71.92,-74.27 62.3,-78.69 72.58,-81.24 71.92,-74.27"/>
+</g>
+<!-- module~mqc_math_utils -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_node13" class="node">
+<title>module~mqc_math_utils</title>
+<g id="a_module~~mqc_ormas_ci~~UsesGraph_node13"><a xlink:href="../module/mqc_math_utils.html" xlink:title="mqc_math_utils">
+<polygon fill="#337ab7" stroke="#337ab7" points="194,-53.26 98,-53.26 98,-29.26 194,-29.26 194,-53.26"/>
+<text text-anchor="middle" x="146" y="-38.86" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_math_utils</text>
+</a>
+</g>
+</g>
+<!-- module~mqc_determinants&#45;&gt;module~mqc_math_utils -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_edge27" class="edge">
+<title>module~mqc_determinants&#45;&gt;module~mqc_math_utils</title>
+<path fill="none" stroke="#aaff00" stroke-dasharray="5,2" d="M230.66,-41.26C221.96,-41.26 212.94,-41.26 204.19,-41.26"/>
+<polygon fill="#aaff00" stroke="#aaff00" points="204.08,-37.76 194.08,-41.26 204.08,-44.76 204.08,-37.76"/>
+</g>
+<!-- module~mqc_ormas_space&#45;&gt;module~mqc_determinants -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_edge30" class="edge">
+<title>module~mqc_ormas_space&#45;&gt;module~mqc_determinants</title>
+<path fill="none" stroke="#00ffa9" stroke-dasharray="5,2" d="M397.6,-38.61C383.37,-38.95 367.94,-39.33 353.27,-39.68"/>
+<polygon fill="#00ffa9" stroke="#00ffa9" points="353.17,-36.18 343.26,-39.92 353.34,-43.18 353.17,-36.18"/>
+</g>
+<!-- module~mqc_ormas_space&#45;&gt;module~mqc_error -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_edge31" class="edge">
+<title>module~mqc_ormas_space&#45;&gt;module~mqc_error</title>
+<path fill="none" stroke="#00ffa9" stroke-dasharray="5,2" d="M410.45,-49.32C400.13,-53.07 389.38,-57.71 380,-63.26 361.58,-74.17 360.75,-81.93 344,-95.26 295.37,-133.97 280.38,-139.86 230,-176.26 210.25,-190.53 188.01,-206.89 171.53,-219.08"/>
+<polygon fill="#00ffa9" stroke="#00ffa9" points="169.44,-216.27 163.48,-225.03 173.6,-221.9 169.44,-216.27"/>
+</g>
+<!-- module~mqc_ormas_space&#45;&gt;pic_io -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_edge33" class="edge">
+<title>module~mqc_ormas_space&#45;&gt;pic_io</title>
+<path fill="none" stroke="#00ffa9" stroke-dasharray="5,2" d="M286,-1.26C259.79,-3.22 251.62,-5.31 230,-20.26 225.79,-23.17 186.32,-72.11 163.36,-100.78"/>
+<polygon fill="#00ffa9" stroke="#00ffa9" points="160.34,-98.95 156.82,-108.95 165.8,-103.33 160.34,-98.95"/>
+</g>
+<!-- module~mqc_ormas_space&#45;&gt;pic_types -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_edge34" class="edge">
+<title>module~mqc_ormas_space&#45;&gt;pic_types</title>
+<path fill="none" stroke="#00ffa9" stroke-dasharray="5,2" d="M422.66,-25.16C389.85,-13.36 335.8,2.31 288,-1.26"/>
+<path fill="none" stroke="#00ffa9" stroke-dasharray="5,2" d="M286,-1.26C202.25,-7.53 174.57,14.24 98,-20.26 77.67,-29.43 59.46,-47.38 47.35,-61.44"/>
+<polygon fill="#00ffa9" stroke="#00ffa9" points="44.63,-59.24 40.95,-69.18 50.02,-63.7 44.63,-59.24"/>
+</g>
+<!-- module~mqc_ormas_space&#45;&gt;module~mqc_math_utils -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_edge32" class="edge">
+<title>module~mqc_ormas_space&#45;&gt;module~mqc_math_utils</title>
+<path fill="none" stroke="#00ffa9" stroke-dasharray="5,2" d="M286,-1.26C250.99,-3.88 212.75,-15.57 185.26,-25.65"/>
+<polygon fill="#00ffa9" stroke="#00ffa9" points="183.77,-22.47 175.65,-29.26 186.24,-29.02 183.77,-22.47"/>
+</g>
+<!-- module~mqc_convergence_report&#45;&gt;pic_io -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_edge35" class="edge">
+<title>module~mqc_convergence_report&#45;&gt;pic_io</title>
+<path fill="none" stroke="#7fff00" stroke-dasharray="5,2" d="M404.51,-185.22C342.93,-169.92 238.06,-143.88 183.08,-130.22"/>
+<polygon fill="#7fff00" stroke="#7fff00" points="183.64,-126.76 173.09,-127.74 181.96,-133.55 183.64,-126.76"/>
+</g>
+<!-- module~mqc_convergence_report&#45;&gt;pic_logger -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_edge36" class="edge">
+<title>module~mqc_convergence_report&#45;&gt;pic_logger</title>
+<path fill="none" stroke="#7fff00" stroke-dasharray="5,2" d="M379.67,-197.26C363.18,-197.26 346.21,-197.26 331.41,-197.26"/>
+<polygon fill="#7fff00" stroke="#7fff00" points="331.06,-193.76 321.06,-197.26 331.06,-200.76 331.06,-193.76"/>
+</g>
+<!-- module~mqc_math_utils&#45;&gt;pic_types -->
+<g id="module~~mqc_ormas_ci~~UsesGraph_edge37" class="edge">
+<title>module~mqc_math_utils&#45;&gt;pic_types</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M111.1,-53.26C98.66,-57.67 84.48,-62.69 71.59,-67.25"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="70.3,-63.99 62.04,-70.63 72.64,-70.59 70.3,-63.99"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panmodulemqc_ormas_ciUsesGraph = svgPanZoom('#modulemqc_ormas_ciUsesGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#UsesGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="UsesGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="518pt" height="32pt"
+ viewBox="0.00 0.00 517.50 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 513.5,-28 513.5,4 -4,4"/>
+<!-- Module -->
+<g id="node1" class="node">
+<title>Module</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="54,-24 0,-24 0,0 54,0 54,-24"/>
+<text text-anchor="middle" x="27" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Module</text>
+</g>
+<!-- Submodule -->
+<g id="node2" class="node">
+<title>Submodule</title>
+<polygon fill="#5bc0de" stroke="#5bc0de" points="145.5,-24 72.5,-24 72.5,0 145.5,0 145.5,-24"/>
+<text text-anchor="middle" x="109" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Submodule</text>
+</g>
+<!-- Subroutine -->
+<g id="node3" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="234,-24 164,-24 164,0 234,0 234,-24"/>
+<text text-anchor="middle" x="199" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node4" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="310,-24 252,-24 252,0 310,0 310,-24"/>
+<text text-anchor="middle" x="281" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Program -->
+<g id="node5" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="386,-24 328,-24 328,0 386,0 386,-24"/>
+<text text-anchor="middle" x="357" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node6" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="509.5,-24 404.5,-24 404.5,0 509.5,0 509.5,-24"/>
+<text text-anchor="middle" x="457" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a submodule to the (sub)module which it is
+descended from. Dashed arrows point from a module or program unit to 
+modules which it uses.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+            </li>
+        </ul>
+      </div>
+    </div>
+
+      
+      <br>
+
+
+        <section>
+          <h2>Variables</h2>
+            <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+<th></th><th scope="col">Initial</th>        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-gather_budget"></span>
+              integer(kind=int64),
+            </td>
+              <td>private,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>GATHER_BUDGET</strong></td>
+<td> =</td>
+                <td>256_int64*1024_int64*1024_int64</td>
+            <td>
+                <p>Bytes the excitation intermediate may occupy at once. It is built one
+run of alpha strings at a time and consumed before the next, so a
+larger space means more runs, not a larger array.</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+        </section>
+        <br>
+
+
+
+
+        <section>
+          <h2>Derived Types</h2>
+              <div class="card">
+    <div class="card-header codesum">
+      <span class="anchor" id="type-ormas_operator_t"></span>
+      <h3>
+        type, private, extends(<a href='../type/sigma_operator_t.html'>sigma_operator_t</a>)&nbsp;::&nbsp;
+        <a href='../type/ormas_operator_t.html'>ormas_operator_t</a>
+        
+      </h3>
+    </div>
+    <div class="card-body">
+      <p>The restricted Hamiltonian, as something Davidson can multiply by</p><a href="../type/ormas_operator_t.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+        <h4>Components</h4>
+          <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+<th></th><th scope="col">Initial</th>        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-alpha_table"></span>
+              type(<a href='../type/link_table_t.html'>link_table_t</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>alpha_table</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-beta_table"></span>
+              type(<a href='../type/link_table_t.html'>link_table_t</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>beta_table</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-closure~3"></span>
+              type(<a href='../type/ormas_closure_t.html'>ormas_closure_t</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>closure</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-folded"></span>
+              real(kind=dp),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>folded</strong>(:,:)</td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-space~18"></span>
+              type(<a href='../type/ormas_space_t.html'>ormas_space_t</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>space</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+
+        <h4>Type-Bound Procedures</h4>
+        <table class="table table-striped varlist">
+          <tbody>
+              <tr>
+                <td>  procedure, public ::
+  <strong><a href='../type/ormas_operator_t.html#boundprocedure-apply~2'>apply</a></strong> => <a href='/home/runner/work/metalquicha/metalquicha/docs/fpm-ford/proc/ormas_apply.html'>ormas_apply</a></td>
+                  <td></td>
+              </tr>
+          </tbody>
+        </table>
+    </div>
+  </div>
+
+        </section>
+        <br>
+
+        <section>
+          <h2>Functions</h2>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-determinant_address_local"></span> <h3>private pure function <a href='../proc/determinant_address_local.html'>determinant_address_local</a>(space, ia, ib) result(at)  
+</h3></div>
+    <div class="card-body">
+          
+  <p><code>determinant_address</code>, spelled out again</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-space~22"></span>
+              type(<a href='../type/ormas_space_t.html'>ormas_space_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>space</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ia~4"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ia</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ib~3"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ib</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>integer(kind=int64)</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-tile_columns"></span> <h3>private pure function <a href='../proc/tile_columns.html'>tile_columns</a>(closure, alpha_lo, alpha_hi, space) result(columns)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>How many closure determinants a run of alpha strings owns</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-closure~6"></span>
+              type(<a href='../type/ormas_closure_t.html'>ormas_closure_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>closure</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-alpha_lo~3"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>alpha_lo</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-alpha_hi~3"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>alpha_hi</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-space~27"></span>
+              type(<a href='../type/ormas_space_t.html'>ormas_space_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>space</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>integer(kind=int64)</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-tile_end"></span> <h3>private pure function <a href='../proc/tile_end.html'>tile_end</a>(space, closure, alpha_lo, n_alpha_strings, max_columns) result(alpha_hi)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>The longest run of alpha strings from here that stays inside the budget</p><a href="../proc/tile_end.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-space~26"></span>
+              type(<a href='../type/ormas_space_t.html'>ormas_space_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>space</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-closure~5"></span>
+              type(<a href='../type/ormas_closure_t.html'>ormas_closure_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>closure</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-alpha_lo~2"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>alpha_lo</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_alpha_strings"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_alpha_strings</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-max_columns~2"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>max_columns</strong></td>
+            <td>
+<p>Overrides the budget; testing only</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>integer</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
+        </section>
+        <br>
+
+        <section>
+          <h2>Subroutines</h2>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-build_ormas_links"></span> <h3>public  subroutine <a href='../proc/build_ormas_links.html'>build_ormas_links</a>(space, strings, alpha_spin, table, error)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Every single excitation out of every string the space keeps</p><a href="../proc/build_ormas_links.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-space~25"></span>
+              type(<a href='../type/ormas_space_t.html'>ormas_space_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>space</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-strings~6"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>strings</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-alpha_spin~2"></span>
+              logical,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>alpha_spin</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-table~3"></span>
+              type(<a href='../type/link_table_t.html'>link_table_t</a>),
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>table</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-error~158"></span>
+              type(<a href='../type/error_t.html'>error_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>error</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-full_space_index"></span> <h3>public  subroutine <a href='../proc/full_space_index.html'>full_space_index</a>(space, alpha, beta, in_alpha, in_beta, from_alpha, from_beta)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Where each of the space&rsquo;s strings sits in the unrestricted list</p><a href="../proc/full_space_index.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-space~20"></span>
+              type(<a href='../type/ormas_space_t.html'>ormas_space_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>space</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-alpha~5"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>alpha</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-beta~5"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>beta</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-in_alpha"></span>
+              integer,
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>in_alpha</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-in_beta"></span>
+              integer,
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>in_beta</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-from_alpha"></span>
+              integer,
+            </td>
+<td>intent(out),</td>
+              <td>optional,</td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>from_alpha</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-from_beta"></span>
+              integer,
+            </td>
+<td>intent(out),</td>
+              <td>optional,</td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>from_beta</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-ormas_density_matrices"></span> <h3>public  subroutine <a href='../proc/ormas_density_matrices.html'>ormas_density_matrices</a>(space, ci, dm1, dm2, error, max_columns)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Spin-traced one- and two-particle density matrices</p><a href="../proc/ormas_density_matrices.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-space~29"></span>
+              type(<a href='../type/ormas_space_t.html'>ormas_space_t</a>),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              target
+            </td>
+            <td>::</td>
+            <td><strong>space</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ci~7"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ci</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-dm1~3"></span>
+              real(kind=dp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>dm1</strong>(:,:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-dm2~3"></span>
+              real(kind=dp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>dm2</strong>(:,:,:,:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-error~159"></span>
+              type(<a href='../type/error_t.html'>error_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>error</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-max_columns~3"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>max_columns</strong></td>
+            <td>
+<p>Testing only</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-ormas_diagonal"></span> <h3>public  subroutine <a href='../proc/ormas_diagonal.html'>ormas_diagonal</a>(space, alpha, beta, h1e, eri, diagonal, error)  
+</h3></div>
+    <div class="card-body">
+          
+  <p><code>&lt;D|H|D&gt;</code> for every determinant of the space</p><a href="../proc/ormas_diagonal.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-space~19"></span>
+              type(<a href='../type/ormas_space_t.html'>ormas_space_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>space</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-alpha~4"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>alpha</strong>(:)</td>
+            <td>
+<p>As <code>ormas_strings</code> gives them</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-beta~4"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>beta</strong>(:)</td>
+            <td>
+<p>As <code>ormas_strings</code> gives them</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-h1e~3"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>h1e</strong>(:,:)</td>
+            <td>
+<p>(norb, norb), symmetric</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-eri~2"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>eri</strong>(:,:,:,:)</td>
+            <td>
+<p>chemist (pq|rs)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-diagonal"></span>
+              real(kind=dp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>diagonal</strong>(:)</td>
+            <td>
+<p>(n_determinants)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-error~154"></span>
+              type(<a href='../type/error_t.html'>error_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>error</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-ormas_gather"></span> <h3>public  subroutine <a href='../proc/ormas_gather.html'>ormas_gather</a>(space, closure, alpha_table, beta_table, ci, alpha_lo, alpha_hi, gathered)  
+</h3></div>
+    <div class="card-body">
+          
+  <p><code>E_pq |c&gt;</code> for every orbital pair, over one run of alpha strings</p><a href="../proc/ormas_gather.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-space~28"></span>
+              type(<a href='../type/ormas_space_t.html'>ormas_space_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>space</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-closure~7"></span>
+              type(<a href='../type/ormas_closure_t.html'>ormas_closure_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>closure</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-alpha_table~5"></span>
+              type(<a href='../type/link_table_t.html'>link_table_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>alpha_table</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-beta_table~5"></span>
+              type(<a href='../type/link_table_t.html'>link_table_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>beta_table</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ci~6"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ci</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-alpha_lo~4"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>alpha_lo</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-alpha_hi~4"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>alpha_hi</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-gathered~3"></span>
+              real(kind=dp),
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>gathered</strong>(:,:)</td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-ormas_lowest"></span> <h3>public  subroutine <a href='../proc/ormas_lowest.html'>ormas_lowest</a>(space, folded, alpha_table, beta_table, in_alpha, in_beta, n_roots, energies, error)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>The lowest eigenvalues of the restricted Hamiltonian, densely</p><a href="../proc/ormas_lowest.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-space~23"></span>
+              type(<a href='../type/ormas_space_t.html'>ormas_space_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>space</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-folded~3"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>folded</strong>(:,:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-alpha_table~3"></span>
+              type(<a href='../type/link_table_t.html'>link_table_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>alpha_table</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-beta_table~3"></span>
+              type(<a href='../type/link_table_t.html'>link_table_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>beta_table</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-in_alpha~3"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>in_alpha</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-in_beta~3"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>in_beta</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_roots~2"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_roots</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-energies~2"></span>
+              real(kind=dp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>energies</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-error~156"></span>
+              type(<a href='../type/error_t.html'>error_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>error</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-ormas_sigma"></span> <h3>public  subroutine <a href='../proc/ormas_sigma.html'>ormas_sigma</a>(space, folded, alpha_table, beta_table, in_alpha, in_beta, ci, sigma, error)  
+</h3></div>
+    <div class="card-body">
+          
+  <p><code>sigma = P H P c</code>, with <code>P</code> the projection onto the restricted space</p><a href="../proc/ormas_sigma.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-space~21"></span>
+              type(<a href='../type/ormas_space_t.html'>ormas_space_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>space</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-folded~2"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>folded</strong>(:,:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-alpha_table~2"></span>
+              type(<a href='../type/link_table_t.html'>link_table_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>alpha_table</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-beta_table~2"></span>
+              type(<a href='../type/link_table_t.html'>link_table_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>beta_table</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-in_alpha~2"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>in_alpha</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-in_beta~2"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>in_beta</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ci~4"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ci</strong>(:)</td>
+            <td>
+<p>(n_determinants)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-sigma~6"></span>
+              real(kind=dp),
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>sigma</strong>(:)</td>
+            <td>
+<p>(n_determinants)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-error~155"></span>
+              type(<a href='../type/error_t.html'>error_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>error</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-ormas_sigma_direct"></span> <h3>public  subroutine <a href='../proc/ormas_sigma_direct.html'>ormas_sigma_direct</a>(space, closure, folded, alpha_table, beta_table, ci, sigma, error, max_columns)  
+</h3></div>
+    <div class="card-body">
+          
+  <p><code>sigma = H c</code> without ever visiting the complete space</p><a href="../proc/ormas_sigma_direct.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-space~24"></span>
+              type(<a href='../type/ormas_space_t.html'>ormas_space_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>space</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-closure~4"></span>
+              type(<a href='../type/ormas_closure_t.html'>ormas_closure_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>closure</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-folded~4"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>folded</strong>(:,:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-alpha_table~4"></span>
+              type(<a href='../type/link_table_t.html'>link_table_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>alpha_table</strong></td>
+            <td>
+<p>From <code>build_ormas_links</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-beta_table~4"></span>
+              type(<a href='../type/link_table_t.html'>link_table_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>beta_table</strong></td>
+            <td>
+<p>From <code>build_ormas_links</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ci~5"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ci</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-sigma~7"></span>
+              real(kind=dp),
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>sigma</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-error~157"></span>
+              type(<a href='../type/error_t.html'>error_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>error</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-max_columns"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>max_columns</strong></td>
+            <td>
+<p>Testing only</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-ormas_solve"></span> <h3>public  subroutine <a href='../proc/ormas_solve.html'>ormas_solve</a>(space, h1e, eri, n_roots, energies, vectors, error, tolerance, max_iterations, guess, verbose, energy_offset)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>The lowest states of a restricted active space, iteratively</p><a href="../proc/ormas_solve.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-space~30"></span>
+              type(<a href='../type/ormas_space_t.html'>ormas_space_t</a>),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              target
+            </td>
+            <td>::</td>
+            <td><strong>space</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-h1e~4"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>h1e</strong>(:,:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-eri~3"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>eri</strong>(:,:,:,:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_roots~3"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_roots</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-energies~3"></span>
+              real(kind=dp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>energies</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-vectors"></span>
+              real(kind=dp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>vectors</strong>(:,:)</td>
+            <td>
+<p>(n_determinants, n_roots)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-error~161"></span>
+              type(<a href='../type/error_t.html'>error_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>error</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-tolerance~13"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>tolerance</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-max_iterations"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>max_iterations</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-guess~6"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>guess</strong>(:,:)</td>
+            <td>
+<p>(n_determinants, n_roots) starting vectors, as an orbital optimiser
+has from the previous macro-iteration</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-verbose~9"></span>
+              logical,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>verbose</strong></td>
+            <td>
+<p>Print a line per iteration, as the complete-space solver does</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-energy_offset"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>energy_offset</strong></td>
+            <td>
+<p>Added to the eigenvalue before printing, so the table shows the
+total rather than the active-space energy alone</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-occupied_orbitals"></span> <h3>private pure subroutine <a href='../proc/occupied_orbitals.html'>occupied_orbitals</a>(string, n_orbitals, orbitals, n_found)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>The orbitals a string occupies, ascending</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-string~9"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>string</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_orbitals~11"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_orbitals</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-orbitals~2"></span>
+              integer,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>orbitals</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_found~2"></span>
+              integer,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_found</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-ormas_apply"></span> <h3>private  subroutine <a href='../proc/ormas_apply.html'>ormas_apply</a>(this, vector, image, error)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>One matrix-vector product over the restricted space</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-this~122"></span>
+              class(<a href='../type/ormas_operator_t.html'>ormas_operator_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>this</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-vector"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>vector</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-image"></span>
+              real(kind=dp),
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>image</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-error~160"></span>
+              type(<a href='../type/error_t.html'>error_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>error</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-string_terms"></span> <h3>private  subroutine <a href='../proc/string_terms.html'>string_terms</a>(strings, n_orbitals, n_electrons, h1e, coulomb, exchange, one_body, same_spin, screened, occupied)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Everything about a diagonal element that one spin decides alone</p><a href="../proc/string_terms.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-strings~5"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>strings</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_orbitals~12"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_orbitals</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_electrons~12"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_electrons</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-h1e~2"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>h1e</strong>(:,:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-coulomb"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>coulomb</strong>(:,:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-exchange"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>exchange</strong>(:,:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-one_body"></span>
+              real(kind=dp),
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>one_body</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-same_spin"></span>
+              real(kind=dp),
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>same_spin</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-screened"></span>
+              real(kind=dp),
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>screened</strong>(:,:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-occupied~2"></span>
+              integer,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>occupied</strong>(:,:)</td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+        </section>
+        <br>
+
+
+
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              metalquicha
+ was developed by Jorge Luis Galvez Vallejo<br>              &copy; 2026 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+ on 2026-09-07 09:10 +0000             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

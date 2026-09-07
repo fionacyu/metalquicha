@@ -114,6 +114,7 @@
 </ul>
 </li>
 <li><a href="#running-a-calculation">Running a calculation</a></li>
+<li><a href="#driving-it-from-python">Driving it from Python</a></li>
 </ul>
 </li>
 </ul>
@@ -146,8 +147,22 @@ array handling, strings, loggers, timers, etc.</p>
 <p>Additionally, users can opt to try the <a href="https://github.com/jeffhammond/vapaa">vapaa</a> backend for the <code>mpi_f08</code> module
 to ensure cross compiler portability. Please report any issues associated here and in vapaa.</p>
 <p>Metalquicha implements a naive backend for unfragmented and fragmented quantum chemistry
-calculations. Currently, metalquicha uses <a href="https://github.com/tblite/tblite">tblite</a> as
-its chemistry engine which performs energy calculations.</p>
+calculations. Three chemistry engines are available:</p>
+<ul>
+<li><a href="https://github.com/tblite/tblite">tblite</a> for semi-empirical xTB (GFN1, GFN2), on the CPU</li>
+<li><a href="https://github.com/sunqm/libcint">libcint</a> for Gaussian-basis ab initio on the
+  CPU — Hartree-Fock and Kohn-Sham DFT, both restricted and unrestricted, plus
+  MP2 and CCSD(T), each conventional or density-fitted. This one exists to be
+  checked against as much as to be run: it gives the GPU path a second, independent implementation to
+  disagree with, and every method in it is validated against PySCF.</li>
+<li><a href="https://developer.nvidia.com/cuda/cuda-x-libraries/cuest">NVIDIA cuEST</a> for
+  Hartree-Fock and Kohn-Sham DFT on the GPU — energies, analytic gradients and
+  Hessians, for whole molecules and for every fragment of an MBE/GMBE expansion.
+  See <strong><a href="backends/cuest/CUEST.md">CUEST.md</a></strong> for the full story: build instructions, the 20
+  available functionals, and the validation numbers.</li>
+</ul>
+<p>Both plug in behind the same <code>qc_method_t</code> interface, so fragmentation, screening
+and many-body assembly are unchanged by the choice of engine.</p>
 <p>If you are interested in contributing, please see <a href="https://github.com/JorgeG94/pic/blob/main/contributing.md">here</a>. Pic is the main project here and all the contributions fall downstream.</p>
 <p>You can see <a href="https://github.com/users/JorgeG94/projects/4">Project</a> for some information on development priorities and things being done!</p>
 <h2 id="ai-disclaimer">AI Disclaimer</h2>
@@ -176,8 +191,59 @@ extensive expertise in both.</p>
 <li>A Fortran compiler</li>
 <li>An MPI installation</li>
 <li>A BLAS/LAPACK install</li>
-<li>TBLITE (will be downloaded automatically)</li>
+<li>TBLITE (will be downloaded automatically), for xTB</li>
+<li>NVIDIA cuEST and CUDA 12, for GPU Hartree-Fock/DFT (optional; see <a href="backends/cuest/CUEST.md">CUEST.md</a>)</li>
 </ul>
+<p><code>cmake -B build</code> with no options gives you tblite <strong>and</strong> the CPU ab initio path
+— Hartree-Fock, DFT, MP2 and coupled cluster in a Gaussian basis, no GPU needed.
+All three dependencies are fetched automatically, so <strong>a default configure needs
+network access.</strong> On a machine without it, either point
+<code>FETCHCONTENT_SOURCE_DIR_LIBCINT</code> and <code>FETCHCONTENT_SOURCE_DIR_LIBXC</code> at local
+copies, or turn them off and build the xTB path alone.</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Default</th>
+<th>What it controls</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-DMQC_ENABLE_TBLITE=</code></td>
+<td><code>ON</code></td>
+<td>xTB (GFN1/GFN2) through tblite</td>
+</tr>
+<tr>
+<td><code>-DMQC_ENABLE_CZT=</code></td>
+<td><code>ON</code></td>
+<td>Gaussian integrals on the CPU, no GPU needed</td>
+</tr>
+<tr>
+<td><code>-DMQC_ENABLE_LIBXC=</code></td>
+<td><code>ON</code></td>
+<td>Exchange-correlation functionals, so DFT</td>
+</tr>
+<tr>
+<td><code>-DMQC_ENABLE_HDF5=</code></td>
+<td><code>OFF</code></td>
+<td>Binary checkpoints, to restart a gradient or Hessian</td>
+</tr>
+<tr>
+<td><code>-DMQC_ENABLE_CUEST=</code></td>
+<td><code>OFF</code></td>
+<td>GPU Hartree-Fock/DFT; also needs <code>-DCUEST_ROOT=</code></td>
+</tr>
+</tbody>
+</table>
+<p>Turning <code>LIBXC</code> off while leaving <code>LIBCINT</code> on is a supported build, but note
+what it means: every deck naming a functional is refused, because there is
+nothing to evaluate it with. That is the reason both default to on.</p>
+<p><strong>tblite needs gfortran, ifort or ifx.</strong> With nvfortran or LLVM Flang the
+configure stops and says so; pass <code>-DMQC_ENABLE_TBLITE=OFF</code> and the rest of the
+program — including the CPU ab initio path — builds normally.</p>
+<p>The CPU backend exists mainly so results can be checked without a GPU; it is
+validated against PySCF rather than tuned for speed.</p>
 <p>You can then simply:</p>
 <div class="codehilite"><pre><span></span><code>mkdir build
 cd build
@@ -185,6 +251,18 @@ cmake ../
 make -j
 </code></pre></div>
 
+<p>To build the GPU backend instead of (or alongside) xTB:</p>
+<div class="codehilite"><pre><span></span><code>FC=mpifort CC=mpicc cmake -B build \
+    -DMQC_ENABLE_TBLITE=OFF \
+    -DMQC_ENABLE_CUEST=ON \
+    -DCUEST_ROOT=/path/to/libcuest-linux-x86_64-&lt;ver&gt;_cuda12-archive
+cmake --build build -j
+</code></pre></div>
+
+<p>Only the cuEST shared library is needed; the Fortran bindings are pre-generated
+and vendored, and can optionally be fetched from
+<a href="https://github.com/JorgeG94/mod_cuest">mod_cuest</a> instead. Running needs a GPU
+of compute capability 8.0 or newer. Full details in <a href="backends/cuest/CUEST.md">CUEST.md</a>.</p>
 <h3 id="notes-on-fortran-compiler-compatibility">Notes on Fortran compiler compatibility</h3>
 <p>If you enable tblite (enabled by default at the moment) you are going to be blocked by which compilers does tblite
 support. If you decide to not build tblite and just build the framework the code will work with most modern compilers.</p>
@@ -204,50 +282,96 @@ to <code>libblas.a</code>. You can do this by knowing where BLAS is installed an
 <h4 id="obtaining-the-fpm">Obtaining the FPM</h4>
 <p>Install the FPM following the <a href="https://fpm.fortran-lang.org/install/index.html#install">instructions</a> and then simply: <code>fpm install</code></p>
 <h2 id="running-a-calculation">Running a calculation</h2>
-<p>To run a calculation you need to process the JSON input into our <code>mqc</code> format. To do this, you can simply do:</p>
-<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>mqc_prep.py<span class="w"> </span>validation/inputs/prism.json
+<p>Input is a JSON deck. Run it in serial:</p>
+<div class="codehilite"><pre><span></span><code>./build/mqc<span class="w"> </span>validation/inputs/prism.json
 </code></pre></div>
 
-<p>And this will generate a <code>prism.mqc</code>. Which can be simply run as <code>./build/mqc validation/inputs/prism.mqc</code> to be run
-in serial mode. Or <code>mpirun -np 4 ./build/mqc validation/inputs/prism.mqc</code>.</p>
-<p>A sample <code>mqc</code> file is shown below:</p>
-<div class="codehilite"><pre><span></span><code><span class="nf">%schema</span>
-<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mqc</span><span class="o">-</span><span class="n">frag</span>
-<span class="n">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0</span>
-<span class="n">index_base</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
-<span class="n">units</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">angstrom</span>
-<span class="n">end</span><span class="w">  </span><span class="o">!</span><span class="w"> </span><span class="n">schema</span>
-
-<span class="nf">%model</span>
-<span class="n">method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">XTB</span><span class="o">-</span><span class="n">GFN1</span>
-<span class="n">basis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cc</span><span class="o">-</span><span class="n">pVDZ</span>
-<span class="n">aux_basis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cc</span><span class="o">-</span><span class="n">pVDZ</span><span class="o">-</span><span class="n">RIFIT</span>
-<span class="n">end</span><span class="w">  </span><span class="o">!</span><span class="w"> </span><span class="n">model</span>
-
-<span class="nf">%driver</span>
-<span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Energy</span>
-<span class="n">end</span><span class="w">  </span><span class="o">!</span><span class="w"> </span><span class="n">driver</span>
-
-<span class="nf">%structure</span>
-<span class="n">charge</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
-<span class="n">multiplicity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
-<span class="n">end</span><span class="w">  </span><span class="o">!</span><span class="w"> </span><span class="n">structure</span>
-
-<span class="nf">%geometry</span>
-<span class="mi">3</span>
-
-<span class="n">O</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mf">0.119262</span>
-<span class="n">H</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mf">0.763239</span><span class="w"> </span><span class="mf">-0.477047</span>
-<span class="n">H</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mf">-0.763239</span><span class="w"> </span><span class="mf">-0.477047</span>
-<span class="n">end</span><span class="w">  </span><span class="o">!</span><span class="w"> </span><span class="n">geometry</span>
-
-<span class="nf">%scf</span>
-<span class="n">maxiter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">300</span>
-<span class="n">tolerance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1e-06</span>
-<span class="n">end</span><span class="w">  </span><span class="o">!</span><span class="w"> </span><span class="n">scf</span>
+<p>or across ranks, which is how fragmented calculations are meant to be run:</p>
+<div class="codehilite"><pre><span></span><code>mpirun<span class="w"> </span>-np<span class="w"> </span><span class="m">4</span><span class="w"> </span>./build/mqc<span class="w"> </span>validation/inputs/prism.json
 </code></pre></div>
 
-<p>If you don&rsquo;t want to use the python script, you can modify this file by adding an xyz formatted geometry. Supported calculations are <code>Energy</code>, <code>Gradient</code>, and <code>Hessian</code>.</p>
+<p>A minimal deck:</p>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">"schema"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"example"</span><span class="p">,</span><span class="w"> </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.0"</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"molecules"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="nt">"xyz"</span><span class="p">:</span><span class="w"> </span><span class="s2">"water.xyz"</span><span class="p">,</span><span class="w"> </span><span class="nt">"molecular_charge"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nt">"molecular_multiplicity"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">"model"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gfn2"</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"driver"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Energy"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"keywords"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"fragmentation"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MBE"</span><span class="p">,</span><span class="w"> </span><span class="nt">"level"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>A molecule gives either <code>xyz</code> (a path, resolved relative to the deck) or
+<code>symbols</code> plus a flat <code>geometry</code> list. Atom indices are 0-based. Bonds listed in
+<code>connectivity</code> are marked broken automatically when their two atoms land in
+different fragments &ndash; that is derived, not declared.</p>
+<p><code>driver</code> is <code>Energy</code>, <code>Gradient</code> or <code>Hessian</code>.</p>
+<p>For Hartree-Fock or DFT rather than xTB:</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">"model"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"hf"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"basis"</span><span class="p">:</span><span class="w"> </span><span class="s2">"def2-svp"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"aux_basis"</span><span class="p">:</span><span class="w"> </span><span class="s2">"def2-universal-jkfit"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"functional"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pbe0"</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p><code>functional</code> applies to <code>dft</code> only. Which backend runs depends on the build:
+cuEST when it is compiled in, otherwise libcint on the CPU. cuEST always
+density-fits J and K, so <code>aux_basis</code> is required there. libcint has both paths
+and uses exact integrals unless asked:</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">"keywords"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"scf"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"density_fitting"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+
+<p>The full keyword reference is in
+<a href="https://metalquicha.readthedocs.io/en/latest/">the documentation</a>.</p>
+<p>The <code>.mqc</code> text format and its <code>mqc_prep.py</code> generator were removed in 0.2.0.
+See <code>mqc_docs/source/input_files.rst</code> for the migration table.</p>
+<h2 id="driving-it-from-python">Driving it from Python</h2>
+<p>The program can be driven from Python. Fortran still does the calculation and
+still owns MPI; Python sets up the molecule, decides what to compute, and reads
+the answers back.</p>
+<p>Python runs on rank 0 and nowhere else. When it asks for a calculation, the
+Fortran side spreads the work over the whole job and returns when it is done &ndash;
+so a script that reads as single-threaded runs on as many nodes as it was
+launched with, and <code>mpirun -np 64 python script.py</code> is a valid way to start one.</p>
+<p>The interface loads <code>libmqc.so</code>, which is a separate target from the executable:</p>
+<div class="codehilite"><pre><span></span><code>cmake<span class="w"> </span>-B<span class="w"> </span>build
+cmake<span class="w"> </span>--build<span class="w"> </span>build<span class="w"> </span>--target<span class="w"> </span>mqc_shared
+<span class="nb">export</span><span class="w"> </span><span class="nv">PYTHONPATH</span><span class="o">=</span><span class="nv">$PWD</span>/python
+</code></pre></div>
+
+<p>The package looks for the library next to an in-tree <code>build/</code>; <code>MQC_LIBRARY</code>
+overrides that with an explicit path.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">mqc</span>
+
+<span class="k">with</span> <span class="n">mqc</span><span class="o">.</span><span class="n">session</span><span class="p">():</span>
+    <span class="n">cluster</span> <span class="o">=</span> <span class="n">mqc</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">from_xyz</span><span class="p">(</span><span class="s2">"water20.xyz"</span><span class="p">)</span>
+    <span class="n">cluster</span><span class="o">.</span><span class="n">auto_monomers</span><span class="p">()</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">mqc</span><span class="o">.</span><span class="n">MBE</span><span class="p">(</span><span class="n">cluster</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">"gfn2"</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">"w20"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">energy</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Everything happens inside <code>mqc.session()</code>, which starts MPI on entry and stops
+it on exit.</p>
+<p>Runnable examples are in <code>python/examples/</code>: <code>backends.py</code> covers standalone and
+fragmented calculations for both xTB and Hartree-Fock and asserts against
+reference energies, and <code>energy_screened_mbe.py</code> shows a two-pass calculation
+that recomputes only the terms whose contribution exceeded a threshold.</p>
+<p>Which methods are available depends on the build, though the default has all of
+them: <code>gfn1</code>/<code>gfn2</code> need <code>MQC_ENABLE_TBLITE</code>, while <code>MQC_ENABLE_CZT</code> brings
+the CPU ab initio path — <code>hf</code>, <code>dft</code>, <code>mp2</code>, <code>ccsd</code>, <code>ccsd(t)</code>, and the <code>ri-</code>
+spellings of the correlated ones. <code>dft</code> additionally needs <code>MQC_ENABLE_LIBXC</code>,
+which is on by default too.</p>
+<p>Gradients come from xTB and cuEST; the CPU backend refuses them rather than
+returning something untested. Open shells run unrestricted for Hartree-Fock and
+DFT, and are refused for MP2 and coupled cluster on the same principle — both
+transforms want one set of orbitals, and an approximate answer is worse than
+none.</p>
+<p>Details, including density fitting and the current limitations, are in
+<a href="https://metalquicha.readthedocs.io/en/latest/python_interface.html">the Python interface documentation</a>.</p>
         </div>
           <div class="col-md-4">
             <div class="card card-body bg-light">
@@ -272,7 +396,7 @@ in serial mode. Or <code>mpirun -np 4 ./build/mqc validation/inputs/prism.mqc</c
           <div class="col-xs-6 col-sm-3">
             <div>
               <h3>Source Files</h3>
-              <ul><li><a href='sourcefile/main.f90.html'>main.f90</a></li><li><a href='sourcefile/mqc_basis_file_reader.f90.html'>mqc_basis_file_reader.f90</a></li><li><a href='sourcefile/mqc_basis_reader.f90.html'>mqc_basis_reader.f90</a></li><li><a href='sourcefile/mqc_basis_utils.f90.html'>mqc_basis_utils.f90</a></li><li><a href='sourcefile/mqc_calc_types.f90.html'>mqc_calc_types.f90</a></li><li><a href='sourcefile/mqc_calculation_defaults.f90.html'>mqc_calculation_defaults.f90</a></li><li><a href='sourcefile/mqc_calculation_interface.f90.html'>mqc_calculation_interface.f90</a></li><li><a href='sourcefile/mqc_calculation_keywords.f90.html'>mqc_calculation_keywords.f90</a></li><li><a href='sourcefile/mqc_cgto.f90.html'>mqc_cgto.f90</a></li><li><a href='sourcefile/mqc_cli_parser.f90.html'>mqc_cli_parser.f90</a></li></ul>
+              <ul><li><a href='sourcefile/main.f90.html'>main.f90</a></li><li><a href='sourcefile/mqc_aambs.f90.html'>mqc_aambs.f90</a></li><li><a href='sourcefile/mqc_acknowledgements.f90.html'>mqc_acknowledgements.F90</a></li><li><a href='sourcefile/mqc_atomic_guess_common.f90.html'>mqc_atomic_guess_common.f90</a></li><li><a href='sourcefile/mqc_atomic_radii.f90.html'>mqc_atomic_radii.f90</a></li><li><a href='sourcefile/mqc_basis_normalization.f90.html'>mqc_basis_normalization.f90</a></li><li><a href='sourcefile/mqc_basis_utils.f90.html'>mqc_basis_utils.F90</a></li><li><a href='sourcefile/mqc_bcast.f90.html'>mqc_bcast.f90</a></li><li><a href='sourcefile/mqc_bcast_system.f90.html'>mqc_bcast_system.f90</a></li><li><a href='sourcefile/mqc_bond_perception.f90.html'>mqc_bond_perception.f90</a></li></ul>
             </div>
             <div>
               <ul>
@@ -283,7 +407,7 @@ in serial mode. Or <code>mpirun -np 4 ./build/mqc validation/inputs/prism.mqc</c
           <div class="col-xs-6 col-sm-3">
             <div>
               <h3>Modules</h3>
-              <ul><li><a href='module/mqc_basis_file_reader.html'>mqc_basis_file_reader</a></li><li><a href='module/mqc_basis_reader.html'>mqc_basis_reader</a></li><li><a href='module/mqc_basis_utils.html'>mqc_basis_utils</a></li><li><a href='module/mqc_calc_types.html'>mqc_calc_types</a></li><li><a href='module/mqc_calculation_defaults.html'>mqc_calculation_defaults</a></li><li><a href='module/mqc_calculation_interface.html'>mqc_calculation_interface</a></li><li><a href='module/mqc_calculation_keywords.html'>mqc_calculation_keywords</a></li><li><a href='module/mqc_cgto.html'>mqc_cgto</a></li><li><a href='module/mqc_cli_parser.html'>mqc_cli_parser</a></li><li><a href='module/mqc_combinatorics.html'>mqc_combinatorics</a></li></ul>
+              <ul><li><a href='module/mqc_aambs.html'>mqc_aambs</a></li><li><a href='module/mqc_acknowledgements.html'>mqc_acknowledgements</a></li><li><a href='module/mqc_atomic_guess_common.html'>mqc_atomic_guess_common</a></li><li><a href='module/mqc_atomic_radii.html'>mqc_atomic_radii</a></li><li><a href='module/mqc_basis_normalization.html'>mqc_basis_normalization</a></li><li><a href='module/mqc_basis_utils.html'>mqc_basis_utils</a></li><li><a href='module/mqc_bcast.html'>mqc_bcast</a></li><li><a href='module/mqc_bcast_system.html'>mqc_bcast_system</a></li><li><a href='module/mqc_bond_perception.html'>mqc_bond_perception</a></li><li><a href='module/mqc_calc_types.html'>mqc_calc_types</a></li></ul>
             </div>
             <div>
               <ul>
@@ -294,7 +418,7 @@ in serial mode. Or <code>mpirun -np 4 ./build/mqc validation/inputs/prism.mqc</c
           <div class="col-xs-6 col-sm-3">
             <div>
               <h3>Procedures</h3>
-              <ul><li><a href='proc/add_hydrogen_caps.html'>add_hydrogen_caps</a></li><li><a href='proc/add_solvation_to_calc.html'>add_solvation_to_calc</a></li><li><a href='proc/allocate_basis_shells.html'>allocate_basis_shells</a></li><li><a href='proc/ang_mom_char_to_int.html'>ang_mom_char_to_int</a></li><li><a href='proc/ang_mom_int_to_char.html'>ang_mom_int_to_char</a></li><li><a href='proc/append_result_to_batch.html'>append_result_to_batch</a></li><li><a href='proc/apply_distance_screening.html'>apply_distance_screening</a></li><li><a href='proc/arrays_equal_internal.html'>arrays_equal_internal</a></li><li><a href='proc/atom_sets_equal.html'>atom_sets_equal</a></li><li><a href='proc/atomic_basis_destroy.html'>atomic_basis_destroy</a></li></ul>
+              <ul><li><a href='proc/aambs_dimensions.html'>aambs_dimensions</a></li><li><a href='proc/aambs_element_counts.html'>aambs_element_counts</a></li><li><a href='proc/aambs_file.html'>aambs_file</a></li><li><a href='proc/aambs_shell_labels.html'>aambs_shell_labels</a></li><li><a href='proc/absorb_one_electron.html'>absorb_one_electron</a></li><li><a href='proc/accelerator_name.html'>accelerator_name</a></li><li><a href='proc/accumulate_fragment_derivatives.html'>accumulate_fragment_derivatives</a></li><li><a href='proc/accumulate_uncapped.html'>accumulate_uncapped</a></li><li><a href='proc/acknowledged_backend.html'>acknowledged_backend</a></li><li><a href='proc/active_space_rdms.html'>active_space_rdms</a></li></ul>
             </div>
             <div>
               <ul>
@@ -305,7 +429,7 @@ in serial mode. Or <code>mpirun -np 4 ./build/mqc validation/inputs/prism.mqc</c
           <div class="col-xs-6 col-sm-3">
             <div>
               <h3>Derived Types</h3>
-              <ul><li><a href='type/aimd_keywords_t.html'>aimd_keywords_t</a></li><li><a href='type/atomic_basis_type.html'>atomic_basis_type</a></li><li><a href='type/basis_file_t.html'>basis_file_t</a></li><li><a href='type/bond_t.html'>bond_t</a></li><li><a href='type/calculation_result_t.html'>calculation_result_t</a></li><li><a href='type/cc_config_t.html'>cc_config_t</a></li><li><a href='type/cc_energy_t.html'>cc_energy_t</a></li><li><a href='type/cgto_type.html'>cgto_type</a></li><li><a href='type/cli_args_type.html'>cli_args_type</a></li><li><a href='type/correlation_config_t.html'>correlation_config_t</a></li></ul>
+              <ul><li><a href='type/aambs_dimensions_t.html'>aambs_dimensions_t</a></li><li><a href='type/aimd_keywords_t.html'>aimd_keywords_t</a></li><li><a href='type/atomic_basis_type.html'>atomic_basis_type</a></li><li><a href='type/atomic_ecp_type.html'>atomic_ecp_type</a></li><li><a href='type/bond_t.html'>bond_t</a></li><li><a href='type/cached_basis_t.html'>cached_basis_t</a></li><li><a href='type/calculation_result_t.html'>calculation_result_t</a></li><li><a href='type/cas_operator_t.html'>cas_operator_t</a></li><li><a href='type/cc_config_t.html'>cc_config_t</a></li><li><a href='type/cc_energy_t.html'>cc_energy_t</a></li></ul>
             </div>
             <div>
               <ul>
@@ -329,7 +453,7 @@ in serial mode. Or <code>mpirun -np 4 ./build/mqc validation/inputs/prism.mqc</c
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-02-20 06:49 +0000             </p>
+ on 2026-09-07 09:10 +0000             </p>
           </div>
         </div>
         <br>

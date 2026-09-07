@@ -94,7 +94,7 @@
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
-                 title="<p> 1.5% of total for derived types.</p>Including implementation: 36 statements,  1.9% of total for derived types.">9 statements</a>
+                 title="<p> 0.7% of total for derived types.</p>Including implementation: 38 statements,  1.0% of total for derived types.">10 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -136,7 +136,8 @@
       </a>
       <div id="vars-0" class="collapse">
         <div class="list-group list-group-flush">
-            <a class="list-group-item" href="../type/atomic_basis_type.html#variable-element~2">element</a>
+            <a class="list-group-item" href="../type/atomic_basis_type.html#variable-angular_form">angular_form</a>
+            <a class="list-group-item" href="../type/atomic_basis_type.html#variable-element~5">element</a>
             <a class="list-group-item" href="../type/atomic_basis_type.html#variable-nshells">nshells</a>
             <a class="list-group-item" href="../type/atomic_basis_type.html#variable-shells">shells</a>
         </div>
@@ -166,7 +167,7 @@
       <div id="boundprocs-0" class="collapse">
         <div class="list-group list-group-flush">
             <a class="list-group-item" href="../type/atomic_basis_type.html#boundprocedure-allocate_shells">allocate_shells</a>
-            <a class="list-group-item" href="../type/atomic_basis_type.html#boundprocedure-destroy~9">destroy</a>
+            <a class="list-group-item" href="../type/atomic_basis_type.html#boundprocedure-destroy~23">destroy</a>
             <a class="list-group-item" href="../type/atomic_basis_type.html#boundprocedure-num_basis_functions~2">num_basis_functions</a>
         </div>
       </div>
@@ -424,7 +425,24 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-element~2"></span>
+              <span class="anchor" id="variable-angular_form"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>angular_form</strong></td>
+<td> =</td>
+                <td>ANGULAR_FORM_UNSET</td>
+            <td>
+                <p>Cartesian or spherical, from this element&rsquo;s <code>function_type</code> entries</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-element~5"></span>
               character(len=:),
             </td>
               <td>public,</td>
@@ -450,10 +468,10 @@ large graphs.</div>
             </td>
             <td>::</td>
             <td><strong>nshells</strong></td>
-                <td></td>
-                <td></td>
+<td> =</td>
+                <td>0</td>
             <td>
-                <p>number of shells in type</p>
+                <p>number of shells in type; zero until <code>allocate_shells</code> runs</p>
             </td>
         </tr>
         <tr>
@@ -555,7 +573,7 @@ large graphs.</div>
           <div class="row">
               <div class="card mt-3">
     <div class="card-header codesum">
-      <span class="anchor" id="boundprocedure-destroy~9"></span>
+      <span class="anchor" id="boundprocedure-destroy~23"></span>
       <h3>
           procedure, public ::
   <strong>destroy</strong> => <a href='/home/runner/work/metalquicha/metalquicha/docs/fpm-ford/proc/atomic_basis_destroy.html'>atomic_basis_destroy</a>
@@ -675,8 +693,10 @@ large graphs.</div>
 <span class="w">      </span><span class="c">!! element symbol</span>
 <span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">cgto_type</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">shells</span><span class="p">(:)</span>
 <span class="w">      </span><span class="c">!! array of contracted shells</span>
-<span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">nshells</span>
-<span class="w">      </span><span class="c">!! number of shells in type</span>
+<span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">nshells</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">      </span><span class="c">!! number of shells in type; zero until `allocate_shells` runs</span>
+<span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">angular_form</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ANGULAR_FORM_UNSET</span>
+<span class="w">      </span><span class="c">!! Cartesian or spherical, from this element's `function_type` entries</span>
 <span class="w">   </span><span class="k">contains</span>
 <span class="k">      procedure</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">allocate_shells</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">allocate_basis_shells</span>
 <span class="w">      </span><span class="k">procedure</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">destroy</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">atomic_basis_destroy</span>
@@ -704,7 +724,7 @@ large graphs.</div>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-02-20 06:49 +0000             </p>
+ on 2026-09-07 09:10 +0000             </p>
           </div>
         </div>
         <br>

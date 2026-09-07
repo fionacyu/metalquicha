@@ -94,7 +94,7 @@
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
-                 title=" 0.2% of total for procedures.">26 statements</a>
+                 title=" 0.1% of total for procedures.">26 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -137,8 +137,8 @@
       <div id="vars-0" class="collapse">
         <div class="list-group list-group-flush">
             <a class="list-group-item" href="../proc/compute_zpe.html#variable-freq_sum">freq_sum</a>
-            <a class="list-group-item" href="../proc/compute_zpe.html#variable-i~15">i</a>
-            <a class="list-group-item" href="../proc/compute_zpe.html#variable-n_imag">n_imag</a>
+            <a class="list-group-item" href="../proc/compute_zpe.html#variable-i~132">i</a>
+            <a class="list-group-item" href="../proc/compute_zpe.html#variable-n_imag~2">n_imag</a>
         </div>
       </div>
     </div>
@@ -196,7 +196,7 @@ Imaginary frequencies (negative values) are skipped with a warning.</p>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-frequencies~3"></span>
+              <span class="anchor" id="variable-frequencies~7"></span>
               real(kind=dp),
             </td>
 <td>intent(in)</td>
@@ -226,7 +226,7 @@ Imaginary frequencies (negative values) are skipped with a warning.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-n_real"></span>
+              <span class="anchor" id="variable-n_real~2"></span>
               integer,
             </td>
 <td>intent(out)</td>
@@ -905,7 +905,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-i~15"></span>
+              <span class="anchor" id="variable-i~132"></span>
               integer,
             </td>
               <td>private</td>
@@ -922,7 +922,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-n_imag"></span>
+              <span class="anchor" id="variable-n_imag~2"></span>
               integer,
             </td>
               <td>private</td>
@@ -972,6 +972,11 @@ large graphs.</div>
 <span class="w">      </span><span class="n">n_real</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
 <span class="w">      </span><span class="n">n_imag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
 
+<span class="w">      </span><span class="c">! TODO(mqc): every positive frequency counts here, where</span>
+<span class="w">      </span><span class="c">! `compute_vibrational_thermo` and `compute_partition_functions` both</span>
+<span class="w">      </span><span class="c">! drop everything below 10 cm^-1. The ZPE and `n_real_freqs` therefore</span>
+<span class="w">      </span><span class="c">! include the near-zero translation and rotation residuals that the</span>
+<span class="w">      </span><span class="c">! thermal terms exclude.</span>
 <span class="w">      </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">n_freqs</span>
 <span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">frequencies</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">IMAG_FREQ_THRESHOLD</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
 <span class="k">            </span><span class="n">freq_sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">freq_sum</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">frequencies</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
@@ -983,8 +988,8 @@ large graphs.</div>
 <span class="w">      </span><span class="k">end do</span>
 
 <span class="k">      if</span><span class="w"> </span><span class="p">(</span><span class="n">n_imag</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">         call </span><span class="n">logger</span><span class="p">%</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Thermochemistry: &quot;</span><span class="o">//</span><span class="nb">trim</span><span class="p">(</span><span class="nb">adjustl</span><span class="p">(</span><span class="n">to_char</span><span class="p">(</span><span class="n">n_imag</span><span class="p">)))</span><span class="o">//</span><span class="w"> </span><span class="p">&amp;</span>
-<span class="w">                             </span><span class="s2">&quot; imaginary frequency(ies) skipped&quot;</span><span class="p">)</span>
+<span class="k">         call </span><span class="n">logger</span><span class="p">%</span><span class="n">warning</span><span class="p">(</span><span class="s2">"Thermochemistry: "</span><span class="o">//</span><span class="nb">trim</span><span class="p">(</span><span class="nb">adjustl</span><span class="p">(</span><span class="n">to_char</span><span class="p">(</span><span class="n">n_imag</span><span class="p">)))</span><span class="o">//</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">                             </span><span class="s2">" imaginary frequency(ies) skipped"</span><span class="p">)</span>
 <span class="w">      </span><span class="k">end if</span>
 
 <span class="w">      </span><span class="c">! ZPE = 0.5 * sum(h * c * nu) where nu is in cm^-1</span>
@@ -1018,7 +1023,7 @@ large graphs.</div>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-02-20 06:49 +0000             </p>
+ on 2026-09-07 09:10 +0000             </p>
           </div>
         </div>
         <br>

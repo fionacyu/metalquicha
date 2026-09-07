@@ -1,19 +1,23 @@
 !! Many-Body Expansion abstract base type and concrete implementations
 module mqc_many_body_expansion
-   !! Provides an abstract base class for all many-body expansion methods
-   !! with concrete implementations for standard MBE and generalized MBE (GMBE).
+   !! The abstract base every many-body expansion shares, and the three
+   !! concrete ones: standard MBE, generalized MBE, and FMO2 with the
+   !! electrostatically embedded MBE beside it.
    use pic_types, only: int32, int64, dp
    use mqc_method_config, only: method_config_t
    use mqc_physical_fragment, only: system_geometry_t
    use mqc_resources, only: resources_t
    use mqc_config_adapter, only: driver_config_t
    use mqc_json_output_types, only: json_output_data_t
+   use mqc_checkpoint, only: checkpoint_t
+   use mqc_scf_types, only: scf_numerics_t
    implicit none
    private
 
    public :: many_body_expansion_t
    public :: mbe_context_t
    public :: gmbe_context_t
+   public :: fmo_context_t
 
    !============================================================================
    ! Abstract base type for all many-body expansion methods
@@ -21,9 +25,8 @@ module mqc_many_body_expansion
    type, abstract :: many_body_expansion_t
       !! Abstract base for all many-body expansion methods
       !!
-      !! Encapsulates shared configuration for MBE and GMBE calculations.
-      !! Concrete implementations provide specific fragment representations
-      !! and expansion computation logic.
+      !! Holds the configuration every expansion shares. A concrete type adds
+      !! its own fragment representation and how it evaluates the expansion.
 
       ! Required configuration
       type(method_config_t) :: method_config
@@ -33,7 +36,11 @@ module mqc_many_body_expansion
 
       ! System geometry (includes connectivity via sys_geom%bonds)
       type(system_geometry_t), allocatable :: sys_geom
-         !! System geometry (coordinates, elements, fragments, bonds)
+         !! Coordinates, elements, fragments and bonds
+      type(checkpoint_t) :: checkpoint
+         !! Fragments already computed by an earlier run, and where the ones
+         !! computed by this run are appended. Inactive unless a path was
+         !! configured.
 
       ! MPI configuration (optional - for distributed calculations)
       type(resources_t), pointer :: resources => null()
@@ -71,6 +78,10 @@ module mqc_many_body_expansion
    !============================================================================
    abstract interface
       subroutine run_serial_sub(this, json_data)
+         ! TODO(mqc): neither deferred procedure carries an `error_t`, so every
+         ! implementation reports a failure by logging it and returning. The
+         ! caller cannot tell an expansion that failed from one that ran, and
+         ! the run finishes reporting no energy rather than an error.
          import :: many_body_expansion_t, json_output_data_t
          implicit none
          class(many_body_expansion_t), intent(inout) :: this
@@ -91,9 +102,8 @@ module mqc_many_body_expansion
    type, extends(many_body_expansion_t) :: mbe_context_t
       !! Standard Many-Body Expansion for non-overlapping fragments
       !!
-      !! Uses polymer representation where each fragment is defined by
-      !! monomer indices. Coefficients are implicit: (-1)^(n+1) based on
-      !! fragment size.
+      !! Each fragment is a row of monomer indices. Coefficients are implicit:
+      !! `(-1)^(n+1)` from the fragment's size.
 
       integer, allocatable :: polymers(:, :)
          !! Fragment composition array (fragment_idx, monomer_indices)
@@ -115,9 +125,8 @@ module mqc_many_body_expansion
    type, extends(many_body_expansion_t) :: gmbe_context_t
       !! Generalized Many-Body Expansion for overlapping fragments
       !!
-      !! Uses PIE (Principle of Inclusion-Exclusion) representation where
-      !! each term is defined by atom indices with explicit coefficients
-      !! from the inclusion-exclusion principle.
+      !! Each term is a set of atom indices carrying an explicit coefficient
+      !! from the principle of inclusion-exclusion.
 
       integer, allocatable :: pie_atom_sets(:, :)
          !! Unique atom sets (max_atoms, n_pie_terms)
@@ -133,22 +142,92 @@ module mqc_many_body_expansion
       procedure :: destroy => gmbe_destroy
    end type gmbe_context_t
 
+   !============================================================================
+   ! Fragment molecular orbital method, and electrostatically embedded MBE
+   !============================================================================
+   type, extends(many_body_expansion_t) :: fmo_context_t
+      !! FMO2 and EE-MBE over non-covalently bonded fragments
+      !!
+      !! Two phases rather than one, which is what separates this from
+      !! `mbe_context_t`. The monomers are iterated to self-consistency -- each
+      !! solved in the field the others make, which changes its density, which
+      !! changes their field -- and only then are the pairs computed, in the
+      !! field the settled monomers make. Within a phase the tasks are
+      !! independent; between monomer passes there is a barrier and a density
+      !! exchange.
+      !!
+      !! `esp` and `expansion` pick which method this is:
+      !!
+      !!     "exact" + "fmo"   FMO2
+      !!     "ptc"   + "mbe"   electrostatically embedded MBE
+      !!     "none"  + "mbe"   plain MBE
+      !!
+      !! The physics lives in the cenzontle backend and is reached through
+      !! `mqc_czt_bridge`, so a build without the backend refuses with a
+      !! message naming the option rather than failing to link.
+      integer, allocatable :: owner(:)
+         !! Fragment index per atom, numbered from one with no gaps
+      integer :: n_fragments = 0
+      character(len=64) :: basis = "6-31g"
+      character(len=16) :: esp = "exact"
+      character(len=16) :: expansion = "fmo"
+      character(len=16) :: bond_breaking = "none"
+         !! How a cut covalent bond is represented on this expansion; "none"
+         !! refuses a partition that cuts one, which is the default and was the
+         !! only behaviour before caps existed.
+      real(dp) :: cap_scale = 1.0_dp
+         !! Where a cap sits along the bond it closes.
+      character(len=16) :: far_field = "mulliken"
+      real(dp) :: resppc = 2.0_dp
+         !! Separation past which a neighbour becomes point charges. Negative
+         !! disables the approximation.
+      integer :: level = 2
+         !! Fragments at a time: 2 is FMO2, 3 is FMO3. Taken from the
+         !! fragmentation level the deck already gives, since it means the same
+         !! thing here as it does for MBE.
+      integer :: max_outer = 50
+      real(dp) :: outer_tol = 1.0e-7_dp
+      type(scf_numerics_t) :: scf_drive
+         !! How each fragment SCF is *driven* -- the accelerator, DIIS
+         !! subspace, level shift, linear-dependence threshold and incremental
+         !! Fock building.
+         !!
+         !! Separate from the three fields below, which are per-fragment: a
+         !! fragment is a smaller, easier problem than the whole system and
+         !! gets its own budget and tolerances.
+      integer :: scf_max_iter = 100
+      real(dp) :: scf_energy_tol = 1.0e-9_dp
+      real(dp) :: scf_density_tol = 1.0e-7_dp
+         !! The inner per-fragment SCF: iteration cap and energy/density
+         !! convergence, held apart from the outer loop above.
+      real(dp) :: energy = 0.0_dp
+         !! What the run produced
+
+   contains
+      procedure :: run_serial => fmo_run_serial
+      procedure :: run_distributed => fmo_run_distributed
+      procedure :: init => fmo_init
+      procedure :: destroy => fmo_destroy
+   end type fmo_context_t
+
 contains
 
    !============================================================================
    ! Base class methods
    !============================================================================
 
-   pure logical function mbe_base_has_mpi(this)
+   pure function mbe_base_has_mpi(this) result(has_mpi)
       !! Check if MPI resources are available
       class(many_body_expansion_t), intent(in) :: this
-      mbe_base_has_mpi = associated(this%resources)
+      logical :: has_mpi
+      has_mpi = associated(this%resources)
    end function mbe_base_has_mpi
 
-   pure logical function mbe_base_has_geometry(this)
+   pure function mbe_base_has_geometry(this) result(has_geometry)
       !! Check if system geometry is available
       class(many_body_expansion_t), intent(in) :: this
-      mbe_base_has_geometry = allocated(this%sys_geom)
+      logical :: has_geometry
+      has_geometry = allocated(this%sys_geom)
    end function mbe_base_has_geometry
 
    subroutine mbe_base_destroy(this)
@@ -201,6 +280,152 @@ contains
       call this%destroy_base()
    end subroutine mbe_destroy
 
+   subroutine fmo_init(this, method_config, calc_type)
+      !! Initialise an FMO context
+      class(fmo_context_t), intent(out) :: this
+      type(method_config_t), intent(in) :: method_config
+      integer(int32), intent(in) :: calc_type
+
+      this%method_config = method_config
+      this%calc_type = calc_type
+   end subroutine fmo_init
+
+   subroutine fmo_destroy(this)
+      !! Clean up an FMO context
+      class(fmo_context_t), intent(inout) :: this
+
+      if (allocated(this%owner)) deallocate (this%owner)
+      this%n_fragments = 0
+      this%energy = 0.0_dp
+      call this%destroy_base()
+   end subroutine fmo_destroy
+
+   subroutine fmo_run_serial(this, json_data)
+      !! Run FMO on one rank
+      use mqc_czt_bridge, only: run_czt_fmo
+      use mqc_error, only: error_t
+      use pic_logger, only: logger => global_logger
+      use pic_io, only: to_char
+
+      class(fmo_context_t), intent(inout) :: this
+      type(json_output_data_t), intent(out), optional :: json_data
+
+      type(error_t) :: error
+      character(len=2), allocatable :: symbols(:)
+      integer :: i
+
+      if (.not. this%has_geometry()) then
+         call logger%error("fmo_run_serial: sys_geom required but not set")
+         return
+      end if
+      if (.not. allocated(this%owner)) then
+         call logger%error("fmo_run_serial: no fragment partition set")
+         return
+      end if
+
+      allocate (symbols(this%sys_geom%total_atoms))
+      do i = 1, this%sys_geom%total_atoms
+         symbols(i) = element_symbol_of(this%sys_geom%element_numbers(i))
+      end do
+
+      call run_czt_fmo(this%sys_geom%element_numbers, symbols, &
+                       this%sys_geom%coordinates, this%owner, &
+                       trim(this%basis), trim(this%esp), trim(this%expansion), &
+                       trim(this%far_field), this%resppc, this%level, &
+                       this%max_outer, this%outer_tol, this%scf_max_iter, &
+                       this%scf_energy_tol, this%scf_density_tol, &
+                       this%scf_drive, &
+                       trim(this%bond_breaking), this%cap_scale, this%energy, error)
+      if (error%has_error()) then
+         call logger%error("fmo_run_serial: "//error%get_message())
+         return
+      end if
+      call logger%info("FMO total energy: "//to_char(this%energy)//" Hartree")
+      call fmo_report(this, json_data)
+   end subroutine fmo_run_serial
+
+   subroutine fmo_report(this, json_data)
+      !! Hand the total to whatever writes the output file
+      !!
+      !! Written in `OUTPUT_MODE_MBE`: the expansion differs from MBE's, but
+      !! the shape of the answer -- one energy for the whole system, assembled
+      !! from fragments -- is the same.
+      use mqc_json_output_types, only: OUTPUT_MODE_MBE
+
+      class(fmo_context_t), intent(in) :: this
+      type(json_output_data_t), intent(inout), optional :: json_data
+
+      if (.not. present(json_data)) return
+      json_data%output_mode = OUTPUT_MODE_MBE
+      json_data%total_energy = this%energy
+      json_data%has_energy = .true.
+   end subroutine fmo_report
+
+   subroutine fmo_run_distributed(this, json_data)
+      !! Run FMO across ranks
+      !!
+      !! The communicator is handed down to the backend rather than the work
+      !! being distributed here, so no fragment geometry ever crosses a wire --
+      !! every rank assembles what it was asked for from the geometry it holds.
+      use mqc_czt_bridge, only: run_czt_fmo
+      use mqc_error, only: error_t
+      use pic_logger, only: logger => global_logger
+      use pic_io, only: to_char
+
+      class(fmo_context_t), intent(inout) :: this
+      type(json_output_data_t), intent(out), optional :: json_data
+
+      type(error_t) :: error
+      character(len=2), allocatable :: symbols(:)
+      integer :: i
+
+      if (.not. this%has_mpi()) then
+         call logger%error("fmo_run_distributed: resources not set in context")
+         return
+      end if
+      if (.not. this%has_geometry()) then
+         call logger%error("fmo_run_distributed: sys_geom required but not set")
+         return
+      end if
+      if (.not. allocated(this%owner)) then
+         call logger%error("fmo_run_distributed: no fragment partition set")
+         return
+      end if
+
+      allocate (symbols(this%sys_geom%total_atoms))
+      do i = 1, this%sys_geom%total_atoms
+         symbols(i) = element_symbol_of(this%sys_geom%element_numbers(i))
+      end do
+
+      call run_czt_fmo(this%sys_geom%element_numbers, symbols, &
+                       this%sys_geom%coordinates, this%owner, &
+                       trim(this%basis), trim(this%esp), trim(this%expansion), &
+                       trim(this%far_field), this%resppc, this%level, &
+                       this%max_outer, this%outer_tol, this%scf_max_iter, &
+                       this%scf_energy_tol, this%scf_density_tol, &
+                       this%scf_drive, &
+                       trim(this%bond_breaking), this%cap_scale, this%energy, error, &
+                       comm=this%resources%mpi_comms%world_comm)
+      if (error%has_error()) then
+         call logger%error("fmo_run_distributed: "//error%get_message())
+         return
+      end if
+      if (this%resources%mpi_comms%world_comm%leader()) then
+         call logger%info("FMO total energy: "//to_char(this%energy)//" Hartree")
+      end if
+      ! Every rank has the same total, but only the leader writes a file.
+      if (this%resources%mpi_comms%world_comm%leader()) call fmo_report(this, json_data)
+   end subroutine fmo_run_distributed
+
+   function element_symbol_of(z) result(sym)
+      !! Two-character element symbol, for handing a geometry to the backend
+      use mqc_elements, only: element_number_to_symbol
+      integer, intent(in) :: z
+      character(len=2) :: sym
+
+      sym = element_number_to_symbol(z)
+   end function element_symbol_of
+
    subroutine mbe_run_serial(this, json_data)
       !! Run serial MBE calculation
       use mqc_mbe_fragment_distribution_scheme, only: serial_fragment_processor
@@ -215,7 +440,8 @@ contains
       end if
 
       call serial_fragment_processor(this%total_fragments, this%polymers, this%max_level, &
-                                     this%sys_geom, this%method_config, this%calc_type, json_data)
+                                     this%sys_geom, this%method_config, this%calc_type, json_data, &
+                                     this%checkpoint)
    end subroutine mbe_run_serial
 
    subroutine mbe_run_distributed(this, json_data)
@@ -237,8 +463,13 @@ contains
       if (this%resources%mpi_comms%world_comm%leader() .and. &
           this%resources%mpi_comms%node_comm%leader()) then
          ! Global coordinator (rank 0, node leader on node 0)
+         ! TODO(mqc): setting the thread count to what it already reports is a
+         ! no-op -- `omp_set_num_threads(1)` elsewhere makes
+         ! `omp_get_max_threads()` return 1, so this cannot undo a clamp. Same
+         ! line in `gmbe_run_distributed`.
          call omp_set_num_threads(omp_get_max_threads())
-         call logger%verbose("Rank 0: Acting as global coordinator")
+         call logger%verbose("Rank 0: global coordinator, "// &
+                             to_char(omp_get_max_threads())//" thread(s)")
          call global_coordinator(this, json_data)
       else if (this%resources%mpi_comms%node_comm%leader()) then
          ! Node coordinator (node leader on other nodes)
@@ -247,9 +478,7 @@ contains
          call node_coordinator(this)
       else
          ! Worker
-         call omp_set_num_threads(1)
-         call logger%verbose("Rank "//to_char(this%resources%mpi_comms%world_comm%rank())// &
-                             ": Acting as worker")
+         call set_worker_threads(this, "worker")
          call node_worker(this)
       end if
    end subroutine mbe_run_distributed
@@ -320,7 +549,8 @@ contains
           this%resources%mpi_comms%node_comm%leader()) then
          ! Global coordinator (rank 0, node leader on node 0)
          call omp_set_num_threads(omp_get_max_threads())
-         call logger%verbose("Rank 0: Acting as GMBE PIE coordinator")
+         call logger%verbose("Rank 0: GMBE PIE coordinator, "// &
+                             to_char(omp_get_max_threads())//" thread(s)")
          call gmbe_pie_coordinator(this%resources, this%pie_atom_sets, this%pie_coefficients, &
                                    this%n_pie_terms, this%node_leader_ranks, this%num_nodes, &
                                    this%group_leader_ranks, this%group_ids, this%global_groups, &
@@ -349,12 +579,34 @@ contains
          end block
       else
          ! Worker
-         call omp_set_num_threads(1)
-         call logger%verbose("Rank "//to_char(this%resources%mpi_comms%world_comm%rank())// &
-                             ": Acting as worker")
+         call set_worker_threads(this, "worker")
          ! Note: node_worker works for both MBE and GMBE (fragment_type distinguishes)
          call node_worker(this)
       end if
    end subroutine gmbe_run_distributed
+
+   subroutine set_worker_threads(this, role)
+      !! Give a worker rank its threads, and say what it got
+      !!
+      !! The clamp to one thread is for tblite alone, which corrupts a result
+      !! when threaded rather than failing. Every other method keeps the
+      !! threads the launcher gave it -- a libcint Fock build threads its own
+      !! quartet loop, which is where they go.
+      !!
+      !! The role and thread count are logged because "four threads, no
+      !! speedup" and "one thread all along" are otherwise indistinguishable.
+      use omp_lib, only: omp_set_num_threads, omp_get_max_threads
+      use mqc_method_types, only: needs_serial_execution
+      use pic_logger, only: logger => global_logger
+      use pic_io, only: to_char
+      class(many_body_expansion_t), intent(inout) :: this
+      character(len=*), intent(in) :: role
+
+      if (needs_serial_execution(this%method_config%method_type)) then
+         call omp_set_num_threads(1)
+      end if
+      call logger%verbose("Rank "//to_char(this%resources%mpi_comms%world_comm%rank())// &
+                          ": "//role//", "//to_char(omp_get_max_threads())//" thread(s)")
+   end subroutine set_worker_threads
 
 end module mqc_many_body_expansion

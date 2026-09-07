@@ -1,0 +1,722 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="A demonstration of PIC as a framework for scientific applications targetting quantum chemistry">
+    <meta name="author" content="Jorge Luis Galvez Vallejo" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>pcm_config_t &ndash; metalquicha </title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">metalquicha </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../program/main.html">Program</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>pcm_config_t
+      <small>Derived Type</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title="<p> 0.7% of total for derived types.</p>Including implementation: 10 statements,  0.3% of total for derived types.">10 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/mqc_method_config.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/mqc_method_config.f90.html'>mqc_method_config.f90</a></li>
+                <li class="breadcrumb-item"><a href='../module/mqc_method_config.html'>mqc_method_config</a></li>
+            <li class="breadcrumb-item active" aria-current="page">pcm_config_t</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#vars-0"
+         aria-expanded="false" aria-controls="vars-0">
+         <h4 class="card-header bg-primary text-white">Variables</h4>
+      </a>
+      <div id="vars-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../type/pcm_config_t.html#variable-angular_points~3">angular_points</a>
+            <a class="list-group-item" href="../type/pcm_config_t.html#variable-dielectric~4">dielectric</a>
+            <a class="list-group-item" href="../type/pcm_config_t.html#variable-enabled">enabled</a>
+            <a class="list-group-item" href="../type/pcm_config_t.html#variable-max_iter~5">max_iter</a>
+            <a class="list-group-item" href="../type/pcm_config_t.html#variable-method~12">method</a>
+            <a class="list-group-item" href="../type/pcm_config_t.html#variable-radii_scale">radii_scale</a>
+            <a class="list-group-item" href="../type/pcm_config_t.html#variable-tolerance~12">tolerance</a>
+            <a class="list-group-item" href="../type/pcm_config_t.html#variable-zeta">zeta</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../type/pcm_config_t.html#src">pcm_config_t</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+      <h2 id="type-def-statement">
+        type, public :: pcm_config_t</h2>
+    <p>A polarizable continuum: the cavity, the solvent, and the charge solve</p>
+<p>Backend-neutral in shape. The cuEST path hands the cavity and the charge
+solve to the library; the CPU path builds both itself in
+<code>mqc_czt_pcm</code>. tblite&rsquo;s CPCM is configured through <code>xtb_config_t</code>
+and builds its own cavity; the two are separate models and share no
+settings.</p>
+<br>      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Inherited by</h3>
+        </div>
+        <div class="card-body">
+          <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: type~~pcm_config_t~~InheritedByGraph Pages: 1 -->
+<svg id="typepcm_config_tInheritedByGraph" width="641pt" height="175pt"
+ viewBox="0.00 0.00 641.00 174.89" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="type~~pcm_config_t~~InheritedByGraph" class="graph" transform="scale(0.76 0.76) rotate(0) translate(4 226)">
+<title>type~~pcm_config_t~~InheritedByGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-226 839,-226 839,4 -4,4"/>
+<!-- type~pcm_config_t -->
+<g id="type~~pcm_config_t~~InheritedByGraph_node1" class="node">
+<title>type~pcm_config_t</title>
+<polygon fill="none" stroke="black" points="83,-150 0,-150 0,-126 83,-126 83,-150"/>
+<text text-anchor="middle" x="41.5" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50">pcm_config_t</text>
+</g>
+<!-- type~cuest_scf_settings_t -->
+<g id="type~~pcm_config_t~~InheritedByGraph_node2" class="node">
+<title>type~cuest_scf_settings_t</title>
+<g id="a_type~~pcm_config_t~~InheritedByGraph_node2"><a xlink:href="../type/cuest_scf_settings_t.html" xlink:title="cuest_scf_settings_t">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="257,-192 140,-192 140,-168 257,-168 257,-192"/>
+<text text-anchor="middle" x="198.5" y="-177.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">cuest_scf_settings_t</text>
+</a>
+</g>
+</g>
+<!-- type~cuest_scf_settings_t&#45;&gt;type~pcm_config_t -->
+<g id="type~~pcm_config_t~~InheritedByGraph_edge2" class="edge">
+<title>type~cuest_scf_settings_t&#45;&gt;type~pcm_config_t</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M153.08,-167.96C134.34,-162.89 112.43,-156.95 93.07,-151.7"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="93.78,-148.27 83.21,-149.03 91.95,-155.02 93.78,-148.27"/>
+<text text-anchor="middle" x="111.5" y="-161.4" font-family="Helvetica,sans-Serif" font-size="9.50">pcm</text>
+</g>
+<!-- type~method_config_t -->
+<g id="type~~pcm_config_t~~InheritedByGraph_node3" class="node">
+<title>type~method_config_t</title>
+<g id="a_type~~pcm_config_t~~InheritedByGraph_node3"><a xlink:href="../type/method_config_t.html" xlink:title="method_config_t">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="249,-150 148,-150 148,-126 249,-126 249,-150"/>
+<text text-anchor="middle" x="198.5" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">method_config_t</text>
+</a>
+</g>
+</g>
+<!-- type~method_config_t&#45;&gt;type~pcm_config_t -->
+<g id="type~~pcm_config_t~~InheritedByGraph_edge1" class="edge">
+<title>type~method_config_t&#45;&gt;type~pcm_config_t</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M147.6,-138C130.22,-138 110.7,-138 93.25,-138"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="93.24,-134.5 83.24,-138 93.24,-141.5 93.24,-134.5"/>
+<text text-anchor="middle" x="111.5" y="-140.4" font-family="Helvetica,sans-Serif" font-size="9.50">pcm</text>
+</g>
+<!-- type~scf_options_t -->
+<g id="type~~pcm_config_t~~InheritedByGraph_node4" class="node">
+<title>type~scf_options_t</title>
+<g id="a_type~~pcm_config_t~~InheritedByGraph_node4"><a xlink:href="../type/scf_options_t.html" xlink:title="scf_options_t">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="239,-98 158,-98 158,-74 239,-74 239,-98"/>
+<text text-anchor="middle" x="198.5" y="-83.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">scf_options_t</text>
+</a>
+</g>
+</g>
+<!-- type~scf_options_t&#45;&gt;type~pcm_config_t -->
+<g id="type~~pcm_config_t~~InheritedByGraph_edge3" class="edge">
+<title>type~scf_options_t&#45;&gt;type~pcm_config_t</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M161.55,-98.06C139.72,-105.38 111.64,-114.8 88.24,-122.66"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="86.89,-119.42 78.52,-125.91 89.12,-126.05 86.89,-119.42"/>
+<text text-anchor="middle" x="111.5" y="-121.4" font-family="Helvetica,sans-Serif" font-size="9.50">pcm</text>
+</g>
+<!-- type~dft_options_t -->
+<g id="type~~pcm_config_t~~InheritedByGraph_node5" class="node">
+<title>type~dft_options_t</title>
+<g id="a_type~~pcm_config_t~~InheritedByGraph_node5"><a xlink:href="../type/dft_options_t.html" xlink:title="dft_options_t">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="452.5,-108 372.5,-108 372.5,-84 452.5,-84 452.5,-108"/>
+<text text-anchor="middle" x="412.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dft_options_t</text>
+</a>
+</g>
+</g>
+<!-- type~dft_options_t&#45;&gt;type~scf_options_t -->
+<g id="type~~pcm_config_t~~InheritedByGraph_edge6" class="edge">
+<title>type~dft_options_t&#45;&gt;type~scf_options_t</title>
+<path fill="none" stroke="#0000ff" d="M382.64,-84C358.29,-74.44 325.26,-62.97 311.5,-65"/>
+</g>
+<!-- type~driver_config_t -->
+<g id="type~~pcm_config_t~~InheritedByGraph_node6" class="node">
+<title>type~driver_config_t</title>
+<g id="a_type~~pcm_config_t~~InheritedByGraph_node6"><a xlink:href="../type/driver_config_t.html" xlink:title="driver_config_t">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="458,-150 367,-150 367,-126 458,-126 458,-150"/>
+<text text-anchor="middle" x="412.5" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">driver_config_t</text>
+</a>
+</g>
+</g>
+<!-- type~driver_config_t&#45;&gt;type~method_config_t -->
+<g id="type~~pcm_config_t~~InheritedByGraph_edge5" class="edge">
+<title>type~driver_config_t&#45;&gt;type~method_config_t</title>
+<path fill="none" stroke="#00ff00" stroke-dasharray="5,2" d="M366.8,-138C335.64,-138 293.72,-138 259.64,-138"/>
+<polygon fill="#00ff00" stroke="#00ff00" points="259.33,-134.5 249.33,-138 259.33,-141.5 259.33,-134.5"/>
+<text text-anchor="middle" x="310.5" y="-140.4" font-family="Helvetica,sans-Serif" font-size="9.50">method_config</text>
+</g>
+<!-- type~hf_options_t -->
+<g id="type~~pcm_config_t~~InheritedByGraph_node7" class="node">
+<title>type~hf_options_t</title>
+<g id="a_type~~pcm_config_t~~InheritedByGraph_node7"><a xlink:href="../type/hf_options_t.html" xlink:title="hf_options_t">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="450.5,-66 374.5,-66 374.5,-42 450.5,-42 450.5,-66"/>
+<text text-anchor="middle" x="412.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">hf_options_t</text>
+</a>
+</g>
+</g>
+<!-- type~hf_options_t&#45;&gt;type~scf_options_t -->
+<g id="type~~pcm_config_t~~InheritedByGraph_edge8" class="edge">
+<title>type~hf_options_t&#45;&gt;type~scf_options_t</title>
+<path fill="none" stroke="#0000ff" d="M374.37,-57.43C355.5,-59.33 332.23,-61.94 311.5,-65"/>
+</g>
+<!-- type~many_body_expansion_t -->
+<g id="type~~pcm_config_t~~InheritedByGraph_node8" class="node">
+<title>type~many_body_expansion_t</title>
+<g id="a_type~~pcm_config_t~~InheritedByGraph_node8"><a xlink:href="../type/many_body_expansion_t.html" xlink:title="many_body_expansion_t">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="701,-180 559,-180 559,-156 701,-156 701,-180"/>
+<text text-anchor="middle" x="630" y="-165.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">many_body_expansion_t</text>
+</a>
+</g>
+</g>
+<!-- type~many_body_expansion_t&#45;&gt;type~method_config_t -->
+<g id="type~~pcm_config_t~~InheritedByGraph_edge4" class="edge">
+<title>type~many_body_expansion_t&#45;&gt;type~method_config_t</title>
+<path fill="none" stroke="#00ff00" stroke-dasharray="5,2" d="M558.87,-168.87C552.83,-168.92 546.81,-168.97 541,-169 422.54,-169.67 392.41,-167.74 275,-152 269.93,-151.32 264.68,-150.53 259.42,-149.68"/>
+<polygon fill="#00ff00" stroke="#00ff00" points="259.78,-146.19 249.34,-147.97 258.62,-153.09 259.78,-146.19"/>
+<text text-anchor="middle" x="412.5" y="-170.4" font-family="Helvetica,sans-Serif" font-size="9.50">method_config</text>
+</g>
+<!-- type~many_body_expansion_t&#45;&gt;type~driver_config_t -->
+<g id="type~~pcm_config_t~~InheritedByGraph_edge10" class="edge">
+<title>type~many_body_expansion_t&#45;&gt;type~driver_config_t</title>
+<path fill="none" stroke="#cbff00" stroke-dasharray="5,2" d="M558.74,-158.22C529.44,-154.14 495.92,-149.47 468.47,-145.65"/>
+<polygon fill="#cbff00" stroke="#cbff00" points="468.65,-142.14 458.26,-144.23 467.69,-149.08 468.65,-142.14"/>
+<text text-anchor="middle" x="510" y="-157.4" font-family="Helvetica,sans-Serif" font-size="9.50">driver_config</text>
+</g>
+<!-- type~mcscf_options_t -->
+<g id="type~~pcm_config_t~~InheritedByGraph_node9" class="node">
+<title>type~mcscf_options_t</title>
+<g id="a_type~~pcm_config_t~~InheritedByGraph_node9"><a xlink:href="../type/mcscf_options_t.html" xlink:title="mcscf_options_t">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="461,-24 364,-24 364,0 461,0 461,-24"/>
+<text text-anchor="middle" x="412.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mcscf_options_t</text>
+</a>
+</g>
+</g>
+<!-- type~mcscf_options_t&#45;&gt;type~scf_options_t -->
+<g id="type~~pcm_config_t~~InheritedByGraph_edge7" class="edge">
+<title>type~mcscf_options_t&#45;&gt;type~scf_options_t</title>
+<path fill="none" stroke="#0000ff" d="M382.58,-24.06C376.38,-26.85 369.91,-29.91 364,-33 339.79,-45.66 338.53,-61.01 311.5,-65"/>
+<path fill="none" stroke="#0000ff" d="M309.5,-65C289.61,-67.93 267.84,-71.92 248.95,-75.64"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="248.2,-72.22 239.08,-77.61 249.57,-79.08 248.2,-72.22"/>
+</g>
+<!-- type~dft_method_t -->
+<g id="type~~pcm_config_t~~InheritedByGraph_node10" class="node">
+<title>type~dft_method_t</title>
+<g id="a_type~~pcm_config_t~~InheritedByGraph_node10"><a xlink:href="../type/dft_method_t.html" xlink:title="dft_method_t">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="671,-108 589,-108 589,-84 671,-84 671,-108"/>
+<text text-anchor="middle" x="630" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dft_method_t</text>
+</a>
+</g>
+</g>
+<!-- type~dft_method_t&#45;&gt;type~dft_options_t -->
+<g id="type~~pcm_config_t~~InheritedByGraph_edge9" class="edge">
+<title>type~dft_method_t&#45;&gt;type~dft_options_t</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M588.97,-96C553.37,-96 501.18,-96 462.97,-96"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="462.59,-92.5 452.59,-96 462.59,-99.5 462.59,-92.5"/>
+<text text-anchor="middle" x="510" y="-98.4" font-family="Helvetica,sans-Serif" font-size="9.50">options</text>
+</g>
+<!-- type~fmo_context_t -->
+<g id="type~~pcm_config_t~~InheritedByGraph_node11" class="node">
+<title>type~fmo_context_t</title>
+<g id="a_type~~pcm_config_t~~InheritedByGraph_node11"><a xlink:href="../type/fmo_context_t.html" xlink:title="fmo_context_t">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="830,-222 743,-222 743,-198 830,-198 830,-222"/>
+<text text-anchor="middle" x="786.5" y="-207.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fmo_context_t</text>
+</a>
+</g>
+</g>
+<!-- type~fmo_context_t&#45;&gt;type~many_body_expansion_t -->
+<g id="type~~pcm_config_t~~InheritedByGraph_edge13" class="edge">
+<title>type~fmo_context_t&#45;&gt;type~many_body_expansion_t</title>
+<path fill="none" stroke="#0066ff" d="M752.74,-197.84C747.59,-195.29 742.49,-192.33 738,-189 728.13,-181.67 732.29,-168 720,-168"/>
+</g>
+<!-- type~gmbe_context_t -->
+<g id="type~~pcm_config_t~~InheritedByGraph_node12" class="node">
+<title>type~gmbe_context_t</title>
+<g id="a_type~~pcm_config_t~~InheritedByGraph_node12"><a xlink:href="../type/gmbe_context_t.html" xlink:title="gmbe_context_t">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="835,-180 738,-180 738,-156 835,-156 835,-180"/>
+<text text-anchor="middle" x="786.5" y="-165.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">gmbe_context_t</text>
+</a>
+</g>
+</g>
+<!-- type~gmbe_context_t&#45;&gt;type~many_body_expansion_t -->
+<g id="type~~pcm_config_t~~InheritedByGraph_edge12" class="edge">
+<title>type~gmbe_context_t&#45;&gt;type~many_body_expansion_t</title>
+<path fill="none" stroke="#0066ff" d="M737.92,-168C731.89,-168 725.8,-168 720,-168"/>
+</g>
+<!-- type~hf_method_t -->
+<g id="type~~pcm_config_t~~InheritedByGraph_node13" class="node">
+<title>type~hf_method_t</title>
+<g id="a_type~~pcm_config_t~~InheritedByGraph_node13"><a xlink:href="../type/hf_method_t.html" xlink:title="hf_method_t">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="669.5,-66 590.5,-66 590.5,-42 669.5,-42 669.5,-66"/>
+<text text-anchor="middle" x="630" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">hf_method_t</text>
+</a>
+</g>
+</g>
+<!-- type~hf_method_t&#45;&gt;type~hf_options_t -->
+<g id="type~~pcm_config_t~~InheritedByGraph_edge11" class="edge">
+<title>type~hf_method_t&#45;&gt;type~hf_options_t</title>
+<path fill="none" stroke="#00ff66" stroke-dasharray="5,2" d="M590.47,-54C554.13,-54 499.57,-54 460.65,-54"/>
+<polygon fill="#00ff66" stroke="#00ff66" points="460.61,-50.5 450.61,-54 460.61,-57.5 460.61,-50.5"/>
+<text text-anchor="middle" x="510" y="-56.4" font-family="Helvetica,sans-Serif" font-size="9.50">options</text>
+</g>
+<!-- type~mbe_context_t -->
+<g id="type~~pcm_config_t~~InheritedByGraph_node14" class="node">
+<title>type~mbe_context_t</title>
+<g id="a_type~~pcm_config_t~~InheritedByGraph_node14"><a xlink:href="../type/mbe_context_t.html" xlink:title="mbe_context_t">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="831.5,-138 741.5,-138 741.5,-114 831.5,-114 831.5,-138"/>
+<text text-anchor="middle" x="786.5" y="-123.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mbe_context_t</text>
+</a>
+</g>
+</g>
+<!-- type~mbe_context_t&#45;&gt;type~many_body_expansion_t -->
+<g id="type~~pcm_config_t~~InheritedByGraph_edge14" class="edge">
+<title>type~mbe_context_t&#45;&gt;type~many_body_expansion_t</title>
+<path fill="none" stroke="#0066ff" d="M752.74,-138.16C747.59,-140.71 742.49,-143.67 738,-147 728.13,-154.33 732.29,-168 720,-168"/>
+<path fill="none" stroke="#0066ff" d="M719,-168C716.46,-168 713.88,-168 711.27,-168"/>
+<polygon fill="#0066ff" stroke="#0066ff" points="711.13,-164.5 701.13,-168 711.13,-171.5 711.13,-164.5"/>
+</g>
+<!-- type~mcscf_method_t -->
+<g id="type~~pcm_config_t~~InheritedByGraph_node15" class="node">
+<title>type~mcscf_method_t</title>
+<g id="a_type~~pcm_config_t~~InheritedByGraph_node15"><a xlink:href="../type/mcscf_method_t.html" xlink:title="mcscf_method_t">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="680,-24 580,-24 580,0 680,0 680,-24"/>
+<text text-anchor="middle" x="630" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mcscf_method_t</text>
+</a>
+</g>
+</g>
+<!-- type~mcscf_method_t&#45;&gt;type~mcscf_options_t -->
+<g id="type~~pcm_config_t~~InheritedByGraph_edge15" class="edge">
+<title>type~mcscf_method_t&#45;&gt;type~mcscf_options_t</title>
+<path fill="none" stroke="#cc00ff" stroke-dasharray="5,2" d="M579.83,-12C547.63,-12 505.41,-12 471.56,-12"/>
+<polygon fill="#cc00ff" stroke="#cc00ff" points="471.35,-8.5 461.35,-12 471.35,-15.5 471.35,-8.5"/>
+<text text-anchor="middle" x="510" y="-14.4" font-family="Helvetica,sans-Serif" font-size="9.50">options</text>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var pantypepcm_config_tInheritedByGraph = svgPanZoom('#typepcm_config_tInheritedByGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#InheritedByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="InheritedByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="186pt" height="32pt"
+ viewBox="0.00 0.00 185.50 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 181.5,-28 181.5,4 -4,4"/>
+<!-- Type -->
+<g id="node1" class="node">
+<title>Type</title>
+<polygon fill="#5cb85c" stroke="#5cb85c" points="54,-24 0,-24 0,0 54,0 54,-24"/>
+<text text-anchor="middle" x="27" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node2" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="177.5,-24 72.5,-24 72.5,0 177.5,0 177.5,-24"/>
+<text text-anchor="middle" x="125" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a derived type to the parent type which it
+extends. Dashed arrows point from a derived type to the other
+types it contains as a components, with a label listing the name(s) of
+said component(s).
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+    <br>
+
+    <section>
+    <h2>Components</h2>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+<th></th><th scope="col">Initial</th>        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-angular_points~3"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>angular_points</strong></td>
+<td> =</td>
+                <td>110</td>
+            <td>
+                <p>Lebedev points per atom on the cavity surface.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-dielectric~4"></span>
+              real(kind=dp),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>dielectric</strong></td>
+<td> =</td>
+                <td>-1.0_dp</td>
+            <td>
+                <p>Solvent dielectric. No solvent-name table on this path, on purpose:
+see <code>mqc_config_types</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-enabled"></span>
+              logical,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>enabled</strong></td>
+<td> =</td>
+                <td>.false.</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-max_iter~5"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>max_iter</strong></td>
+<td> =</td>
+                <td>100</td>
+            <td>
+                <p>Iterations that solve is allowed.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-method~12"></span>
+              character(len=16),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>method</strong></td>
+<td> =</td>
+                <td>&#34;cpcm&#34;</td>
+            <td>
+                <p>Which continuum model the surface charges solve: &ldquo;cpcm&rdquo;
+(conductor-like, scale factor (eps-1)/eps) or &ldquo;iefpcm&rdquo; (the integral
+equation formalism, scale (eps-1)/(eps+1) with the D-matrix terms).
+Two different models with different energies, so the choice is
+named, not defaulted per backend. Only the CPU path reads it;
+cuEST&rsquo;s solver is fixed and refuses &ldquo;iefpcm&rdquo; rather than
+substituting.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-radii_scale"></span>
+              real(kind=dp),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>radii_scale</strong></td>
+<td> =</td>
+                <td>1.2_dp</td>
+            <td>
+                <p>Scaling from van der Waals radii, per <code>mqc_pcm_radii</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-tolerance~12"></span>
+              real(kind=dp),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>tolerance</strong></td>
+<td> =</td>
+                <td>1.0e-8_dp</td>
+            <td>
+                <p>Residual the surface-charge solve must reach.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-zeta"></span>
+              real(kind=dp),
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>zeta</strong></td>
+<td> =</td>
+                <td>2.0_dp</td>
+            <td>
+                <p>Gaussian switching prefactor for the smooth surface. Unverified
+against cuEST&rsquo;s convention &ndash; see <code>DEFAULT_PCM_ZETA</code>.</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    </section>
+    <br>
+    
+
+
+
+    <section>
+    <h3><span class="anchor" id="src"></span>Source Code</h3>
+    <div class="hl codehilite"><pre><span></span><span class="w">   </span><span class="k">type</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">pcm_config_t</span>
+<span class="w">      </span><span class="c">!! A polarizable continuum: the cavity, the solvent, and the charge solve</span>
+<span class="w">      </span><span class="c">!!</span>
+<span class="w">      </span><span class="c">!! Backend-neutral in shape. The cuEST path hands the cavity and the charge</span>
+<span class="w">      </span><span class="c">!! solve to the library; the CPU path builds both itself in</span>
+<span class="w">      </span><span class="c">!! `mqc_czt_pcm`. tblite's CPCM is configured through `xtb_config_t`</span>
+<span class="w">      </span><span class="c">!! and builds its own cavity; the two are separate models and share no</span>
+<span class="w">      </span><span class="c">!! settings.</span>
+<span class="w">      </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"cpcm"</span>
+<span class="w">         </span><span class="c">!! Which continuum model the surface charges solve: "cpcm"</span>
+<span class="w">         </span><span class="c">!! (conductor-like, scale factor (eps-1)/eps) or "iefpcm" (the integral</span>
+<span class="w">         </span><span class="c">!! equation formalism, scale (eps-1)/(eps+1) with the D-matrix terms).</span>
+<span class="w">         </span><span class="c">!! Two different models with different energies, so the choice is</span>
+<span class="w">         </span><span class="c">!! named, not defaulted per backend. Only the CPU path reads it;</span>
+<span class="w">         </span><span class="c">!! cuEST's solver is fixed and refuses "iefpcm" rather than</span>
+<span class="w">         </span><span class="c">!! substituting.</span>
+<span class="w">      </span><span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">dielectric</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mf">1.0_dp</span>
+<span class="w">         </span><span class="c">!! Solvent dielectric. No solvent-name table on this path, on purpose:</span>
+<span class="w">         </span><span class="c">!! see `mqc_config_types`.</span>
+<span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">angular_points</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">110</span>
+<span class="w">         </span><span class="c">!! Lebedev points per atom on the cavity surface.</span>
+<span class="w">      </span><span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">radii_scale</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.2_dp</span>
+<span class="w">         </span><span class="c">!! Scaling from van der Waals radii, per `mqc_pcm_radii`.</span>
+<span class="w">      </span><span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">zeta</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">2.0_dp</span>
+<span class="w">         </span><span class="c">!! Gaussian switching prefactor for the smooth surface. Unverified</span>
+<span class="w">         </span><span class="c">!! against cuEST's convention -- see `DEFAULT_PCM_ZETA`.</span>
+<span class="w">      </span><span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">tolerance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0e-8_dp</span>
+<span class="w">         </span><span class="c">!! Residual the surface-charge solve must reach.</span>
+<span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">max_iter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span>
+<span class="w">         </span><span class="c">!! Iterations that solve is allowed.</span>
+<span class="w">   </span><span class="k">end type </span><span class="n">pcm_config_t</span>
+</pre></div>
+
+    </section>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              metalquicha
+ was developed by Jorge Luis Galvez Vallejo<br>              &copy; 2026 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+ on 2026-09-07 09:10 +0000             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

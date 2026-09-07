@@ -1,0 +1,1527 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="A demonstration of PIC as a framework for scientific applications targetting quantum chemistry">
+    <meta name="author" content="Jorge Luis Galvez Vallejo" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>mqc_ci &ndash; metalquicha</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">metalquicha </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../program/main.html">Program</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>mqc_ci
+      <small>Module</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 1.2% of total for modules and submodules.">303 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/mqc_ci.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/mqc_ci.f90.html'>mqc_ci.f90</a></li>
+            <li class="breadcrumb-item active" aria-current="page">mqc_ci</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+        <div id="sidebar">
+      <h3>Contents</h3>
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#vars-0"
+         aria-expanded="false" aria-controls="vars-0">
+         <h4 class="card-header bg-primary text-white">Variables</h4>
+      </a>
+      <div id="vars-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/mqc_ci.html#variable-block_bytes">BLOCK_BYTES</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#funcs-0"
+         aria-expanded="false" aria-controls="funcs-0">
+         <h4 class="card-header bg-primary text-white">Functions</h4>
+      </a>
+      <div id="funcs-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/mqc_ci.html#proc-beta_strings_per_block">beta_strings_per_block</a>
+        </div>
+      </div>
+    </div>
+
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#subs-0"
+         aria-expanded="false" aria-controls="subs-0">
+         <h4 class="card-header bg-primary text-white">Subroutines</h4>
+      </a>
+      <div id="subs-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/mqc_ci.html#proc-absorb_one_electron">absorb_one_electron</a>
+            <a class="list-group-item" href="../module/mqc_ci.html#proc-apply_excitations">apply_excitations</a>
+            <a class="list-group-item" href="../module/mqc_ci.html#proc-ci_diagonal">ci_diagonal</a>
+            <a class="list-group-item" href="../module/mqc_ci.html#proc-ci_hamiltonian">ci_hamiltonian</a>
+            <a class="list-group-item" href="../module/mqc_ci.html#proc-excitations_block">excitations_block</a>
+            <a class="list-group-item" href="../module/mqc_ci.html#proc-sigma_vector">sigma_vector</a>
+            <a class="list-group-item" href="../module/mqc_ci.html#proc-string_terms~2">string_terms</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+
+
+  </div>
+
+    </div>
+
+    <div class="col-md-9" id='text'>
+      <p><code>sigma = H c</code> for a complete active space, without ever forming <code>H</code>.</p>
+<p><strong>One contraction, not three.</strong> The two-particle part of the Hamiltonian
+is</p>
+<div class="codehilite"><pre><span></span><code>(pq|rs) E_pr,qs = (pq|rs) (E_pq E_rs - delta_qr E_ps)
+</code></pre></div>
+
+<p>so subtracting the <code>delta_qr</code> term from the one-electron Hamiltonian and
+then folding <em>that</em> into the two-electron tensor &ndash; <code>absorb_one_electron</code>
+below &ndash; leaves the entire Hamiltonian as a single <code>E_pq E_rs</code>. Applying
+it is then: apply <code>E_pq</code> once, contract with the tensor, apply <code>E_pq</code>
+again. No case analysis, and the same excitation table for both spins.</p>
+<p>The formulation is PySCF&rsquo;s, from <code>pyscf/fci/direct_spin1.py</code>; the
+implementation is this repository&rsquo;s own.</p>
+<p>The cost is the intermediate, <code>n_orbitals^2</code> by the number of
+determinants, which is blocked over beta strings.</p>
+<br>          <div class="card mb-4">
+      <h3 class="card-header card-title bg-light">Uses</h3>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <ul class="list-inline">
+                  <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_fortran_env'>iso_fortran_env</a></li>
+                  <li class="list-inline-item">pic_io</li>
+                  <li class="list-inline-item">pic_blas_interfaces</li>
+                  <li class="list-inline-item"><a href='mqc_error.html'>mqc_error</a></li>
+                  <li class="list-inline-item">pic_types</li>
+                  <li class="list-inline-item"><a href='mqc_determinants.html'>mqc_determinants</a></li>
+              </ul>
+            </li>
+            <li class="list-group-item">
+              <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: module~~mqc_ci~~UsesGraph Pages: 1 -->
+<svg id="modulemqc_ciUsesGraph" width="442pt" height="216pt"
+ viewBox="0.00 0.00 442.00 216.07" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="module~~mqc_ci~~UsesGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 212.07)">
+<title>module~~mqc_ci~~UsesGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-212.07 438,-212.07 438,4 -4,4"/>
+<!-- module~mqc_ci -->
+<g id="module~~mqc_ci~~UsesGraph_node1" class="node">
+<title>module~mqc_ci</title>
+<polygon fill="none" stroke="black" points="434,-128.07 380,-128.07 380,-104.07 434,-104.07 434,-128.07"/>
+<text text-anchor="middle" x="407" y="-113.67" font-family="Helvetica,sans-Serif" font-size="10.50">mqc_ci</text>
+</g>
+<!-- iso_fortran_env -->
+<g id="module~~mqc_ci~~UsesGraph_node2" class="node">
+<title>iso_fortran_env</title>
+<g id="a_module~~mqc_ci~~UsesGraph_node2"><a xlink:href="http://fortranwiki.org/fortran/show/iso_fortran_env" xlink:title="iso_fortran_env">
+<polygon fill="#337ab7" stroke="#337ab7" points="334,-208.07 240,-208.07 240,-184.07 334,-184.07 334,-208.07"/>
+<text text-anchor="middle" x="287" y="-193.67" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">iso_fortran_env</text>
+</a>
+</g>
+</g>
+<!-- module~mqc_ci&#45;&gt;iso_fortran_env -->
+<g id="module~~mqc_ci~~UsesGraph_edge1" class="edge">
+<title>module~mqc_ci&#45;&gt;iso_fortran_env</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M394.02,-128.35C382.1,-140.1 362.92,-157.79 344,-170.07 338.75,-173.47 332.98,-176.68 327.2,-179.6"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="325.68,-176.45 318.18,-183.94 328.71,-182.76 325.68,-176.45"/>
+</g>
+<!-- module~mqc_determinants -->
+<g id="module~~mqc_ci~~UsesGraph_node3" class="node">
+<title>module~mqc_determinants</title>
+<g id="a_module~~mqc_ci~~UsesGraph_node3"><a xlink:href="../module/mqc_determinants.html" xlink:title="mqc_determinants">
+<polygon fill="#337ab7" stroke="#337ab7" points="343,-128.07 231,-128.07 231,-104.07 343,-104.07 343,-128.07"/>
+<text text-anchor="middle" x="287" y="-113.67" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_determinants</text>
+</a>
+</g>
+</g>
+<!-- module~mqc_ci&#45;&gt;module~mqc_determinants -->
+<g id="module~~mqc_ci~~UsesGraph_edge2" class="edge">
+<title>module~mqc_ci&#45;&gt;module~mqc_determinants</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M379.81,-116.07C371.83,-116.07 362.68,-116.07 353.32,-116.07"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="353.11,-112.57 343.11,-116.07 353.11,-119.57 353.11,-112.57"/>
+</g>
+<!-- module~mqc_error -->
+<g id="module~~mqc_ci~~UsesGraph_node4" class="node">
+<title>module~mqc_error</title>
+<g id="a_module~~mqc_ci~~UsesGraph_node4"><a xlink:href="../module/mqc_error.html" xlink:title="mqc_error">
+<polygon fill="#337ab7" stroke="#337ab7" points="179.5,-188.07 112.5,-188.07 112.5,-164.07 179.5,-164.07 179.5,-188.07"/>
+<text text-anchor="middle" x="146" y="-173.67" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_error</text>
+</a>
+</g>
+</g>
+<!-- module~mqc_ci&#45;&gt;module~mqc_error -->
+<g id="module~~mqc_ci~~UsesGraph_edge3" class="edge">
+<title>module~mqc_ci&#45;&gt;module~mqc_error</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M379.99,-125.73C368.98,-129.59 355.97,-133.87 344,-137.07 291.48,-151.1 229.85,-162.5 189.7,-169.28"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="189.01,-165.85 179.72,-170.94 190.16,-172.75 189.01,-165.85"/>
+</g>
+<!-- pic_blas_interfaces -->
+<g id="module~~mqc_ci~~UsesGraph_node5" class="node">
+<title>pic_blas_interfaces</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="344,-86.07 230,-86.07 230,-62.07 344,-62.07 344,-86.07"/>
+<text text-anchor="middle" x="287" y="-71.67" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">pic_blas_interfaces</text>
+</g>
+<!-- module~mqc_ci&#45;&gt;pic_blas_interfaces -->
+<g id="module~~mqc_ci~~UsesGraph_edge4" class="edge">
+<title>module~mqc_ci&#45;&gt;pic_blas_interfaces</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M379.81,-106.75C365.64,-101.7 347.77,-95.34 331.57,-89.57"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="332.34,-86.13 321.74,-86.08 329.99,-92.73 332.34,-86.13"/>
+</g>
+<!-- pic_io -->
+<g id="module~~mqc_ci~~UsesGraph_node6" class="node">
+<title>pic_io</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="173,-66.07 119,-66.07 119,-42.07 173,-42.07 173,-66.07"/>
+<text text-anchor="middle" x="146" y="-51.67" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">pic_io</text>
+</g>
+<!-- module~mqc_ci&#45;&gt;pic_io -->
+<g id="module~~mqc_ci~~UsesGraph_edge5" class="edge">
+<title>module~mqc_ci&#45;&gt;pic_io</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M286,-14.07C266.68,-8.47 217.11,-25.54 182.72,-39.1"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="181,-36.02 173.02,-42.99 183.6,-42.52 181,-36.02"/>
+</g>
+<!-- pic_types -->
+<g id="module~~mqc_ci~~UsesGraph_node7" class="node">
+<title>pic_types</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="62,-108.07 0,-108.07 0,-84.07 62,-84.07 62,-108.07"/>
+<text text-anchor="middle" x="31" y="-93.67" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">pic_types</text>
+</g>
+<!-- module~mqc_ci&#45;&gt;pic_types -->
+<g id="module~~mqc_ci~~UsesGraph_edge6" class="edge">
+<title>module~mqc_ci&#45;&gt;pic_types</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M397.73,-103.95C380.64,-80.25 338.72,-28.75 288,-14.07"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M286,-14.07C205.33,9.29 174.29,2.05 98,-33.07 77.31,-42.59 59.04,-61.29 47,-75.85"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="44.13,-73.84 40.66,-83.85 49.62,-78.19 44.13,-73.84"/>
+</g>
+<!-- module~mqc_determinants&#45;&gt;module~mqc_error -->
+<g id="module~~mqc_ci~~UsesGraph_edge7" class="edge">
+<title>module~mqc_determinants&#45;&gt;module~mqc_error</title>
+<path fill="none" stroke="#ffff00" stroke-dasharray="5,2" d="M257.87,-128.21C236.77,-137.32 207.67,-149.88 184.58,-159.85"/>
+<polygon fill="#ffff00" stroke="#ffff00" points="182.88,-156.77 175.09,-163.94 185.66,-163.19 182.88,-156.77"/>
+</g>
+<!-- module~mqc_determinants&#45;&gt;pic_io -->
+<g id="module~~mqc_ci~~UsesGraph_edge9" class="edge">
+<title>module~mqc_determinants&#45;&gt;pic_io</title>
+<path fill="none" stroke="#ffff00" stroke-dasharray="5,2" d="M251.31,-103.98C244.18,-101.24 236.79,-98.2 230,-95.07 213.39,-87.39 210.37,-83.25 194,-75.07 190.22,-73.18 186.24,-71.27 182.25,-69.42"/>
+<polygon fill="#ffff00" stroke="#ffff00" points="183.6,-66.18 173.05,-65.22 180.69,-72.55 183.6,-66.18"/>
+</g>
+<!-- module~mqc_determinants&#45;&gt;pic_types -->
+<g id="module~~mqc_ci~~UsesGraph_edge10" class="edge">
+<title>module~mqc_determinants&#45;&gt;pic_types</title>
+<path fill="none" stroke="#ffff00" stroke-dasharray="5,2" d="M230.95,-120.94C193.29,-123.15 142.35,-123.95 98,-117.07 89.37,-115.73 80.33,-113.46 71.81,-110.9"/>
+<polygon fill="#ffff00" stroke="#ffff00" points="72.68,-107.5 62.09,-107.79 70.55,-114.17 72.68,-107.5"/>
+</g>
+<!-- module~mqc_math_utils -->
+<g id="module~~mqc_ci~~UsesGraph_node8" class="node">
+<title>module~mqc_math_utils</title>
+<g id="a_module~~mqc_ci~~UsesGraph_node8"><a xlink:href="../module/mqc_math_utils.html" xlink:title="mqc_math_utils">
+<polygon fill="#337ab7" stroke="#337ab7" points="194,-108.07 98,-108.07 98,-84.07 194,-84.07 194,-108.07"/>
+<text text-anchor="middle" x="146" y="-93.67" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_math_utils</text>
+</a>
+</g>
+</g>
+<!-- module~mqc_determinants&#45;&gt;module~mqc_math_utils -->
+<g id="module~~mqc_ci~~UsesGraph_edge8" class="edge">
+<title>module~mqc_determinants&#45;&gt;module~mqc_math_utils</title>
+<path fill="none" stroke="#ffff00" stroke-dasharray="5,2" d="M230.66,-108.1C221.96,-106.85 212.94,-105.55 204.19,-104.3"/>
+<polygon fill="#ffff00" stroke="#ffff00" points="204.48,-100.8 194.08,-102.84 203.48,-107.73 204.48,-100.8"/>
+</g>
+<!-- module~mqc_math_utils&#45;&gt;pic_types -->
+<g id="module~~mqc_ci~~UsesGraph_edge11" class="edge">
+<title>module~mqc_math_utils&#45;&gt;pic_types</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M97.73,-96.07C89.23,-96.07 80.44,-96.07 72.16,-96.07"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="72,-92.57 62,-96.07 72,-99.57 72,-92.57"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#UsesGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="UsesGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="518pt" height="32pt"
+ viewBox="0.00 0.00 517.50 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 513.5,-28 513.5,4 -4,4"/>
+<!-- Module -->
+<g id="node1" class="node">
+<title>Module</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="54,-24 0,-24 0,0 54,0 54,-24"/>
+<text text-anchor="middle" x="27" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Module</text>
+</g>
+<!-- Submodule -->
+<g id="node2" class="node">
+<title>Submodule</title>
+<polygon fill="#5bc0de" stroke="#5bc0de" points="145.5,-24 72.5,-24 72.5,0 145.5,0 145.5,-24"/>
+<text text-anchor="middle" x="109" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Submodule</text>
+</g>
+<!-- Subroutine -->
+<g id="node3" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="234,-24 164,-24 164,0 234,0 234,-24"/>
+<text text-anchor="middle" x="199" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node4" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="310,-24 252,-24 252,0 310,0 310,-24"/>
+<text text-anchor="middle" x="281" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Program -->
+<g id="node5" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="386,-24 328,-24 328,0 386,0 386,-24"/>
+<text text-anchor="middle" x="357" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node6" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="509.5,-24 404.5,-24 404.5,0 509.5,0 509.5,-24"/>
+<text text-anchor="middle" x="457" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a submodule to the (sub)module which it is
+descended from. Dashed arrows point from a module or program unit to 
+modules which it uses.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+            </li>
+        </ul>
+      </div>
+    </div>
+
+          <div class="card">
+      <h3 class="card-header card-title bg-light">Used by</h3>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: module~~mqc_ci~~UsedByGraph Pages: 1 -->
+<svg id="modulemqc_ciUsedByGraph" width="312pt" height="94pt"
+ viewBox="0.00 0.00 312.00 94.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="module~~mqc_ci~~UsedByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 90)">
+<title>module~~mqc_ci~~UsedByGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-90 308,-90 308,4 -4,4"/>
+<!-- module~mqc_ci -->
+<g id="module~~mqc_ci~~UsedByGraph_node1" class="node">
+<title>module~mqc_ci</title>
+<polygon fill="none" stroke="black" points="54,-66 0,-66 0,-42 54,-42 54,-66"/>
+<text text-anchor="middle" x="27" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50">mqc_ci</text>
+</g>
+<!-- module~mqc_davidson -->
+<g id="module~~mqc_ci~~UsedByGraph_node2" class="node">
+<title>module~mqc_davidson</title>
+<g id="a_module~~mqc_ci~~UsedByGraph_node2"><a xlink:href="../module/mqc_davidson.html" xlink:title="mqc_davidson">
+<polygon fill="#337ab7" stroke="#337ab7" points="179,-66 90,-66 90,-42 179,-42 179,-66"/>
+<text text-anchor="middle" x="134.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_davidson</text>
+</a>
+</g>
+</g>
+<!-- module~mqc_davidson&#45;&gt;module~mqc_ci -->
+<g id="module~~mqc_ci~~UsedByGraph_edge1" class="edge">
+<title>module~mqc_davidson&#45;&gt;module~mqc_ci</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M89.98,-54C81.44,-54 72.57,-54 64.29,-54"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="64.2,-50.5 54.2,-54 64.2,-57.5 64.2,-50.5"/>
+</g>
+<!-- module~mqc_ormas_ci -->
+<g id="module~~mqc_ci~~UsedByGraph_node3" class="node">
+<title>module~mqc_ormas_ci</title>
+<g id="a_module~~mqc_ci~~UsedByGraph_node3"><a xlink:href="../module/mqc_ormas_ci.html" xlink:title="mqc_ormas_ci">
+<polygon fill="#337ab7" stroke="#337ab7" points="304,-86 215,-86 215,-62 304,-62 304,-86"/>
+<text text-anchor="middle" x="259.5" y="-71.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_ormas_ci</text>
+</a>
+</g>
+</g>
+<!-- module~mqc_ormas_ci&#45;&gt;module~mqc_ci -->
+<g id="module~~mqc_ci~~UsedByGraph_edge2" class="edge">
+<title>module~mqc_ormas_ci&#45;&gt;module~mqc_ci</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M214.89,-78.27C180.69,-80.65 132,-81.92 90,-75 81.3,-73.57 72.17,-71.07 63.68,-68.29"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="64.66,-64.93 54.06,-64.94 62.36,-71.54 64.66,-64.93"/>
+</g>
+<!-- module~mqc_ormas_ci&#45;&gt;module~mqc_davidson -->
+<g id="module~~mqc_ci~~UsedByGraph_edge4" class="edge">
+<title>module~mqc_ormas_ci&#45;&gt;module~mqc_davidson</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M214.79,-66.89C206.45,-65.54 197.64,-64.1 189.03,-62.7"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="189.5,-59.24 179.07,-61.08 188.38,-66.14 189.5,-59.24"/>
+</g>
+<!-- module~mqc_rdm -->
+<g id="module~~mqc_ci~~UsedByGraph_node4" class="node">
+<title>module~mqc_rdm</title>
+<g id="a_module~~mqc_ci~~UsedByGraph_node4"><a xlink:href="../module/mqc_rdm.html" xlink:title="mqc_rdm">
+<polygon fill="#337ab7" stroke="#337ab7" points="166,-24 103,-24 103,0 166,0 166,-24"/>
+<text text-anchor="middle" x="134.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mqc_rdm</text>
+</a>
+</g>
+</g>
+<!-- module~mqc_rdm&#45;&gt;module~mqc_ci -->
+<g id="module~~mqc_ci~~UsedByGraph_edge3" class="edge">
+<title>module~mqc_rdm&#45;&gt;module~mqc_ci</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M103.27,-24.04C90.94,-28.94 76.6,-34.65 63.76,-39.76"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="62.29,-36.58 54.29,-43.53 64.88,-43.09 62.29,-36.58"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#UsedByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="UsedByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="518pt" height="32pt"
+ viewBox="0.00 0.00 517.50 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 513.5,-28 513.5,4 -4,4"/>
+<!-- Module -->
+<g id="node1" class="node">
+<title>Module</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="54,-24 0,-24 0,0 54,0 54,-24"/>
+<text text-anchor="middle" x="27" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Module</text>
+</g>
+<!-- Submodule -->
+<g id="node2" class="node">
+<title>Submodule</title>
+<polygon fill="#5bc0de" stroke="#5bc0de" points="145.5,-24 72.5,-24 72.5,0 145.5,0 145.5,-24"/>
+<text text-anchor="middle" x="109" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Submodule</text>
+</g>
+<!-- Subroutine -->
+<g id="node3" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="234,-24 164,-24 164,0 234,0 234,-24"/>
+<text text-anchor="middle" x="199" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node4" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="310,-24 252,-24 252,0 310,0 310,-24"/>
+<text text-anchor="middle" x="281" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Program -->
+<g id="node5" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="386,-24 328,-24 328,0 386,0 386,-24"/>
+<text text-anchor="middle" x="357" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node6" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="509.5,-24 404.5,-24 404.5,0 509.5,0 509.5,-24"/>
+<text text-anchor="middle" x="457" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a submodule to the (sub)module which it is
+descended from. Dashed arrows point from a module or program unit to 
+modules which it uses.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+            </li>
+        </ul>
+      </div>
+    </div>
+
+      <br>
+
+
+        <section>
+          <h2>Variables</h2>
+            <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+<th></th><th scope="col">Initial</th>        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-block_bytes"></span>
+              integer(kind=int64),
+            </td>
+              <td>private,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>BLOCK_BYTES</strong></td>
+<td> =</td>
+                <td>256_int64*1024_int64*1024_int64</td>
+            <td>
+                <p>Working-set target for one block of the CI intermediate, per buffer
+pair. Not a hard limit on the routine: the vector, the diagonal and the
+Davidson subspace sit outside it.</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+        </section>
+        <br>
+
+
+
+
+
+        <section>
+          <h2>Functions</h2>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-beta_strings_per_block"></span> <h3>public pure function <a href='../proc/beta_strings_per_block.html'>beta_strings_per_block</a>(npair, na, nb) result(width)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>How many beta strings one working block may cover</p><a href="../proc/beta_strings_per_block.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-npair~4"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>npair</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-na~7"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>na</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-nb~5"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>nb</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>integer</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
+        </section>
+        <br>
+
+        <section>
+          <h2>Subroutines</h2>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-absorb_one_electron"></span> <h3>public  subroutine <a href='../proc/absorb_one_electron.html'>absorb_one_electron</a>(h1e, eri, n_electrons, folded, error)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Fold the one-electron Hamiltonian into the two-electron tensor</p><a href="../proc/absorb_one_electron.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-h1e~5"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>h1e</strong>(:,:)</td>
+            <td>
+<p>(norb, norb), symmetric</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-eri~4"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>eri</strong>(:,:,:,:)</td>
+            <td>
+<p>(norb^4), chemist (pq|rs)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_electrons~13"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_electrons</strong></td>
+            <td>
+<p>Total, both spins</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-folded~6"></span>
+              real(kind=dp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>folded</strong>(:,:)</td>
+            <td>
+<p>(norb^2, norb^2), indexed <code>(p + (q-1)norb, r + (s-1)norb)</code>. Already
+multiplied by a half.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-error~165"></span>
+              type(<a href='../type/error_t.html'>error_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>error</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-apply_excitations"></span> <h3>public  subroutine <a href='../proc/apply_excitations.html'>apply_excitations</a>(ci, alpha, beta, gathered)  
+</h3></div>
+    <div class="card-body">
+          
+  <p><code>E_pq |c&gt;</code> for every orbital pair at once</p><a href="../proc/apply_excitations.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ci~9"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ci</strong>(:,:)</td>
+            <td>
+<p>(n_alpha_strings, n_beta_strings)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-alpha~9"></span>
+              type(<a href='../type/link_table_t.html'>link_table_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>alpha</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-beta~9"></span>
+              type(<a href='../type/link_table_t.html'>link_table_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>beta</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-gathered~6"></span>
+              real(kind=dp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>gathered</strong>(:,:)</td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-ci_diagonal"></span> <h3>public  subroutine <a href='../proc/ci_diagonal.html'>ci_diagonal</a>(h1e, eri, alpha, beta, diagonal, error)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>The diagonal of the CI Hamiltonian, without touching the rest of it</p><a href="../proc/ci_diagonal.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-h1e~6"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>h1e</strong>(:,:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-eri~5"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>eri</strong>(:,:,:,:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-alpha~12"></span>
+              type(<a href='../type/link_table_t.html'>link_table_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>alpha</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-beta~12"></span>
+              type(<a href='../type/link_table_t.html'>link_table_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>beta</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-diagonal~3"></span>
+              real(kind=dp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>diagonal</strong>(:,:)</td>
+            <td>
+<p>(n_alpha, n_beta)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-error~168"></span>
+              type(<a href='../type/error_t.html'>error_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>error</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-ci_hamiltonian"></span> <h3>public  subroutine <a href='../proc/ci_hamiltonian.html'>ci_hamiltonian</a>(folded, alpha, beta, matrix, error)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>The Hamiltonian as a dense matrix, one column at a time</p><a href="../proc/ci_hamiltonian.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-folded~8"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>folded</strong>(:,:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-alpha~11"></span>
+              type(<a href='../type/link_table_t.html'>link_table_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>alpha</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-beta~11"></span>
+              type(<a href='../type/link_table_t.html'>link_table_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>beta</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-matrix~6"></span>
+              real(kind=dp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>matrix</strong>(:,:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-error~167"></span>
+              type(<a href='../type/error_t.html'>error_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>error</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-excitations_block"></span> <h3>public  subroutine <a href='../proc/excitations_block.html'>excitations_block</a>(ci, alpha, beta, first_beta, last_beta, gathered)  
+</h3></div>
+    <div class="card-body">
+          
+  <p><code>E_pq |c&gt;</code> for every orbital pair, over one range of beta strings</p><a href="../proc/excitations_block.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ci~8"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ci</strong>(:,:)</td>
+            <td>
+<p>(n_alpha_strings, n_beta_strings)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-alpha~8"></span>
+              type(<a href='../type/link_table_t.html'>link_table_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>alpha</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-beta~8"></span>
+              type(<a href='../type/link_table_t.html'>link_table_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>beta</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-first_beta"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>first_beta</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-last_beta"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>last_beta</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-gathered~5"></span>
+              real(kind=dp),
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>gathered</strong>(:,:)</td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-sigma_vector"></span> <h3>public  subroutine <a href='../proc/sigma_vector.html'>sigma_vector</a>(folded, ci, alpha, beta, sigma, error)  
+</h3></div>
+    <div class="card-body">
+          
+  <p><code>sigma = H c</code>, with <code>H</code> the folded tensor acting as <code>E_pq E_rs</code></p><a href="../proc/sigma_vector.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-folded~7"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>folded</strong>(:,:)</td>
+            <td>
+<p>From <code>absorb_one_electron</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ci~10"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ci</strong>(:,:)</td>
+            <td>
+<p>(n_alpha_strings, n_beta_strings)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-alpha~10"></span>
+              type(<a href='../type/link_table_t.html'>link_table_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>alpha</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-beta~10"></span>
+              type(<a href='../type/link_table_t.html'>link_table_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>beta</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-sigma~8"></span>
+              real(kind=dp),
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>sigma</strong>(:,:)</td>
+            <td>
+<p>Same shape as <code>ci</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-error~166"></span>
+              type(<a href='../type/error_t.html'>error_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>error</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-string_terms~2"></span> <h3>private  subroutine <a href='../proc/string_terms~2.html'>string_terms</a>(table, coulomb, exchange, h1e, n_str, one_body, same_spin, occupied)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>The part of a diagonal element that depends on one spin alone</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-table~4"></span>
+              type(<a href='../type/link_table_t.html'>link_table_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>table</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-coulomb~4"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>coulomb</strong>(:,:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-exchange~4"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>exchange</strong>(:,:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-h1e~7"></span>
+              real(kind=dp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>h1e</strong>(:,:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_str~2"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_str</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-one_body~3"></span>
+              real(kind=dp),
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>one_body</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-same_spin~3"></span>
+              real(kind=dp),
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>same_spin</strong>(:)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-occupied~4"></span>
+              integer,
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>occupied</strong>(:,:)</td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+        </section>
+        <br>
+
+
+
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              metalquicha
+ was developed by Jorge Luis Galvez Vallejo<br>              &copy; 2026 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+ on 2026-09-07 09:10 +0000             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

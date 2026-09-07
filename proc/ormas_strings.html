@@ -1,0 +1,726 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="A demonstration of PIC as a framework for scientific applications targetting quantum chemistry">
+    <meta name="author" content="Jorge Luis Galvez Vallejo" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>ormas_strings &ndash; metalquicha</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">metalquicha </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../program/main.html">Program</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>ormas_strings
+      <small>Subroutine</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 0.0% of total for procedures.">8 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/mqc_ormas_space.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/mqc_ormas_space.f90.html'>mqc_ormas_space.f90</a></li>
+                <li class="breadcrumb-item"><a href='../module/mqc_ormas_space.html'>mqc_ormas_space</a></li>
+            <li class="breadcrumb-item active" aria-current="page">ormas_strings</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/ormas_strings.html#src">ormas_strings</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>public  subroutine ormas_strings(space, alpha, beta, error)  
+</h2>
+    
+
+    <p>Every alpha and beta string of the space, in global index order</p>
+<p>When the two spins have the same electron count the two lists are
+identical, which the spin-transpose bookkeeping downstream depends on.</p>
+
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-space~13"></span>
+              type(<a href='../type/ormas_space_t.html'>ormas_space_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>space</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-alpha"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>alpha</strong>(:)</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-beta"></span>
+              integer(kind=int64),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>beta</strong>(:)</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-error~91"></span>
+              type(<a href='../type/error_t.html'>error_t</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>error</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <br>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Calls</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~ormas_strings~~CallsGraph Pages: 1 -->
+<svg id="procormas_stringsCallsGraph" width="641pt" height="125pt"
+ viewBox="0.00 0.00 641.00 125.24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~ormas_strings~~CallsGraph" class="graph" transform="scale(0.7 0.7) rotate(0) translate(4 174)">
+<title>proc~~ormas_strings~~CallsGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-174 907,-174 907,4 -4,4"/>
+<!-- proc~ormas_strings -->
+<g id="proc~~ormas_strings~~CallsGraph_node1" class="node">
+<title>proc~ormas_strings</title>
+<polygon fill="none" stroke="black" points="87,-166 0,-166 0,-142 87,-142 87,-166"/>
+<text text-anchor="middle" x="43.5" y="-151.6" font-family="Helvetica,sans-Serif" font-size="10.50">ormas_strings</text>
+</g>
+<!-- proc~error_has_error -->
+<g id="proc~~ormas_strings~~CallsGraph_node2" class="node">
+<title>proc~error_has_error</title>
+<g id="a_proc~~ormas_strings~~CallsGraph_node2"><a xlink:href="../proc/error_has_error.html" xlink:title="error_t%error_has_error">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="669,-170 530,-170 530,-146 669,-146 669,-170"/>
+<text text-anchor="middle" x="599.5" y="-155.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">error_t%error_has_error</text>
+</a>
+</g>
+</g>
+<!-- proc~ormas_strings&#45;&gt;proc~error_has_error -->
+<g id="proc~~ormas_strings~~CallsGraph_edge1" class="edge">
+<title>proc~ormas_strings&#45;&gt;proc~error_has_error</title>
+<path fill="none" stroke="#ff0000" d="M87.27,-156.11C167.17,-159.76 344.57,-166.57 494,-163 502.35,-162.8 511.08,-162.51 519.77,-162.17"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="520.09,-165.66 529.94,-161.75 519.8,-158.67 520.09,-165.66"/>
+</g>
+<!-- proc~strings_of_one_spin -->
+<g id="proc~~ormas_strings~~CallsGraph_node3" class="node">
+<title>proc~strings_of_one_spin</title>
+<g id="a_proc~~ormas_strings~~CallsGraph_node3"><a xlink:href="../proc/strings_of_one_spin.html" xlink:title="strings_of_one_spin">
+<polygon fill="#d9534f" stroke="#d9534f" points="239,-146 123,-146 123,-122 239,-122 239,-146"/>
+<text text-anchor="middle" x="181" y="-131.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">strings_of_one_spin</text>
+</a>
+</g>
+</g>
+<!-- proc~ormas_strings&#45;&gt;proc~strings_of_one_spin -->
+<g id="proc~~ormas_strings~~CallsGraph_edge2" class="edge">
+<title>proc~ormas_strings&#45;&gt;proc~strings_of_one_spin</title>
+<path fill="none" stroke="#ff0000" d="M87,-147.73C95.23,-146.51 104.05,-145.21 112.85,-143.91"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="113.36,-147.37 122.75,-142.45 112.34,-140.45 113.36,-147.37"/>
+</g>
+<!-- proc~strings_of_one_spin&#45;&gt;proc~error_has_error -->
+<g id="proc~~ormas_strings~~CallsGraph_edge4" class="edge">
+<title>proc~strings_of_one_spin&#45;&gt;proc~error_has_error</title>
+<path fill="none" stroke="#00ffff" d="M239.04,-137.29C311.76,-141.48 437.84,-148.74 519.7,-153.46"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="519.52,-156.95 529.7,-154.04 519.92,-149.97 519.52,-156.95"/>
+</g>
+<!-- interface~binomial -->
+<g id="proc~~ormas_strings~~CallsGraph_node4" class="node">
+<title>interface~binomial</title>
+<g id="a_proc~~ormas_strings~~CallsGraph_node4"><a xlink:href="../interface/binomial.html" xlink:title="binomial">
+<polygon fill="#a7506f" stroke="#a7506f" points="629,-44 570,-44 570,-20 629,-20 629,-44"/>
+<text text-anchor="middle" x="599.5" y="-29.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">binomial</text>
+</a>
+</g>
+</g>
+<!-- proc~strings_of_one_spin&#45;&gt;interface~binomial -->
+<g id="proc~~ormas_strings~~CallsGraph_edge3" class="edge">
+<title>proc~strings_of_one_spin&#45;&gt;interface~binomial</title>
+<path fill="none" stroke="#00ffff" d="M207.68,-121.82C226.14,-113.35 251.78,-102.15 275,-94 335.03,-72.94 350.64,-68.56 413,-56 463.2,-45.89 521.93,-39.13 559.64,-35.43"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="560.08,-38.9 569.7,-34.47 559.41,-31.94 560.08,-38.9"/>
+</g>
+<!-- proc~generate_strings -->
+<g id="proc~~ormas_strings~~CallsGraph_node5" class="node">
+<title>proc~generate_strings</title>
+<g id="a_proc~~ormas_strings~~CallsGraph_node5"><a xlink:href="../proc/generate_strings.html" xlink:title="generate_strings">
+<polygon fill="#d9534f" stroke="#d9534f" points="377,-127 275,-127 275,-103 377,-103 377,-127"/>
+<text text-anchor="middle" x="326" y="-112.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">generate_strings</text>
+</a>
+</g>
+</g>
+<!-- proc~strings_of_one_spin&#45;&gt;proc~generate_strings -->
+<g id="proc~~ormas_strings~~CallsGraph_edge5" class="edge">
+<title>proc~strings_of_one_spin&#45;&gt;proc~generate_strings</title>
+<path fill="none" stroke="#00ffff" d="M239.34,-126.38C247.63,-125.28 256.18,-124.14 264.52,-123.04"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="265.12,-126.49 274.57,-121.7 264.19,-119.55 265.12,-126.49"/>
+</g>
+<!-- proc~binomial_i32 -->
+<g id="proc~~ormas_strings~~CallsGraph_node6" class="node">
+<title>proc~binomial_i32</title>
+<g id="a_proc~~ormas_strings~~CallsGraph_node6"><a xlink:href="../proc/binomial_i32.html" xlink:title="binomial_i32">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="786,-24 705,-24 705,0 786,0 786,-24"/>
+<text text-anchor="middle" x="745.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">binomial_i32</text>
+</a>
+</g>
+</g>
+<!-- interface~binomial&#45;&gt;proc~binomial_i32 -->
+<g id="proc~~ormas_strings~~CallsGraph_edge6" class="edge">
+<title>interface~binomial&#45;&gt;proc~binomial_i32</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M629.29,-28C648,-25.4 672.88,-21.95 694.73,-18.91"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="695.42,-22.35 704.85,-17.51 694.46,-15.42 695.42,-22.35"/>
+</g>
+<!-- proc~binomial_i64 -->
+<g id="proc~~ormas_strings~~CallsGraph_node7" class="node">
+<title>proc~binomial_i64</title>
+<g id="a_proc~~ormas_strings~~CallsGraph_node7"><a xlink:href="../proc/binomial_i64.html" xlink:title="binomial_i64">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="903,-44 822,-44 822,-20 903,-20 903,-44"/>
+<text text-anchor="middle" x="862.5" y="-29.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">binomial_i64</text>
+</a>
+</g>
+</g>
+<!-- interface~binomial&#45;&gt;proc~binomial_i64 -->
+<g id="proc~~ormas_strings~~CallsGraph_edge7" class="edge">
+<title>interface~binomial&#45;&gt;proc~binomial_i64</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M629.1,-32.37C665.54,-32.79 730.45,-33.37 786,-33 794.29,-32.95 803.1,-32.86 811.66,-32.75"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="811.97,-36.25 821.93,-32.62 811.88,-29.25 811.97,-36.25"/>
+</g>
+<!-- proc~generate_strings&#45;&gt;proc~error_has_error -->
+<g id="proc~~ormas_strings~~CallsGraph_edge9" class="edge">
+<title>proc~generate_strings&#45;&gt;proc~error_has_error</title>
+<path fill="none" stroke="#00ffff" d="M377.07,-122.7C410.25,-127.83 454.74,-134.75 494,-141 502.44,-142.34 511.26,-143.76 520.05,-145.18"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="519.5,-148.64 529.93,-146.78 520.62,-141.73 519.5,-148.64"/>
+</g>
+<!-- proc~check_space -->
+<g id="proc~~ormas_strings~~CallsGraph_node8" class="node">
+<title>proc~check_space</title>
+<g id="a_proc~~ormas_strings~~CallsGraph_node8"><a xlink:href="../proc/check_space.html" xlink:title="check_space">
+<polygon fill="#d9534f" stroke="#d9534f" points="494,-89 413,-89 413,-65 494,-65 494,-89"/>
+<text text-anchor="middle" x="453.5" y="-74.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">check_space</text>
+</a>
+</g>
+</g>
+<!-- proc~generate_strings&#45;&gt;proc~check_space -->
+<g id="proc~~ormas_strings~~CallsGraph_edge8" class="edge">
+<title>proc~generate_strings&#45;&gt;proc~check_space</title>
+<path fill="none" stroke="#00ffff" d="M366.71,-102.98C378.15,-99.51 390.79,-95.69 402.76,-92.06"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="404.06,-95.32 412.62,-89.08 402.03,-88.62 404.06,-95.32"/>
+</g>
+<!-- proc~binomial_i32&#45;&gt;proc~binomial_i64 -->
+<g id="proc~~ormas_strings~~CallsGraph_edge10" class="edge">
+<title>proc~binomial_i32&#45;&gt;proc~binomial_i64</title>
+<path fill="none" stroke="#ff0000" d="M786.08,-18.88C794.39,-20.33 803.26,-21.87 811.88,-23.37"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="811.4,-26.84 821.85,-25.1 812.6,-19.94 811.4,-26.84"/>
+</g>
+<!-- proc~check_space&#45;&gt;proc~error_has_error -->
+<g id="proc~~ormas_strings~~CallsGraph_edge12" class="edge">
+<title>proc~check_space&#45;&gt;proc~error_has_error</title>
+<path fill="none" stroke="#0000ff" d="M474.26,-89.04C480.72,-93.23 487.82,-98.11 494,-103 511.26,-116.66 510.98,-125.93 530,-137 533.2,-138.86 536.58,-140.57 540.05,-142.15"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="538.84,-145.43 549.42,-145.99 541.5,-138.96 538.84,-145.43"/>
+</g>
+<!-- proc~check_space&#45;&gt;interface~binomial -->
+<g id="proc~~ormas_strings~~CallsGraph_edge11" class="edge">
+<title>proc~check_space&#45;&gt;interface~binomial</title>
+<path fill="none" stroke="#0000ff" d="M492.11,-64.96C504.2,-61.11 517.66,-56.85 530,-53 539.8,-49.94 550.39,-46.67 560.25,-43.65"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="561.28,-47 569.82,-40.72 559.23,-40.3 561.28,-47"/>
+</g>
+<!-- proc~error_set -->
+<g id="proc~~ormas_strings~~CallsGraph_node9" class="node">
+<title>proc~error_set</title>
+<g id="a_proc~~ormas_strings~~CallsGraph_node9"><a xlink:href="../proc/error_set.html" xlink:title="error_t%error_set">
+<polygon fill="#d9534f" stroke="#d9534f" points="652,-128 547,-128 547,-104 652,-104 652,-128"/>
+<text text-anchor="middle" x="599.5" y="-113.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">error_t%error_set</text>
+</a>
+</g>
+</g>
+<!-- proc~check_space&#45;&gt;proc~error_set -->
+<g id="proc~~ormas_strings~~CallsGraph_edge13" class="edge">
+<title>proc~check_space&#45;&gt;proc~error_set</title>
+<path fill="none" stroke="#0000ff" d="M494.23,-87.76C509.6,-91.92 527.45,-96.76 543.99,-101.24"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="543.52,-104.73 554.08,-103.97 545.35,-97.98 543.52,-104.73"/>
+</g>
+<!-- to_char -->
+<g id="proc~~ormas_strings~~CallsGraph_node10" class="node">
+<title>to_char</title>
+<polygon fill="#777777" stroke="#777777" points="626.5,-86 572.5,-86 572.5,-62 626.5,-62 626.5,-86"/>
+<text text-anchor="middle" x="599.5" y="-71.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">to_char</text>
+</g>
+<!-- proc~check_space&#45;&gt;to_char -->
+<g id="proc~~ormas_strings~~CallsGraph_edge14" class="edge">
+<title>proc~check_space&#45;&gt;to_char</title>
+<path fill="none" stroke="#0000ff" d="M494.23,-76.17C515.36,-75.73 541.15,-75.19 561.8,-74.76"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="562.16,-78.26 572.08,-74.55 562.01,-71.26 562.16,-78.26"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panprocormas_stringsCallsGraph = svgPanZoom('#procormas_stringsCallsGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CallsGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CallsGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="374,-24 244,-24 244,0 374,0 374,-24"/>
+<text text-anchor="middle" x="309" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="537.5,-24 392.5,-24 392.5,0 537.5,0 537.5,-24"/>
+<text text-anchor="middle" x="465" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="614,-24 556,-24 556,0 614,0 614,-24"/>
+<text text-anchor="middle" x="585" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="737.5,-24 632.5,-24 632.5,0 737.5,0 737.5,-24"/>
+<text text-anchor="middle" x="685" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Called by</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~ormas_strings~~CalledByGraph Pages: 1 -->
+<svg id="procormas_stringsCalledByGraph" width="273pt" height="116pt"
+ viewBox="0.00 0.00 273.00 116.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~ormas_strings~~CalledByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 112)">
+<title>proc~~ormas_strings~~CalledByGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-112 269,-112 269,4 -4,4"/>
+<!-- proc~ormas_strings -->
+<g id="proc~~ormas_strings~~CalledByGraph_node1" class="node">
+<title>proc~ormas_strings</title>
+<polygon fill="none" stroke="black" points="265,-66 178,-66 178,-42 265,-42 265,-66"/>
+<text text-anchor="middle" x="221.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50">ormas_strings</text>
+</g>
+<!-- proc~ormas_density_matrices -->
+<g id="proc~~ormas_strings~~CalledByGraph_node2" class="node">
+<title>proc~ormas_density_matrices</title>
+<g id="a_proc~~ormas_strings~~CalledByGraph_node2"><a xlink:href="../proc/ormas_density_matrices.html" xlink:title="ormas_density_matrices">
+<polygon fill="#d9534f" stroke="#d9534f" points="142,-108 0,-108 0,-84 142,-84 142,-108"/>
+<text text-anchor="middle" x="71" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">ormas_density_matrices</text>
+</a>
+</g>
+</g>
+<!-- proc~ormas_density_matrices&#45;&gt;proc~ormas_strings -->
+<g id="proc~~ormas_strings~~CalledByGraph_edge1" class="edge">
+<title>proc~ormas_density_matrices&#45;&gt;proc~ormas_strings</title>
+<path fill="none" stroke="#ff0000" d="M114.55,-83.96C131.18,-79.26 150.41,-73.82 167.88,-68.88"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="169.27,-72.13 177.94,-66.04 167.36,-65.39 169.27,-72.13"/>
+</g>
+<!-- proc~ormas_solve -->
+<g id="proc~~ormas_strings~~CalledByGraph_node3" class="node">
+<title>proc~ormas_solve</title>
+<g id="a_proc~~ormas_strings~~CalledByGraph_node3"><a xlink:href="../proc/ormas_solve.html" xlink:title="ormas_solve">
+<polygon fill="#d9534f" stroke="#d9534f" points="110.5,-66 31.5,-66 31.5,-42 110.5,-42 110.5,-66"/>
+<text text-anchor="middle" x="71" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">ormas_solve</text>
+</a>
+</g>
+</g>
+<!-- proc~ormas_solve&#45;&gt;proc~ormas_strings -->
+<g id="proc~~ormas_strings~~CalledByGraph_edge2" class="edge">
+<title>proc~ormas_solve&#45;&gt;proc~ormas_strings</title>
+<path fill="none" stroke="#ff0000" d="M110.63,-54C128.03,-54 148.85,-54 167.67,-54"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="167.88,-57.5 177.88,-54 167.88,-50.5 167.88,-57.5"/>
+</g>
+<!-- proc~scatter_restricted_ci -->
+<g id="proc~~ormas_strings~~CalledByGraph_node4" class="node">
+<title>proc~scatter_restricted_ci</title>
+<g id="a_proc~~ormas_strings~~CalledByGraph_node4"><a xlink:href="../proc/scatter_restricted_ci.html" xlink:title="scatter_restricted_ci">
+<polygon fill="#d9534f" stroke="#d9534f" points="130.5,-24 11.5,-24 11.5,0 130.5,0 130.5,-24"/>
+<text text-anchor="middle" x="71" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">scatter_restricted_ci</text>
+</a>
+</g>
+</g>
+<!-- proc~scatter_restricted_ci&#45;&gt;proc~ormas_strings -->
+<g id="proc~~ormas_strings~~CalledByGraph_edge3" class="edge">
+<title>proc~scatter_restricted_ci&#45;&gt;proc~ormas_strings</title>
+<path fill="none" stroke="#ff0000" d="M114.55,-24.04C131.18,-28.74 150.41,-34.18 167.88,-39.12"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="167.36,-42.61 177.94,-41.96 169.27,-35.87 167.36,-42.61"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CalledByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CalledByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="374,-24 244,-24 244,0 374,0 374,-24"/>
+<text text-anchor="middle" x="309" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="537.5,-24 392.5,-24 392.5,0 537.5,0 537.5,-24"/>
+<text text-anchor="middle" x="465" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="614,-24 556,-24 556,0 614,0 614,-24"/>
+<text text-anchor="middle" x="585" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="737.5,-24 632.5,-24 632.5,0 737.5,0 737.5,-24"/>
+<text text-anchor="middle" x="685" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+
+    
+    
+
+    
+    
+
+
+
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="hl codehilite"><pre><span></span><span class="w">   </span><span class="k">subroutine </span><span class="n">ormas_strings</span><span class="p">(</span><span class="n">space</span><span class="p">,</span><span class="w"> </span><span class="n">alpha</span><span class="p">,</span><span class="w"> </span><span class="n">beta</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="p">)</span>
+<span class="w">      </span><span class="c">!! Every alpha and beta string of the space, in global index order</span>
+<span class="w">      </span><span class="c">!!</span>
+<span class="w">      </span><span class="c">!! When the two spins have the same electron count the two lists are</span>
+<span class="w">      </span><span class="c">!! identical, which the spin-transpose bookkeeping downstream depends on.</span>
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">ormas_space_t</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">space</span>
+<span class="w">      </span><span class="kt">integer</span><span class="p">(</span><span class="n">int64</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">alpha</span><span class="p">(:),</span><span class="w"> </span><span class="n">beta</span><span class="p">(:)</span>
+<span class="w">      </span><span class="k">type</span><span class="p">(</span><span class="n">error_t</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">error</span>
+
+<span class="w">      </span><span class="k">call </span><span class="n">strings_of_one_spin</span><span class="p">(</span><span class="n">space</span><span class="p">,</span><span class="w"> </span><span class="n">space</span><span class="p">%</span><span class="n">alpha_class</span><span class="p">,</span><span class="w"> </span><span class="n">space</span><span class="p">%</span><span class="n">alpha_offset</span><span class="p">,</span><span class="w"> </span><span class="n">alpha</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="p">)</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="p">%</span><span class="n">has_error</span><span class="p">())</span><span class="w"> </span><span class="k">return</span>
+<span class="k">      call </span><span class="n">strings_of_one_spin</span><span class="p">(</span><span class="n">space</span><span class="p">,</span><span class="w"> </span><span class="n">space</span><span class="p">%</span><span class="n">beta_class</span><span class="p">,</span><span class="w"> </span><span class="n">space</span><span class="p">%</span><span class="n">beta_offset</span><span class="p">,</span><span class="w"> </span><span class="n">beta</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="p">)</span>
+<span class="w">   </span><span class="k">end subroutine </span><span class="n">ormas_strings</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              metalquicha
+ was developed by Jorge Luis Galvez Vallejo<br>              &copy; 2026 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+ on 2026-09-07 09:10 +0000             </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

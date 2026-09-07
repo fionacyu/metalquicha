@@ -1,10 +1,10 @@
 !! Extended Tight-Binding (xTB) quantum chemistry method implementation
 module mqc_method_xtb
-   !! Provides GFN1-xTB and GFN2-xTB methods via the tblite library,
-   !! implementing the abstract method interface for energy and gradient calculations.
+   !! GFN1-xTB and GFN2-xTB through the tblite library.
    use pic_types, only: dp
    use mqc_method_base, only: qc_method_t
-   use mqc_result_types, only: calculation_result_t
+   use mqc_result_types, only: calculation_result_t, SCF_CONVERGED, SCF_NOT_CONVERGED, &
+                               frontier_orbitals
    use mqc_physical_fragment, only: physical_fragment_t
    use mqc_error, only: ERROR_GENERIC, ERROR_VALIDATION
    use pic_logger, only: logger => global_logger
@@ -23,6 +23,10 @@ module mqc_method_xtb
    use tblite_xtb_gfn1, only: new_gfn1_calculator
    use tblite_xtb_gfn2, only: new_gfn2_calculator
    use tblite_xtb_singlepoint, only: xtb_singlepoint
+   use pic_io, only: to_char
+   use tblite_post_processing_list, only: post_processing_list, add_post_processing
+   use tblite_results, only: results_type
+   use mqc_physical_constants, only: AU_TO_DEBYE
 
    implicit none
    private
@@ -31,12 +35,20 @@ module mqc_method_xtb
 
    type, extends(qc_method_t) :: xtb_method_t
       !! Extended Tight-Binding (xTB) method implementation
-      !!
-      !! Concrete implementation of the abstract quantum chemistry method
-      !! interface for GFN1-xTB and GFN2-xTB calculations via tblite.
       character(len=:), allocatable :: variant  !! XTB variant: "gfn1" or "gfn2"
       logical :: verbose = .false.              !! Print calculation details
       real(wp) :: accuracy = 0.01_wp            !! Numerical accuracy parameter
+      logical :: want_bond_orders = .false.
+         !! Ask tblite for Wiberg-Mayer bond orders alongside the energy. Off by
+         !! default: the post-processor rebuilds a density matrix and contracts
+         !! it with the overlap, and most fragments have no use for it.
+      logical :: allow_crap_scf = .false.       !! Keep a non-converged SCF instead of stopping
+      integer :: max_iter = 250                 !! SCF cycles before tblite gives up
+         !! 250 is tblite's own default, so this changes nothing until a deck
+         !! says otherwise.
+      ! TODO(mqc): the literal below is the same stale Boltzmann constant
+      ! `configure_xtb` uses, 3.166808578545117e-6 against `KB_HARTREE` =
+      ! 3.1668115634556e-6 in `mqc_physical_constants`.
       real(wp) :: kt = 300.0_wp*3.166808578545117e-06_wp  !! Electronic temperature (300 K)
       ! Solvation settings (leave solvent unallocated for gas phase)
       character(len=:), allocatable :: solvent  !! Solvent name: "water", "ethanol", etc.
@@ -56,7 +68,7 @@ module mqc_method_xtb
 contains
 
    subroutine xtb_calc_energy(this, fragment, result)
-      !! Calculate electronic energy using Extended Tight-Binding (xTB) method
+      !! Electronic energy of a fragment
       class(xtb_method_t), intent(in) :: this
       type(physical_fragment_t), intent(in) :: fragment
       type(calculation_result_t), intent(out) :: result
@@ -72,20 +84,22 @@ contains
       type(context_type) :: ctx
       integer :: verbosity
       real(wp) :: dipole_wp(3)
+      type(post_processing_list) :: pproc
+      type(results_type) :: xtb_results
 
       if (this%verbose) then
-         print *, "XTB: Calculating energy using ", this%variant
-         print *, "XTB: Fragment has", fragment%n_atoms, "atoms"
-         print *, "XTB: nelec =", fragment%nelec
-         print *, "XTB: charge =", fragment%charge
+         call logger%large_info("XTB: Calculating energy using "//to_char(this%variant))
+         call logger%large_info("XTB: Fragment has"//" "//to_char(fragment%n_atoms)//" "//"atoms")
+         call logger%large_info("XTB: nelec ="//" "//to_char(fragment%nelec))
+         call logger%large_info("XTB: charge ="//" "//to_char(fragment%charge))
          if (allocated(this%solvent)) then
             if (allocated(this%solvation_model)) then
-               print *, "XTB: Solvation: ", trim(this%solvation_model), " with solvent = ", this%solvent
+         call logger%large_info("XTB: Solvation: "//trim(this%solvation_model)//" with solvent = "//to_char(this%solvent))
             else
-               print *, "XTB: Solvation: alpb with solvent = ", this%solvent
+               call logger%large_info("XTB: Solvation: alpb with solvent = "//to_char(this%solvent))
             end if
          else
-            print *, "XTB: Solvation: none (gas phase)"
+            call logger%large_info("XTB: Solvation: none (gas phase)")
          end if
       end if
 
@@ -119,6 +133,8 @@ contains
          return
       end if
 
+      calc%max_iter = this%max_iter
+
       ! Add solvation if configured (either solvent name or direct dielectric)
       if (allocated(this%solvent) .or. this%dielectric > 0.0_wp) then
          if (allocated(this%solvation_model)) then
@@ -142,7 +158,37 @@ contains
       energy = 0.0_wp
 
       verbosity = merge(1, 0, this%verbose)
-      call xtb_singlepoint(ctx, mol, calc, wfn, this%accuracy, energy, verbosity=verbosity)
+      if (this%want_bond_orders) then
+         call add_bond_order_post_processing(pproc, mol, result)
+         if (result%has_error) return
+         call xtb_singlepoint(ctx, mol, calc, wfn, this%accuracy, energy, &
+                              verbosity=verbosity, results=xtb_results, post_process=pproc)
+      else
+         call xtb_singlepoint(ctx, mol, calc, wfn, this%accuracy, energy, verbosity=verbosity)
+      end if
+
+      ! tblite reports a failed SCF by setting an error on the context and
+      ! returning anyway, so the energy has to be checked against the context
+      ! rather than taken at face value.
+      if (ctx%failed()) then
+         call record_context_failure(ctx, result, this%allow_crap_scf)
+         if (result%has_error) return
+      else
+         result%scf_status = SCF_CONVERGED
+      end if
+
+      if (this%want_bond_orders) then
+         call take_bond_orders(xtb_results, fragment%n_atoms, result)
+      end if
+
+      ! emo is ascending and focc holds occupations, so the frontier pair
+      ! falls out. Spin channel 1: for a restricted fragment that is the whole
+      ! story, and for an unrestricted one it is the alpha gap, which is what
+      ! a single number can honestly be.
+      if (allocated(wfn%emo) .and. allocated(wfn%focc)) then
+         call frontier_orbitals(wfn%emo(:, 1), wfn%focc(:, 1), &
+                                result%homo, result%lumo, result%has_orbitals)
+      end if
 
       ! Compute molecular dipole moment from wavefunction
       dipole_wp(:) = matmul(mol%xyz, wfn%qat(:, 1)) + sum(wfn%dpat(:, :, 1), 2)
@@ -157,9 +203,9 @@ contains
       result%has_dipole = .true.
 
       if (this%verbose) then
-         print *, "XTB: Energy =", result%energy%total()
-         print *, "XTB: Dipole (e*Bohr) =", result%dipole
-         print *, "XTB: Dipole magnitude (Debye) =", norm2(result%dipole)*2.541746_dp
+         call logger%large_info("XTB: Energy ="//" "//to_char(result%energy%total()))
+         call logger%large_info("XTB: Dipole (e*Bohr) ="//" "//to_char(result%dipole))
+         call logger%large_info("XTB: Dipole magnitude (Debye) ="//" "//to_char(norm2(result%dipole)*AU_TO_DEBYE))
       end if
 
       deallocate (num, xyz)
@@ -167,7 +213,7 @@ contains
    end subroutine xtb_calc_energy
 
    subroutine xtb_calc_gradient(this, fragment, result)
-      !! Calculate energy gradient using Extended Tight-Binding (xTB) method
+      !! Energy and nuclear gradient of a fragment
       class(xtb_method_t), intent(in) :: this
       type(physical_fragment_t), intent(in) :: fragment
       type(calculation_result_t), intent(out) :: result
@@ -187,18 +233,18 @@ contains
       real(wp) :: dipole_wp(3)
 
       if (this%verbose) then
-         print *, "XTB: Calculating gradient using ", this%variant
-         print *, "XTB: Fragment has", fragment%n_atoms, "atoms"
-         print *, "XTB: nelec =", fragment%nelec
-         print *, "XTB: charge =", fragment%charge
+         call logger%large_info("XTB: Calculating gradient using "//to_char(this%variant))
+         call logger%large_info("XTB: Fragment has"//" "//to_char(fragment%n_atoms)//" "//"atoms")
+         call logger%large_info("XTB: nelec ="//" "//to_char(fragment%nelec))
+         call logger%large_info("XTB: charge ="//" "//to_char(fragment%charge))
          if (allocated(this%solvent)) then
             if (allocated(this%solvation_model)) then
-               print *, "XTB: Solvation: ", trim(this%solvation_model), " with solvent = ", this%solvent
+         call logger%large_info("XTB: Solvation: "//trim(this%solvation_model)//" with solvent = "//to_char(this%solvent))
             else
-               print *, "XTB: Solvation: alpb with solvent = ", this%solvent
+               call logger%large_info("XTB: Solvation: alpb with solvent = "//to_char(this%solvent))
             end if
          else
-            print *, "XTB: Solvation: none (gas phase)"
+            call logger%large_info("XTB: Solvation: none (gas phase)")
          end if
       end if
 
@@ -230,6 +276,8 @@ contains
          result%has_error = .true.
          return
       end if
+
+      calc%max_iter = this%max_iter
 
       ! Add solvation if configured (either solvent name or direct dielectric)
       if (allocated(this%solvent) .or. this%dielectric > 0.0_wp) then
@@ -263,6 +311,25 @@ contains
       call xtb_singlepoint(ctx, mol, calc, wfn, this%accuracy, energy, &
                            gradient=gradient, sigma=sigma, verbosity=verbosity)
 
+      ! Same check as the energy path. A non-converged density gives a
+      ! gradient that is wrong in a way no norm reveals, so this matters more
+      ! here rather than less.
+      if (ctx%failed()) then
+         call record_context_failure(ctx, result, this%allow_crap_scf)
+         if (result%has_error) return
+      else
+         result%scf_status = SCF_CONVERGED
+      end if
+
+      ! emo is ascending and focc holds occupations, so the frontier pair
+      ! falls out. Spin channel 1: for a restricted fragment that is the whole
+      ! story, and for an unrestricted one it is the alpha gap, which is what
+      ! a single number can honestly be.
+      if (allocated(wfn%emo) .and. allocated(wfn%focc)) then
+         call frontier_orbitals(wfn%emo(:, 1), wfn%focc(:, 1), &
+                                result%homo, result%lumo, result%has_orbitals)
+      end if
+
       ! Compute molecular dipole moment from wavefunction
       dipole_wp(:) = matmul(mol%xyz, wfn%qat(:, 1)) + sum(wfn%dpat(:, :, 1), 2)
 
@@ -286,11 +353,11 @@ contains
       result%has_dipole = .true.
 
       if (this%verbose) then
-         print *, "XTB: Energy =", result%energy%total()
-         print *, "XTB: Gradient norm =", sqrt(sum(result%gradient**2))
-         print *, "XTB: Dipole (e*Bohr) =", result%dipole
-         print *, "XTB: Dipole magnitude (Debye) =", norm2(result%dipole)*2.541746_dp
-         print *, "XTB: Gradient calculation complete"
+         call logger%large_info("XTB: Energy ="//" "//to_char(result%energy%total()))
+         call logger%large_info("XTB: Gradient norm ="//" "//to_char(sqrt(sum(result%gradient**2))))
+         call logger%large_info("XTB: Dipole (e*Bohr) ="//" "//to_char(result%dipole))
+         call logger%large_info("XTB: Dipole magnitude (Debye) ="//" "//to_char(norm2(result%dipole)*AU_TO_DEBYE))
+         call logger%large_info("XTB: Gradient calculation complete")
       end if
 
       deallocate (num, xyz, gradient, sigma)
@@ -298,13 +365,18 @@ contains
    end subroutine xtb_calc_gradient
 
    subroutine xtb_calc_hessian(this, fragment, result)
-      !! Calculate Hessian using finite differences of gradients
+      !! Hessian by central differences of gradients: tblite has no analytic one
       !!
-      !! Since tblite does not natively support analytic Hessians, this routine
-      !! computes the Hessian numerically via central finite differences:
       !!   H[i,j] = (grad_j(x_i + h) - grad_j(x_i - h)) / (2h)
       !!
-      !! This requires 6N gradient calculations (forward and backward for each coordinate)
+      !! 6N gradient evaluations for N atoms, plus the undisplaced point.
+      ! TODO(mqc): a second copy of `finite_difference_hessian` in
+      ! `mqc_semi_numerical_hessian`, which `xtb_method_t` could be passed to as
+      ! a `qc_method_t`. This copy pins the step at `DEFAULT_DISPLACEMENT` --
+      ! `xtb_method_t` has no `hessian_displacement` field and `configure_xtb`
+      ! copies none -- so `hessian_displacement` in a deck is ignored for xTB,
+      ! and the translational sum-rule check on the dipole derivatives is
+      ! skipped as well.
       use mqc_finite_differences, only: generate_perturbed_geometries, displaced_geometry_t, &
                                         finite_diff_hessian_from_gradients, finite_diff_dipole_derivatives, &
                                         DEFAULT_DISPLACEMENT
@@ -330,11 +402,11 @@ contains
       displacement = DEFAULT_DISPLACEMENT
 
       if (this%verbose) then
-         call logger%info("XTB: Computing Hessian via finite differences")
-         call logger%info("  Method: Central differences of gradients")
-         call logger%info("  Atoms: "//to_char(n_atoms))
-         call logger%info("  Gradient calculations needed: "//to_char(2*n_displacements))
-         call logger%info("  Finite difference step size: "//to_char(displacement)//" Bohr")
+         call logger%verbose("XTB: Computing Hessian via finite differences")
+         call logger%verbose("  Method: Central differences of gradients")
+         call logger%verbose("  Atoms: "//to_char(n_atoms))
+         call logger%verbose("  Gradient calculations needed: "//to_char(2*n_displacements))
+         call logger%verbose("  Finite difference step size: "//to_char(displacement)//" Bohr")
       end if
 
       ! Generate all perturbed geometries
@@ -353,7 +425,7 @@ contains
 
       ! Compute gradients at all forward-displaced geometries
       if (this%verbose) then
-         call logger%info("  Computing forward-displaced gradients...")
+         call logger%verbose("  Computing forward-displaced gradients...")
       end if
       do i = 1, n_displacements
 
@@ -393,11 +465,11 @@ contains
 
       end do
       if (this%verbose) then
-         call logger%info("  Forward and backward gradient calculations complete ")
+         call logger%verbose("  Forward and backward gradient calculations complete ")
       end if
       ! Compute Hessian from finite differences
       if (this%verbose) then
-         call logger%info("  Assembling Hessian matrix...")
+         call logger%verbose("  Assembling Hessian matrix...")
       end if
       call finite_diff_hessian_from_gradients(fragment, forward_gradients, backward_gradients, &
                                               displacement, result%hessian)
@@ -408,7 +480,7 @@ contains
                                              displacement, result%dipole_derivatives)
          result%has_dipole_derivatives = .true.
          if (this%verbose) then
-            call logger%info("  Dipole derivatives computed for IR intensities")
+            call logger%verbose("  Dipole derivatives computed for IR intensities")
          end if
       end if
 
@@ -432,7 +504,7 @@ contains
       result%has_hessian = .true.
 
       if (this%verbose) then
-         call logger%info("  Hessian calculation complete")
+         call logger%verbose("  Hessian calculation complete")
       end if
 
       ! Cleanup
@@ -448,10 +520,10 @@ contains
 
    subroutine add_solvation_to_calc(calc, mol, solvent, solvation_model, method, use_cds, use_shift, &
                                     dielectric, cpcm_nang, cpcm_rscale, error)
-      !! Add implicit solvation model to XTB calculator
+      !! Add ALPB, GBSA or CPCM solvation to an XTB calculator
       !!
-      !! Adds ALPB, GBSA, or CPCM solvation. For ALPB/GBSA, optionally adds CDS and shift corrections.
-      !! CPCM does not support CDS or shift corrections.
+      !! ALPB and GBSA optionally take the CDS and shift corrections; CPCM
+      !! supports neither and ignores both flags.
       type(xtb_calculator), intent(inout) :: calc
       type(structure_type), intent(in) :: mol
       character(len=*), intent(in) :: solvent           !! Solvent name (can be empty if dielectric > 0)
@@ -470,7 +542,7 @@ contains
       real(wp) :: eps
 
       ! Handle CPCM model separately
-      if (trim(solvation_model) == 'cpcm') then
+      if (trim(solvation_model) == "cpcm") then
          ! CPCM does not support CDS or shift - silently skip them
          ! (use_cds and use_shift are ignored for CPCM)
 
@@ -513,7 +585,7 @@ contains
 
       ! Determine if using ALPB or GBSA (GBSA = ALPB with alpb flag false)
       use_alpb = .true.
-      if (trim(solvation_model) == 'gbsa') then
+      if (trim(solvation_model) == "gbsa") then
          use_alpb = .false.
       end if
 
@@ -555,10 +627,7 @@ contains
    end subroutine add_solvation_to_calc
 
    pure function get_solvent_dielectric(solvent_name) result(eps)
-      !! Get dielectric constant for a named solvent
-      !!
-      !! Returns the static dielectric constant (relative permittivity) for common solvents.
-      !! Returns -1.0 if the solvent is not found.
+      !! Static dielectric constant of a named solvent, or -1 if unknown
       character(len=*), intent(in) :: solvent_name
       real(wp) :: eps
 
@@ -568,106 +637,214 @@ contains
       ! Convert to lowercase for case-insensitive matching
       name_lower = solvent_name
       do i = 1, len_trim(name_lower)
-         if (name_lower(i:i) >= 'A' .and. name_lower(i:i) <= 'Z') then
+         if (name_lower(i:i) >= "A" .and. name_lower(i:i) <= "Z") then
             name_lower(i:i) = char(ichar(name_lower(i:i)) + 32)
          end if
       end do
 
       select case (trim(name_lower))
          ! Water
-      case ('water', 'h2o')
+      case ("water", "h2o")
          eps = 78.4_wp
          ! Alcohols
-      case ('methanol', 'ch3oh')
+      case ("methanol", "ch3oh")
          eps = 32.7_wp
-      case ('ethanol', 'c2h5oh')
+      case ("ethanol", "c2h5oh")
          eps = 24.6_wp
-      case ('1-propanol', 'propanol')
+      case ("1-propanol", "propanol")
          eps = 20.1_wp
-      case ('2-propanol', 'isopropanol')
+      case ("2-propanol", "isopropanol")
          eps = 19.9_wp
-      case ('1-butanol', 'butanol')
+      case ("1-butanol", "butanol")
          eps = 17.5_wp
-      case ('2-butanol')
+      case ("2-butanol")
          eps = 15.8_wp
-      case ('1-octanol', 'octanol')
+      case ("1-octanol", "octanol")
          eps = 9.9_wp
          ! Polar aprotic
-      case ('acetone')
+      case ("acetone")
          eps = 20.7_wp
-      case ('acetonitrile', 'ch3cn')
+      case ("acetonitrile", "ch3cn")
          eps = 37.5_wp
-      case ('dmso', 'dimethylsulfoxide')
+      case ("dmso", "dimethylsulfoxide")
          eps = 46.7_wp
-      case ('dmf', 'dimethylformamide')
+      case ("dmf", "dimethylformamide")
          eps = 36.7_wp
-      case ('thf', 'tetrahydrofuran')
+      case ("thf", "tetrahydrofuran")
          eps = 7.6_wp
-      case ('formamide')
+      case ("formamide")
          eps = 109.5_wp
          ! Aromatics
-      case ('benzene')
+      case ("benzene")
          eps = 2.3_wp
-      case ('toluene')
+      case ("toluene")
          eps = 2.4_wp
-      case ('pyridine')
+      case ("pyridine")
          eps = 12.4_wp
-      case ('aniline')
+      case ("aniline")
          eps = 6.9_wp
-      case ('nitrobenzene')
+      case ("nitrobenzene")
          eps = 34.8_wp
-      case ('chlorobenzene')
+      case ("chlorobenzene")
          eps = 5.6_wp
          ! Halogenated
-      case ('chloroform', 'chcl3')
+      case ("chloroform", "chcl3")
          eps = 4.8_wp
-      case ('dichloromethane', 'ch2cl2', 'dcm')
+      case ("dichloromethane", "ch2cl2", "dcm")
          eps = 8.9_wp
-      case ('carbon tetrachloride', 'ccl4')
+      case ("carbon tetrachloride", "ccl4")
          eps = 2.2_wp
          ! Ethers
-      case ('diethylether', 'ether')
+      case ("diethylether", "ether")
          eps = 4.3_wp
-      case ('dioxane')
+      case ("dioxane")
          eps = 2.2_wp
-      case ('furan')
+      case ("furan")
          eps = 2.9_wp
          ! Alkanes
-      case ('pentane')
+      case ("pentane")
          eps = 1.8_wp
-      case ('hexane', 'n-hexane')
+      case ("hexane", "n-hexane")
          eps = 1.9_wp
-      case ('cyclohexane')
+      case ("cyclohexane")
          eps = 2.0_wp
-      case ('heptane', 'n-heptane')
+      case ("heptane", "n-heptane")
          eps = 1.9_wp
-      case ('octane', 'n-octane')
+      case ("octane", "n-octane")
          eps = 1.9_wp
-      case ('decane')
+      case ("decane")
          eps = 2.0_wp
-      case ('hexadecane')
+      case ("hexadecane")
          eps = 2.0_wp
          ! Other
-      case ('nitromethane')
+      case ("nitromethane")
          eps = 35.9_wp
-      case ('cs2', 'carbondisulfide')
+      case ("cs2", "carbondisulfide")
          eps = 2.6_wp
-      case ('ethyl acetate', 'ethylacetate')
+      case ("ethyl acetate", "ethylacetate")
          eps = 6.0_wp
-      case ('acetic acid', 'aceticacid')
+      case ("acetic acid", "aceticacid")
          eps = 6.2_wp
-      case ('formic acid', 'formicacid')
+      case ("formic acid", "formicacid")
          eps = 51.1_wp
-      case ('phenol')
+      case ("phenol")
          eps = 9.8_wp
-      case ('woctanol')
+      case ("woctanol")
          eps = 8.1_wp
          ! Infinite dielectric (conductor)
-      case ('inf')
+      case ("inf")
          eps = 1.0e10_wp
       case default
          eps = -1.0_wp  ! Unknown solvent
       end select
    end function get_solvent_dielectric
+
+   subroutine record_context_failure(ctx, result, allow_crap_scf)
+      !! Turn a tblite context error into a failed -- or merely flagged -- result
+      !!
+      !! **Every error is drained, not just the first.** A failed eigensolve
+      !! leaves both "(sygvd) failed to solve eigenvalue problem" and an "SCF
+      !! not converged" behind it, so reading one and stopping would let the
+      !! wrong message decide.
+      !!
+      !! `allow_crap_scf` therefore applies only when *nothing else* went wrong.
+      type(context_type), intent(inout) :: ctx
+      type(calculation_result_t), intent(inout) :: result
+      logical, intent(in) :: allow_crap_scf
+
+      type(error_type), allocatable :: ctx_error
+      character(len=:), allocatable :: text, first
+      logical :: only_convergence
+
+      first = "XTB calculation failed"
+      only_convergence = .true.
+      do while (ctx%failed())
+         call ctx%get_error(ctx_error)
+         if (.not. allocated(ctx_error)) exit
+         text = ctx_error%message
+         deallocate (ctx_error)
+         if (index(text, "not converged") == 0) only_convergence = .false.
+         if (first == "XTB calculation failed") first = text
+      end do
+
+      if (only_convergence) then
+         result%scf_status = SCF_NOT_CONVERGED
+         ! Kept, and named at the end of the run. The caller asked for this.
+         if (allow_crap_scf) return
+      end if
+
+      call result%error%set(ERROR_GENERIC, first)
+      result%has_error = .true.
+   end subroutine record_context_failure
+
+   subroutine add_bond_order_post_processing(pproc, mol, result)
+      !! Ask tblite to compute Wiberg-Mayer bond orders during the single point
+      !!
+      !! Registered by name through tblite's own post-processing list: calling
+      !! `get_mayer_bond_orders` directly would mean holding tblite's overlap
+      !! and density matrix open across the calculation.
+      type(post_processing_list), intent(inout) :: pproc
+      type(structure_type), intent(in) :: mol
+      type(calculation_result_t), intent(inout) :: result
+
+      type(error_type), allocatable :: perr
+      character(len=:), allocatable :: request
+
+      request = "bond-orders"
+      call add_post_processing(pproc, mol, request, perr)
+      if (allocated(perr)) then
+         call result%error%set(ERROR_VALIDATION, "xtb bond orders: tblite refused the "// &
+                               "post-processing request: "//perr%message)
+         result%has_error = .true.
+      end if
+   end subroutine add_bond_order_post_processing
+
+   subroutine take_bond_orders(xtb_results, n_atoms, result)
+      !! Copy the bond-order matrix out of tblite's results dictionary
+      !!
+      !! tblite stores a restricted calculation's orders as (nat, nat) and an
+      !! unrestricted one as (nat, nat, nspin). Both are read: the spin channels
+      !! of the second are summed, because a bond order is a property of the pair
+      !! and not of a spin.
+      !!
+      !! A missing entry is logged rather than left silently absent;
+      !! `has_bond_orders` stays false either way.
+      type(results_type), intent(in) :: xtb_results
+      integer, intent(in) :: n_atoms
+      type(calculation_result_t), intent(inout) :: result
+
+      real(wp), allocatable :: mat2(:, :), mat3(:, :, :)
+      integer :: ispin
+
+      if (.not. allocated(xtb_results%dict)) then
+         call logger%warning("xtb bond orders: tblite returned no results dictionary")
+         return
+      end if
+
+      call xtb_results%dict%get_entry("bond-orders", mat2)
+      if (allocated(mat2)) then
+         if (size(mat2, 1) == n_atoms .and. size(mat2, 2) == n_atoms) then
+            result%bond_orders = real(mat2, dp)
+            result%has_bond_orders = .true.
+            return
+         end if
+      end if
+
+      call xtb_results%dict%get_entry("bond-orders", mat3)
+      if (allocated(mat3)) then
+         if (size(mat3, 1) == n_atoms .and. size(mat3, 2) == n_atoms) then
+            allocate (result%bond_orders(n_atoms, n_atoms))
+            result%bond_orders = 0.0_dp
+            do ispin = 1, size(mat3, 3)
+               result%bond_orders = result%bond_orders + real(mat3(:, :, ispin), dp)
+            end do
+            result%has_bond_orders = .true.
+            return
+         end if
+      end if
+
+      call logger%warning("xtb bond orders: tblite computed none, or of an "// &
+                          "unexpected shape for this fragment")
+   end subroutine take_bond_orders
 
 end module mqc_method_xtb

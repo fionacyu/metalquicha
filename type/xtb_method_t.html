@@ -94,7 +94,7 @@
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
-                 title="<p> 2.8% of total for derived types.</p>Including implementation: 295 statements, 15.6% of total for derived types.">17 statements</a>
+                 title="<p> 1.5% of total for derived types.</p>Including implementation: 329 statements,  8.4% of total for derived types.">20 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -137,16 +137,19 @@
       <div id="vars-0" class="collapse">
         <div class="list-group list-group-flush">
             <a class="list-group-item" href="../type/xtb_method_t.html#variable-accuracy">accuracy</a>
-            <a class="list-group-item" href="../type/xtb_method_t.html#variable-cpcm_nang~2">cpcm_nang</a>
-            <a class="list-group-item" href="../type/xtb_method_t.html#variable-cpcm_rscale~2">cpcm_rscale</a>
-            <a class="list-group-item" href="../type/xtb_method_t.html#variable-dielectric~2">dielectric</a>
+            <a class="list-group-item" href="../type/xtb_method_t.html#variable-allow_crap_scf~2">allow_crap_scf</a>
+            <a class="list-group-item" href="../type/xtb_method_t.html#variable-cpcm_nang">cpcm_nang</a>
+            <a class="list-group-item" href="../type/xtb_method_t.html#variable-cpcm_rscale">cpcm_rscale</a>
+            <a class="list-group-item" href="../type/xtb_method_t.html#variable-dielectric">dielectric</a>
             <a class="list-group-item" href="../type/xtb_method_t.html#variable-kt">kt</a>
-            <a class="list-group-item" href="../type/xtb_method_t.html#variable-solvation_model~2">solvation_model</a>
-            <a class="list-group-item" href="../type/xtb_method_t.html#variable-solvent~2">solvent</a>
-            <a class="list-group-item" href="../type/xtb_method_t.html#variable-use_cds~2">use_cds</a>
-            <a class="list-group-item" href="../type/xtb_method_t.html#variable-use_shift~2">use_shift</a>
+            <a class="list-group-item" href="../type/xtb_method_t.html#variable-max_iter~2">max_iter</a>
+            <a class="list-group-item" href="../type/xtb_method_t.html#variable-solvation_model">solvation_model</a>
+            <a class="list-group-item" href="../type/xtb_method_t.html#variable-solvent">solvent</a>
+            <a class="list-group-item" href="../type/xtb_method_t.html#variable-use_cds">use_cds</a>
+            <a class="list-group-item" href="../type/xtb_method_t.html#variable-use_shift">use_shift</a>
             <a class="list-group-item" href="../type/xtb_method_t.html#variable-variant">variant</a>
-            <a class="list-group-item" href="../type/xtb_method_t.html#variable-verbose~2">verbose</a>
+            <a class="list-group-item" href="../type/xtb_method_t.html#variable-verbose~4">verbose</a>
+            <a class="list-group-item" href="../type/xtb_method_t.html#variable-want_bond_orders">want_bond_orders</a>
         </div>
       </div>
     </div>
@@ -173,9 +176,9 @@
       </a>
       <div id="boundprocs-0" class="collapse">
         <div class="list-group list-group-flush">
-            <a class="list-group-item" href="../type/xtb_method_t.html#boundprocedure-calc_energy~2">calc_energy</a>
-            <a class="list-group-item" href="../type/xtb_method_t.html#boundprocedure-calc_gradient~2">calc_gradient</a>
-            <a class="list-group-item" href="../type/xtb_method_t.html#boundprocedure-calc_hessian~2">calc_hessian</a>
+            <a class="list-group-item" href="../type/xtb_method_t.html#boundprocedure-calc_energy~3">calc_energy</a>
+            <a class="list-group-item" href="../type/xtb_method_t.html#boundprocedure-calc_gradient~3">calc_gradient</a>
+            <a class="list-group-item" href="../type/xtb_method_t.html#boundprocedure-calc_hessian~3">calc_hessian</a>
         </div>
       </div>
     </div>
@@ -198,8 +201,6 @@
       <h2 id="type-def-statement">
         type, public, extends(<a href='qc_method_t.html'>qc_method_t</a>) :: xtb_method_t</h2>
     <p>Extended Tight-Binding (xTB) method implementation</p>
-<p>Concrete implementation of the abstract quantum chemistry method
-interface for GFN1-xTB and GFN2-xTB calculations via tblite.</p>
 <br>      <div class="card">
         <div class="card-header">
           <h3 class="card-title">Inherits</h3>
@@ -323,7 +324,24 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-cpcm_nang~2"></span>
+              <span class="anchor" id="variable-allow_crap_scf~2"></span>
+              logical,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>allow_crap_scf</strong></td>
+<td> =</td>
+                <td>.false.</td>
+            <td>
+                <p>Keep a non-converged SCF instead of stopping</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-cpcm_nang"></span>
               integer,
             </td>
               <td>public</td>
@@ -340,7 +358,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-cpcm_rscale~2"></span>
+              <span class="anchor" id="variable-cpcm_rscale"></span>
               real(kind=wp),
             </td>
               <td>public</td>
@@ -357,7 +375,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-dielectric~2"></span>
+              <span class="anchor" id="variable-dielectric"></span>
               real(kind=wp),
             </td>
               <td>public</td>
@@ -391,7 +409,26 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-solvation_model~2"></span>
+              <span class="anchor" id="variable-max_iter~2"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>max_iter</strong></td>
+<td> =</td>
+                <td>250</td>
+            <td>
+                <p>SCF cycles before tblite gives up
+250 is tblite&rsquo;s own default, so this changes nothing until a deck
+says otherwise.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-solvation_model"></span>
               character(len=:),
             </td>
               <td>public,</td>
@@ -408,7 +445,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-solvent~2"></span>
+              <span class="anchor" id="variable-solvent"></span>
               character(len=:),
             </td>
               <td>public,</td>
@@ -425,7 +462,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-use_cds~2"></span>
+              <span class="anchor" id="variable-use_cds"></span>
               logical,
             </td>
               <td>public</td>
@@ -442,7 +479,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-use_shift~2"></span>
+              <span class="anchor" id="variable-use_shift"></span>
               logical,
             </td>
               <td>public</td>
@@ -476,7 +513,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-verbose~2"></span>
+              <span class="anchor" id="variable-verbose~4"></span>
               logical,
             </td>
               <td>public</td>
@@ -489,6 +526,25 @@ large graphs.</div>
                 <td>.false.</td>
             <td>
                 <p>Print calculation details</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-want_bond_orders"></span>
+              logical,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>want_bond_orders</strong></td>
+<td> =</td>
+                <td>.false.</td>
+            <td>
+                <p>Ask tblite for Wiberg-Mayer bond orders alongside the energy. Off by
+default: the post-processor rebuilds a density matrix and contracts
+it with the overlap, and most fragments have no use for it.</p>
             </td>
         </tr>
     </tbody>
@@ -504,7 +560,7 @@ large graphs.</div>
           <div class="row">
               <div class="card mt-3">
     <div class="card-header codesum">
-      <span class="anchor" id="boundprocedure-calc_energy~2"></span>
+      <span class="anchor" id="boundprocedure-calc_energy~3"></span>
       <h3>
           procedure, public ::
   <strong>calc_energy</strong> => <a href='/home/runner/work/metalquicha/metalquicha/docs/fpm-ford/proc/xtb_calc_energy.html'>xtb_calc_energy</a>
@@ -522,7 +578,7 @@ large graphs.</div>
 </h3>
     
 
-  <p>Calculate electronic energy using Extended Tight-Binding (xTB) method</p>
+  <p>Electronic energy of a fragment</p>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -592,7 +648,7 @@ large graphs.</div>
           <div class="row">
               <div class="card mt-3">
     <div class="card-header codesum">
-      <span class="anchor" id="boundprocedure-calc_gradient~2"></span>
+      <span class="anchor" id="boundprocedure-calc_gradient~3"></span>
       <h3>
           procedure, public ::
   <strong>calc_gradient</strong> => <a href='/home/runner/work/metalquicha/metalquicha/docs/fpm-ford/proc/xtb_calc_gradient.html'>xtb_calc_gradient</a>
@@ -610,7 +666,7 @@ large graphs.</div>
 </h3>
     
 
-  <p>Calculate energy gradient using Extended Tight-Binding (xTB) method</p>
+  <p>Energy and nuclear gradient of a fragment</p>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -680,7 +736,7 @@ large graphs.</div>
           <div class="row">
               <div class="card mt-3">
     <div class="card-header codesum">
-      <span class="anchor" id="boundprocedure-calc_hessian~2"></span>
+      <span class="anchor" id="boundprocedure-calc_hessian~3"></span>
       <h3>
           procedure, public ::
   <strong>calc_hessian</strong> => <a href='/home/runner/work/metalquicha/metalquicha/docs/fpm-ford/proc/xtb_calc_hessian.html'>xtb_calc_hessian</a>
@@ -698,7 +754,7 @@ large graphs.</div>
 </h3>
     
 
-  <p>Calculate Hessian using finite differences of gradients</p><a href="../proc/xtb_calc_hessian.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Hessian by central differences of gradients: tblite has no analytic one</p><a href="../proc/xtb_calc_hessian.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -771,16 +827,24 @@ large graphs.</div>
     <h3><span class="anchor" id="src"></span>Source Code</h3>
     <div class="hl codehilite"><pre><span></span><span class="w">   </span><span class="k">type</span><span class="p">,</span><span class="w"> </span><span class="k">extends</span><span class="p">(</span><span class="n">qc_method_t</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">xtb_method_t</span>
 <span class="w">      </span><span class="c">!! Extended Tight-Binding (xTB) method implementation</span>
-<span class="w">      </span><span class="c">!!</span>
-<span class="w">      </span><span class="c">!! Concrete implementation of the abstract quantum chemistry method</span>
-<span class="w">      </span><span class="c">!! interface for GFN1-xTB and GFN2-xTB calculations via tblite.</span>
-<span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">variant</span><span class="w">  </span><span class="c">!! XTB variant: &quot;gfn1&quot; or &quot;gfn2&quot;</span>
+<span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">variant</span><span class="w">  </span><span class="c">!! XTB variant: "gfn1" or "gfn2"</span>
 <span class="w">      </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">verbose</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span><span class="w">              </span><span class="c">!! Print calculation details</span>
 <span class="w">      </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">accuracy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.01_wp</span><span class="w">            </span><span class="c">!! Numerical accuracy parameter</span>
+<span class="w">      </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">want_bond_orders</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<span class="w">         </span><span class="c">!! Ask tblite for Wiberg-Mayer bond orders alongside the energy. Off by</span>
+<span class="w">         </span><span class="c">!! default: the post-processor rebuilds a density matrix and contracts</span>
+<span class="w">         </span><span class="c">!! it with the overlap, and most fragments have no use for it.</span>
+<span class="w">      </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">allow_crap_scf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span><span class="w">       </span><span class="c">!! Keep a non-converged SCF instead of stopping</span>
+<span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">max_iter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">250</span><span class="w">                 </span><span class="c">!! SCF cycles before tblite gives up</span>
+<span class="w">         </span><span class="c">!! 250 is tblite's own default, so this changes nothing until a deck</span>
+<span class="w">         </span><span class="c">!! says otherwise.</span>
+<span class="w">      </span><span class="c">! TODO(mqc): the literal below is the same stale Boltzmann constant</span>
+<span class="w">      </span><span class="c">! `configure_xtb` uses, 3.166808578545117e-6 against `KB_HARTREE` =</span>
+<span class="w">      </span><span class="c">! 3.1668115634556e-6 in `mqc_physical_constants`.</span>
 <span class="w">      </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">kt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">30</span><span class="mf">0.0_wp</span><span class="o">*</span><span class="mf">3.166808578545117e-06_wp</span><span class="w">  </span><span class="c">!! Electronic temperature (300 K)</span>
 <span class="w">      </span><span class="c">! Solvation settings (leave solvent unallocated for gas phase)</span>
-<span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">solvent</span><span class="w">  </span><span class="c">!! Solvent name: &quot;water&quot;, &quot;ethanol&quot;, etc.</span>
-<span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">solvation_model</span><span class="w">  </span><span class="c">!! &quot;alpb&quot; (default), &quot;gbsa&quot;, or &quot;cpcm&quot;</span>
+<span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">solvent</span><span class="w">  </span><span class="c">!! Solvent name: "water", "ethanol", etc.</span>
+<span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">solvation_model</span><span class="w">  </span><span class="c">!! "alpb" (default), "gbsa", or "cpcm"</span>
 <span class="w">      </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">use_cds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span><span class="w">               </span><span class="c">!! Include non-polar CDS terms (not for CPCM)</span>
 <span class="w">      </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">use_shift</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span><span class="w">             </span><span class="c">!! Include solution state shift (not for CPCM)</span>
 <span class="w">      </span><span class="c">! CPCM-specific settings</span>
@@ -814,7 +878,7 @@ large graphs.</div>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-02-20 06:49 +0000             </p>
+ on 2026-09-07 09:10 +0000             </p>
           </div>
         </div>
         <br>

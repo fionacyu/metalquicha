@@ -42,6 +42,7 @@ contains
                                           compute_vibrational_analysis, print_vibrational_analysis
       use mqc_thermochemistry, only: thermochemistry_result_t, compute_thermochemistry
       use mqc_json_output_types, only: json_output_data_t, OUTPUT_MODE_UNFRAGMENTED
+      use mqc_verbosity, only: per_item_requested
       use mqc_method_base, only: qc_method_t
       use mqc_method_factory, only: create_method
 
@@ -69,7 +70,7 @@ contains
       logical :: has_pending
       type(request_t) :: req
       integer :: current_log_level
-      logical :: is_verbose
+      logical :: is_verbose   !! Print something once per displacement
       character(len=2048) :: result_line  ! Large buffer for Hessian matrix rows
       real(dp) :: hess_norm
       integer :: i, j
@@ -84,7 +85,11 @@ contains
       n_displacements = 3*n_atoms
 
       call logger%configuration(level=current_log_level)
-      is_verbose = (current_log_level >= verbose_level)
+      ! Split for the same reason as the fragment scheduler: the whole-Hessian
+      ! matrix dump below is per-item and stays at `verbose`, while a
+      ! displacement's own detail block is per-calculation and belongs at
+      ! `large_info`.
+      is_verbose = per_item_requested()
 
       call logger%info("============================================")
       call logger%info("Distributed unfragmented Hessian calculation")
@@ -213,8 +218,12 @@ contains
       ! Compute energy and gradient at reference geometry
       call logger%info("  Computing reference energy and gradient...")
       local_config = config%method_config
+      ! One SCF per displacement, 6N+1 of them, so per-item.
       local_config%verbose = is_verbose
-      calculator = create_method(local_config)
+      ! allocate(..., source=) rather than plain assignment: see the note in
+      ! mqc_method_factory -- gfortran 13.2.0 segfaults on intrinsic
+      ! assignment from a polymorphic allocatable function result.
+      allocate (calculator, source=create_method(local_config))
       call calculator%calc_gradient(full_system, result)
       deallocate (calculator)
 
@@ -241,24 +250,24 @@ contains
       ! Print results
       call logger%info("============================================")
       call logger%info("Distributed Hessian calculation completed")
-      write (result_line, '(a,f25.15)') "  Final energy: ", result%energy%total()
+      write (result_line, "(a,f25.15)") "  Final energy: ", result%energy%total()
       call logger%info(trim(result_line))
 
       if (result%has_gradient) then
-         write (result_line, '(a,f25.15)') "  Gradient norm: ", sqrt(sum(result%gradient**2))
+         write (result_line, "(a,f25.15)") "  Gradient norm: ", sqrt(sum(result%gradient**2))
          call logger%info(trim(result_line))
       end if
 
       if (result%has_hessian) then
          hess_norm = sqrt(sum(result%hessian**2))
-         write (result_line, '(a,f25.15)') "  Hessian Frobenius norm: ", hess_norm
+         write (result_line, "(a,f25.15)") "  Hessian Frobenius norm: ", hess_norm
          call logger%info(trim(result_line))
 
          if (is_verbose .and. n_atoms < 20) then
             call logger%info(" ")
             call logger%info("Hessian matrix (Hartree/Bohr^2):")
             do i = 1, 3*n_atoms
-               write (result_line, '(a,i5,a,999f15.8)') "  Row ", i, ": ", (result%hessian(i, j), j=1, 3*n_atoms)
+               write (result_line, "(a,i5,a,999f15.8)") "  Row ", i, ": ", (result%hessian(i, j), j=1, 3*n_atoms)
                call logger%info(trim(result_line))
             end do
             call logger%info(" ")
@@ -267,7 +276,7 @@ contains
             if (allocated(projected_hessian)) then
                call logger%info("Mass-weighted Hessian after trans/rot projection (a.u.):")
                do i = 1, 3*n_atoms
-                  write (result_line, '(a,i5,a,999f15.8)') "  Row ", i, ": ", (projected_hessian(i, j), j=1, 3*n_atoms)
+                  write (result_line, "(a,i5,a,999f15.8)") "  Row ", i, ": ", (projected_hessian(i, j), j=1, 3*n_atoms)
                   call logger%info(trim(result_line))
                end do
                call logger%info(" ")
@@ -393,7 +402,10 @@ contains
       ! Create calculator using factory
       local_config = config%method_config
       local_config%verbose = .false.
-      calculator = create_method(local_config)
+      ! allocate(..., source=) rather than plain assignment: see the note in
+      ! mqc_method_factory -- gfortran 13.2.0 segfaults on intrinsic
+      ! assignment from a polymorphic allocatable function result.
+      allocate (calculator, source=create_method(local_config))
 
       dummy_msg = 0
       do
