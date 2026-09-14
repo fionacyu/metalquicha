@@ -14,7 +14,9 @@ module mqc_czt_bridge
    public :: run_czt_hf
    public :: run_czt_mcscf
    public :: run_czt_fmo
+   public :: run_czt_efmo
    public :: run_czt_makefp
+   public :: run_czt_neo
    public :: run_czt_charges
    public :: run_czt_efp
    public :: run_czt_sapt0
@@ -22,8 +24,20 @@ module mqc_czt_bridge
    public :: czt_backend_available
    public :: xc_available
    public :: ecp_backend_available
+   public :: czt_set_eri_path
 
 contains
+
+   subroutine czt_set_eri_path(name, error)
+      !! No-op stand-in: with no CPU integral backend there is no path to choose
+      use mqc_error, only: error_t
+      character(len=*), intent(in) :: name
+      type(error_t), intent(inout) :: error
+
+      ! Nothing to choose and nothing to refuse; the arguments are the contract.
+      associate (unused_name => name, unused_error => error)
+      end associate
+   end subroutine czt_set_eri_path
 
    pure function ecp_backend_available() result(available)
       !! No libcint means no integral backend at all, so no ECP either.
@@ -183,12 +197,100 @@ contains
       if (present(comm)) return
    end subroutine run_czt_fmo
 
+   subroutine run_czt_efmo(atomic_numbers, element_symbols, coordinates, owner, &
+                           fragment_charges, basis_name, rcut, level, charge_transfer, &
+                           induction_damping, &
+                           scf_drive, scf_max_iter, scf_energy_tol, scf_density_tol, &
+                           scf_grad_tol, guess, energy, terms, n_qm_pairs, n_efp_pairs, &
+                           n_qm_groups, error, verbose, aux_basis, vdwscl, &
+                           quadrupole_blocks, &
+                           dynamic_tol, dynamic_maxiter, response, &
+                           allow_crap_response, response_batch, &
+                           correlation, corr_aux_basis, freeze_core, n_frozen_core, &
+                           comm)
+      !! No-op stand-in: EFMO needs the CPU integral backend
+      !!
+      !! Coordinates are Bohr; `owner(i)` is atom i's fragment, numbered from
+      !! one with no gaps.
+      use pic_types, only: dp
+      use mqc_error, only: error_t
+      use mqc_scf_types, only: scf_numerics_t
+      use pic_mpi_lib, only: comm_t
+      use mqc_program_limits, only: N_EFMO_TERMS
+      integer, intent(in) :: atomic_numbers(:)
+      character(len=*), intent(in) :: element_symbols(:)
+      real(dp), intent(in) :: coordinates(:, :)
+      integer, intent(in) :: owner(:)
+      integer, intent(in) :: fragment_charges(:)
+      character(len=*), intent(in) :: basis_name
+      real(dp), intent(in) :: rcut
+      integer, intent(in) :: level
+      logical, intent(in) :: charge_transfer
+      real(dp), intent(in) :: induction_damping
+         !! `a` of the Tang-Toennies-like factor that damps every induction
+         !! field, pair and total alike. Zero is undamped.
+      type(scf_numerics_t), intent(in) :: scf_drive
+      integer, intent(in) :: scf_max_iter
+      real(dp), intent(in) :: scf_energy_tol, scf_density_tol, scf_grad_tol
+      character(len=*), intent(in) :: guess
+      real(dp), intent(out) :: energy
+      real(dp), intent(out) :: terms(N_EFMO_TERMS)
+      integer, intent(out) :: n_qm_pairs, n_efp_pairs
+      integer, intent(out) :: n_qm_groups
+      type(error_t), intent(inout) :: error
+      logical, intent(in), optional :: verbose
+      character(len=*), intent(in), optional :: aux_basis
+      real(dp), intent(in), optional :: vdwscl
+      logical, intent(in), optional :: quadrupole_blocks
+      real(dp), intent(in), optional :: dynamic_tol
+      integer, intent(in), optional :: dynamic_maxiter
+      integer, intent(in), optional :: response
+      logical, intent(in), optional :: allow_crap_response
+      integer, intent(in), optional :: response_batch
+      integer, intent(in), optional :: correlation
+         !! `EFMO_CORR_NONE`, `EFMO_CORR_MP2` or `EFMO_CORR_RI_MP2`: what runs
+         !! on top of every monomer and near-dimer Hartree-Fock reference.
+         !! Absent is none, which is the Phase 3 energy exactly.
+      character(len=*), intent(in), optional :: corr_aux_basis
+         !! `model.aux_basis`, the fitting set `EFMO_CORR_RI_MP2` needs.
+      logical, intent(in), optional :: freeze_core
+      integer, intent(in), optional :: n_frozen_core
+      type(comm_t), intent(in), optional :: comm
+         !! Present means spread the monomers and the quantum dimers over this
+         !! communicator. Every rank gets the same total back.
+
+      energy = 0.0_dp
+      terms = 0.0_dp
+      n_qm_pairs = 0
+      n_efp_pairs = 0
+      n_qm_groups = 0
+      call error%set(ERROR_VALIDATION, &
+                     "EFMO needs the CPU integral backend; build with "// &
+                     "-DMQC_ENABLE_CZT=ON")
+      if (size(atomic_numbers) < 0 .or. size(coordinates) < 0 .or. size(owner) < 0) return
+      if (size(fragment_charges) < 0) return
+      if (len_trim(element_symbols(1)) < 0) return
+      if (len_trim(basis_name)*len_trim(guess) < 0) return
+      if (rcut < -huge(1.0_dp) .or. charge_transfer .or. level < 0) return
+      if (induction_damping < -huge(1.0_dp)) return
+      if (scf_drive%max_iter < 0 .or. scf_max_iter < 0) return
+      if (scf_energy_tol < 0.0_dp .or. scf_density_tol < 0.0_dp) return
+      if (scf_grad_tol < 0.0_dp) return
+      if (present(verbose) .or. present(aux_basis) .or. present(vdwscl)) return
+      if (present(quadrupole_blocks) .or. present(dynamic_tol)) return
+      if (present(dynamic_maxiter) .or. present(response)) return
+      if (present(allow_crap_response) .or. present(response_batch)) return
+      if (present(correlation) .or. present(freeze_core)) return
+      if (present(corr_aux_basis) .or. present(n_frozen_core)) return
+      if (present(comm)) return
+   end subroutine run_czt_efmo
+
    subroutine run_czt_makefp(atomic_numbers, element_symbols, coordinates, &
                              basis_name, name, path, error, charge, verbose, &
                              aux_basis, guess, energy_tol, density_tol, grad_tol, &
                              scf_in, max_iter_in, &
                              vdwscl, dynamic_tol, dynamic_maxiter, response, &
-                             allow_crap_response, response_batch)
+                             allow_crap_response, response_batch, quadrupole_blocks)
       !! No-op stand-in: an effective fragment potential needs the CPU backend
       use pic_types, only: dp
       use mqc_error, only: error_t
@@ -208,6 +310,7 @@ contains
       real(dp), intent(in), optional :: vdwscl, dynamic_tol
       integer, intent(in), optional :: dynamic_maxiter, response
       logical, intent(in), optional :: allow_crap_response
+      logical, intent(in), optional :: quadrupole_blocks
       integer, intent(in), optional :: response_batch
 
       call error%set(ERROR_VALIDATION, &
@@ -223,6 +326,41 @@ contains
       if (present(dynamic_maxiter) .or. present(response)) return
       if (present(allow_crap_response) .or. present(response_batch)) return
    end subroutine run_czt_makefp
+
+   subroutine run_czt_neo(atomic_numbers, element_symbols, coordinates, basis_name, &
+                          nuclear_basis, quantum, charge, energy, error, verbose, &
+                          energy_tol, density_tol, max_iter, functional, grid_level, epc, &
+                          scf_in)
+      !! No-op stand-in: quantum nuclei need the CPU backend
+      use pic_types, only: dp
+      use mqc_error, only: error_t
+      use mqc_scf_types, only: scf_numerics_t
+      integer, intent(in) :: atomic_numbers(:)
+      character(len=*), intent(in) :: element_symbols(:)
+      real(dp), intent(in) :: coordinates(:, :)
+      character(len=*), intent(in) :: basis_name, nuclear_basis
+      logical, intent(in) :: quantum(:)
+      integer, intent(in) :: charge
+      real(dp), intent(out) :: energy
+      type(error_t), intent(inout) :: error
+      logical, intent(in), optional :: verbose
+      real(dp), intent(in), optional :: energy_tol, density_tol
+      integer, intent(in), optional :: max_iter
+      character(len=*), intent(in), optional :: functional, epc
+      integer, intent(in), optional :: grid_level
+      type(scf_numerics_t), intent(in), optional :: scf_in
+      energy = 0.0_dp
+      call error%set(ERROR_VALIDATION, &
+                     "keywords.neo needs the CPU integral backend; build with "// &
+                     "-DMQC_ENABLE_CZT=ON")
+      if (size(atomic_numbers) < 0 .or. size(coordinates) < 0 .or. size(quantum) < 0) return
+      if (size(element_symbols) < 0 .or. charge < -huge(charge)) return
+      if (len_trim(basis_name)*len_trim(nuclear_basis) < 0) return
+      if (present(verbose) .or. present(energy_tol)) return
+      if (present(density_tol) .or. present(max_iter)) return
+      if (present(functional) .or. present(grid_level) .or. present(epc)) return
+      if (present(scf_in)) return
+   end subroutine run_czt_neo
 
    subroutine run_czt_hf(settings, fragment, result, want_gradient, want_hessian)
       !! No-op stand-in: report the missing backend, compute nothing

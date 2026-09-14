@@ -433,6 +433,12 @@ Caps are placed at the position of the atom outside the fragment</p></td>
                  <td><p>&ldquo;yes&rdquo; or &ldquo;no&rdquo;, in the shape a script can split on</p></td>
                </tr>
 			   <tr>
+                 <td><a href='../proc/available_memory_bytes.html'>available_memory_bytes</a></td>
+                 <td><a href='../module/mqc_memory.html'>mqc_memory</a></td>
+                 <td>Function</td>
+                 <td><p>MemAvailable from /proc/meminfo, or zero where that does not exist</p><a href="../proc/available_memory_bytes.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+               </tr>
+			   <tr>
                  <td><a href='../proc/avas_keys.html'>avas_keys</a></td>
                  <td><a href='../module/mqc_json_schema.html'>mqc_json_schema</a></td>
                  <td>Function</td>
@@ -1379,6 +1385,12 @@ If molecule_index is provided, uses that specific molecule from multi-molecule m
                  <td><p>The per-fragment potential paths, in fragment order</p><a href="../proc/copy_fragment_potentials.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
+                 <td><a href='../proc/core_orbital_count.html'>core_orbital_count</a></td>
+                 <td><a href='../module/mqc_elements.html'>mqc_elements</a></td>
+                 <td>Function</td>
+                 <td><p>How many orbitals a frozen core leaves out, summed over the atoms</p><a href="../proc/core_orbital_count.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+               </tr>
+			   <tr>
                  <td><a href='../proc/correlation_keys.html'>correlation_keys</a></td>
                  <td><a href='../module/mqc_json_schema.html'>mqc_json_schema</a></td>
                  <td>Function</td>
@@ -1438,6 +1450,12 @@ A cap is needed when exactly one atom of a broken bond is in the fragment</p></t
                  <td><a href='../module/mqc_czt_bridge.html'>mqc_czt_bridge</a></td>
                  <td>Function</td>
                  <td><p>Whether this build can run an SCF on the CPU</p></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/czt_set_eri_path.html'>czt_set_eri_path</a></td>
+                 <td><a href='../module/mqc_czt_bridge.html'>mqc_czt_bridge</a></td>
+                 <td>Subroutine</td>
+                 <td><p>No-op stand-in: with no CPU integral backend there is no path to choose</p></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/davidson_flat.html'>davidson_flat</a></td>
@@ -1642,6 +1660,12 @@ A cap is needed when exactly one atom of a broken bond is in the fragment</p></t
                  <td><a href='../module/mqc_ediis.html'>mqc_ediis</a></td>
                  <td>Subroutine</td>
                  <td><p>EDIIS weights, oldest first</p><a href="../proc/ediis_coefficients.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/efmo_keys.html'>efmo_keys</a></td>
+                 <td><a href='../module/mqc_json_schema.html'>mqc_json_schema</a></td>
+                 <td>Function</td>
+                 <td><p>EFMO settings that are not a property of the partition</p><a href="../proc/efmo_keys.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/efp_keys.html'>efp_keys</a></td>
@@ -2920,6 +2944,12 @@ Handles fragment allocation, size checking, and overlap validation</p></td>
                  <td><p>The settings the backend needs, built once for both drivers</p></td>
                </tr>
 			   <tr>
+                 <td><a href='../proc/memory_budget.html'>memory_budget</a></td>
+                 <td><a href='../module/mqc_memory.html'>mqc_memory</a></td>
+                 <td>Function</td>
+                 <td><p>Bytes one memory decision may plan on</p><a href="../proc/memory_budget.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+               </tr>
+			   <tr>
                  <td><a href='../proc/merge_multi_molecule_json.html'>merge_multi_molecule_json</a></td>
                  <td><a href='../module/mqc_json.html'>mqc_json</a></td>
                  <td>Subroutine</td>
@@ -3376,6 +3406,12 @@ Correlation energies should be negative; positive values indicate instability</p
                  <td><a href='../module/mqc_method_types.html'>mqc_method_types</a></td>
                  <td>Function</td>
                  <td><p>Whether this method has to be run on one thread</p></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/neo_keys.html'>neo_keys</a></td>
+                 <td><a href='../module/mqc_json_schema.html'>mqc_json_schema</a></td>
+                 <td>Function</td>
+                 <td><p>Quantum nuclei: which, and in what basis</p></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/next_combination.html'>next_combination</a></td>
@@ -3923,6 +3959,18 @@ Uses int64 for fragment_count to handle large fragment counts that overflow int3
                  <td><p>Per-level distance cutoffs from keywords.fragmentation.cutoffs</p><a href="../proc/read_cutoffs.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
+                 <td><a href='../proc/read_efmo.html'>read_efmo</a></td>
+                 <td><a href='../module/mqc_json_config_reader.html'>mqc_json_config_reader</a></td>
+                 <td>Subroutine</td>
+                 <td><p>The keywords.efmo block</p><a href="../proc/read_efmo.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/read_efp_dispersion.html'>read_efp_dispersion</a></td>
+                 <td><a href='../module/mqc_json_config_reader.html'>mqc_json_config_reader</a></td>
+                 <td>Subroutine</td>
+                 <td><p><code>keywords.efp.dispersion</code>: &ldquo;all&rdquo; or &ldquo;dipole&rdquo;, or a refusal</p></td>
+               </tr>
+			   <tr>
                  <td><a href='../proc/read_efp_response.html'>read_efp_response</a></td>
                  <td><a href='../module/mqc_json_config_reader.html'>mqc_json_config_reader</a></td>
                  <td>Subroutine</td>
@@ -4008,10 +4056,22 @@ Properly handles nested structures from fragmented calculations</p></td>
                  <td><p>Either an xyz file reference or inline symbols plus a flat coordinate list</p></td>
                </tr>
 			   <tr>
+                 <td><a href='../proc/read_neo.html'>read_neo</a></td>
+                 <td><a href='../module/mqc_json_config_reader.html'>mqc_json_config_reader</a></td>
+                 <td>Subroutine</td>
+                 <td><p><code>keywords.neo</code>: which nuclei get orbitals of their own, and in what basis</p><a href="../proc/read_neo.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+               </tr>
+			   <tr>
                  <td><a href='../proc/read_ormas_partition.html'>read_ormas_partition</a></td>
                  <td><a href='../module/mqc_json_config_reader.html'>mqc_json_config_reader</a></td>
                  <td>Subroutine</td>
                  <td><p><code>keywords.mcscf.ormas</code>, the subspaces and their occupation windows</p><a href="../proc/read_ormas_partition.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/read_scf_eri_path.html'>read_scf_eri_path</a></td>
+                 <td><a href='../module/mqc_json_config_reader.html'>mqc_json_config_reader</a></td>
+                 <td>Subroutine</td>
+                 <td><p><code>keywords.scf.eri_path</code>, checked for spelling, or a refusal</p><a href="../proc/read_scf_eri_path.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/read_xyz_file.html'>read_xyz_file</a></td>
@@ -4328,6 +4388,12 @@ Sends SCF energy (non-blocking) and other components (blocking)</p></td>
                  <td><p>No-op stand-in: atomic charges need the CPU integral backend</p></td>
                </tr>
 			   <tr>
+                 <td><a href='../proc/run_czt_efmo.html'>run_czt_efmo</a></td>
+                 <td><a href='../module/mqc_czt_bridge.html'>mqc_czt_bridge</a></td>
+                 <td>Subroutine</td>
+                 <td><p>No-op stand-in: EFMO needs the CPU integral backend</p><a href="../proc/run_czt_efmo.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+               </tr>
+			   <tr>
                  <td><a href='../proc/run_czt_efp.html'>run_czt_efp</a></td>
                  <td><a href='../module/mqc_czt_bridge.html'>mqc_czt_bridge</a></td>
                  <td>Subroutine</td>
@@ -4358,6 +4424,12 @@ Sends SCF energy (non-blocking) and other components (blocking)</p></td>
                  <td><p>No-op stand-in: CASSCF and CASCI need the CPU integral backend</p><a href="../proc/run_czt_mcscf.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
+                 <td><a href='../proc/run_czt_neo.html'>run_czt_neo</a></td>
+                 <td><a href='../module/mqc_czt_bridge.html'>mqc_czt_bridge</a></td>
+                 <td>Subroutine</td>
+                 <td><p>No-op stand-in: quantum nuclei need the CPU backend</p></td>
+               </tr>
+			   <tr>
                  <td><a href='../proc/run_czt_sapt0.html'>run_czt_sapt0</a></td>
                  <td><a href='../module/mqc_czt_bridge.html'>mqc_czt_bridge</a></td>
                  <td>Subroutine</td>
@@ -4368,6 +4440,12 @@ Sends SCF energy (non-blocking) and other components (blocking)</p></td>
                  <td><a href='../module/mqc_czt_bridge.html'>mqc_czt_bridge</a></td>
                  <td>Subroutine</td>
                  <td><p>No-op stand-in: SAPT2 needs the CPU integral backend</p></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/run_efmo_energy.html'>run_efmo_energy</a></td>
+                 <td><a href='../module/mqc_driver.html'>mqc_driver</a></td>
+                 <td>Subroutine</td>
+                 <td><p>An effective fragment molecular orbital energy for a partitioned system</p><a href="../proc/run_efmo_energy.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/run_efp.html'>run_efp</a></td>
@@ -4407,6 +4485,12 @@ Sends SCF energy (non-blocking) and other components (blocking)</p></td>
 Each molecule is independent, so assign one molecule per rank</p></td>
                </tr>
 			   <tr>
+                 <td><a href='../proc/run_neo.html'>run_neo</a></td>
+                 <td><a href='../module/mqc_driver.html'>mqc_driver</a></td>
+                 <td>Subroutine</td>
+                 <td><p>A nuclear-electronic orbital energy for the whole system</p><a href="../proc/run_neo.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+               </tr>
+			   <tr>
                  <td><a href='../proc/run_sapt.html'>run_sapt</a></td>
                  <td><a href='../module/mqc_driver.html'>mqc_driver</a></td>
                  <td>Subroutine</td>
@@ -4441,6 +4525,12 @@ Each molecule is independent, so assign one molecule per rank</p></td>
                  <td><a href='../module/mqc_optimizer_types.html'>mqc_optimizer_types</a></td>
                  <td>Function</td>
                  <td><p>Name a saddle-search method, for the log</p></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/same_symbol.html'>same_symbol</a></td>
+                 <td><a href='../module/mqc_driver.html'>mqc_driver</a></td>
+                 <td>Function</td>
+                 <td><p>Element symbols compared without regard to case or padding</p></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/scatter_restricted_ci.html'>scatter_restricted_ci</a></td>
@@ -4556,6 +4646,12 @@ task_idx indexes the flat task list, not the fragment list.</p></td>
                  <td><a href='../module/mqc_session.html'>mqc_session</a></td>
                  <td>Subroutine</td>
                  <td><p>Drive a calculation across the job. Rank 0 only.</p><a href="../proc/session_run.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/set_memory_budget.html'>set_memory_budget</a></td>
+                 <td><a href='../module/mqc_memory.html'>mqc_memory</a></td>
+                 <td>Subroutine</td>
+                 <td><p>Fix the budget from the deck; a non-positive value hands it back to the machine</p></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/set_molecule_suffix.html'>set_molecule_suffix</a></td>
@@ -4905,6 +5001,12 @@ guess would be read, validated and then silently ignored.</p></td>
                  <td><p>Bondi/Mantina van der Waals radius in Angstrom, or 0 if untabulated</p></td>
                </tr>
 			   <tr>
+                 <td><a href='../proc/vdw_radius_fmo.html'>vdw_radius_fmo</a></td>
+                 <td><a href='../module/mqc_atomic_radii.html'>mqc_atomic_radii</a></td>
+                 <td>Function</td>
+                 <td><p>GAMESS FMO van der Waals radius in Angstrom, for the fragment-pair cutoff</p><a href="../proc/vdw_radius_fmo.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+               </tr>
+			   <tr>
                  <td><a href='../proc/vdw_radius_geodesic.html'>vdw_radius_geodesic</a></td>
                  <td><a href='../module/mqc_atomic_radii.html'>mqc_atomic_radii</a></td>
                  <td>Function</td>
@@ -4936,15 +5038,15 @@ guess would be read, validated and then silently ignored.</p></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/worker_loop.html'>worker_loop</a></td>
-                 <td><a href='../module/mqc_session.html'>mqc_session</a></td>
+                 <td><a href='../module/mqc_geometry_optimizer.html'>mqc_geometry_optimizer</a></td>
                  <td>Subroutine</td>
-                 <td><p>Wait for rank 0&rsquo;s instructions until told to stop, then stop</p><a href="../proc/worker_loop.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>A worker&rsquo;s half of an optimization: compute what rank 0 asks for</p><a href="../proc/worker_loop.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/worker_loop~2.html'>worker_loop</a></td>
-                 <td><a href='../module/mqc_geometry_optimizer.html'>mqc_geometry_optimizer</a></td>
+                 <td><a href='../module/mqc_session.html'>mqc_session</a></td>
                  <td>Subroutine</td>
-                 <td><p>A worker&rsquo;s half of an optimization: compute what rank 0 asks for</p><a href="../proc/worker_loop~2.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+                 <td><p>Wait for rank 0&rsquo;s instructions until told to stop, then stop</p><a href="../proc/worker_loop~2.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/worker_run.html'>worker_run</a></td>
@@ -4957,6 +5059,12 @@ guess would be read, validated and then silently ignored.</p></td>
                  <td><a href='../module/mqc_json_writer.html'>mqc_json_writer</a></td>
                  <td>Subroutine</td>
                  <td><p>Atomic partial charges, per atom, with the scheme that produced them</p><a href="../proc/write_charges_section.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
+               </tr>
+			   <tr>
+                 <td><a href='../proc/write_efmo_section.html'>write_efmo_section</a></td>
+                 <td><a href='../module/mqc_json_writer.html'>mqc_json_writer</a></td>
+                 <td>Subroutine</td>
+                 <td><p>The EFMO breakdown, under <code>efmo</code>, when there is one</p><a href="../proc/write_efmo_section.html" class="pull-right"><emph>Read more&hellip;</emph></a></td>
                </tr>
 			   <tr>
                  <td><a href='../proc/write_final_single_point.html'>write_final_single_point</a></td>
@@ -5141,7 +5249,7 @@ a solvent or dielectric was given without one</p></td>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-09-07 09:10 +0000             </p>
+ on 2026-09-14 13:52 +0000             </p>
           </div>
         </div>
         <br>

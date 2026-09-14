@@ -112,6 +112,10 @@ contains
       if (error%has_error()) return
       call check_grandchild_object(core, root, "keywords", "efp", efp_keys(), error)
       if (error%has_error()) return
+      call check_grandchild_object(core, root, "keywords", "neo", neo_keys(), error)
+      if (error%has_error()) return
+      call check_grandchild_object(core, root, "keywords", "efmo", efmo_keys(), error)
+      if (error%has_error()) return
       call check_grandchild_object(core, root, "keywords", "dft", dft_keys(), error)
       if (error%has_error()) return
       call check_grandchild_object(core, root, "keywords", "pcm", pcm_keys(), error)
@@ -200,6 +204,7 @@ contains
    function system_keys() result(keys)
       type(key_set_t) :: keys
       call allow(keys, "logger")
+      call allow(keys, "memory_gb")
       call allow(keys, "gpu")
       call allow(keys, "skip_json_output")
       call allow(keys, "unchecked_input")
@@ -223,6 +228,8 @@ contains
       call allow(keys, "correlation")
       call allow(keys, "cc")
       call allow(keys, "efp")
+      call allow(keys, "efmo")
+      call allow(keys, "neo")
       call allow(keys, "mcscf")
       call allow(keys, "dft")
       call allow(keys, "pcm")
@@ -374,6 +381,7 @@ contains
       call allow(keys, "diis")
       call allow(keys, "diis_size")
       call allow(keys, "accelerator")
+      call allow(keys, "eri_path")
       call allow(keys, "incremental_fock")
    end function scf_keys
 
@@ -392,7 +400,28 @@ contains
       call allow(keys, "response_batch")
       call allow(keys, "response")
       call allow(keys, "vdw_scale")
+      call allow(keys, "dispersion")
    end function efp_keys
+
+   function efmo_keys() result(keys)
+      !! EFMO settings that are not a property of the partition
+      !!
+      !! `rcut` is deliberately NOT here: it decides which pairs are solved
+      !! quantum mechanically, which is a fragmentation decision and sits beside
+      !! `resppc` in `keywords.fragmentation`. What belongs here is what EFMO
+      !! does with the pairs once split.
+      type(key_set_t) :: keys
+      call allow(keys, "charge_transfer")
+      call allow(keys, "induction_damping")
+   end function efmo_keys
+
+   function neo_keys() result(keys)
+      !! Quantum nuclei: which, and in what basis
+      type(key_set_t) :: keys
+      call allow(keys, "quantum_nuclei")
+      call allow(keys, "nuclear_basis")
+      call allow(keys, "epc")
+   end function neo_keys
 
    function correlation_keys() result(keys)
       !! Post-Hartree-Fock settings, deliberately not under "scf"
@@ -582,6 +611,7 @@ contains
       call allow(keys, "counterpoise")
       call allow(keys, "far_field")
       call allow(keys, "resppc")
+      call allow(keys, "rcut")
       call allow(keys, "max_outer")
       call allow(keys, "outer_tolerance")
       call allow(keys, "scf_max_iter")

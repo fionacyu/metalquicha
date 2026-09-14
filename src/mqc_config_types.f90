@@ -177,6 +177,9 @@ module mqc_config_types
          !! 'ediis'. The energy-based pair runs only while the error is large
          !! and hands over to DIIS below `ACCEL_SWITCH`, so naming one asks for
          !! a different opening, not a different endgame.
+      character(len=:), allocatable :: scf_eri_path
+         !! `keywords.scf.eri_path`: 'rys', 'rotaxis' or 'auto'. Unallocated
+         !! when the deck says nothing, which leaves the backend's default.
       character(len=:), allocatable :: scf_guess
          !! Initial guess name from `keywords.scf.guess`.
          !!
@@ -388,11 +391,29 @@ module mqc_config_types
       real(dp) :: efp_dynamic_tolerance = DEFAULT_DYNAMIC_TOL
       integer :: efp_dynamic_maxiter = DEFAULT_DYNAMIC_MAXITER
       logical :: efp_allow_crap_response = .false.
-      integer :: efp_response_batch = DEFAULT_RESPONSE_BATCH
+      integer :: efp_response_batch = 0
+         !! `keywords.efp.response_batch`: densities per integral pass in the
+         !! matrix-free response. Zero, the default, is as wide as the memory
+         !! budget allows, up to every system at once; a positive figure is
+         !! taken as given.
       integer :: efp_response = EFP_RESPONSE_AUTO
          !! Held as a code rather than as the spelling, like `calc_type`; the
          !! reader is the only place that knows the three words it can take.
       real(dp) :: efp_vdw_scale = DEFAULT_VDW_SCALE
+      logical :: efp_quadrupole_blocks = .true.
+         !! `keywords.efp.dispersion`: "all" writes the dipole-quadrupole and
+         !! quadrupole-quadrupole dynamic blocks as well as the dipole-dipole
+         !! one, which is what GAMESS does by default (`DISP7`, `DISP8`);
+         !! "dipole" writes the dipole-dipole block alone and solves the
+         !! response for the three dipole operators only.
+
+      ! Quantum nuclei, read from `keywords.neo`. Absent means every nucleus is
+      ! classical and nothing below is looked at.
+      logical :: neo_active = .false.
+      character(len=64) :: neo_nuclear_basis = "pb4-d"
+      integer, allocatable :: neo_quantum_indices(:)   !! 1-based, from a 0-based deck
+      character(len=8), allocatable :: neo_quantum_symbols(:)
+      character(len=8) :: neo_epc = ""   !! "17-1" or "17-2"; empty is none
 
       ! Hessian settings
       real(dp) :: hessian_displacement = DEFAULT_DISPLACEMENT  !! Finite difference displacement (Bohr)
@@ -449,6 +470,14 @@ module mqc_config_types
 
       ! Fragmentation settings
       character(len=:), allocatable :: frag_method  !! MBE, etc.
+      logical :: frag_level_set = .false.
+         !! Whether `keywords.fragmentation.level` was written in the deck at
+         !! all. `frag_level` carries a default either way, which loses the
+         !! difference between "the user did not say" and "the user asked for
+         !! exactly the default" -- and EFMO needs it, because its own default
+         !! level is two while the shared `DEFAULT_FRAG_LEVEL` is one. A deck
+         !! that says nothing gets each method's own default rather than
+         !! whichever one the shared constant happens to hold.
       integer :: frag_level = DEFAULT_FRAG_LEVEL
          !! Which expansion runs. `keywords.fragmentation.method` is the only
          !! input: `allow_overlapping_fragments` and `expansion` were two more
@@ -488,6 +517,30 @@ module mqc_config_types
          !! convergence each monomer and n-mer SCF is held to. Independent of the
          !! outer loop above, and of a top-level `keywords.scf`, so a fragment run
          !! can be converged more loosely than a whole-system one would be.
+      real(dp) :: efmo_rcut = 2.0_dp
+         !! `keywords.fragmentation.rcut`: where EFMO stops solving a dimer.
+         !!
+         !! **Unitless, not an Angstrom distance.** Each interatomic separation
+         !! is divided by the two van der Waals radii, so 1 is contact and the
+         !! 2.0 default is twice that -- a threshold that means the same thing
+         !! for two waters and for two aromatic rings, which
+         !! `keywords.fragmentation.cutoffs` (Angstrom, and MBE's) does not.
+         !! It is the `resppc` of FMO measured the same way, on a different
+         !! decision: a pair inside it is a quantum dimer, a pair beyond it is
+         !! four effective-fragment terms.
+      logical :: efmo_charge_transfer = .true.
+         !! `keywords.efmo.charge_transfer`: include `E_IJ^CT` in the far pairs.
+         !! GAMESS's EFMO has it; the 2012 method left it out.
+      real(dp) :: efmo_induction_damping = 0.0_dp
+         !! `keywords.efmo.induction_damping`: `a` of the Tang-Toennies-like
+         !! factor `1 - exp(-a R^2)(1 + a R^2)` that damps the induction field.
+         !!
+         !! **Zero, the default, is off.** A number rather than a switch
+         !! because the parameter is the physics: GAMESS's EFP2 damps at
+         !! `POLAB`, which its EFMO sets to 0.6 for a cluster of whole
+         !! molecules and to 0.1 for fragments cut across a bond, and a deck
+         !! that wants to reproduce a GAMESS run has to be able to say which.
+         !! Above 2.0 the factor is one again, GAMESS's own guard.
       integer :: max_intersection_level = DEFAULT_MAX_INTERSECTION  !! Maximum k-way intersection depth for GMBE
       character(len=:), allocatable :: bond_breaking
          !! How a fragment represents a covalent bond the partition cut.
@@ -518,6 +571,13 @@ module mqc_config_types
 
       ! Logger settings (kept for compatibility)
       character(len=:), allocatable :: log_level
+
+      real(dp) :: memory_gb = -1.0_dp
+         !! `system.memory_gb`: what this run may plan on, in gigabytes, for
+         !! the decisions that trade memory for time -- which route builds the
+         !! response Hessian, whether an operator is formed at all, how many
+         !! frequencies factorize at once. Negative, the default, means the
+         !! machine decides: a share of what it reports available.
 
       ! Output control
       logical :: skip_json_output = .false.  !! Skip JSON output for large calculations

@@ -46,7 +46,13 @@ module mqc_json_config_reader
    use mqc_config_types, only: mqc_config_t, input_fragment_t, bond_t
    use mqc_xyz_reader, only: read_xyz_file
    use mqc_json_schema, only: ensure_valid_json
-   use json_module, only: json_file
+   ! `json_integer` and `json_string` are imported here and not inside
+   ! `read_neo`, where they are used: a routine-level `use json_module` in a
+   ! module that already imports it makes ifx (2026.0, and 2025.3 before it)
+   ! drop the default initialisation of every `json_file` local in the module
+   ! -- the parser's procedure-pointer component comes up null and the first
+   ! `load` jumps to address zero. gfortran is unaffected.
+   use json_module, only: json_file, json_integer, json_string
    implicit none
    private
 
@@ -233,6 +239,7 @@ contains
       ! whenever one is absent, since `optional_string` leaves its target alone
       ! rather than clearing it.
       call optional_string(json, "system.logger.level", config%log_level)
+      call optional_real(json, "system.memory_gb", config%memory_gb)
       call optional_logical_seen(json, "system.gpu", config%gpu, config%gpu_set)
       call optional_logical(json, "system.skip_json_output", config%skip_json_output)
       call optional_logical(json, "system.unchecked_input", config%unchecked_input)
@@ -254,6 +261,8 @@ contains
       call named(json, "keywords.scf.density_tolerance", config%scf_density_tolerance_set)
       call optional_string(json, "keywords.scf.guess", config%scf_guess)
       call optional_string(json, "keywords.scf.accelerator", config%scf_accelerator)
+      call read_scf_eri_path(json, config, error)
+      if (error%has_error()) return
       call optional_string(json, "keywords.scf.convergence_metric", &
                            config%scf_convergence_metric)
       call optional_logical(json, "keywords.scf.incremental_fock", config%scf_incremental_fock)
@@ -278,6 +287,10 @@ contains
       call optional_int(json, "keywords.efp.response_batch", config%efp_response_batch)
       call optional_real(json, "keywords.efp.vdw_scale", config%efp_vdw_scale)
       call read_efp_response(json, config, error)
+      if (error%has_error()) return
+      call read_efp_dispersion(json, config, error)
+      if (error%has_error()) return
+      call read_neo(json, config, error)
       if (error%has_error()) return
       call optional_logical(json, "keywords.correlation.freeze_core", &
                             config%corr_freeze_core)
@@ -454,6 +467,8 @@ contains
 
       call read_fragmentation(json, config, error)
       if (error%has_error()) return
+      call read_efmo(json, config, error)
+      if (error%has_error()) return
 
       ! ---- molecules -------------------------------------------------------
       settings = .false.
@@ -518,12 +533,26 @@ contains
 
       call require_string(json, "keywords.fragmentation.method", config%frag_method, error)
       if (error%has_error()) return
-      call optional_int(json, "keywords.fragmentation.level", config%frag_level)
+      call optional_int(json, "keywords.fragmentation.level", config%frag_level, &
+                        was_named=config%frag_level_set)
       call optional_int(json, "keywords.fragmentation.max_intersection_level", &
                         config%max_intersection_level)
       call optional_string(json, "keywords.fragmentation.counterpoise", config%counterpoise)
       call optional_string(json, "keywords.fragmentation.far_field", config%fmo_far_field)
       call optional_real(json, "keywords.fragmentation.resppc", config%fmo_resppc)
+      call optional_real(json, "keywords.fragmentation.rcut", config%efmo_rcut)
+      ! Unitless and a *ratio* of a distance to a van der Waals contact, so
+      ! zero or negative is not "no cutoff" the way a negative `resppc` is: it
+      ! would put every pair in the effective list, which is EFP with in-vacuo
+      ! monomers and not the method the deck asked for. Refused rather than run.
+      if (config%efmo_rcut <= 0.0_dp) then
+         call error%set(ERROR_VALIDATION, "keywords.fragmentation.rcut must be "// &
+                        "positive. It is a separation in units of van der Waals "// &
+                        "contact, so 1.0 is touching and 2.0 (the default) is twice "// &
+                        "that; a value at or below zero leaves no pair quantum "// &
+                        "mechanical at all.")
+         return
+      end if
       call optional_int(json, "keywords.fragmentation.max_outer", config%fmo_max_outer)
       call optional_real(json, "keywords.fragmentation.outer_tolerance", config%fmo_tolerance)
       call optional_int(json, "keywords.fragmentation.scf_max_iter", config%fmo_scf_max_iter)
@@ -539,6 +568,34 @@ contains
 
       call read_cutoffs(json, config, error)
    end subroutine read_fragmentation
+
+   subroutine read_efmo(json, config, error)
+      !! The keywords.efmo block
+      !!
+      !! `rcut` is not here: it decides which pairs are solved quantum
+      !! mechanically, which is a property of the partition, so it is read from
+      !! `keywords.fragmentation` beside `resppc`.
+      type(json_file), intent(inout) :: json
+      type(mqc_config_t), intent(inout) :: config
+      type(error_t), intent(inout) :: error
+
+      call optional_logical(json, "keywords.efmo.charge_transfer", &
+                            config%efmo_charge_transfer)
+      call optional_real(json, "keywords.efmo.induction_damping", &
+                         config%efmo_induction_damping)
+      ! Zero is off and any positive number is a damping exponent, so the only
+      ! unreadable value is a negative one: it would name a factor that grows
+      ! with separation, which is not a damping at all.
+      if (config%efmo_induction_damping < 0.0_dp) then
+         call error%set(ERROR_VALIDATION, "keywords.efmo.induction_damping is the "// &
+                        "exponent a of the Tang-Toennies-like factor "// &
+                        "1 - exp(-a R^2)(1 + a R^2) that damps the induction "// &
+                        "field, so it cannot be negative. Zero -- the default -- "// &
+                        "leaves the field undamped; 0.6 is what GAMESS's EFMO "// &
+                        "uses for a cluster of whole molecules.")
+         return
+      end if
+   end subroutine read_efmo
 
    subroutine read_cutoffs(json, config, error)
       !! Per-level distance cutoffs from keywords.fragmentation.cutoffs
@@ -668,6 +725,71 @@ contains
       end select
    end subroutine check_method_supported
 
+   subroutine read_efp_dispersion(json, config, error)
+      !! `keywords.efp.dispersion`: "all" or "dipole", or a refusal
+      type(json_file), intent(inout) :: json
+      type(mqc_config_t), intent(inout) :: config
+      type(error_t), intent(inout) :: error
+
+      character(len=:), allocatable :: text
+      character(len=:), allocatable :: lowered
+      integer :: i
+
+      call optional_string(json, "keywords.efp.dispersion", text)
+      if (.not. allocated(text)) return
+
+      lowered = trim(adjustl(text))
+      do i = 1, len(lowered)
+         if (lowered(i:i) >= "A" .and. lowered(i:i) <= "Z") then
+            lowered(i:i) = achar(iachar(lowered(i:i)) + 32)
+         end if
+      end do
+
+      select case (lowered)
+      case ("all")
+         config%efp_quadrupole_blocks = .true.
+      case ("dipole")
+         config%efp_quadrupole_blocks = .false.
+      case default
+         call error%set(ERROR_VALIDATION, "unknown keywords.efp.dispersion '"//trim(text)// &
+                        "'. Accepted: all, dipole")
+      end select
+   end subroutine read_efp_dispersion
+
+   subroutine read_scf_eri_path(json, config, error)
+      !! `keywords.scf.eri_path`, checked for spelling, or a refusal
+      !!
+      !! Refused here rather than where the path is chosen, so a typo is
+      !! reported before any integral is computed. Whether the build *has*
+      !! the path named is not asked here: reading a deck must mean the same
+      !! thing whatever was linked. The backend refuses that one.
+      type(json_file), intent(inout) :: json
+      type(mqc_config_t), intent(inout) :: config
+      type(error_t), intent(inout) :: error
+
+      character(len=:), allocatable :: text
+      character(len=:), allocatable :: lowered
+      integer :: i
+
+      call optional_string(json, "keywords.scf.eri_path", text)
+      if (.not. allocated(text)) return
+
+      lowered = trim(adjustl(text))
+      do i = 1, len(lowered)
+         if (lowered(i:i) >= "A" .and. lowered(i:i) <= "Z") then
+            lowered(i:i) = achar(iachar(lowered(i:i)) + 32)
+         end if
+      end do
+
+      select case (lowered)
+      case ("rys", "rotaxis", "auto")
+         config%scf_eri_path = lowered
+      case default
+         call error%set(ERROR_VALIDATION, "unknown keywords.scf.eri_path '"//trim(text)// &
+                        "'. Accepted: rys, rotaxis, auto")
+      end select
+   end subroutine read_scf_eri_path
+
    subroutine read_efp_response(json, config, error)
       !! `keywords.efp.response`, as a code, or a refusal
       !!
@@ -705,6 +827,94 @@ contains
                         "'. Accepted: auto, dense, matrix_free")
       end select
    end subroutine read_efp_response
+
+   subroutine read_neo(json, config, error)
+      !! `keywords.neo`: which nuclei get orbitals of their own, and in what basis
+      !!
+      !! `quantum_nuclei` is either a list of 0-based atom indices or a list of
+      !! element symbols; the first entry decides which, and the two are not
+      !! mixed. A `neo` block without it is refused rather than read as "none":
+      !! a deck that opened the block meant to quantise something.
+      type(json_file), intent(inout) :: json
+      type(mqc_config_t), intent(inout) :: config
+      type(error_t), intent(inout) :: error
+      character(len=*), parameter :: path = "keywords.neo.quantum_nuclei"
+      character(len=:), allocatable :: text
+      integer, allocatable :: indices(:)
+      logical :: found
+      integer :: n, i, kind
+
+      call json%info("keywords.neo", found=found)
+      if (.not. found) return
+      call optional_string(json, "keywords.neo.nuclear_basis", text)
+      if (allocated(text)) then
+         if (len_trim(adjustl(text)) > len(config%neo_nuclear_basis)) then
+            call error%set(ERROR_VALIDATION, "keywords.neo.nuclear_basis is longer than "// &
+                           int_to_key(len(config%neo_nuclear_basis))//" characters")
+            return
+         end if
+         config%neo_nuclear_basis = trim(adjustl(text))
+         deallocate (text)
+      end if
+      call optional_string(json, "keywords.neo.epc", text)
+      if (allocated(text)) then
+         select case (trim(adjustl(text)))
+         case ("17-1", "epc17-1")
+            config%neo_epc = "17-1"
+         case ("17-2", "epc17-2")
+            config%neo_epc = "17-2"
+         case ("", "none")
+            config%neo_epc = ""
+         case default
+            call error%set(ERROR_VALIDATION, "unknown keywords.neo.epc '"//trim(text)// &
+                           "'. Accepted: 17-1, 17-2, none")
+            return
+         end select
+         deallocate (text)
+      end if
+      call json%info(path, found=found, n_children=n)
+      if (.not. found) then
+         call error%set(ERROR_VALIDATION, "keywords.neo needs quantum_nuclei: a list of "// &
+                        '0-based atom indices, or of element symbols such as ["H"]')
+         return
+      end if
+      if (n < 1) then
+         call error%set(ERROR_VALIDATION, "keywords.neo.quantum_nuclei is empty")
+         return
+      end if
+      call json%info(path//"(1)", found=found, var_type=kind)
+      select case (kind)
+      case (json_integer)
+         call json%get(path, indices, found)
+         if (.not. found) then
+            call error%set(ERROR_VALIDATION, "keywords.neo.quantum_nuclei could not be read "// &
+                           "as a list of integers")
+            return
+         end if
+         if (any(indices < 0)) then
+            call error%set(ERROR_VALIDATION, "keywords.neo.quantum_nuclei: atom indices "// &
+                           "are 0-based and cannot be negative")
+            return
+         end if
+         config%neo_quantum_indices = indices + 1
+      case (json_string)
+         allocate (config%neo_quantum_symbols(n))
+         do i = 1, n
+            call json%get(path//"("//int_to_key(i)//")", text, found)
+            if (.not. found .or. len_trim(text) == 0) then
+               call error%set(ERROR_VALIDATION, "keywords.neo.quantum_nuclei: entry "// &
+                              int_to_key(i)//" is not an element symbol")
+               return
+            end if
+            config%neo_quantum_symbols(i) = trim(adjustl(text))
+         end do
+      case default
+         call error%set(ERROR_VALIDATION, "keywords.neo.quantum_nuclei must be a list of "// &
+                        "0-based atom indices or a list of element symbols")
+         return
+      end select
+      config%neo_active = .true.
+   end subroutine read_neo
 
    subroutine read_frozen_atoms(json, config, error)
       !! `keywords.optimization.frozen_atoms`, a flat list of atom indices
@@ -1339,17 +1549,23 @@ contains
       if (found .and. allocated(text)) value = text
    end subroutine optional_string
 
-   subroutine optional_int(json, path, value)
+   subroutine optional_int(json, path, value, was_named)
       !! Fetch an integer if present, leaving `value` at its default otherwise
       type(json_file), intent(inout) :: json
       character(len=*), intent(in) :: path
       integer, intent(inout) :: value
+      logical, intent(out), optional :: was_named
+         !! Whether the deck wrote the key at all. A default left in place is
+         !! indistinguishable from a value that happens to equal it, and a
+         !! reader whose two consumers have different defaults -- as MBE and
+         !! EFMO do for the fragmentation level -- needs the difference.
 
       integer :: found_value
       logical :: found
 
       call json%get(path, found_value, found)
       if (found) value = found_value
+      if (present(was_named)) was_named = found
    end subroutine optional_int
 
    subroutine named(json, path, was_named)
