@@ -225,26 +225,26 @@ for free.</p>
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
               <ul class="list-inline">
-                  <li class="list-inline-item"><a href='mqc_fraglist.html'>mqc_fraglist</a></li>
-                  <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/IEEE+arithmetic'>ieee_exceptions</a></li>
-                  <li class="list-inline-item"><a href='mqc_method_types.html'>mqc_method_types</a></li>
+                  <li class="list-inline-item">pic_logger</li>
                   <li class="list-inline-item"><a href='mqc_calc_types.html'>mqc_calc_types</a></li>
-                  <li class="list-inline-item"><a href='mqc_bcast_system.html'>mqc_bcast_system</a></li>
+                  <li class="list-inline-item"><a href='mqc_physical_fragment.html'>mqc_physical_fragment</a></li>
+                  <li class="list-inline-item"><a href='mqc_driver.html'>mqc_driver</a></li>
+                  <li class="list-inline-item"><a href='mqc_error.html'>mqc_error</a></li>
+                  <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/IEEE+arithmetic'>ieee_exceptions</a></li>
+                  <li class="list-inline-item"><a href='mqc_fraglist.html'>mqc_fraglist</a></li>
                   <li class="list-inline-item"><a href='mqc_resources.html'>mqc_resources</a></li>
+                  <li class="list-inline-item"><a href='mqc_json_config_reader.html'>mqc_json_config_reader</a></li>
+                  <li class="list-inline-item">pic_mpi_lib</li>
+                  <li class="list-inline-item"><a href='mqc_bcast_system.html'>mqc_bcast_system</a></li>
+                  <li class="list-inline-item"><a href='mqc_method_types.html'>mqc_method_types</a></li>
+                  <li class="list-inline-item">pic_types</li>
+                  <li class="list-inline-item"><a href='mqc_result_types.html'>mqc_result_types</a></li>
+                  <li class="list-inline-item"><a href='mqc_bcast.html'>mqc_bcast</a></li>
                   <li class="list-inline-item"><a href='mqc_config_adapter.html'>mqc_config_adapter</a></li>
                   <li class="list-inline-item"><a href='mqc_method_factory.html'>mqc_method_factory</a></li>
-                  <li class="list-inline-item">pic_types</li>
-                  <li class="list-inline-item"><a href='mqc_bcast.html'>mqc_bcast</a></li>
-                  <li class="list-inline-item"><a href='mqc_json_config_reader.html'>mqc_json_config_reader</a></li>
-                  <li class="list-inline-item">pic_logger</li>
+                  <li class="list-inline-item"><a href='mqc_io_helpers.html'>mqc_io_helpers</a></li>
                   <li class="list-inline-item"><a href='mqc_validate.html'>mqc_validate</a></li>
                   <li class="list-inline-item"><a href='mqc_config_types.html'>mqc_config_types</a></li>
-                  <li class="list-inline-item"><a href='mqc_io_helpers.html'>mqc_io_helpers</a></li>
-                  <li class="list-inline-item"><a href='mqc_error.html'>mqc_error</a></li>
-                  <li class="list-inline-item"><a href='mqc_driver.html'>mqc_driver</a></li>
-                  <li class="list-inline-item">pic_mpi_lib</li>
-                  <li class="list-inline-item"><a href='mqc_result_types.html'>mqc_result_types</a></li>
-                  <li class="list-inline-item"><a href='mqc_physical_fragment.html'>mqc_physical_fragment</a></li>
               </ul>
             </li>
             <li class="list-group-item">
@@ -3535,7 +3535,7 @@ parameter
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-active~6"></span>
+              <span class="anchor" id="variable-active~7"></span>
               logical,
             </td>
               <td>public</td>
@@ -3552,7 +3552,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-n_ranks~3"></span>
+              <span class="anchor" id="variable-n_ranks"></span>
               integer(kind=int32),
             </td>
               <td>public</td>
@@ -3586,7 +3586,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-resources~10"></span>
+              <span class="anchor" id="variable-resources~14"></span>
               type(<a href='../type/resources_t.html'>resources_t</a>),
             </td>
               <td>public</td>
@@ -3665,7 +3665,7 @@ parameter
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-this~150"></span>
+              <span class="anchor" id="variable-this~127"></span>
               class(<a href='../type/mqc_session_t.html'>mqc_session_t</a>),
             </td>
 <td>intent(in)</td>
@@ -3715,7 +3715,7 @@ parameter
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-config~55"></span>
+              <span class="anchor" id="variable-config~51"></span>
               type(<a href='../type/mqc_config_t.html'>mqc_config_t</a>),
             </td>
 <td>intent(in)</td>
@@ -3785,7 +3785,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-sys_geom~85"></span>
+              <span class="anchor" id="variable-sys_geom~88"></span>
               type(<a href='../type/system_geometry_t.html'>system_geometry_t</a>),
             </td>
 <td>intent(in)</td>
@@ -3815,7 +3815,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-error~176"></span>
+              <span class="anchor" id="variable-error~173"></span>
               type(<a href='../type/error_t.html'>error_t</a>),
             </td>
 <td>intent(inout)</td>
@@ -3855,7 +3855,7 @@ parameter
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-this~144"></span>
+              <span class="anchor" id="variable-this~121"></span>
               class(<a href='../type/mqc_session_t.html'>mqc_session_t</a>),
             </td>
 <td>intent(inout)</td>
@@ -3870,7 +3870,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-error~173"></span>
+              <span class="anchor" id="variable-error~170"></span>
               type(<a href='../type/error_t.html'>error_t</a>),
             </td>
 <td>intent(inout)</td>
@@ -3910,7 +3910,7 @@ parameter
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-this~148"></span>
+              <span class="anchor" id="variable-this~125"></span>
               class(<a href='../type/mqc_session_t.html'>mqc_session_t</a>),
             </td>
 <td>intent(inout)</td>
@@ -3940,7 +3940,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-error~177"></span>
+              <span class="anchor" id="variable-error~174"></span>
               type(<a href='../type/error_t.html'>error_t</a>),
             </td>
 <td>intent(inout)</td>
@@ -3980,7 +3980,7 @@ parameter
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-this~149"></span>
+              <span class="anchor" id="variable-this~126"></span>
               class(<a href='../type/mqc_session_t.html'>mqc_session_t</a>),
             </td>
 <td>intent(inout)</td>
@@ -3995,7 +3995,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-error~178"></span>
+              <span class="anchor" id="variable-error~175"></span>
               type(<a href='../type/error_t.html'>error_t</a>),
             </td>
 <td>intent(inout)</td>
@@ -4035,7 +4035,7 @@ parameter
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-this~147"></span>
+              <span class="anchor" id="variable-this~124"></span>
               class(<a href='../type/mqc_session_t.html'>mqc_session_t</a>),
             </td>
 <td>intent(inout)</td>
@@ -4065,7 +4065,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-sys_geom~84"></span>
+              <span class="anchor" id="variable-sys_geom~87"></span>
               type(<a href='../type/system_geometry_t.html'>system_geometry_t</a>),
             </td>
 <td>intent(inout)</td>
@@ -4141,7 +4141,7 @@ passed to writes on the receiving ranks.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-result~57"></span>
+              <span class="anchor" id="variable-result~51"></span>
               type(<a href='../type/calculation_result_t.html'>calculation_result_t</a>),
             </td>
 <td>intent(out)</td>
@@ -4156,7 +4156,7 @@ passed to writes on the receiving ranks.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-error~175"></span>
+              <span class="anchor" id="variable-error~172"></span>
               type(<a href='../type/error_t.html'>error_t</a>),
             </td>
 <td>intent(inout)</td>
@@ -4196,7 +4196,7 @@ passed to writes on the receiving ranks.</p>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-this~145"></span>
+              <span class="anchor" id="variable-this~122"></span>
               type(<a href='../type/mqc_session_t.html'>mqc_session_t</a>),
             </td>
 <td>intent(inout)</td>
@@ -4236,7 +4236,7 @@ passed to writes on the receiving ranks.</p>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-this~146"></span>
+              <span class="anchor" id="variable-this~123"></span>
               type(<a href='../type/mqc_session_t.html'>mqc_session_t</a>),
             </td>
 <td>intent(inout)</td>
@@ -4279,7 +4279,7 @@ passed to writes on the receiving ranks.</p>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2026-09-14 13:52 +0000             </p>
+ on 2026-09-15 12:23 +0000             </p>
           </div>
         </div>
         <br>
